@@ -1,4 +1,4 @@
-# tplanner-vue
+# tplanner-todo
 
 ## Project setup
 ```
