@@ -5,14 +5,14 @@
       <v-card class="d-flex pa-5">
         <v-row align="center" justify="center">
           <div class="text-center">
-            <v-btn href="#/all" class="ma-2" :color="visibility == 'all'? 'primary': 'secondary'">
+            <v-btn href="#/all" class="ma-2" :color="visibility == 'all'? 'primary': 'success'">
               All Todods
               ( {{todos.length}} )
             </v-btn>
             <v-btn
               href="#/active"
               class="ma-2"
-              :color="visibility == 'active'? 'primary': 'secondary'"
+              :color="visibility == 'active'? 'primary': 'success'"
             >
               Active Todods
               ( {{remaining}} )
@@ -20,7 +20,7 @@
             <v-btn
               href="#/completed"
               class="ma-2"
-              :color="visibility == 'completed'? 'primary': 'secondary'"
+              :color="visibility == 'completed'? 'primary': 'success'"
             >Completed Todos ( {{completedTodosCount}} )</v-btn>
             <v-btn
               @click="removeCompleted"
