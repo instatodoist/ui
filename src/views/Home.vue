@@ -88,9 +88,9 @@
                 </td>
                 <td v-bind:class="{'strike-through': todo.isCompleted}">{{ todo.title }}</td>
                 <td class="text-right">
-                  <!-- <v-btn color="primary" depressed @click="editTodo(todo); updateDialog = true;">
+                  <v-btn v-if="!todo.isCompleted" color="primary" depressed @click="editTodo(todo); updateDialog = true;">
                     Update
-                  </v-btn>&nbsp;&nbsp;-->
+                  </v-btn>&nbsp;&nbsp;
                   <v-btn color="primary" depressed @click.stop="dialog = true; targetTodo = todo">
                     Delete
                     <!-- <v-icon left>{{icons.mdiDelete}}</v-icon>Delete -->
@@ -111,9 +111,7 @@
                     <v-row>
                       <v-col cols="12">
                         <v-text-field
-                          v-model="todo.title"
-                          v-todo-focus="todo == editedTodo"
-                          @keyup.esc="cancelEdit(todo)"
+                          v-model="editedTodo.title"
                           label="Todo*"
                           required
                         ></v-text-field>
@@ -128,7 +126,7 @@
                   <v-btn
                     color="blue darken-1"
                     text
-                    @click="doneEdit(todo); updateDialog = false;"
+                    @click="doneEdit(editedTodo); updateDialog = false;"
                   >Save</v-btn>
                 </v-card-actions>
               </v-card>
@@ -322,7 +320,7 @@ export default {
 
     editTodo(todo) {
       this.beforeEditCache = todo.title;
-      this.editedTodo = todo;
+      this.editedTodo = {...todo};
     },
 
     doneEdit(todo) {
