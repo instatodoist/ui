@@ -4,23 +4,33 @@
       <v-card class="d-flex pa-5">
         <v-row align="center" justify="center">
           <div class="text-center">
-            <v-btn
-              href="#/all"
-              class="ma-2"
-              :color="visibility == 'all'? 'primary': 'secondary'"
-            >All Todods</v-btn>
+            <v-btn href="#/all" class="ma-2" :color="visibility == 'all'? 'primary': 'secondary'">
+              All Todods
+              ( {{todos.length}} )
+            </v-btn>
             <v-btn
               href="#/active"
               class="ma-2"
               :color="visibility == 'active'? 'primary': 'secondary'"
-            >Active Todods</v-btn>
+            >
+              Active Todods
+              ( {{remaining}} )
+            </v-btn>
             <v-btn
               href="#/completed"
               class="ma-2"
               :color="visibility == 'completed'? 'primary': 'secondary'"
-            >Completed Todos</v-btn>
+            >Completed Todos ( {{completedTodosCount}} )</v-btn>
+            <v-btn
+              @click="removeCompleted"
+              class="ma-2"
+              v-show="todos.length > remaining"
+            >Clear Completed Todos</v-btn>
           </div>
         </v-row>
+        <!-- <v-row align="center" justify="center">
+            
+        </v-row>-->
       </v-card>
       <v-card class="d-flex pa-1">
         <v-row align="center" justify="center">
@@ -80,7 +90,7 @@
                 <td class="text-right">
                   <!-- <v-btn color="primary" depressed @click="editTodo(todo); updateDialog = true;">
                     Update
-                  </v-btn>&nbsp;&nbsp; -->
+                  </v-btn>&nbsp;&nbsp;-->
                   <v-btn color="primary" depressed @click.stop="dialog = true; targetTodo = todo">
                     Delete
                     <!-- <v-icon left>{{icons.mdiDelete}}</v-icon>Delete -->
@@ -103,7 +113,6 @@
                         <v-text-field
                           v-model="todo.title"
                           v-todo-focus="todo == editedTodo"
-                         
                           @keyup.esc="cancelEdit(todo)"
                           label="Todo*"
                           required
@@ -116,7 +125,11 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn color="blue darken-1" text @click="updateDialog = false">Close</v-btn>
-                  <v-btn color="blue darken-1" text @click="doneEdit(todo); updateDialog = false;">Save</v-btn>
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="doneEdit(todo); updateDialog = false;"
+                  >Save</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -194,6 +207,9 @@ export default {
     remaining() {
       return filters.active(this.todos).length;
     },
+    completedTodosCount() {
+      return filters.completed(this.todos).length;
+    },
     allDone: {
       get() {
         return this.remaining === 0;
@@ -208,7 +224,7 @@ export default {
 
   filters: {
     pluralize(n) {
-      return n === 1 ? "item" : "items";
+      return n === 1 ? "todo" : "todods";
     }
   },
 
