@@ -1,6 +1,7 @@
 <template>
   <v-layout row justify-center align-center>
     <v-flex>
+      <LoginModal v-if="!isLoggedIn"/>
       <v-card class="d-flex pa-5">
         <v-row align="center" justify="center">
           <div class="text-center">
@@ -46,24 +47,16 @@
                 v-model="newTodo"
                 @keyup.enter="addTodo"
               >
-                <!-- <template v-slot:prepend>
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on }">
-                      <v-icon v-on="on">mdi-help-circle-outline</v-icon>
-                    </template>
-                    I'm a tooltip
-                  </v-tooltip>
-                </template>-->
                 <template v-slot:append>
                   <v-fade-transition leave-absolute>
                     <v-progress-circular v-if="loading" size="24" color="info" indeterminate></v-progress-circular>
-                    <!-- <img
+                    <img
                       v-else
                       width="24"
                       height="24"
                       src="https://cdn.vuetifyjs.com/images/logos/v-alt.svg"
                       alt
-                    />-->
+                    />
                   </v-fade-transition>
                 </template>
               </v-text-field>
@@ -74,13 +67,6 @@
       <v-card class="d-flex pa-5">
         <v-row justify="space-around">
           <v-simple-table style="width:100%;" fixed-header>
-            <!-- <thead>
-              <tr>
-                <th></th>
-                <th>Todos</th>
-                <th class="text-right">Actions</th>
-              </tr>
-            </thead>-->
             <tbody>
               <tr v-for="todo in filteredTodos" :key="todo._id">
                 <td>
@@ -88,20 +74,21 @@
                 </td>
                 <td v-bind:class="{'strike-through': todo.isCompleted}">{{ todo.title }}</td>
                 <td class="text-right">
-                  <v-btn v-if="!todo.isCompleted" color="primary" depressed @click="editTodo(todo); updateDialog = true;">
-                    Update
-                  </v-btn>&nbsp;&nbsp;
-                  <v-btn color="primary" depressed @click.stop="dialog = true; targetTodo = todo">
-                    Delete
-                    <!-- <v-icon left>{{icons.mdiDelete}}</v-icon>Delete -->
-                  </v-btn>
+                  <v-btn
+                    v-if="!todo.isCompleted"
+                    color="primary"
+                    depressed
+                    @click="editTodo(todo); updateDialog = true;"
+                  >Update</v-btn>&nbsp;&nbsp;
+                  <v-btn
+                    color="primary"
+                    depressed
+                    @click.stop="dialog = true; targetTodo = todo"
+                  >Delete</v-btn>
                 </td>
               </tr>
             </tbody>
             <v-dialog v-if="updateDialog" v-model="updateDialog" persistent max-width="600px">
-              <!-- <template v-slot:activator="{ on }">
-                <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
-              </template>-->
               <v-card>
                 <v-card-title>
                   <span class="headline">Update Todo</span>
@@ -110,11 +97,7 @@
                   <v-container>
                     <v-row>
                       <v-col cols="12">
-                        <v-text-field
-                          v-model="editedTodo.title"
-                          label="Todo*"
-                          required
-                        ></v-text-field>
+                        <v-text-field v-model="editedTodo.title" label="Todo*" required></v-text-field>
                       </v-col>
                     </v-row>
                   </v-container>
@@ -259,10 +242,10 @@ export default {
         });
     },
     addTodo() {
-      if (!this.isLoggedIn) {
-        this.showModal = true;
-        return false;
-      }
+      // if (!this.isLoggedIn) {
+      //   this.showModal = true;
+      //   return false;
+      // }
       const value = this.newTodo && this.newTodo.trim();
       if (!value) {
         return;
@@ -320,7 +303,7 @@ export default {
 
     editTodo(todo) {
       this.beforeEditCache = todo.title;
-      this.editedTodo = {...todo};
+      this.editedTodo = { ...todo };
     },
 
     doneEdit(todo) {
@@ -385,7 +368,9 @@ export default {
     }
   },
   created() {
-    this.fetchTodo();
+    if (this.isLoggedIn) {
+      this.fetchTodo();
+    }
     window.addEventListener("hashchange", this.onHashChange);
     this.onHashChange();
   }
