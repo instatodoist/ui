@@ -1,75 +1,154 @@
 <template>
-  <section class="todoapp">
-    <header class="header">
-      <h1>todos</h1>
-      <input
-        class="new-todo"
-        autofocus
-        autocomplete="off"
-        placeholder="What needs to be done?"
-        v-model="newTodo"
-        @keyup.enter="addTodo"
-      />
-    </header>
-
-    <LoginModal v-if="showModal" @close="showModal = false"/>
-
-    <section class="main" v-show="todos.length" v-cloak>
-      <input id="toggle-all" class="toggle-all" type="checkbox" v-model="allDone" />
-      <label for="toggle-all"></label>
-      <ul class="todo-list">
-        <li
-          v-for="todo in filteredTodos"
-          class="todo"
-          :key="todo._id"
-          :class="{ completed: todo.isCompleted, editing: todo == editedTodo }"
-        >
-          <div class="view">
-            <input
-              class="toggle"
-              type="checkbox"
-              v-model="todo.isCompleted"
-              @change="updateTodo(todo, true)"
-            />
-            <label @dblclick="editTodo(todo)">{{ todo.title }}</label>
-            <button class="destroy" @click="removeTodo(todo)"></button>
+  <v-layout row justify-center align-center>
+    <v-flex>
+      <v-card class="d-flex pa-5">
+        <v-row align="center" justify="center">
+          <div class="text-center">
+            <v-btn
+              href="#/all"
+              class="ma-2"
+              :color="visibility == 'all'? 'primary': 'secondary'"
+            >All Todods</v-btn>
+            <v-btn
+              href="#/active"
+              class="ma-2"
+              :color="visibility == 'active'? 'primary': 'secondary'"
+            >Active Todods</v-btn>
+            <v-btn
+              href="#/completed"
+              class="ma-2"
+              :color="visibility == 'completed'? 'primary': 'secondary'"
+            >Completed Todos</v-btn>
           </div>
-          <input
-            class="edit"
-            type="text"
-            v-model="todo.title"
-            v-todo-focus="todo == editedTodo"
-            @blur="doneEdit(todo)"
-            @keyup.enter="doneEdit(todo)"
-            @keyup.esc="cancelEdit(todo)"
-          />
-        </li>
-      </ul>
-    </section>
-    <footer class="footer" v-cloak>
-      <span class="todo-count">
-        <strong>{{ remaining }}</strong>
-        {{ remaining | pluralize }} left
-      </span>
-      <ul class="filters">
-        <li>
-          <a href="#/all" :class="{ selected: visibility == 'all' }">All</a>
-        </li>
-        <li>
-          <a href="#/active" :class="{ selected: visibility == 'active' }">Active</a>
-        </li>
-        <li>
-          <a href="#/completed" :class="{ selected: visibility == 'completed' }">Completed</a>
-        </li>
-      </ul>
-      <button
-        class="clear-completed"
-        @click="removeCompleted"
-        v-show="todos.length > remaining"
-      >Clear completed</button>
-    </footer>
-  </section>
+        </v-row>
+      </v-card>
+      <v-card class="d-flex pa-1">
+        <v-row align="center" justify="center">
+          <div class="text-center">
+            <v-col>
+              <v-text-field
+                outlined
+                clearable
+                type="text"
+                autofocus
+                autocomplete="off"
+                placeholder="What needs to be done?"
+                v-model="newTodo"
+                @keyup.enter="addTodo"
+              >
+                <!-- <template v-slot:prepend>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <v-icon v-on="on">mdi-help-circle-outline</v-icon>
+                    </template>
+                    I'm a tooltip
+                  </v-tooltip>
+                </template>-->
+                <template v-slot:append>
+                  <v-fade-transition leave-absolute>
+                    <v-progress-circular v-if="loading" size="24" color="info" indeterminate></v-progress-circular>
+                    <!-- <img
+                      v-else
+                      width="24"
+                      height="24"
+                      src="https://cdn.vuetifyjs.com/images/logos/v-alt.svg"
+                      alt
+                    />-->
+                  </v-fade-transition>
+                </template>
+              </v-text-field>
+            </v-col>
+          </div>
+        </v-row>
+      </v-card>
+      <v-card class="d-flex pa-5">
+        <v-row justify="space-around">
+          <v-simple-table style="width:100%;" fixed-header>
+            <!-- <thead>
+              <tr>
+                <th></th>
+                <th>Todos</th>
+                <th class="text-right">Actions</th>
+              </tr>
+            </thead>-->
+            <tbody>
+              <tr v-for="todo in filteredTodos" :key="todo._id">
+                <td>
+                  <v-checkbox v-model="todo.isCompleted" @change="updateTodo(todo, true)"></v-checkbox>
+                </td>
+                <td v-bind:class="{'strike-through': todo.isCompleted}">{{ todo.title }}</td>
+                <td class="text-right">
+                  <!-- <v-btn color="primary" depressed @click="editTodo(todo); updateDialog = true;">
+                    Update
+                  </v-btn>&nbsp;&nbsp; -->
+                  <v-btn color="primary" depressed @click.stop="dialog = true; targetTodo = todo">
+                    Delete
+                    <!-- <v-icon left>{{icons.mdiDelete}}</v-icon>Delete -->
+                  </v-btn>
+                </td>
+              </tr>
+            </tbody>
+            <v-dialog v-if="updateDialog" v-model="updateDialog" persistent max-width="600px">
+              <!-- <template v-slot:activator="{ on }">
+                <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+              </template>-->
+              <v-card>
+                <v-card-title>
+                  <span class="headline">Update Todo</span>
+                </v-card-title>
+                <v-card-text>
+                  <v-container>
+                    <v-row>
+                      <v-col cols="12">
+                        <v-text-field
+                          v-model="todo.title"
+                          v-todo-focus="todo == editedTodo"
+                         
+                          @keyup.esc="cancelEdit(todo)"
+                          label="Todo*"
+                          required
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                  <small>*indicates required field</small>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" text @click="updateDialog = false">Close</v-btn>
+                  <v-btn color="blue darken-1" text @click="doneEdit(todo); updateDialog = false;">Save</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+            <v-dialog v-model="dialog" max-width="290">
+              <v-card>
+                <v-card-title class="headline">Do you want to Delete?</v-card-title>
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+
+                  <v-btn color="green darken-1" text @click="dialog = false">Disagree</v-btn>
+
+                  <v-btn
+                    color="green darken-1"
+                    text
+                    @click="removeTodo(targetTodo);dialog = false"
+                  >Agree</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-simple-table>
+        </v-row>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
+<style scoped>
+.strike-through {
+  text-decoration: line-through;
+}
+</style>
+
 
 <script>
 // visibility filters
@@ -92,6 +171,10 @@ export default {
   // app initial state
   data() {
     return {
+      loading: false,
+      targetTodo: "",
+      updateDialog: false,
+      dialog: false,
       isLoggedIn: this.isLogged(),
       showModal: false,
       todos: [],
@@ -170,6 +253,7 @@ export default {
       if (!value) {
         return;
       }
+      this.loading = true;
       const query = `
       mutation {
         addTodo(input: {title: "${value}"}) {
@@ -188,6 +272,7 @@ export default {
         .then(res => res.json())
         .then(data => {
           this.newTodo = "";
+          this.loading = false;
           return this.fetchTodo();
         });
     },
