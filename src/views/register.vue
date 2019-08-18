@@ -4,6 +4,8 @@ export default {
   name: "RegisterModal",
   data() {
     return {
+      title: this.$APP_TITLE,
+      dialog: true,
       err: "",
       isSubmit: false,
       user: {
@@ -50,7 +52,9 @@ export default {
           localStorage.setItem("token", token);
           localStorage.setItem("user", JSON.stringify(user));
           this.isSubmit = false;
+          this.dialog = false;
           this.$emit("close");
+          this.$router.push(this.$route.query.redirect || "/dashboard");
         })
         .catch(err => {
           this.isSubmit = false;
@@ -60,132 +64,87 @@ export default {
   }
 };
 </script>
-
 <template>
-  <div class="modal-mask t-modal-mask">
-    <div class="modal-wrapper">
-      <div class="modal-container">
-        <div class="modal-body">
-          <div class="col-md-6">
-            <div class="page-content">
-              <h2>Login</h2>
-              <div class="form-style form-style-3">
-                <form @submit.prevent="handleSubmit">
-                  <div class="form-inputs clearfix">
-                    <p class="login-text">
-                      <input
-                        type="email"
-                        value="Email"
-                        placeholder="Email"
-                        v-model="user.email"
-                        required
-                      />
-                      <i class="icon-envelope"></i>
-                    </p>
-                    <p class="login-password">
-                      <input
-                        placeholder="Password"
-                        type="password"
-                        value="Password"
-                        v-model="user.password"
-                        required
-                      />
-                      <i class="icon-lock"></i>
-                      <!-- <a href="javascript:void(0);" v-on:click="showForgot(true)">Forget</a> -->
-                    </p>
-                  </div>
-                  <p class="form-submit login-submit">
-                    <input
-                      :disabled="isSubmit"
-                      :value="!isSubmit? 'Log in' : 'Logging In ...'"
-                      type="submit"
-                      class="button color small login-submit submit"
-                    />
-                  </p>
-                  <div class="rememberme"></div>
-                </form>
-              </div>
-            </div>
+  <v-content>
+    <section>
+      <v-layout column wrap class="my-12" align-center>
+        <v-flex xs12 sm4 class="my-4">
+          <div class="text-center">
+            <h2 class="headline">Create an Account</h2>
+            <span class="subheading">It's simple</span>
           </div>
-        </div>
+        </v-flex>
+        <v-flex xs12>
+          <v-container grid-list-xl>
+            <v-layout row wrap align-center>
+              <v-flex xs12 md4>
+                <v-card flat class="transparent">
+                  <v-card-text class="text-center">
+                    <v-icon x-large class="blue--text text--lighten-2">mdi-palette</v-icon>
+                  </v-card-text>
+                  <v-card-title primary-title class="layout justify-center">
+                    <div class="headline text-center">{{title}}</div>
+                  </v-card-title>
+                  <v-card-text>
+                   Life can feel overwhelming, but it doesn’t have to. {{title}} lets you keep track of everything in one place, so you can get it all done and enjoy more peace of mind along the way.
+                  </v-card-text>
+                </v-card>
+              </v-flex>
+              <v-flex xs12 md4>
+                <v-card class="pa-12" style="min-height:400px;">
+                  <form @submit.prevent="handleSubmit">
+                    <v-card-text>
+                      <v-form>
+                        <v-text-field
+                          label="Email address"
+                          name="email"
+                          type="text"
+                          v-model="user.email"
+                          required
+                        ></v-text-field>
 
-        <div class="modal-footer">
-          <slot name="footer">
-            <button
-              class="button color small login-submit submit"
-              type="button"
-              data-dismiss="modal"
-              @click="$emit('close')"
-            >Cancel</button>
-          </slot>
-        </div>
-      </div>
-    </div>
-  </div>
+                        <v-text-field
+                          id="password"
+                          label="Password"
+                          name="password"
+                          type="password"
+                          v-model="user.password"
+                          required
+                        ></v-text-field>
+                      </v-form>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                       <v-btn href="/login" color="primary" type="submit" text>Already account?</v-btn>
+                      <v-btn
+                        color="primary"
+                        type="submit"
+                        :disabled="isSubmit"
+                        :value="!isSubmit? 'Log in' : 'Logging In ...'"
+                      >Register</v-btn>
+                    </v-card-actions>
+                  </form>
+                </v-card>
+              </v-flex>
+              <!-- <v-flex xs12 md4>
+                <v-card flat class="transparent">
+                  <v-card-text class="text-center">
+                    <v-icon x-large class="blue--text text--lighten-2">mdi-wrench</v-icon>
+                  </v-card-text>
+                  <v-card-title primary-title class="layout justify-center">
+                    <div class="headline text-center">Completely Open Sourced</div>
+                  </v-card-title>
+                  <v-card-text>
+                    Cras facilisis mi vitae nunc lobortis pharetra. Nulla volutpat tincidunt ornare.
+                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+                    Nullam in aliquet odio. Aliquam eu est vitae tellus bibendum tincidunt. Suspendisse potenti.
+                  </v-card-text>
+                </v-card>
+              </v-flex>-->
+            </v-layout>
+          </v-container>
+        </v-flex>
+      </v-layout>
+    </section>
+  </v-content>
 </template>
-
-<style scoped>
-.t-modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: table;
-  transition: opacity 0.3s ease;
-}
-
-.t-modal-mask .modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-}
-
-.t-modal-mask .modal-container {
-  width: 300px;
-  margin: 0px auto;
-  padding: 20px 30px;
-  background-color: #fff;
-  border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-  transition: all 0.3s ease;
-  font-family: Helvetica, Arial, sans-serif;
-}
-
-.t-modal-mask .modal-header h3 {
-  margin-top: 0;
-  color: #42b983;
-}
-
-.t-modal-mask .modal-body {
-  margin: 20px 0;
-}
-
-.t-modal-mask .modal-default-button {
-  float: right;
-}
-
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
-
-.modal-enter {
-  opacity: 0;
-}
-
-.modal-leave-active {
-  opacity: 0;
-}
-
-.modal-enter .modal-container,
-.modal-leave-active .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
-}
-</style>

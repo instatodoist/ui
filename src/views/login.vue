@@ -4,6 +4,7 @@ export default {
   name: "LoginModal",
   data() {
     return {
+      title: this.$APP_TITLE,
       dialog: true,
       err: "",
       isSubmit: false,
@@ -53,6 +54,7 @@ export default {
           this.isSubmit = false;
           this.dialog = false;
           this.$emit("close");
+          this.$router.push(this.$route.query.redirect || "/dashboard");
         })
         .catch(err => {
           this.isSubmit = false;
@@ -62,33 +64,88 @@ export default {
   }
 };
 </script>
-
 <template>
-  <v-dialog max-width="600px" v-model="dialog">
-    <form @submit.prevent="handleSubmit">
-    <v-card>
-      <v-card-title>
-        <span class="headline">Login</span>
-      </v-card-title>
-      <v-card-text>
-        <v-container>
-          <v-row>
-            <v-col cols="12">
-              <v-text-field label="Email*" v-model="user.email" required></v-text-field>
-            </v-col>
-            <v-col cols="12">
-              <v-text-field label="Password*" type="password" v-model="user.password" required></v-text-field>
-            </v-col>
-          </v-row>
-        </v-container>
-        <small>*indicates required field</small>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <!-- <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn> -->
-        <v-btn type="submit" color="blue darken-1" text :disabled="isSubmit" :value="!isSubmit? 'Log in' : 'Logging In ...'">Login</v-btn>
-      </v-card-actions>
-    </v-card>
-    </form>
-  </v-dialog>
+  <v-content>
+    <section>
+      <v-layout column wrap class="my-12" align-center>
+        <v-flex xs12 sm4 class="my-4">
+          <div class="text-center">
+            <h2 class="headline">Login into your account</h2>
+            <span class="subheading">to start using todos instantly</span>
+          </div>
+        </v-flex>
+        <v-flex xs12>
+          <v-container grid-list-xl>
+            <v-layout row wrap align-center>
+              <v-flex xs12 md4>
+                <v-card flat class="transparent">
+                  <v-card-text class="text-center">
+                    <v-icon x-large class="blue--text text--lighten-2">mdi-palette</v-icon>
+                  </v-card-text>
+                   <v-card-title primary-title class="layout justify-center">
+                    <div class="headline text-center">{{title}}</div>
+                  </v-card-title>
+                  <v-card-text>
+                   Life can feel overwhelming, but it doesn’t have to. {{title}} lets you keep track of everything in one place, so you can get it all done and enjoy more peace of mind along the way.
+                  </v-card-text>
+                </v-card>
+              </v-flex>
+              <v-flex xs12 md4>
+                <v-card class="pa-12" style="min-height:400px;">
+                  <form @submit.prevent="handleSubmit">
+                    <v-card-text>
+                      <v-form>
+                        <v-text-field
+                          label="Email address"
+                          name="email"
+                          type="text"
+                          v-model="user.email"
+                          required
+                        ></v-text-field>
+
+                        <v-text-field
+                          id="password"
+                          label="Password"
+                          name="password"
+                          type="password"
+                          v-model="user.password"
+                          required
+                        ></v-text-field>
+                      </v-form>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+
+                      <v-btn href="/register" color="primary" type="submit" text>Register here</v-btn>
+                      <v-btn
+                        color="primary"
+                        type="submit"
+                        :disabled="isSubmit"
+                        :value="!isSubmit? 'Log in' : 'Logging In ...'"
+                      >Login</v-btn>
+                    </v-card-actions>
+                  </form>
+                </v-card>
+              </v-flex>
+              <!-- <v-flex xs12 md4>
+                <v-card flat class="transparent">
+                  <v-card-text class="text-center">
+                    <v-icon x-large class="blue--text text--lighten-2">mdi-wrench</v-icon>
+                  </v-card-text>
+                  <v-card-title primary-title class="layout justify-center">
+                    <div class="headline text-center">Completely Open Sourced</div>
+                  </v-card-title>
+                  <v-card-text>
+                    Cras facilisis mi vitae nunc lobortis pharetra. Nulla volutpat tincidunt ornare.
+                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+                    Nullam in aliquet odio. Aliquam eu est vitae tellus bibendum tincidunt. Suspendisse potenti.
+                  </v-card-text>
+                </v-card>
+              </v-flex>-->
+            </v-layout>
+          </v-container>
+        </v-flex>
+      </v-layout>
+    </section>
+  </v-content>
 </template>
