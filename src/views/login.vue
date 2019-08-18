@@ -96,6 +96,7 @@ export default {
                     <v-card-text>
                       <v-form>
                         <v-text-field
+                          prepend-icon="email"
                           label="Email address"
                           name="email"
                           type="text"
@@ -104,6 +105,7 @@ export default {
                         ></v-text-field>
 
                         <v-text-field
+                          prepend-icon="lock"
                           id="password"
                           label="Password"
                           name="password"

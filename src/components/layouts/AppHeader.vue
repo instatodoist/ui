@@ -13,7 +13,7 @@
       </v-list>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer" /> -->
       <!-- <v-btn
         icon
         @click.stop="miniVariant = !miniVariant"
@@ -31,7 +31,7 @@
         @click.stop="fixed = !fixed"
       >
         <v-icon>mdi-minus</v-icon>
-      </v-btn>-->
+      </v-btn> -->
       <v-toolbar-title v-text="title" />
       <v-spacer />
       <v-icon @click="logout()">mdi-application</v-icon>
@@ -43,20 +43,20 @@ import localStorageService from "../../services/localStorage";
 export default {
   data() {
     return {
-      clipped: false,
-      drawer: false,
+      clipped: true,
+      drawer: true,
       fixed: false,
       items: [
         {
           icon: "mdi-apps",
-          title: "Welcome",
+          title: this.$APP_TITLE,
           to: "/"
         }
       ],
-      miniVariant: false,
+      miniVariant: true,
       right: true,
       rightDrawer: false,
-      title: "techyaura-todo"
+       title: this.$APP_TITLE,
     };
   },
   methods: {

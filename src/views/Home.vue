@@ -1,7 +1,7 @@
 <template>
   <v-layout row justify-center align-center>
     <v-flex>
-      <LoginModal v-if="!isLoggedIn"/>
+      <LoginModal v-if="!isLoggedIn" />
       <v-card class="d-flex pa-5">
         <v-row align="center" justify="center">
           <div class="text-center">
@@ -27,6 +27,7 @@
               class="ma-2"
               v-show="todos.length > remaining"
             >Clear Completed Todos</v-btn>
+             <v-progress-circular v-if="completedTodosCount > 0" :value="progress" class="mr-2" style="width:70px;height:70px;"></v-progress-circular>
           </div>
         </v-row>
         <!-- <v-row align="center" justify="center">
@@ -50,13 +51,7 @@
                 <template v-slot:append>
                   <v-fade-transition leave-absolute>
                     <v-progress-circular v-if="loading" size="24" color="info" indeterminate></v-progress-circular>
-                    <img
-                      v-else
-                      width="24"
-                      height="24"
-                      src="https://cdn.vuetifyjs.com/images/logos/v-alt.svg"
-                      alt
-                    />
+                    <v-icon>note_add</v-icon>
                   </v-fade-transition>
                 </template>
               </v-text-field>
@@ -79,12 +74,16 @@
                     color="primary"
                     depressed
                     @click="editTodo(todo); updateDialog = true;"
-                  >Update</v-btn>&nbsp;&nbsp;
+                  >
+                  <v-icon>create</v-icon>
+                  </v-btn>&nbsp;&nbsp;
                   <v-btn
                     color="primary"
                     depressed
                     @click.stop="dialog = true; targetTodo = todo"
-                  >Delete</v-btn>
+                  >
+                  <v-icon>delete_forever</v-icon>
+                  </v-btn>
                 </td>
               </tr>
             </tbody>
@@ -182,6 +181,13 @@ export default {
   },
 
   computed: {
+    progress() {
+      return (
+        (filters.completed(this.todos).length /
+          this.todos.length) *
+        100
+      );
+    },
     filteredTodos() {
       return filters[this.visibility](this.todos);
     },
