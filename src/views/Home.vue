@@ -27,7 +27,12 @@
               class="ma-2"
               v-show="todos.length > remaining"
             >Clear Completed Todos</v-btn>
-             <v-progress-circular v-if="completedTodosCount > 0" :value="progress" class="mr-2" style="width:70px;height:70px;"></v-progress-circular>
+            <v-progress-circular
+              v-if="completedTodosCount > 0"
+              :value="progress"
+              class="mr-2"
+              style="width:70px;height:70px;"
+            ></v-progress-circular>
           </div>
         </v-row>
         <!-- <v-row align="center" justify="center">
@@ -59,9 +64,36 @@
           </div>
         </v-row>
       </v-card>
-      <v-card class="d-flex pa-5">
+      <v-card class="d-flex pa-12">
         <v-row justify="space-around">
-          <v-simple-table style="width:100%;" fixed-header>
+          <v-list subheader style="width: 100% !important">
+            <draggable v-model="filteredTodos" group="todos" @start="drag=true" @end="drag=false" :move="checkMove">
+              <v-list-item v-for="todo in filteredTodos" :key="todo._id">
+                <v-list-item-avatar>
+                  <v-checkbox v-model="todo.isCompleted" @change="updateTodo(todo, true)"></v-checkbox>
+                </v-list-item-avatar>
+
+                <v-list-item-content>
+                  <v-list-item-title v-text="todo.title"></v-list-item-title>
+                </v-list-item-content>
+
+                <v-list-item-icon>
+                  <v-btn
+                    v-if="!todo.isCompleted"
+                    color="primary"
+                    depressed
+                    @click="editTodo(todo); updateDialog = true;"
+                  >
+                    <v-icon>create</v-icon>
+                  </v-btn>&nbsp;&nbsp;
+                  <v-btn color="primary" depressed @click.stop="dialog = true; targetTodo = todo">
+                    <v-icon>delete_forever</v-icon>
+                  </v-btn>
+                </v-list-item-icon>
+              </v-list-item>
+            </draggable>
+          </v-list>
+          <!-- <v-simple-table style="width:100%;" fixed-header>
             <tbody>
               <tr v-for="todo in filteredTodos" :key="todo._id">
                 <td>
@@ -130,7 +162,7 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-          </v-simple-table>
+          </v-simple-table>-->
         </v-row>
       </v-card>
     </v-flex>
@@ -156,12 +188,13 @@ const filters = {
     return todos.filter(todo => todo.isCompleted);
   }
 };
-
+import draggable from 'vuedraggable'
 import LoginModal from "./login.vue";
+import { constants } from 'crypto';
 
 export default {
+  order: 0,
   name: "Home",
-  // app initial state
   data() {
     return {
       loading: false,
@@ -173,23 +206,26 @@ export default {
       todos: [],
       newTodo: "",
       editedTodo: null,
-      visibility: "all"
+      visibility: "all",
+      drag: false
     };
   },
   components: {
-    LoginModal
+    LoginModal,
+    draggable
   },
 
   computed: {
     progress() {
-      return (
-        (filters.completed(this.todos).length /
-          this.todos.length) *
-        100
-      );
+      return (filters.completed(this.todos).length / this.todos.length) * 100;
     },
-    filteredTodos() {
-      return filters[this.visibility](this.todos);
+    filteredTodos: {
+      get: function(){
+        return filters[this.visibility](this.todos);
+      },
+      set: function() {
+        console.log(this.filteredTodos);
+      }
     },
     remaining() {
       return filters.active(this.todos).length;
@@ -216,6 +252,9 @@ export default {
   },
 
   methods: {
+     checkMove: function(e) {
+      window.console.log(e.draggedContext);
+    },
     onHashChange() {
       const visibility = window.location.hash.replace(/#\/?/, "");
       if (filters[visibility]) {

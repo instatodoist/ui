@@ -17,7 +17,7 @@ export default new Router({
       name: 'login',
       beforeEnter(to, from, next) {
         if (to.name === 'login' && localStorageService.getToken()) {
-          return next(from.path);
+          return next(from.path || '/dashboard');
         }
         return next();
       },
@@ -46,6 +46,12 @@ export default new Router({
     {
       path: '/',
       name: 'about',
+      beforeEnter(to, from, next) {
+        if (to.name === 'about' && localStorageService.getToken()) {
+          return next('/dashboard');
+        }
+        return next();
+      },
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
