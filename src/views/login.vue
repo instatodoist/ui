@@ -46,7 +46,7 @@ export default {
         },
         body: query
       })
-         .then(response => {
+        .then(response => {
           if (!response.ok) {
             throw new Error(response.statusText);
           }
@@ -88,12 +88,12 @@ export default {
                   <v-card-text class="text-center">
                     <v-icon x-large class="blue--text text--lighten-2">mdi-palette</v-icon>
                   </v-card-text>
-                   <v-card-title primary-title class="layout justify-center">
-                    <div class="headline text-center">{{title}}</div>
+                  <v-card-title primary-title class="layout justify-center">
+                    <div class="headline text-center">
+                      <router-link to="/">{{title}}</router-link>
+                    </div>
                   </v-card-title>
-                  <v-card-text>
-                   Life can feel overwhelming, but it doesn’t have to. {{title}} lets you keep track of everything in one place, so you can get it all done and enjoy more peace of mind along the way.
-                  </v-card-text>
+                  <v-card-text>Life can feel overwhelming, but it doesn’t have to. {{title}} lets you keep track of everything in one place, so you can get it all done and enjoy more peace of mind along the way.</v-card-text>
                 </v-card>
               </v-flex>
               <v-flex xs12 md4>

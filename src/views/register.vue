@@ -1,6 +1,6 @@
 
 <script>
-import { constants } from 'crypto';
+import { constants } from "crypto";
 export default {
   name: "RegisterModal",
   data() {
@@ -58,7 +58,7 @@ export default {
         .catch(err => {
           this.isSubmit = false;
           this.err = err;
-          this.$toast.error(err)
+          this.$toast.error(err);
         });
     }
   }
@@ -83,11 +83,11 @@ export default {
                     <v-icon x-large class="blue--text text--lighten-2">mdi-palette</v-icon>
                   </v-card-text>
                   <v-card-title primary-title class="layout justify-center">
-                    <div class="headline text-center">{{title}}</div>
+                    <div class="headline text-center">
+                      <router-link to="/">{{title}}</router-link>
+                    </div>
                   </v-card-title>
-                  <v-card-text>
-                   Life can feel overwhelming, but it doesn’t have to. {{title}} lets you keep track of everything in one place, so you can get it all done and enjoy more peace of mind along the way.
-                  </v-card-text>
+                  <v-card-text>Life can feel overwhelming, but it doesn’t have to. {{title}} lets you keep track of everything in one place, so you can get it all done and enjoy more peace of mind along the way.</v-card-text>
                 </v-card>
               </v-flex>
               <v-flex xs12 md4>
@@ -117,7 +117,7 @@ export default {
                     </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                       <v-btn to="/login" color="primary" type="submit" text>Already account?</v-btn>
+                      <v-btn to="/login" color="primary" type="submit" text>Already account?</v-btn>
                       <v-btn
                         color="primary"
                         type="submit"
