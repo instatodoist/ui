@@ -118,7 +118,7 @@ export default {
                     <v-card-actions>
                       <v-spacer></v-spacer>
 
-                      <v-btn href="/register" color="primary" type="submit" text>Register here</v-btn>
+                      <v-btn to="/register" color="primary" type="submit" text>Register here</v-btn>
                       <v-btn
                         color="primary"
                         type="submit"

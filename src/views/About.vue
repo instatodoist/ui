@@ -12,8 +12,8 @@
             height="200"
           />
           <h1 class="white--text mb-2 display-1 text-center">{{title}}</h1>
-          <div class="subheading mb-4 text-center">Powered by Vuetify</div>
-          <v-btn class="mt-12" color="blue lighten-2" dark large href="/login">Get Started</v-btn>
+          <!-- <div class="subheading mb-4 text-center">Powered by Vuetify</div> -->
+          <v-btn class="mt-12" color="blue lighten-2" dark large to="/login">Get Started</v-btn>
         </v-layout>
       </v-parallax>
     </section>
@@ -76,7 +76,7 @@
         <v-layout column align-center justify-center>
           <div class="headline white--text mb-4 text-center">Increasing productivity has never been easier</div>
           <em>Kick-start your {{title}} today</em>
-          <v-btn class="mt-12" color="blue lighten-2" dark large href="/login">Get Started</v-btn>
+          <v-btn class="mt-12" color="blue lighten-2" dark large to="/login">Get Started</v-btn>
         </v-layout>
       </v-parallax>
     </section>

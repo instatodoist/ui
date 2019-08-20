@@ -117,7 +117,7 @@ export default {
                     </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                       <v-btn href="/login" color="primary" type="submit" text>Already account?</v-btn>
+                       <v-btn to="/login" color="primary" type="submit" text>Already account?</v-btn>
                       <v-btn
                         color="primary"
                         type="submit"
