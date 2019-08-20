@@ -22,11 +22,11 @@
               class="ma-2"
               :color="visibility == 'completed'? 'primary': 'success'"
             >Completed Todos ( {{completedTodosCount}} )</v-btn>
-            <v-btn
+            <!-- <v-btn
               @click="removeCompleted"
               class="ma-2"
               v-show="todos.length > remaining"
-            >Clear Completed Todos</v-btn>
+            >Clear Completed Todos</v-btn> -->
             <v-progress-circular
               v-if="completedTodosCount > 0"
               :value="progress"
@@ -74,12 +74,11 @@
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                  <v-list-item-title v-text="todo.title"></v-list-item-title>
+                  <v-list-item-title v-bind:class="{'strike-through': todo.isCompleted}" v-text="todo.title"></v-list-item-title>
                 </v-list-item-content>
 
                 <v-list-item-icon>
                   <v-btn
-                    v-if="!todo.isCompleted"
                     color="primary"
                     depressed
                     @click="editTodo(todo); updateDialog = true;"
@@ -119,6 +118,7 @@
                 </td>
               </tr>
             </tbody>
+            </v-simple-table> -->
             <v-dialog v-if="updateDialog" v-model="updateDialog" persistent max-width="600px">
               <v-card>
                 <v-card-title>
@@ -162,7 +162,6 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-          </v-simple-table>-->
         </v-row>
       </v-card>
     </v-flex>
@@ -276,14 +275,14 @@ export default {
     fetchTodo() {
       return fetch(`${this.$BASE_URL}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",  Authorization: this.accessToken()},
         body: JSON.stringify({
-          query: "{ todoList { title _id isCompleted user {email}} }"
+          query: "{ todoList { totalCount data { title _id isCompleted user {email}} } }"
         })
       })
         .then(res => res.json())
         .then(data => {
-          this.todos = data.data.todoList;
+          this.todos = data.data.todoList.data;
         });
     },
     addTodo() {
