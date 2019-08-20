@@ -1,37 +1,30 @@
 
 <script>
-import { constants } from 'crypto';
+import { constants } from "crypto";
 export default {
-  name: "RegisterModal",
+  name: "VerifyEmail",
   data() {
     return {
       title: this.$APP_TITLE,
-      dialog: true,
       err: "",
       isSubmit: false,
+      hashToken: "",
       user: {
-        email: "",
-        password: ""
+        otp: ""
       }
     };
   },
   methods: {
-    close() {
-      this.$emit("close");
-    },
-    showForgot(value) {
-      this.$emit("loginSwapEvent", value);
-    },
     handleSubmit() {
       this.err = "";
       this.isSubmit = true;
       const postData = {
-        email: this.user.email,
-        password: this.user.password
+        otp: this.user.otp,
+        hashToken: this.hashToken
       };
       const query = `
       mutation {
-        register(input: {email: "${postData.email}", password: "${postData.password}"}) {
+        emailVerificationByOtp(input: {otp: "${postData.otp}", hashToken: "${postData.hashToken}"}) {
           message
           hashToken
         }
@@ -51,16 +44,19 @@ export default {
           return response.json();
         })
         .then(response => {
-          const { hashToken, message } = response.data.register;
+          const { hashToken, message } = response.data.emailVerificationByOtp;
           this.$toast.success(message);
-          this.$router.push(`/verify-email/${hashToken}`);
+          this.$router.push('/login');
         })
         .catch(err => {
           this.isSubmit = false;
           this.err = err;
-          this.$toast.error(err)
+          this.$toast.error(err);
         });
     }
+  },
+  created() {
+    this.hashToken = this.$route.params.hash;
   }
 };
 </script>
@@ -70,8 +66,8 @@ export default {
       <v-layout column wrap class="my-12" align-center>
         <v-flex xs12 sm4 class="my-4">
           <div class="text-center">
-            <h2 class="headline">Create an Account</h2>
-            <span class="subheading">It's simple</span>
+            <h2 class="headline">Verify Your Email Address</h2>
+            <span class="subheading">Enter OTP received on your email address</span>
           </div>
         </v-flex>
         <v-flex xs12>
@@ -85,9 +81,7 @@ export default {
                   <v-card-title primary-title class="layout justify-center">
                     <div class="headline text-center">{{title}}</div>
                   </v-card-title>
-                  <v-card-text>
-                   Life can feel overwhelming, but it doesn’t have to. {{title}} lets you keep track of everything in one place, so you can get it all done and enjoy more peace of mind along the way.
-                  </v-card-text>
+                  <v-card-text>Life can feel overwhelming, but it doesn’t have to. {{title}} lets you keep track of everything in one place, so you can get it all done and enjoy more peace of mind along the way.</v-card-text>
                 </v-card>
               </v-flex>
               <v-flex xs12 md4>
@@ -96,34 +90,21 @@ export default {
                     <v-card-text>
                       <v-form>
                         <v-text-field
-                          prepend-icon="email"
-                          label="Email address"
-                          name="email"
+                          label="Enter OTP"
+                          name="otp"
                           type="text"
-                          v-model="user.email"
-                          required
-                        ></v-text-field>
-
-                        <v-text-field
-                          prepend-icon="lock"
-                          id="password"
-                          label="Password"
-                          name="password"
-                          type="password"
-                          v-model="user.password"
+                          v-model="user.otp"
                           required
                         ></v-text-field>
                       </v-form>
                     </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                       <v-btn to="/login" color="primary" type="submit" text>Already account?</v-btn>
                       <v-btn
                         color="primary"
                         type="submit"
                         :disabled="isSubmit"
-                        :value="!isSubmit? 'Log in' : 'Logging In ...'"
-                      >Register</v-btn>
+                      >{{!isSubmit? 'Verify Email' : 'verifying ...'}}</v-btn>
                     </v-card-actions>
                   </form>
                 </v-card>

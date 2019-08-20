@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Home from './views/Home.vue';
 import Login from './views/login.vue';
 import Register from './views/register.vue';
+import VerifyEmail from './views/verify.vue';
 import requireAuth from './services/requireAuth';
 import localStorageService from './services/localStorage';
 
@@ -30,6 +31,14 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: Register,
+      meta: {
+        layout: 'login',
+      },
+    },
+    {
+      path: '/verify-email/:hash',
+      name: 'verify-email',
+      component: VerifyEmail,
       meta: {
         layout: 'login',
       },

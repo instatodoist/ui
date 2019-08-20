@@ -46,7 +46,12 @@ export default {
         },
         body: query
       })
-        .then(res => res.json())
+         .then(response => {
+          if (!response.ok) {
+            throw new Error(response.statusText);
+          }
+          return response.json();
+        })
         .then(response => {
           const { token, user, message } = response.data.login;
           localStorage.setItem("token", token);
@@ -59,6 +64,7 @@ export default {
         .catch(err => {
           this.isSubmit = false;
           this.err = err;
+          this.$toast.error(err);
         });
     }
   }
