@@ -1,4 +1,5 @@
 <template>
+<v-row align="center" justify="center">
   <v-layout row justify-center align-center>
     <v-flex>
       <LoginModal v-if="!isLoggedIn" />
@@ -166,6 +167,7 @@
       </v-card>
     </v-flex>
   </v-layout>
+  </v-row>
 </template>
 <style scoped>
 .strike-through {
