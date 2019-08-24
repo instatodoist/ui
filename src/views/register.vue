@@ -1,7 +1,7 @@
 
 <script>
 import { constants } from 'crypto';
-
+import { REGISTER_MUTATION } from '../gql/auth.gql';
 export default {
   name: 'RegisterModal',
   data() {
@@ -20,9 +20,9 @@ export default {
     close() {
       this.$emit('close');
     },
-    showForgot(value) {
-      this.$emit('loginSwapEvent', value);
-    },
+    // showForgot(value) {
+    //   this.$emit('loginSwapEvent', value);
+    // },
     handleSubmit() {
       this.err = '';
       this.isSubmit = true;
@@ -30,37 +30,23 @@ export default {
         email: this.user.email,
         password: this.user.password,
       };
-      const query = `
-      mutation {
-        register(input: {email: "${postData.email}", password: "${postData.password}"}) {
-          message
-          hashToken
+      return this.$apollo.mutate({
+        mutation: REGISTER_MUTATION,
+        variables: {
+            input: postData
         }
-      }
-      `;
-      return fetch(`${this.$BASE_URL}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/graphql',
-        },
-        body: query,
       })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(response.statusText);
-          }
-          return response.json();
-        })
-        .then((response) => {
-          const { hashToken, message } = response.data.register;
-          this.$toast.success(message);
-          this.$router.push(`/verify-email/${hashToken}`);
-        })
-        .catch((err) => {
-          this.isSubmit = false;
-          this.err = err;
-          this.$toast.error(err);
-        });
+      .then((response) => {
+        const { hashToken, message } = response.data.register;
+        this.$toast.success(message);
+        this.$router.push(`/verify-email/${hashToken}`);
+      })
+      .catch((err) => {
+        console.log(err);
+        this.isSubmit = false;
+        this.err = err;
+        this.$toast.error(err);
+      });
     },
   },
 };
