@@ -37,7 +37,7 @@
           </div>
         </v-row>
         <!-- <v-row align="center" justify="center">
-            
+
         </v-row>-->
       </v-card>
       <v-card class="d-flex pa-1">
@@ -178,6 +178,10 @@
 
 <script>
 // visibility filters
+import draggable from 'vuedraggable';
+import { constants } from 'crypto';
+import LoginModal from './login.vue';
+
 const filters = {
   all(todos) {
     return todos;
@@ -187,33 +191,30 @@ const filters = {
   },
   completed(todos) {
     return todos.filter(todo => todo.isCompleted);
-  }
+  },
 };
-import draggable from 'vuedraggable'
-import LoginModal from "./login.vue";
-import { constants } from 'crypto';
 
 export default {
   order: 0,
-  name: "Home",
+  name: 'Home',
   data() {
     return {
       loading: false,
-      targetTodo: "",
+      targetTodo: '',
       updateDialog: false,
       dialog: false,
       isLoggedIn: this.isLogged(),
       showModal: false,
       todos: [],
-      newTodo: "",
+      newTodo: '',
       editedTodo: null,
-      visibility: "all",
-      drag: false
+      visibility: 'all',
+      drag: false,
     };
   },
   components: {
     LoginModal,
-    draggable
+    draggable,
   },
 
   computed: {
@@ -221,12 +222,12 @@ export default {
       return (filters.completed(this.todos).length / this.todos.length) * 100;
     },
     filteredTodos: {
-      get: function(){
+      get() {
         return filters[this.visibility](this.todos);
       },
-      set: function() {
+      set() {
         console.log(this.filteredTodos);
-      }
+      },
     },
     remaining() {
       return filters.active(this.todos).length;
@@ -239,34 +240,34 @@ export default {
         return this.remaining === 0;
       },
       set(value) {
-        this.todos.forEach(todo => {
+        this.todos.forEach((todo) => {
           todo.isCompleted = value;
         });
-      }
-    }
+      },
+    },
   },
 
   filters: {
     pluralize(n) {
-      return n === 1 ? "todo" : "todods";
-    }
+      return n === 1 ? 'todo' : 'todods';
+    },
   },
 
   methods: {
-     checkMove: function(e) {
+    checkMove(e) {
       window.console.log(e.draggedContext);
     },
     onHashChange() {
-      const visibility = window.location.hash.replace(/#\/?/, "");
+      const visibility = window.location.hash.replace(/#\/?/, '');
       if (filters[visibility]) {
         this.visibility = visibility;
       } else {
-        window.location.hash = "";
-        this.visibility = "all";
+        window.location.hash = '';
+        this.visibility = 'all';
       }
     },
     accessToken() {
-      return "Bearer " + localStorage.token;
+      return `Bearer ${localStorage.token}`;
     },
     isLogged() {
       if (localStorage.token) {
@@ -276,14 +277,14 @@ export default {
     },
     fetchTodo() {
       return fetch(`${this.$BASE_URL}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json",  Authorization: this.accessToken()},
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: this.accessToken() },
         body: JSON.stringify({
-          query: "{ todoList { totalCount data { title _id isCompleted user {email}} } }"
-        })
+          query: '{ todoList { totalCount data { title _id isCompleted user {email}} } }',
+        }),
       })
         .then(res => res.json())
-        .then(data => {
+        .then((data) => {
           this.todos = data.data.todoList.data;
         });
     },
@@ -305,16 +306,16 @@ export default {
       }
       `;
       return fetch(`${this.$BASE_URL}`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/graphql",
-          Authorization: this.accessToken()
+          'Content-Type': 'application/graphql',
+          Authorization: this.accessToken(),
         },
-        body: query
+        body: query,
       })
         .then(res => res.json())
-        .then(data => {
-          this.newTodo = "";
+        .then((data) => {
+          this.newTodo = '';
           this.loading = false;
           return this.fetchTodo();
         });
@@ -330,19 +331,19 @@ export default {
       }
       `;
       return fetch(`${this.$BASE_URL}`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/graphql",
-          Authorization: this.accessToken()
+          'Content-Type': 'application/graphql',
+          Authorization: this.accessToken(),
         },
-        body: query
+        body: query,
       })
         .then(res => res.json())
-        .then(data => {
-          this.newTodo = "";
+        .then((data) => {
+          this.newTodo = '';
           this.fetchTodo();
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -375,19 +376,19 @@ export default {
       }
       `;
       return fetch(`${this.$BASE_URL}`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/graphql",
-          Authorization: this.accessToken()
+          'Content-Type': 'application/graphql',
+          Authorization: this.accessToken(),
         },
-        body: query
+        body: query,
       })
         .then(res => res.json())
-        .then(data => {
-          this.newTodo = "";
+        .then((data) => {
+          this.newTodo = '';
           this.fetchTodo();
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -399,26 +400,26 @@ export default {
 
     removeCompleted() {
       this.completedTodos = filters.completed(this.todos);
-      this.completedTodos.forEach(todo => {
+      this.completedTodos.forEach((todo) => {
         this.removeTodo(todo);
       });
       this.todos = filters.active(this.todos);
-    }
+    },
   },
 
   directives: {
-    "todo-focus": function(el, binding) {
+    'todo-focus': function (el, binding) {
       if (binding.value) {
         el.focus();
       }
-    }
+    },
   },
   created() {
     if (this.isLoggedIn) {
       this.fetchTodo();
     }
-    window.addEventListener("hashchange", this.onHashChange);
+    window.addEventListener('hashchange', this.onHashChange);
     this.onHashChange();
-  }
+  },
 };
 </script>

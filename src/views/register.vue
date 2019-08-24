@@ -1,33 +1,34 @@
 
 <script>
-import { constants } from "crypto";
+import { constants } from 'crypto';
+
 export default {
-  name: "RegisterModal",
+  name: 'RegisterModal',
   data() {
     return {
       title: this.$APP_TITLE,
       dialog: true,
-      err: "",
+      err: '',
       isSubmit: false,
       user: {
-        email: "",
-        password: ""
-      }
+        email: '',
+        password: '',
+      },
     };
   },
   methods: {
     close() {
-      this.$emit("close");
+      this.$emit('close');
     },
     showForgot(value) {
-      this.$emit("loginSwapEvent", value);
+      this.$emit('loginSwapEvent', value);
     },
     handleSubmit() {
-      this.err = "";
+      this.err = '';
       this.isSubmit = true;
       const postData = {
         email: this.user.email,
-        password: this.user.password
+        password: this.user.password,
       };
       const query = `
       mutation {
@@ -38,30 +39,30 @@ export default {
       }
       `;
       return fetch(`${this.$BASE_URL}`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/graphql"
+          'Content-Type': 'application/graphql',
         },
-        body: query
+        body: query,
       })
-        .then(response => {
+        .then((response) => {
           if (!response.ok) {
             throw new Error(response.statusText);
           }
           return response.json();
         })
-        .then(response => {
+        .then((response) => {
           const { hashToken, message } = response.data.register;
           this.$toast.success(message);
           this.$router.push(`/verify-email/${hashToken}`);
         })
-        .catch(err => {
+        .catch((err) => {
           this.isSubmit = false;
           this.err = err;
           this.$toast.error(err);
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <template>

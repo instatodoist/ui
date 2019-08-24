@@ -133,12 +133,12 @@
     </section>
   </v-content>
 </template>
- <script>
+<script>
 export default {
   data() {
     return {
-      title: this.$APP_TITLE
+      title: this.$APP_TITLE,
     };
-  }
+  },
 };
 </script>

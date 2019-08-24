@@ -1,13 +1,14 @@
 import Vue from 'vue';
-import VuetifyToast from 'vuetify-toast-snackbar'
+import VuetifyToast from 'vuetify-toast-snackbar';
 import App from './App.vue';
 import router from './router';
-import store from './store';
+import { apolloProvider } from './plugins/apollo';
+// import store from './store';
 import './registerServiceWorker';
 import vuetify from './plugins/vuetify';
-import '@babel/polyfill'
-import 'roboto-fontface/css/roboto/roboto-fontface.css'
-import '@mdi/font/css/materialdesignicons.css'
+import '@babel/polyfill';
+import 'roboto-fontface/css/roboto/roboto-fontface.css';
+import '@mdi/font/css/materialdesignicons.css';
 import Default from './layouts/default.vue';
 import LoginLayout from './layouts/login.vue';
 
@@ -23,7 +24,7 @@ Vue.use(VuetifyToast, {
   icon: 'info',
   iconColor: '', // default
   classes: [
-    'body-2'
+    'body-2',
   ],
   timeout: 3000, // default
   dismissable: true, // default
@@ -35,15 +36,15 @@ Vue.use(VuetifyToast, {
   closeColor: '', // default
   shorts: {
     custom: {
-      color: 'purple'
-    }
+      color: 'purple',
+    },
   },
-  property: '$toast' // default
-})
+  property: '$toast', // default
+});
 
 new Vue({
   router,
-  store,
+  apolloProvider,
   vuetify,
-  render: h => h(App)
+  render: h => h(App),
 }).$mount('#app');

@@ -17,11 +17,11 @@
 
 <script>
 export default {
-  name: "AppFooter",
+  name: 'AppFooter',
   data() {
     return {
-      title: this.$APP_TITLE
-    }
-  }
+      title: this.$APP_TITLE,
+    };
+  },
 };
 </script>

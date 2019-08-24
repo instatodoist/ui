@@ -6,12 +6,12 @@
 </template>
 
 <script>
-import AppFooter from "../components/layouts/AppFooter.vue";
+import AppFooter from '../components/layouts/AppFooter.vue';
 
 export default {
-  name: "LoginLayout",
+  name: 'LoginLayout',
   components: {
-    AppFooter
-  }
+    AppFooter,
+  },
 };
 </script>
