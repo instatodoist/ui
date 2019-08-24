@@ -9,6 +9,18 @@ export const REGISTER_MUTATION = gql`
   }
 `;
 
+export const LOGIN_QUERY = gql`
+    query login( $input: UserLoginInputType!) {
+      login(input: $input){
+        token
+        user {
+          email
+        }
+    }
+  }
+`;
+
 export default {
   REGISTER_MUTATION,
+  LOGIN_QUERY,
 };

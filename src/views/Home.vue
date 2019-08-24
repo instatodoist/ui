@@ -177,6 +177,7 @@
 
 
 <script>
+import { TODO_LIST_QUERY } from '../gql/todo.gql';
 // visibility filters
 import draggable from 'vuedraggable';
 import { constants } from 'crypto';
@@ -276,17 +277,27 @@ export default {
       return false;
     },
     fetchTodo() {
-      return fetch(`${this.$BASE_URL}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: this.accessToken() },
-        body: JSON.stringify({
-          query: '{ todoList { totalCount data { title _id isCompleted user {email}} } }',
-        }),
+      return this.$apollo.query({
+        query: TODO_LIST_QUERY,
       })
-        .then(res => res.json())
-        .then((data) => {
-          this.todos = data.data.todoList.data;
-        });
+      .then((response) => {
+          //console.log();
+          this.todos = response.data.todoList.data;
+      })
+      .catch((err) => {
+        this.$toast.error(err);
+      });
+      // return fetch(`${this.$BASE_URL}`, {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json', Authorization: this.accessToken() },
+      //   body: JSON.stringify({
+      //     query: '{ todoList { totalCount data { title _id isCompleted user {email}} } }',
+      //   }),
+      // })
+      //   .then(res => res.json())
+      //   .then((data) => {
+      //     this.todos = data.data.todoList.data;
+      //   });
     },
     addTodo() {
       // if (!this.isLoggedIn) {
