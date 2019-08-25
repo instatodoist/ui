@@ -1,99 +1,105 @@
 <template>
-<v-row align="center" justify="center">
-  <v-layout row justify-center align-center>
-    <v-flex>
-      <LoginModal v-if="!isLoggedIn" />
-      <v-card class="d-flex pa-5">
-        <v-row align="center" justify="center">
-          <div class="text-center">
-            <v-btn href="#/all" class="ma-2" :color="visibility == 'all'? 'primary': 'success'">
-              All Todods
-              ( {{todos.length}} )
-            </v-btn>
-            <v-btn
-              href="#/active"
-              class="ma-2"
-              :color="visibility == 'active'? 'primary': 'success'"
-            >
-              Active Todods
-              ( {{remaining}} )
-            </v-btn>
-            <v-btn
-              href="#/completed"
-              class="ma-2"
-              :color="visibility == 'completed'? 'primary': 'success'"
-            >Completed Todos ( {{completedTodosCount}} )</v-btn>
-            <!-- <v-btn
+  <v-row align="center" justify="center">
+    <v-layout row justify-center align-center>
+      <v-flex>
+        <LoginModal v-if="!isLoggedIn" />
+        <v-card class="d-flex pa-5">
+          <v-row align="center" justify="center">
+            <div class="text-center">
+              <v-btn href="#/all" class="ma-1 subtitle-2" :color="visibility == 'all'? 'primary': 'success'">
+                All Todods
+                ( {{todos.length}} )
+              </v-btn>
+              <v-btn
+                href="#/active"
+                class="ma-2"
+                :color="visibility == 'active'? 'primary': 'success'"
+              >
+                Active Todods
+                ( {{remaining}} )
+              </v-btn>
+              <v-btn
+                href="#/completed"
+                class="ma-2"
+                :color="visibility == 'completed'? 'primary': 'success'"
+              >Completed Todos ( {{completedTodosCount}} )</v-btn>
+              <!-- <v-btn
               @click="removeCompleted"
               class="ma-2"
               v-show="todos.length > remaining"
-            >Clear Completed Todos</v-btn> -->
-            <v-progress-circular
-              v-if="completedTodosCount > 0"
-              :value="progress"
-              class="mr-2"
-              style="width:70px;height:70px;"
-            ></v-progress-circular>
-          </div>
-        </v-row>
-        <!-- <v-row align="center" justify="center">
+              >Clear Completed Todos</v-btn>-->
+              <v-progress-circular
+                v-if="completedTodosCount > 0"
+                :value="progress"
+                class="mr-2"
+                style="width:70px;height:70px;"
+              ></v-progress-circular>
+            </div>
+          </v-row>
+          <!-- <v-row align="center" justify="center">
 
-        </v-row>-->
-      </v-card>
-      <v-card class="d-flex pa-1">
-        <v-row align="center" justify="center">
-          <div class="text-center">
-            <v-col>
-              <v-text-field
-                outlined
-                clearable
-                type="text"
-                autofocus
-                autocomplete="off"
-                placeholder="What needs to be done?"
-                v-model="newTodo"
-                @keyup.enter="addTodo"
+          </v-row>-->
+        </v-card>
+        <v-card class="d-flex pa-1">
+          <v-row align="center" justify="center">
+            <div class="text-center">
+              <v-col>
+                <v-text-field
+                  outlined
+                  clearable
+                  type="text"
+                  autofocus
+                  autocomplete="off"
+                  placeholder="What needs to be done?"
+                  v-model="newTodo"
+                  @keyup.enter="addTodo"
+                >
+                  <template v-slot:append>
+                    <v-fade-transition leave-absolute>
+                      <v-progress-circular v-if="loading" size="24" color="info" indeterminate></v-progress-circular>
+                      <v-icon>note_add</v-icon>
+                    </v-fade-transition>
+                  </template>
+                </v-text-field>
+              </v-col>
+            </div>
+          </v-row>
+        </v-card>
+        <v-card class="d-flex pa-12">
+          <v-row justify="space-around">
+            <v-list subheader style="width: 100% !important">
+              <draggable
+                v-model="filteredTodos"
+                group="todos"
+                @start="drag=true"
+                @end="drag=false"
+                :move="checkMove"
               >
-                <template v-slot:append>
-                  <v-fade-transition leave-absolute>
-                    <v-progress-circular v-if="loading" size="24" color="info" indeterminate></v-progress-circular>
-                    <v-icon>note_add</v-icon>
-                  </v-fade-transition>
-                </template>
-              </v-text-field>
-            </v-col>
-          </div>
-        </v-row>
-      </v-card>
-      <v-card class="d-flex pa-12">
-        <v-row justify="space-around">
-          <v-list subheader style="width: 100% !important">
-            <draggable v-model="filteredTodos" group="todos" @start="drag=true" @end="drag=false" :move="checkMove">
-              <v-list-item v-for="todo in filteredTodos" :key="todo._id">
-                <v-list-item-avatar>
-                  <v-checkbox v-model="todo.isCompleted" @change="updateTodo(todo, true)"></v-checkbox>
-                </v-list-item-avatar>
+                <v-list-item v-for="todo in filteredTodos" :key="todo._id">
+                  <v-list-item-avatar>
+                    <v-checkbox v-model="todo.isCompleted" @change="updateTodo(todo, true)"></v-checkbox>
+                  </v-list-item-avatar>
 
-                <v-list-item-content>
-                  <v-list-item-title v-bind:class="{'strike-through': todo.isCompleted}" v-text="todo.title"></v-list-item-title>
-                </v-list-item-content>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      class="body-2"
+                      v-bind:class="{'strike-through': todo.isCompleted}"
+                      v-text="todo.title"
+                    ></v-list-item-title>
+                  </v-list-item-content>
 
-                <v-list-item-icon>
-                  <v-btn
-                    color="primary"
-                    depressed
-                    @click="editTodo(todo); updateDialog = true;"
-                  >
-                    <v-icon>create</v-icon>
-                  </v-btn>&nbsp;&nbsp;
-                  <v-btn color="primary" depressed @click.stop="dialog = true; targetTodo = todo">
-                    <v-icon>delete_forever</v-icon>
-                  </v-btn>
-                </v-list-item-icon>
-              </v-list-item>
-            </draggable>
-          </v-list>
-          <!-- <v-simple-table style="width:100%;" fixed-header>
+                  <v-list-item-icon>
+                    <v-btn color="primary" depressed @click="editTodo(todo); updateDialog = true;">
+                      <v-icon>create</v-icon>
+                    </v-btn>&nbsp;&nbsp;
+                    <v-btn color="primary" depressed @click.stop="dialog = true; targetTodo = todo">
+                      <v-icon>delete_forever</v-icon>
+                    </v-btn>
+                  </v-list-item-icon>
+                </v-list-item>
+              </draggable>
+            </v-list>
+            <!-- <v-simple-table style="width:100%;" fixed-header>
             <tbody>
               <tr v-for="todo in filteredTodos" :key="todo._id">
                 <td>
@@ -119,7 +125,7 @@
                 </td>
               </tr>
             </tbody>
-            </v-simple-table> -->
+            </v-simple-table>-->
             <v-dialog v-if="updateDialog" v-model="updateDialog" persistent max-width="600px">
               <v-card>
                 <v-card-title>
@@ -163,10 +169,10 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-        </v-row>
-      </v-card>
-    </v-flex>
-  </v-layout>
+          </v-row>
+        </v-card>
+      </v-flex>
+    </v-layout>
   </v-row>
 </template>
 <style scoped>
@@ -177,11 +183,16 @@
 
 
 <script>
-import { TODO_LIST_QUERY } from '../gql/todo.gql';
+import {
+  TODO_LIST_QUERY,
+  TODO_ADD_MUTATION,
+  TODO_UPDATE_MUTATION,
+  TODO_DELETE_MUTATION
+} from "../gql/todo.gql";
 // visibility filters
-import draggable from 'vuedraggable';
-import { constants } from 'crypto';
-import LoginModal from './login.vue';
+import draggable from "vuedraggable";
+import { constants } from "crypto";
+import LoginModal from "./login.vue";
 
 const filters = {
   all(todos) {
@@ -192,30 +203,30 @@ const filters = {
   },
   completed(todos) {
     return todos.filter(todo => todo.isCompleted);
-  },
+  }
 };
 
 export default {
   order: 0,
-  name: 'Home',
+  name: "Home",
   data() {
     return {
       loading: false,
-      targetTodo: '',
+      targetTodo: "",
       updateDialog: false,
       dialog: false,
       isLoggedIn: this.isLogged(),
       showModal: false,
       todos: [],
-      newTodo: '',
+      newTodo: "",
       editedTodo: null,
-      visibility: 'all',
-      drag: false,
+      visibility: "all",
+      drag: false
     };
   },
   components: {
     LoginModal,
-    draggable,
+    draggable
   },
 
   computed: {
@@ -228,7 +239,7 @@ export default {
       },
       set() {
         console.log(this.filteredTodos);
-      },
+      }
     },
     remaining() {
       return filters.active(this.todos).length;
@@ -241,17 +252,17 @@ export default {
         return this.remaining === 0;
       },
       set(value) {
-        this.todos.forEach((todo) => {
+        this.todos.forEach(todo => {
           todo.isCompleted = value;
         });
-      },
-    },
+      }
+    }
   },
 
   filters: {
     pluralize(n) {
-      return n === 1 ? 'todo' : 'todods';
-    },
+      return n === 1 ? "todo" : "todods";
+    }
   },
 
   methods: {
@@ -259,16 +270,13 @@ export default {
       window.console.log(e.draggedContext);
     },
     onHashChange() {
-      const visibility = window.location.hash.replace(/#\/?/, '');
+      const visibility = window.location.hash.replace(/#\/?/, "");
       if (filters[visibility]) {
         this.visibility = visibility;
       } else {
-        window.location.hash = '';
-        this.visibility = 'all';
+        window.location.hash = "";
+        this.visibility = "all";
       }
-    },
-    accessToken() {
-      return `Bearer ${localStorage.token}`;
     },
     isLogged() {
       if (localStorage.token) {
@@ -277,27 +285,17 @@ export default {
       return false;
     },
     fetchTodo() {
-      return this.$apollo.query({
-        query: TODO_LIST_QUERY,
-      })
-      .then((response) => {
-          //console.log();
+      return this.$apollo
+        .query({
+          query: TODO_LIST_QUERY,
+          variables: {
+            first: 50,
+            offset: 1
+          }
+        })
+        .then(response => {
           this.todos = response.data.todoList.data;
-      })
-      .catch((err) => {
-        this.$toast.error(err);
-      });
-      // return fetch(`${this.$BASE_URL}`, {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json', Authorization: this.accessToken() },
-      //   body: JSON.stringify({
-      //     query: '{ todoList { totalCount data { title _id isCompleted user {email}} } }',
-      //   }),
-      // })
-      //   .then(res => res.json())
-      //   .then((data) => {
-      //     this.todos = data.data.todoList.data;
-      //   });
+        });
     },
     addTodo() {
       // if (!this.isLoggedIn) {
@@ -309,52 +307,45 @@ export default {
         return;
       }
       this.loading = true;
-      const query = `
-      mutation {
-        addTodo(input: {title: "${value}"}) {
-          message
-        }
-      }
-      `;
-      return fetch(`${this.$BASE_URL}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/graphql',
-          Authorization: this.accessToken(),
-        },
-        body: query,
-      })
-        .then(res => res.json())
-        .then((data) => {
-          this.newTodo = '';
+      const postBody = {
+        title: value
+      };
+      return this.$apollo
+        .mutate({
+          mutation: TODO_ADD_MUTATION,
+          variables: {
+            input: postBody
+          },
+          refetchQueries: [
+            {
+              query: TODO_LIST_QUERY
+            }
+          ]
+        })
+        .then(data => {
+          this.newTodo = "";
           this.loading = false;
-          return this.fetchTodo();
         });
     },
 
     removeTodo(todo) {
       const todoId = todo._id;
-      const query = `
-      mutation {
-        deleteTodo(id: "${todoId}") {
-          message
-        }
-      }
-      `;
-      return fetch(`${this.$BASE_URL}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/graphql',
-          Authorization: this.accessToken(),
-        },
-        body: query,
-      })
-        .then(res => res.json())
-        .then((data) => {
-          this.newTodo = '';
-          this.fetchTodo();
+       return this.$apollo
+        .mutate({
+          mutation: TODO_DELETE_MUTATION,
+          variables: {
+            id: todoId
+          },
+          refetchQueries: [
+            {
+              query: TODO_LIST_QUERY
+            }
+          ]
         })
-        .catch((err) => {
+        .then(data => {
+          this.newTodo = "";
+        })
+        .catch(err => {
           console.log(err);
         });
     },
@@ -379,27 +370,27 @@ export default {
     updateTodo(todo) {
       const todoId = todo._id;
       const isCompleted = !!todo.isCompleted;
-      const query = `
-      mutation {
-        updateTodo(id: "${todoId}", input: {title: "${todo.title}", isCompleted: ${isCompleted} }) {
-          message
-        }
-      }
-      `;
-      return fetch(`${this.$BASE_URL}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/graphql',
-          Authorization: this.accessToken(),
-        },
-        body: query,
-      })
-        .then(res => res.json())
-        .then((data) => {
-          this.newTodo = '';
-          this.fetchTodo();
+      const postBody = {
+        title: todo.title,
+        isCompleted
+      };
+      return this.$apollo
+        .mutate({
+          mutation: TODO_UPDATE_MUTATION,
+          variables: {
+            id: todoId,
+            input: postBody
+          },
+          refetchQueries: [
+            {
+              query: TODO_LIST_QUERY
+            }
+          ]
         })
-        .catch((err) => {
+        .then(data => {
+          this.newTodo = "";
+        })
+        .catch(err => {
           console.log(err);
         });
     },
@@ -411,26 +402,26 @@ export default {
 
     removeCompleted() {
       this.completedTodos = filters.completed(this.todos);
-      this.completedTodos.forEach((todo) => {
+      this.completedTodos.forEach(todo => {
         this.removeTodo(todo);
       });
       this.todos = filters.active(this.todos);
-    },
+    }
   },
 
   directives: {
-    'todo-focus': function (el, binding) {
+    "todo-focus": function(el, binding) {
       if (binding.value) {
         el.focus();
       }
-    },
+    }
   },
   created() {
     if (this.isLoggedIn) {
       this.fetchTodo();
     }
-    window.addEventListener('hashchange', this.onHashChange);
+    window.addEventListener("hashchange", this.onHashChange);
     this.onHashChange();
-  },
+  }
 };
 </script>
