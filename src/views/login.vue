@@ -1,53 +1,53 @@
 
 <script>
-import { LOGIN_QUERY } from '../gql/auth.gql';
+import { LOGIN_QUERY } from "../gql/auth.gql";
+// import errorhandler from '../services/errorHandler';
 export default {
-  name: 'LoginModal',
+  name: "LoginModal",
   data() {
     return {
       title: this.$APP_TITLE,
       dialog: true,
-      err: '',
+      err: "",
       isSubmit: false,
       user: {
-        email: '',
-        password: '',
-      },
+        email: "",
+        password: ""
+      }
     };
   },
   methods: {
     close() {
-      this.$emit('close');
+      this.$emit("close");
     },
     showForgot(value) {
-      this.$emit('loginSwapEvent', value);
+      this.$emit("loginSwapEvent", value);
     },
     handleSubmit() {
-      this.err = '';
+      this.err = "";
       this.isSubmit = true;
       const postData = {
         email: this.user.email,
-        password: this.user.password,
+        password: this.user.password
       };
-     
-      return this.$apollo.query({
-        query: LOGIN_QUERY,
-        variables: {
+
+      return this.$apollo
+        .query({
+          query: LOGIN_QUERY,
+          variables: {
             input: postData
-        }
-      })
-      .then((response) => {
+          }
+        })
+        .then(response => {
           const { token, user, message } = response.data.login;
-          localStorage.setItem('token', token);
-          localStorage.setItem('user', JSON.stringify(user));
+          localStorage.setItem("token", token);
+          localStorage.setItem("user", JSON.stringify(user));
           this.isSubmit = false;
-          this.$router.push(this.$route.query.redirect || '/dashboard');
-      })
-      .catch((err) => {
-        this.isSubmit = false;
-        this.err = err;
-        this.$toast.error(err);
-      });
+          this.$router.push(this.$route.query.redirect || "/dashboard");
+        })
+        .catch(err => {
+          this.isSubmit = false;
+        });
 
       // return fetch(`${this.$BASE_URL}`, {
       //   method: 'POST',
@@ -77,8 +77,8 @@ export default {
       //     this.err = err;
       //     this.$toast.error(err);
       //   });
-    },
-  },
+    }
+  }
 };
 </script>
 <template>

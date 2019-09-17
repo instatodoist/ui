@@ -34,7 +34,7 @@
               </v-list-item-content>
             </v-list-item>
           </v-list-group>
-          <v-list-item v-else :key="item.text" @click>
+          <v-list-item v-else :key="item.text" :to="item.link? item.link: '/'">
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
@@ -67,10 +67,10 @@
         <v-icon>notifications</v-icon>
       </v-btn>
       <v-btn icon large>
-         <v-icon @click="logout()" title="Log Out">logout</v-icon>
+        <v-icon @click="logout()" title="Log Out">logout</v-icon>
         <!-- <v-avatar size="32px" item>
           <v-img src="https://cdn.vuetifyjs.com/images/logos/logo.svg" alt="Vuetify"></v-img>
-        </v-avatar> -->
+        </v-avatar>-->
       </v-btn>
     </v-app-bar>
     <v-content>
@@ -123,59 +123,59 @@
 </template>
 
 <script>
-import localStorageService from '../services/localStorage';
-import AppFooter from '../components/layouts/AppFooter.vue';
-import AppHeader from '../components/layouts/AppHeader.vue';
+import localStorageService from "../services/localStorage";
+import AppFooter from "../components/layouts/AppFooter.vue";
+import AppHeader from "../components/layouts/AppHeader.vue";
 
 export default {
-  name: 'DefaultLayout',
+  name: "DefaultLayout",
   components: {
     AppFooter,
-    AppHeader,
+    AppHeader
   },
   data: () => ({
     dialog: false,
     drawer: null,
     items: [
-      { icon: 'contacts', text: 'Contacts' },
-      { icon: 'history', text: 'Frequently contacted' },
-      { icon: 'content_copy', text: 'Duplicates' },
+      { icon: "contacts", text: "My Day", link: "/" },
+      // { icon: "history", text: "Frequently contacted" },
+      // { icon: "content_copy", text: "Duplicates" },
       {
-        icon: 'keyboard_arrow_up',
-        'icon-alt': 'keyboard_arrow_down',
-        text: 'Labels',
+        icon: "keyboard_arrow_up",
+        "icon-alt": "keyboard_arrow_down",
+        text: "Labels",
         model: true,
-        children: [{ icon: 'add', text: 'Create label' }],
+        children: [{ icon: "add", text: "Create label" }]
       },
-      {
-        icon: 'keyboard_arrow_up',
-        'icon-alt': 'keyboard_arrow_down',
-        text: 'More',
-        model: false,
-        children: [
-          { text: 'Import' },
-          { text: 'Export' },
-          { text: 'Print' },
-          { text: 'Undo changes' },
-          { text: 'Other contacts' },
-        ],
-      },
-      { icon: 'settings', text: 'Settings' },
-      { icon: 'chat_bubble', text: 'Send feedback' },
-      { icon: 'help', text: 'Help' },
-      { icon: 'phonelink', text: 'App downloads' },
-      { icon: 'keyboard', text: 'Go to the old version' },
-    ],
+      // {
+      //   icon: "keyboard_arrow_up",
+      //   "icon-alt": "keyboard_arrow_down",
+      //   text: "More",
+      //   model: false,
+      //   children: [
+      //     { text: "Import" },
+      //     { text: "Export" },
+      //     { text: "Print" },
+      //     { text: "Undo changes" },
+      //     { text: "Other contacts" }
+      //   ]
+      // },
+      { icon: "settings", text: "Settings" },
+      // { icon: "chat_bubble", text: "Send feedback" },
+      // { icon: "help", text: "Help" },
+      // { icon: "phonelink", text: "App downloads" },
+      // { icon: "keyboard", text: "Go to the old version" }
+    ]
   }),
   methods: {
     logout() {
       return localStorageService.destroySession().then(() => {
-        this.$router.push('/login');
+        this.$router.push("/login");
       });
-    },
+    }
   },
   created() {
     this.title = this.$APP_TITLE;
-  },
+  }
 };
 </script>
