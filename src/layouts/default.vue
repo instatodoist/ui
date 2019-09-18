@@ -11,13 +11,14 @@
 </template>
 
 <script>
-import AppFooter from "../components/layouts/AppFooter.vue";
-import AppHeader from "../components/layouts/AppHeader.vue";
+import AppFooter from '../components/layouts/AppFooter.vue';
+import AppHeader from '../components/layouts/AppHeader.vue';
+
 export default {
-  name: "DefaultLayout",
+  name: 'DefaultLayout',
   components: {
     AppFooter,
-    AppHeader
-  }
+    AppHeader,
+  },
 };
 </script>

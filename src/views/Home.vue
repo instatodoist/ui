@@ -26,7 +26,7 @@
               @click="removeCompleted"
               class="ma-2"
               v-show="todos.length > remaining"
-            >Clear Completed Todos</v-btn> -->
+            >Clear Completed Todos</v-btn>-->
             <v-progress-circular
               v-if="completedTodosCount > 0"
               :value="progress"
@@ -36,7 +36,7 @@
           </div>
         </v-row>
         <!-- <v-row align="center" justify="center">
-            
+
         </v-row>-->
       </v-card>
       <v-card class="d-flex pa-1">
@@ -66,23 +66,65 @@
       </v-card>
       <v-card class="d-flex pa-12">
         <v-row justify="space-around">
+          <v-card-title v-if="pendingTodos.length">
+            <v-btn color="blue-grey" class="ma-2 white--text">Pending ({{pendingTodos.length}})</v-btn>
+          </v-card-title>
+          <v-list subheader style="width: 100% !important" v-if="pendingTodos.length">
+            <draggable
+              v-model="pendingTodos"
+              group="todos"
+              @start="drag=true"
+              @end="drag=false"
+              :move="checkMove"
+            >
+              <v-list-item v-for="todo in pendingTodos" :key="todo._id">
+                <v-list-item-avatar>
+                  <v-checkbox v-model="todo.isCompleted" @change="updateTodo(todo, true)"></v-checkbox>
+                </v-list-item-avatar>
+
+                <v-list-item-content>
+                  <v-list-item-title
+                    v-bind:class="{'strike-through': todo.isCompleted}"
+                    v-text="todo.title"
+                  ></v-list-item-title>
+                </v-list-item-content>
+
+                <v-list-item-icon>
+                  <v-btn color="primary" depressed @click="editTodo(todo); updateDialog = true;">
+                    <v-icon>create</v-icon>
+                  </v-btn>&nbsp;&nbsp;
+                  <v-btn color="primary" depressed @click.stop="dialog = true; targetTodo = todo">
+                    <v-icon>delete_forever</v-icon>
+                  </v-btn>
+                </v-list-item-icon>
+              </v-list-item>
+            </draggable>
+          </v-list>
+          <v-card-title>
+            <v-btn color="success" class="ma-2 white--text">Today ({{filteredTodos.length}})</v-btn>
+          </v-card-title>
           <v-list subheader style="width: 100% !important">
-            <draggable v-model="filteredTodos" group="todos" @start="drag=true" @end="drag=false" :move="checkMove">
+            <draggable
+              v-model="filteredTodos"
+              group="todos"
+              @start="drag=true"
+              @end="drag=false"
+              :move="checkMove"
+            >
               <v-list-item v-for="todo in filteredTodos" :key="todo._id">
                 <v-list-item-avatar>
                   <v-checkbox v-model="todo.isCompleted" @change="updateTodo(todo, true)"></v-checkbox>
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                  <v-list-item-title v-bind:class="{'strike-through': todo.isCompleted}" v-text="todo.title"></v-list-item-title>
+                  <v-list-item-title
+                    v-bind:class="{'strike-through': todo.isCompleted}"
+                    v-text="todo.title"
+                  ></v-list-item-title>
                 </v-list-item-content>
 
                 <v-list-item-icon>
-                  <v-btn
-                    color="primary"
-                    depressed
-                    @click="editTodo(todo); updateDialog = true;"
-                  >
+                  <v-btn color="primary" depressed @click="editTodo(todo); updateDialog = true;">
                     <v-icon>create</v-icon>
                   </v-btn>&nbsp;&nbsp;
                   <v-btn color="primary" depressed @click.stop="dialog = true; targetTodo = todo">
@@ -118,50 +160,50 @@
                 </td>
               </tr>
             </tbody>
-            </v-simple-table> -->
-            <v-dialog v-if="updateDialog" v-model="updateDialog" persistent max-width="600px">
-              <v-card>
-                <v-card-title>
-                  <span class="headline">Update Todo</span>
-                </v-card-title>
-                <v-card-text>
-                  <v-container>
-                    <v-row>
-                      <v-col cols="12">
-                        <v-text-field v-model="editedTodo.title" label="Todo*" required></v-text-field>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                  <small>*indicates required field</small>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="updateDialog = false">Close</v-btn>
-                  <v-btn
-                    color="blue darken-1"
-                    text
-                    @click="doneEdit(editedTodo); updateDialog = false;"
-                  >Save</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-            <v-dialog v-model="dialog" max-width="290">
-              <v-card>
-                <v-card-title class="headline">Do you want to Delete?</v-card-title>
+          </v-simple-table>-->
+          <v-dialog v-if="updateDialog" v-model="updateDialog" persistent max-width="600px">
+            <v-card>
+              <v-card-title>
+                <span class="headline">Update Todo</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12">
+                      <v-text-field v-model="editedTodo.title" label="Todo*" required></v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-container>
+                <small>*indicates required field</small>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="updateDialog = false">Close</v-btn>
+                <v-btn
+                  color="blue darken-1"
+                  text
+                  @click="doneEdit(editedTodo); updateDialog = false;"
+                >Save</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-dialog v-model="dialog" max-width="290">
+            <v-card>
+              <v-card-title class="headline">Do you want to Delete?</v-card-title>
 
-                <v-card-actions>
-                  <v-spacer></v-spacer>
+              <v-card-actions>
+                <v-spacer></v-spacer>
 
-                  <v-btn color="green darken-1" text @click="dialog = false">Disagree</v-btn>
+                <v-btn color="green darken-1" text @click="dialog = false">Disagree</v-btn>
 
-                  <v-btn
-                    color="green darken-1"
-                    text
-                    @click="removeTodo(targetTodo);dialog = false"
-                  >Agree</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
+                <v-btn
+                  color="green darken-1"
+                  text
+                  @click="removeTodo(targetTodo);dialog = false"
+                >Agree</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-row>
       </v-card>
     </v-flex>
@@ -176,55 +218,85 @@
 
 <script>
 // visibility filters
+import draggable from 'vuedraggable';
+import { constants } from 'crypto';
+import LoginModal from './login.vue';
+
 const filters = {
   all(todos) {
-    return todos;
+    // return todos;
+    return todos.filter((todo) => {
+      const today = new Date();
+      const createdAt = new Date(todo.createdAt);
+      const dayCreatedDate = createdAt.getDay();
+      const monthCreatedDate = createdAt.getMonth();
+      return (
+        dayCreatedDate === today.getDay()
+        && monthCreatedDate === today.getMonth()
+      );
+    });
   },
   active(todos) {
     return todos.filter(todo => !todo.isCompleted);
   },
   completed(todos) {
     return todos.filter(todo => todo.isCompleted);
-  }
+  },
+  pending(todos) {
+    return todos.filter((todo) => {
+      const today = new Date();
+      const createdAt = new Date(todo.createdAt);
+      const dayCreatedDate = createdAt.getDate();
+      const monthCreatedDate = createdAt.getMonth();
+      return (
+        (!todo.isCompleted
+          && dayCreatedDate < today.getDate()
+          && monthCreatedDate === today.getMonth())
+        || (!todo.isCompleted && monthCreatedDate < today.getMonth())
+      );
+    });
+  },
 };
-import draggable from 'vuedraggable'
-import LoginModal from "./login.vue";
-import { constants } from 'crypto';
 
 export default {
   order: 0,
-  name: "Home",
+  name: 'Home',
   data() {
     return {
       loading: false,
-      targetTodo: "",
+      targetTodo: '',
       updateDialog: false,
       dialog: false,
       isLoggedIn: this.isLogged(),
       showModal: false,
       todos: [],
-      newTodo: "",
+      newTodo: '',
       editedTodo: null,
-      visibility: "all",
-      drag: false
+      visibility: 'all',
+      drag: false,
     };
   },
   components: {
     LoginModal,
-    draggable
+    draggable,
   },
 
   computed: {
+    pendingTodos: {
+      get() {
+        return filters.pending(this.todos);
+      },
+    },
     progress() {
       return (filters.completed(this.todos).length / this.todos.length) * 100;
     },
     filteredTodos: {
-      get: function(){
+      get() {
         return filters[this.visibility](this.todos);
       },
-      set: function() {
+      set() {
         console.log(this.filteredTodos);
-      }
+      },
     },
     remaining() {
       return filters.active(this.todos).length;
@@ -237,34 +309,34 @@ export default {
         return this.remaining === 0;
       },
       set(value) {
-        this.todos.forEach(todo => {
+        this.todos.forEach((todo) => {
           todo.isCompleted = value;
         });
-      }
-    }
+      },
+    },
   },
 
   filters: {
     pluralize(n) {
-      return n === 1 ? "todo" : "todods";
-    }
+      return n === 1 ? 'todo' : 'todods';
+    },
   },
 
   methods: {
-     checkMove: function(e) {
+    checkMove(e) {
       window.console.log(e.draggedContext);
     },
     onHashChange() {
-      const visibility = window.location.hash.replace(/#\/?/, "");
+      const visibility = window.location.hash.replace(/#\/?/, '');
       if (filters[visibility]) {
         this.visibility = visibility;
       } else {
-        window.location.hash = "";
-        this.visibility = "all";
+        window.location.hash = '';
+        this.visibility = 'all';
       }
     },
     accessToken() {
-      return "Bearer " + localStorage.token;
+      return `Bearer ${localStorage.token}`;
     },
     isLogged() {
       if (localStorage.token) {
@@ -274,14 +346,18 @@ export default {
     },
     fetchTodo() {
       return fetch(`${this.$BASE_URL}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json",  Authorization: this.accessToken()},
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: this.accessToken(),
+        },
         body: JSON.stringify({
-          query: "{ todoList { totalCount data { title _id isCompleted user {email}} } }"
-        })
+          query:
+            '{ todoList { totalCount data { title _id isCompleted createdAt user {email}} } }',
+        }),
       })
         .then(res => res.json())
-        .then(data => {
+        .then((data) => {
           this.todos = data.data.todoList.data;
         });
     },
@@ -303,16 +379,16 @@ export default {
       }
       `;
       return fetch(`${this.$BASE_URL}`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/graphql",
-          Authorization: this.accessToken()
+          'Content-Type': 'application/graphql',
+          Authorization: this.accessToken(),
         },
-        body: query
+        body: query,
       })
         .then(res => res.json())
-        .then(data => {
-          this.newTodo = "";
+        .then((data) => {
+          this.newTodo = '';
           this.loading = false;
           return this.fetchTodo();
         });
@@ -328,19 +404,19 @@ export default {
       }
       `;
       return fetch(`${this.$BASE_URL}`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/graphql",
-          Authorization: this.accessToken()
+          'Content-Type': 'application/graphql',
+          Authorization: this.accessToken(),
         },
-        body: query
+        body: query,
       })
         .then(res => res.json())
-        .then(data => {
-          this.newTodo = "";
+        .then((data) => {
+          this.newTodo = '';
           this.fetchTodo();
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -373,19 +449,19 @@ export default {
       }
       `;
       return fetch(`${this.$BASE_URL}`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/graphql",
-          Authorization: this.accessToken()
+          'Content-Type': 'application/graphql',
+          Authorization: this.accessToken(),
         },
-        body: query
+        body: query,
       })
         .then(res => res.json())
-        .then(data => {
-          this.newTodo = "";
+        .then((data) => {
+          this.newTodo = '';
           this.fetchTodo();
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -397,26 +473,26 @@ export default {
 
     removeCompleted() {
       this.completedTodos = filters.completed(this.todos);
-      this.completedTodos.forEach(todo => {
+      this.completedTodos.forEach((todo) => {
         this.removeTodo(todo);
       });
       this.todos = filters.active(this.todos);
-    }
+    },
   },
 
   directives: {
-    "todo-focus": function(el, binding) {
+    'todo-focus': function (el, binding) {
       if (binding.value) {
         el.focus();
       }
-    }
+    },
   },
   created() {
     if (this.isLoggedIn) {
       this.fetchTodo();
     }
-    window.addEventListener("hashchange", this.onHashChange);
+    window.addEventListener('hashchange', this.onHashChange);
     this.onHashChange();
-  }
+  },
 };
 </script>

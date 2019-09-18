@@ -39,7 +39,8 @@
   </div>
 </template>
 <script>
-import localStorageService from "../../services/localStorage";
+import localStorageService from '../../services/localStorage';
+
 export default {
   data() {
     return {
@@ -48,23 +49,23 @@ export default {
       fixed: false,
       items: [
         {
-          icon: "mdi-apps",
+          icon: 'mdi-apps',
           title: this.$APP_TITLE,
-          to: "/"
-        }
+          to: '/',
+        },
       ],
       miniVariant: true,
       right: true,
       rightDrawer: false,
-       title: this.$APP_TITLE,
+      title: this.$APP_TITLE,
     };
   },
   methods: {
     logout() {
       return localStorageService.destroySession().then(() => {
-        this.$router.push("/login");
+        this.$router.push('/login');
       });
-    }
-  }
+    },
+  },
 };
 </script>

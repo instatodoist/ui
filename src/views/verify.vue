@@ -1,26 +1,27 @@
 
 <script>
-import { constants } from "crypto";
+import { constants } from 'crypto';
+
 export default {
-  name: "VerifyEmail",
+  name: 'VerifyEmail',
   data() {
     return {
       title: this.$APP_TITLE,
-      err: "",
+      err: '',
       isSubmit: false,
-      hashToken: "",
+      hashToken: '',
       user: {
-        otp: ""
-      }
+        otp: '',
+      },
     };
   },
   methods: {
     handleSubmit() {
-      this.err = "";
+      this.err = '';
       this.isSubmit = true;
       const postData = {
         otp: this.user.otp,
-        hashToken: this.hashToken
+        hashToken: this.hashToken,
       };
       const query = `
       mutation {
@@ -31,33 +32,33 @@ export default {
       }
       `;
       return fetch(`${this.$BASE_URL}`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/graphql"
+          'Content-Type': 'application/graphql',
         },
-        body: query
+        body: query,
       })
-        .then(response => {
+        .then((response) => {
           if (!response.ok) {
             throw new Error(response.statusText);
           }
           return response.json();
         })
-        .then(response => {
+        .then((response) => {
           const { hashToken, message } = response.data.emailVerificationByOtp;
           this.$toast.success(message);
           this.$router.push('/login');
         })
-        .catch(err => {
+        .catch((err) => {
           this.isSubmit = false;
           this.err = err;
           this.$toast.error(err);
         });
-    }
+    },
   },
   created() {
     this.hashToken = this.$route.params.hash;
-  }
+  },
 };
 </script>
 <template>
