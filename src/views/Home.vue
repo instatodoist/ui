@@ -3,8 +3,8 @@
     <v-layout row justify-center align-center>
       <v-flex>
         <v-card class="d-flex pa-12">
-          <div v-if="isLoading">Loading...</div>
-          <v-row justify="space-around" v-if="!isLoading">
+          <div v-if="$apollo.queries.todoList.loading">Loading...</div>
+          <v-row justify="space-around" v-if="!$apollo.queries.todoList.loading">
             <v-list>
               <v-list-item>
                 <v-text-field
@@ -17,12 +17,17 @@
                   v-model="newTodo"
                   @keyup.enter="addTodo"
                 >
-                  <!-- <template v-slot:append>
+                  <template v-slot:append>
                     <v-fade-transition leave-absolute>
-                      <v-progress-circular v-if="loading" size="24" color="info" indeterminate></v-progress-circular>
+                      <v-progress-circular
+                        v-if="$apollo.queries.todoList.loading"
+                        size="24"
+                        color="info"
+                        indeterminate
+                      ></v-progress-circular>
                       <v-icon>note_add</v-icon>
                     </v-fade-transition>
-                  </template> -->
+                  </template>
                 </v-text-field>
               </v-list-item>
             </v-list>
@@ -34,7 +39,7 @@
                 @end="drag=false"
                 :move="checkMove"
               >
-                <v-list-item v-for="todo in todos" :key="todo._id">
+                <v-list-item v-for="todo in todoList.data" :key="todo._id">
                   <v-list-item-avatar>
                     <v-checkbox v-model="todo.isCompleted" @change="updateTodo(todo, true)"></v-checkbox>
                   </v-list-item-avatar>
@@ -46,13 +51,63 @@
                       v-bind:class="{'strike-through': todo.isCompleted}"
                       v-text="todo.title"
                     ></v-list-item-title>
-                    <v-list-item-title></v-list-item-title>
                   </v-list-item-content>
+                  <v-list-item-icon>
+                    <v-btn color="primary" depressed @click="editTodo(todo); updateDialog = true;">
+                      <v-icon>create</v-icon>
+                    </v-btn>&nbsp;&nbsp;
+                    <v-btn color="primary" depressed @click.stop="dialog = true; targetTodo = todo">
+                      <v-icon>delete_forever</v-icon>
+                    </v-btn>
+                  </v-list-item-icon>
                 </v-list-item>
               </draggable>
             </v-list>
           </v-row>
         </v-card>
+        <v-dialog v-if="updateDialog" v-model="updateDialog" persistent max-width="600px">
+          <v-card>
+            <v-card-title>
+              <span class="headline">Update Todo</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field v-model="editedTodo.title" label="Todo*" required></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <small>*indicates required field</small>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="updateDialog = false">Close</v-btn>
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="doneEdit(editedTodo); updateDialog = false;"
+              >Save</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialog" max-width="290">
+          <v-card>
+            <v-card-title class="headline">Do you want to Delete?</v-card-title>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+
+              <v-btn color="green darken-1" text @click="dialog = false">Disagree</v-btn>
+
+              <v-btn
+                color="green darken-1"
+                text
+                @click="removeTodo(targetTodo);dialog = false"
+              >Agree</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-flex>
     </v-layout>
   </v-row>
@@ -72,8 +127,6 @@ import {
   TODO_DELETE_MUTATION
 } from "../gql/todo.gql";
 import draggable from "vuedraggable";
-// import LoginModal from "./login.vue";
-// import { setTimeout } from "timers";
 
 export default {
   order: 0,
@@ -95,19 +148,14 @@ export default {
     };
   },
   apollo: {
-    fetechTodos: {
+    todoList: {
       query: TODO_LIST_QUERY
     }
   },
   components: {
-    // LoginModal,
     draggable
   },
   methods: {
-    // refetch () {
-    //   const data = this.$apollo.queries.fetechTodos.refetch();
-    //   console.log(data);
-    // },
     checkMove(e) {
       window.console.log(e.draggedContext);
     },
@@ -117,18 +165,7 @@ export default {
       }
       return false;
     },
-    // fetchTodo() {
-    //   this.isLoading = true;
-    //   return this.$apollo
-    //     .query({
-    //       query: TODO_LIST_QUERY,
-    //     })
-    //     .then(response => {
-    //       this.isLoading = false;
-    //       this.todos = response.data.todoList.data;
-    //     });
-    // },
-    addTodo() {
+    async addTodo() {
       const value = this.newTodo && this.newTodo.trim();
       if (!value) {
         return;
@@ -137,27 +174,65 @@ export default {
       const postBody = {
         title: value
       };
-      return this.$apollo
-        .mutate({
-          mutation: TODO_ADD_MUTATION,
-          variables: {
-            input: postBody
-          },
-          refetchQueries: [
-            { query: TODO_LIST_QUERY }
-          ]
-        })
-        .then(data => {
-          this.newTodo = "";
-          this.loading = false;
-          // this.fetch();
-        });
+      await this.$apollo.mutate({
+        mutation: TODO_ADD_MUTATION,
+        variables: { input: postBody },
+        refetchQueries: [
+          {
+            query: TODO_LIST_QUERY
+          }
+        ]
+      });
+      this.newTodo = "";
+      this.$apollo.listThought;
+    },
+    async removeTodo(todo) {
+      const todoId = todo._id;
+      await this.$apollo.mutate({
+        mutation: TODO_DELETE_MUTATION,
+        variables: { id: todoId },
+        refetchQueries: [
+          {
+            query: TODO_LIST_QUERY
+          }
+        ]
+      });
+      this.newTodo = "";
+    },
+    editTodo(todo) {
+      this.beforeEditCache = todo.title;
+      this.editedTodo = { ...todo };
+    },
+    doneEdit(todo) {
+      if (!this.editedTodo) {
+        return;
+      }
+      this.editedTodo = null;
+      todo.title = todo.title.trim();
+      if (!todo.title) {
+        this.removeTodo(todo);
+      }
+      this.updateTodo(todo);
+    },
+    async updateTodo(todo) {
+      const todoId = todo._id;
+      const isCompleted = !!todo.isCompleted;
+      await this.$apollo.mutate({
+        mutation: TODO_UPDATE_MUTATION,
+        variables: {
+          id: todoId,
+          input: {
+            title: todo.title,
+            isCompleted
+          }
+        },
+        refetchQueries: [
+          {
+            query: TODO_LIST_QUERY
+          }
+        ]
+      });
     }
-  },
-  created() {
-    // if (this.isLoggedIn) {
-    //  this.fetchTodo();
-    // }
   }
 };
 </script>

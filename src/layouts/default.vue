@@ -137,7 +137,8 @@ export default {
     dialog: false,
     drawer: null,
     items: [
-      { icon: "contacts", text: "My Day", link: "/" },
+      { icon: "contacts", text: "My Day", link: "/dashboard" },
+       { icon: "chat_bubble", text: "My Thoughts", link: "/thoughts" },
       // { icon: "history", text: "Frequently contacted" },
       // { icon: "content_copy", text: "Duplicates" },
       {

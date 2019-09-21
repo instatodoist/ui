@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import moment from 'moment';
 import VuetifyToast from 'vuetify-toast-snackbar';
 import App from './App.vue';
 import router from './router';
@@ -40,6 +41,12 @@ Vue.use(VuetifyToast, {
     },
   },
   property: '$toast', // default
+});
+
+Vue.filter('formatDate', (value) => {
+  if (value) {
+    return moment(String(value)).format('llll');
+  }
 });
 
 new Vue({

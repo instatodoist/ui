@@ -20,6 +20,7 @@
     "graphql": "^14.5.3",
     "graphql-tag": "^2.10.1",
     "material-design-icons-iconfont": "^5.0.1",
+    "moment": "^2.24.0",
     "register-service-worker": "^1.6.2",
     "roboto-fontface": "*",
     "vue": "^2.6.10",
