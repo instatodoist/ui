@@ -1,13 +1,13 @@
 import gql from 'graphql-tag';
 
-// export const TODO_ADD_MUTATION = gql`
-//     mutation addTodo( $input: TodoInputType!) {
-//         addTodo(input: $input){
-//             message
-//             ok
-//         }
-//     }
-// `;
+export const TODO_ADD_THOUGHT = gql`
+    mutation addThought( $input: ThoughtInputType!) {
+        addThought(input: $input){
+            message
+            ok
+        }
+    }
+`;
 
 // export const TODO_UPDATE_MUTATION = gql`
 //     mutation updateTodo( $id: ID!, $input: TodoInputType!) {
