@@ -2,6 +2,8 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
 import Login from './views/login.vue';
+import Thought from './views/thought.vue';
+import TodoCompleted from './views/todo-complete.vue';
 import Register from './views/register.vue';
 import VerifyEmail from './views/verify.vue';
 import requireAuth from './services/requireAuth';
@@ -48,6 +50,24 @@ export default new Router({
       beforeEnter: requireAuth,
       name: 'home',
       component: Home,
+      meta: {
+        layout: 'default',
+      },
+    },
+    {
+      path: '/thoughts',
+      beforeEnter: requireAuth,
+      name: 'thought',
+      component: Thought,
+      meta: {
+        layout: 'default',
+      },
+    },
+    {
+      path: '/completed-todos',
+      beforeEnter: requireAuth,
+      name: 'cTodos',
+      component: TodoCompleted,
       meta: {
         layout: 'default',
       },

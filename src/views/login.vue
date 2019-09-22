@@ -1,5 +1,7 @@
 
 <script>
+import { LOGIN_QUERY } from "../gql/auth.gql";
+// import errorhandler from '../services/errorHandler';
 export default {
   name: 'LoginModal',
   data() {
@@ -28,46 +30,55 @@ export default {
         email: this.user.email,
         password: this.user.password,
       };
-      const query = `
-      query {
-        login(input: {email: "${postData.email}", password: "${postData.password}"}) {
-          message
-          user {
-              email
+
+      return this.$apollo
+        .query({
+          query: LOGIN_QUERY,
+          variables: {
+            input: postData
           }
-          token
-        }
-      }
-      `;
-      return fetch(`${this.$BASE_URL}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/graphql',
-        },
-        body: query,
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(response.statusText);
-          }
-          return response.json();
         })
         .then((response) => {
           const { token, user, message } = response.data.login;
           localStorage.setItem('token', token);
           localStorage.setItem('user', JSON.stringify(user));
           this.isSubmit = false;
-          this.dialog = false;
-          this.$emit('close');
-          this.$router.push(this.$route.query.redirect || '/dashboard');
+          this.$router.push(this.$route.query.redirect || "/dashboard");
         })
         .catch((err) => {
           this.isSubmit = false;
-          this.err = err;
-          this.$toast.error(err);
         });
-    },
-  },
+
+      // return fetch(`${this.$BASE_URL}`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/graphql',
+      //   },
+      //   body: query,
+      // })
+      //   .then((response) => {
+      //     console.log(response, '@@@@@@@@@@@');
+      //     if (!response.ok) {
+      //       throw new Error(response.statusText);
+      //     }
+      //     return response.json();
+      //   })
+      //   .then((response) => {
+      //     const { token, user, message } = response.data.login;
+      //     localStorage.setItem('token', token);
+      //     localStorage.setItem('user', JSON.stringify(user));
+      //     this.isSubmit = false;
+      //     this.dialog = false;
+      //     this.$emit('close');
+      //     this.$router.push(this.$route.query.redirect || '/dashboard');
+      //   })
+      //   .catch((err) => {
+      //     this.isSubmit = false;
+      //     this.err = err;
+      //     this.$toast.error(err);
+      //   });
+    }
+  }
 };
 </script>
 <template>

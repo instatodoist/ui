@@ -1,8 +1,10 @@
 import Vue from 'vue';
+import moment from 'moment';
 import VuetifyToast from 'vuetify-toast-snackbar';
 import App from './App.vue';
 import router from './router';
-import store from './store';
+import { apolloProvider } from './plugins/apollo';
+// import store from './store';
 import './registerServiceWorker';
 import vuetify from './plugins/vuetify';
 import '@babel/polyfill';
@@ -12,7 +14,7 @@ import Default from './layouts/default.vue';
 import LoginLayout from './layouts/login.vue';
 
 Vue.config.productionTip = false;
-Vue.prototype.$BASE_URL = process.env.VUE_APP_BASE_URL;
+// Vue.prototype.$BASE_URL = process.env.VUE_APP_BASE_URL;
 Vue.prototype.$APP_TITLE = 'Instant-Todos';
 Vue.component('default-layout', Default);
 Vue.component('login-layout', LoginLayout);
@@ -41,9 +43,15 @@ Vue.use(VuetifyToast, {
   property: '$toast', // default
 });
 
+Vue.filter('formatDate', (value) => {
+  if (value) {
+    return moment(String(value)).format('llll');
+  }
+});
+
 new Vue({
   router,
-  store,
+  apolloProvider,
   vuetify,
   render: h => h(App),
 }).$mount('#app');
