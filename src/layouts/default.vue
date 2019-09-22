@@ -97,7 +97,7 @@ export default {
     items: [
       { icon: 'contacts', text: 'My Day', link: '/dashboard' },
       { icon: 'note_add', text: 'Completed Todos', link: '/completed-todos' },
-      { icon: 'chat_bubble', text: 'My Thoughts', link: '/thoughts' },
+      { icon: 'chat_bubble', text: 'My Desires', link: '/thoughts' },
       // { icon: "history", text: "Frequently contacted" },
       // { icon: "content_copy", text: "Duplicates" },
       {
