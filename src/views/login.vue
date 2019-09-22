@@ -1,6 +1,6 @@
 
 <script>
-import { LOGIN_QUERY } from "../gql/auth.gql";
+import { LOGIN_QUERY } from '../gql/auth.gql';
 // import errorhandler from '../services/errorHandler';
 export default {
   name: 'LoginModal',
@@ -35,15 +35,15 @@ export default {
         .query({
           query: LOGIN_QUERY,
           variables: {
-            input: postData
-          }
+            input: postData,
+          },
         })
         .then((response) => {
           const { token, user, message } = response.data.login;
           localStorage.setItem('token', token);
           localStorage.setItem('user', JSON.stringify(user));
           this.isSubmit = false;
-          this.$router.push(this.$route.query.redirect || "/dashboard");
+          this.$router.push(this.$route.query.redirect || '/dashboard');
         })
         .catch((err) => {
           this.isSubmit = false;
@@ -77,8 +77,8 @@ export default {
       //     this.err = err;
       //     this.$toast.error(err);
       //   });
-    }
-  }
+    },
+  },
 };
 </script>
 <template>

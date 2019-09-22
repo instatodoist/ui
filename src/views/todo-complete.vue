@@ -40,25 +40,25 @@
 </template>
 
 <script>
-import { TODO_LIST_QUERY } from "../gql/todo.gql";
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
+import { TODO_LIST_QUERY } from '../gql/todo.gql';
 
 export default {
-  name: "TodoComplete",
+  name: 'TodoComplete',
   apollo: {
     todoList: {
       query: TODO_LIST_QUERY,
       variables: {
         filter: {
-          isCompleted: true
-        }
-      }
-    }
+          isCompleted: true,
+        },
+      },
+    },
   },
   methods: {
     refetch() {
       this.$apollo.queries.todoList.refetch();
-    }
-  }
+    },
+  },
 };
 </script>

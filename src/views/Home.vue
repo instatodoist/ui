@@ -120,13 +120,13 @@
 
 
 <script>
+import draggable from 'vuedraggable';
 import {
   TODO_LIST_QUERY,
   TODO_ADD_MUTATION,
   TODO_UPDATE_MUTATION,
-  TODO_DELETE_MUTATION
-} from "../gql/todo.gql";
-import draggable from "vuedraggable";
+  TODO_DELETE_MUTATION,
+} from '../gql/todo.gql';
 
 export default {
   order: 0,
@@ -135,7 +135,7 @@ export default {
     return {
       loading: false,
       isLoading: false,
-      targetTodo: "",
+      targetTodo: '',
       updateDialog: false,
       dialog: false,
       isLoggedIn: this.isLogged(),
@@ -149,11 +149,11 @@ export default {
   },
   apollo: {
     todoList: {
-      query: TODO_LIST_QUERY
-    }
+      query: TODO_LIST_QUERY,
+    },
   },
   components: {
-    draggable
+    draggable,
   },
   methods: {
     checkMove(e) {
@@ -172,18 +172,18 @@ export default {
       }
       this.loading = true;
       const postBody = {
-        title: value
+        title: value,
       };
       await this.$apollo.mutate({
         mutation: TODO_ADD_MUTATION,
         variables: { input: postBody },
         refetchQueries: [
           {
-            query: TODO_LIST_QUERY
-          }
-        ]
+            query: TODO_LIST_QUERY,
+          },
+        ],
       });
-      this.newTodo = "";
+      this.newTodo = '';
       this.$apollo.listThought;
     },
     async removeTodo(todo) {
@@ -193,11 +193,11 @@ export default {
         variables: { id: todoId },
         refetchQueries: [
           {
-            query: TODO_LIST_QUERY
-          }
-        ]
+            query: TODO_LIST_QUERY,
+          },
+        ],
       });
-      this.newTodo = "";
+      this.newTodo = '';
     },
     editTodo(todo) {
       this.beforeEditCache = todo.title;
@@ -223,16 +223,16 @@ export default {
           id: todoId,
           input: {
             title: todo.title,
-            isCompleted
-          }
+            isCompleted,
+          },
         },
         refetchQueries: [
           {
-            query: TODO_LIST_QUERY
-          }
-        ]
+            query: TODO_LIST_QUERY,
+          },
+        ],
       });
-    }
-  }
+    },
+  },
 };
 </script>

@@ -2,6 +2,7 @@
 <script>
 import { constants } from 'crypto';
 import { REGISTER_MUTATION } from '../gql/auth.gql';
+
 export default {
   name: 'RegisterModal',
   data() {
@@ -33,20 +34,20 @@ export default {
       return this.$apollo.mutate({
         mutation: REGISTER_MUTATION,
         variables: {
-            input: postData
-        }
+          input: postData,
+        },
       })
-      .then((response) => {
-        const { hashToken, message } = response.data.register;
-        this.$toast.success(message);
-        this.$router.push(`/verify-email/${hashToken}`);
-      })
-      .catch((err) => {
-        console.log(err);
-        this.isSubmit = false;
-        this.err = err;
-        this.$toast.error(err);
-      });
+        .then((response) => {
+          const { hashToken, message } = response.data.register;
+          this.$toast.success(message);
+          this.$router.push(`/verify-email/${hashToken}`);
+        })
+        .catch((err) => {
+          console.log(err);
+          this.isSubmit = false;
+          this.err = err;
+          this.$toast.error(err);
+        });
     },
   },
 };

@@ -82,30 +82,30 @@
 </template>
 
 <script>
-import localStorageService from "../services/localStorage";
-import AppFooter from "../components/layouts/AppFooter.vue";
-import AppHeader from "../components/layouts/AppHeader.vue";
+import localStorageService from '../services/localStorage';
+import AppFooter from '../components/layouts/AppFooter.vue';
+import AppHeader from '../components/layouts/AppHeader.vue';
 
 export default {
   name: 'DefaultLayout',
   components: {
     AppFooter,
-    AppHeader
+    AppHeader,
   },
   data: () => ({
     drawer: null,
     items: [
-      { icon: "contacts", text: "My Day", link: "/dashboard" },
-      { icon: "note_add", text: "Completed Todos", link: "/completed-todos" },
-      { icon: "chat_bubble", text: "My Thoughts", link: "/thoughts" },
+      { icon: 'contacts', text: 'My Day', link: '/dashboard' },
+      { icon: 'note_add', text: 'Completed Todos', link: '/completed-todos' },
+      { icon: 'chat_bubble', text: 'My Thoughts', link: '/thoughts' },
       // { icon: "history", text: "Frequently contacted" },
       // { icon: "content_copy", text: "Duplicates" },
       {
-        icon: "keyboard_arrow_up",
-        "icon-alt": "keyboard_arrow_down",
-        text: "Labels",
+        icon: 'keyboard_arrow_up',
+        'icon-alt': 'keyboard_arrow_down',
+        text: 'Labels',
         model: true,
-        children: [{ icon: "add", text: "Create label" }]
+        children: [{ icon: 'add', text: 'Create label' }],
       },
       // {
       //   icon: "keyboard_arrow_up",
@@ -120,22 +120,22 @@ export default {
       //     { text: "Other contacts" }
       //   ]
       // },
-      { icon: "settings", text: "Settings" }
+      { icon: 'settings', text: 'Settings' },
       // { icon: "chat_bubble", text: "Send feedback" },
       // { icon: "help", text: "Help" },
       // { icon: "phonelink", text: "App downloads" },
       // { icon: "keyboard", text: "Go to the old version" }
-    ]
+    ],
   }),
   methods: {
     logout() {
       return localStorageService.destroySession().then(() => {
-        this.$router.push("/login");
+        this.$router.push('/login');
       });
-    }
+    },
   },
   created() {
     this.title = this.$APP_TITLE;
-  }
+  },
 };
 </script>

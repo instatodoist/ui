@@ -64,23 +64,23 @@
   </div>
 </template>
 <script>
-import { THOUGHT_QUERY, TODO_ADD_THOUGHT } from "../gql/thought.gql";
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
+import { THOUGHT_QUERY, TODO_ADD_THOUGHT } from '../gql/thought.gql';
 
 export default {
-  name: "Thought",
+  name: 'Thought',
   data: () => ({
     loading: false,
     dialog: false,
     thought: {
-      title: "",
-      description: ""
-    }
+      title: '',
+      description: '',
+    },
   }),
   apollo: {
     listThought: {
-      query: THOUGHT_QUERY
-    }
+      query: THOUGHT_QUERY,
+    },
   },
   methods: {
     refetch() {
@@ -88,43 +88,42 @@ export default {
     },
     async addThought() {
       const title = this.thought.title && this.thought.title.trim();
-      const description =
-        this.thought.description && this.thought.description.trim();
+      const description = this.thought.description && this.thought.description.trim();
       if (
-        !title &&
-        !description &&
-        typeof title === "string" &&
-        typeof description === "string"
+        !title
+        && !description
+        && typeof title === 'string'
+        && typeof description === 'string'
       ) {
         return;
       }
       this.loading = true;
       const postBody = {
         title,
-        description
+        description,
       };
       await this.$apollo.mutate({
         mutation: TODO_ADD_THOUGHT,
         variables: { input: postBody },
         refetchQueries: [
           {
-            query: THOUGHT_QUERY
-          }
-        ]
+            query: THOUGHT_QUERY,
+          },
+        ],
       });
       this.loading = false;
       this.dialog = false;
-    }
+    },
   },
   computed: {
     getRandomColor() {
-      var letters = "0123456789ABCDEF";
-      var color = "#";
-      for (var i = 0; i < 6; i++) {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
         color += letters[Math.floor(Math.random() * 16)];
       }
       return color;
-    }
-  }
+    },
+  },
 };
 </script>
