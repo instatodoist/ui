@@ -31,7 +31,14 @@
                 </v-text-field>
               </v-list-item>
             </v-list>
+            <!-- </v-row> -->
+            <!-- <v-row justify="space-around" v-if="!$apollo.queries.todoList.loading"> -->
             <v-list subheader style="width: 100% !important">
+              <v-list-item>
+                <v-card-title v-if="todayTodos.length">
+                  <v-btn color="blue-grey" class="ma-2 white--text">Today ({{todayTodos.length}})</v-btn>
+                </v-card-title>
+              </v-list-item>
               <draggable
                 v-model="todos"
                 group="todos"
@@ -39,7 +46,47 @@
                 @end="drag=false"
                 :move="checkMove"
               >
-                <v-list-item v-for="todo in todoList.data" :key="todo._id">
+                <v-list-item v-for="todo in todayTodos" :key="todo._id">
+                  <v-list-item-avatar>
+                    <v-checkbox v-model="todo.isCompleted" @change="updateTodo(todo, true)"></v-checkbox>
+                  </v-list-item-avatar>
+
+                  <v-list-item-content>
+                    <v-list-item-title
+                      v-if="todo.title"
+                      class="body-2"
+                      v-bind:class="{'strike-through': todo.isCompleted}"
+                      v-text="todo.title"
+                    ></v-list-item-title>
+                  </v-list-item-content>
+                  <v-list-item-icon>
+                    <v-btn color="primary" depressed @click="editTodo(todo); updateDialog = true;">
+                      <v-icon>create</v-icon>
+                    </v-btn>&nbsp;&nbsp;
+                    <v-btn color="primary" depressed @click.stop="dialog = true; targetTodo = todo">
+                      <v-icon>delete_forever</v-icon>
+                    </v-btn>
+                  </v-list-item-icon>
+                </v-list-item>
+              </draggable>
+            </v-list>
+            <v-list subheader style="width: 100% !important">
+              <v-list-item>
+                <v-card-title v-if="pendingTodos.length">
+                  <v-btn
+                    color="blue-grey"
+                    class="ma-2 white--text"
+                  >Pending ({{pendingTodos.length}})</v-btn>
+                </v-card-title>
+              </v-list-item>
+              <draggable
+                v-model="todos"
+                group="todos"
+                @start="drag=true"
+                @end="drag=false"
+                :move="checkMove"
+              >
+                <v-list-item v-for="todo in pendingTodos" :key="todo._id">
                   <v-list-item-avatar>
                     <v-checkbox v-model="todo.isCompleted" @change="updateTodo(todo, true)"></v-checkbox>
                   </v-list-item-avatar>
@@ -65,6 +112,7 @@
             </v-list>
           </v-row>
         </v-card>
+        <!-- Update TODO Dialog -->
         <v-dialog v-if="updateDialog" v-model="updateDialog" persistent max-width="600px">
           <v-card>
             <v-card-title>
@@ -91,6 +139,7 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <!-- Delete Confirm Dialog -->
         <v-dialog v-model="dialog" max-width="290">
           <v-card>
             <v-card-title class="headline">Do you want to Delete?</v-card-title>
@@ -120,40 +169,40 @@
 
 
 <script>
-import draggable from 'vuedraggable';
+import draggable from "vuedraggable";
 import {
   TODO_LIST_QUERY,
   TODO_ADD_MUTATION,
   TODO_UPDATE_MUTATION,
-  TODO_DELETE_MUTATION,
-} from '../gql/todo.gql';
+  TODO_DELETE_MUTATION
+} from "../gql/todo.gql";
 
 export default {
   order: 0,
-  name: 'Home',
+  name: "Home",
   data() {
     return {
       loading: false,
       isLoading: false,
-      targetTodo: '',
+      targetTodo: "",
       updateDialog: false,
       dialog: false,
       isLoggedIn: this.isLogged(),
       showModal: false,
       todos: [],
-      newTodo: '',
+      newTodo: "",
       editedTodo: null,
-      visibility: 'all',
-      drag: false,
+      visibility: "all",
+      drag: false
     };
   },
   apollo: {
     todoList: {
-      query: TODO_LIST_QUERY,
-    },
+      query: TODO_LIST_QUERY
+    }
   },
   components: {
-    draggable,
+    draggable
   },
   methods: {
     checkMove(e) {
@@ -172,18 +221,18 @@ export default {
       }
       this.loading = true;
       const postBody = {
-        title: value,
+        title: value
       };
       await this.$apollo.mutate({
         mutation: TODO_ADD_MUTATION,
         variables: { input: postBody },
         refetchQueries: [
           {
-            query: TODO_LIST_QUERY,
-          },
-        ],
+            query: TODO_LIST_QUERY
+          }
+        ]
       });
-      this.newTodo = '';
+      this.newTodo = "";
       this.$apollo.listThought;
     },
     async removeTodo(todo) {
@@ -193,11 +242,11 @@ export default {
         variables: { id: todoId },
         refetchQueries: [
           {
-            query: TODO_LIST_QUERY,
-          },
-        ],
+            query: TODO_LIST_QUERY
+          }
+        ]
       });
-      this.newTodo = '';
+      this.newTodo = "";
     },
     editTodo(todo) {
       this.beforeEditCache = todo.title;
@@ -223,16 +272,54 @@ export default {
           id: todoId,
           input: {
             title: todo.title,
-            isCompleted,
-          },
+            isCompleted
+          }
         },
         refetchQueries: [
           {
-            query: TODO_LIST_QUERY,
-          },
-        ],
+            query: TODO_LIST_QUERY
+          }
+        ]
       });
     },
+    pending(todos) {
+      return todos.filter(todo => {
+        const today = new Date();
+        const createdAt = new Date(todo.createdAt);
+        const dayCreatedDate = createdAt.getDate();
+        const monthCreatedDate = createdAt.getMonth();
+        return (
+          (!todo.isCompleted &&
+            dayCreatedDate < today.getDate() &&
+            monthCreatedDate === today.getMonth()) ||
+          (!todo.isCompleted && monthCreatedDate < today.getMonth())
+        );
+      });
+    },
+    today(todos) {
+      return todos.filter(todo => {
+        const today = new Date();
+        const createdAt = new Date(todo.createdAt);
+        const dayCreatedDate = createdAt.getDay();
+        const monthCreatedDate = createdAt.getMonth();
+        return (
+          dayCreatedDate === today.getDay() &&
+          monthCreatedDate === today.getMonth()
+        );
+      });
+    }
   },
+  computed: {
+    pendingTodos: {
+      get() {
+        return this.pending(this.todoList.data);
+      }
+    },
+    todayTodos: {
+      get() {
+        return this.today(this.todoList.data);
+      }
+    }
+  }
 };
 </script>
