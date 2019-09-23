@@ -79,28 +79,59 @@
     <v-btn bottom :color="getRandomColor" dark fab fixed right @click="dialog = !dialog">
       <v-icon>add</v-icon>
     </v-btn>
+    
     <v-dialog v-model="dialog" persistent max-width="600px">
+       <v-form
+    ref="form"
+    v-model="valid"
+    lazy-validation
+  >
       <v-card>
         <v-card-title>
-          <span class="headline">What are your thinking right now?</span>
+          <span class="headline">Next Desire to be fullfilled</span>
         </v-card-title>
         <v-card-text>
+          
           <v-container>
             <v-row>
               <v-col cols="12">
                 <v-text-field
+                  :rules="nameRules"
                   v-model="thought.title"
-                  label="What topic your mind pointing right now?*"
+                  label="*What topic your mind pointing right now?"
                   required
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-textarea
+                :rules="descriptionRules"
                   v-model="thought.description"
-                  name="input-7-1"
-                  label="Write in Detail"
+                  name="input-5-1"
+                  label="*Write in Detail"
                   required
                 ></v-textarea>
+              </v-col>
+              <v-col>
+                <v-menu
+                  v-model="menu2"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  full-width
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="thought.accomplishTenure"
+                      label="Desire Accomplish Date (Optional)"
+                      prepend-icon="event"
+                      readonly
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="thought.accomplishTenure" @input="menu2 = false"></v-date-picker>
+                </v-menu>
               </v-col>
             </v-row>
           </v-container>
@@ -112,7 +143,9 @@
           <v-btn color="blue darken-1" text @click="addThought">Save</v-btn>
         </v-card-actions>
       </v-card>
+      </v-form>
     </v-dialog>
+
     <v-dialog v-model="dialogDelete" max-width="400">
       <v-card>
         <v-card-title class="headline">Is your desired completed?</v-card-title>
@@ -161,10 +194,22 @@ export default {
     dialog: false,
     thought: {
       title: "",
-      description: ""
+      description: "",
+      //accomplishTenure: new Date().toISOString().substr(0, 10),
+      accomplishTenure: ''
     },
+    nameRules: [
+        v => !!v || 'Name is required',
+        v => (v && v.length <= 30) || 'Name must be less than 10 characters',
+    ],
+    descriptionRules: [
+        v => !!v || 'Description is required',
+        v => (v && v.length >= 10) || 'Name must be greater than 10 characters',
+      ],
     tab: null,
-    items: ["Going-On", "Archieved"]
+    items: ["Going-On", "Archieved"],
+    menu2: false,
+    valid: true,
   }),
   apollo: {
     listThought: {
@@ -176,6 +221,9 @@ export default {
       this.$apollo.queries.listThought.refetch();
     },
     async addThought() {
+       if (!this.$refs.form.validate()) {
+         return false;
+       }
       const title = this.thought.title && this.thought.title.trim();
       const description =
         this.thought.description && this.thought.description.trim();
@@ -188,12 +236,15 @@ export default {
         return;
       }
       this.loading = true;
-      const postBody = {
+      let postBody = {
         title,
         description
       };
+      if(this.thought.accomplishTenure) {
+        postBody = {...postBody, accomplishTenure: this.thought.accomplishTenure}
+      }
       await this.$apollo.mutate({
-        mutation: TODO_ADD_THOUGHT,
+        mutation: ADD_THOUGHT_MUTATION,
         variables: { input: postBody },
         refetchQueries: [
           {
