@@ -43,10 +43,7 @@ export default {
           this.$router.push(`/verify-email/${hashToken}`);
         })
         .catch((err) => {
-          console.log(err);
           this.isSubmit = false;
-          this.err = err;
-          this.$toast.error(err);
         });
     },
   },

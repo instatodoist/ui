@@ -1,64 +1,46 @@
 
 <script>
-import { constants } from 'crypto';
-
+import { EMAIL_VERIFICATION } from '../gql/auth.gql';
 export default {
-  name: 'VerifyEmail',
+  name: "VerifyEmail",
   data() {
     return {
       title: this.$APP_TITLE,
-      err: '',
+      err: "",
       isSubmit: false,
-      hashToken: '',
+      hashToken: "",
       user: {
-        otp: '',
-      },
+        otp: ""
+      }
     };
   },
   methods: {
     handleSubmit() {
-      this.err = '';
       this.isSubmit = true;
       const postData = {
         otp: this.user.otp,
-        hashToken: this.hashToken,
+        hashToken: this.hashToken
       };
-      const query = `
-      mutation {
-        emailVerificationByOtp(input: {otp: "${postData.otp}", hashToken: "${postData.hashToken}"}) {
-          message
-          hashToken
-        }
-      }
-      `;
-      return fetch(`${this.$BASE_URL}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/graphql',
-        },
-        body: query,
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(response.statusText);
+      return this.$apollo
+        .mutate({
+          mutation: EMAIL_VERIFICATION,
+          variables: {
+            input: postData
           }
-          return response.json();
         })
-        .then((response) => {
+        .then(response => {
           const { hashToken, message } = response.data.emailVerificationByOtp;
           this.$toast.success(message);
-          this.$router.push('/login');
+          this.$router.push("/login");
         })
-        .catch((err) => {
+        .catch(err => {
           this.isSubmit = false;
-          this.err = err;
-          this.$toast.error(err);
         });
-    },
+    }
   },
   created() {
     this.hashToken = this.$route.params.hash;
-  },
+  }
 };
 </script>
 <template>

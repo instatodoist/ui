@@ -9,6 +9,17 @@ export const REGISTER_MUTATION = gql`
   }
 `;
 
+
+export const EMAIL_VERIFICATION = gql`
+    mutation emailVerificationByOtp( $input: EmailVerificationInputType!) {
+      emailVerificationByOtp(input: $input){
+        message
+        hashToken
+    }
+  }
+`;
+
+
 export const LOGIN_QUERY = gql`
     query login( $input: UserLoginInputType!) {
       login(input: $input){
