@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export const TODO_ADD_THOUGHT = gql`
+export const ADD_THOUGHT_MUTATION = gql`
     mutation addThought( $input: ThoughtInputType!) {
         addThought(input: $input){
             message
@@ -9,14 +9,14 @@ export const TODO_ADD_THOUGHT = gql`
     }
 `;
 
-// export const TODO_UPDATE_MUTATION = gql`
-//     mutation updateTodo( $id: ID!, $input: TodoInputType!) {
-//         updateTodo(id: $id, input: $input){
-//             message
-//             ok
-//         }
-//     }
-// `;
+export const UPDATE_THOUGHT_MUTATION = gql`
+    mutation updateThought( $id: ID!, $input: ThoughtInputType!) {
+        updateThought(id: $id, input: $input){
+            message
+            ok
+        }
+    }
+`;
 
 // export const TODO_DELETE_MUTATION = gql`
 //     mutation deleteTodo( $id: ID!) {
@@ -29,12 +29,14 @@ export const TODO_ADD_THOUGHT = gql`
 
 
 export const THOUGHT_QUERY = gql`
-    query listThought ($first: Int = 100, $offset: Int = 1){
-        listThought (first: $first, offset: $offset ){
+    query listThought ($limit: Int = 100, $offset: Int = 1){
+        listThought (limit: $limit, offset: $offset ){
             totalCount
             data {
                 _id
                 title
+                isPinned
+                isAchieved
                 description
                 createdAt
             }
