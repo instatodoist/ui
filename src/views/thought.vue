@@ -7,7 +7,15 @@
       <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
         <v-tab v-for="item in items" :key="item">{{ item }}</v-tab>
       </v-tabs>
-      <div v-if="$apollo.queries.listThought.loading" class="ma-4"></div>
+      <div class="text-center" style="min-height: 500px;" v-if="$apollo.queries.listThought.loading">
+          <v-progress-circular
+            class="mt-10"
+            :size="50"
+            color="primary"
+            indeterminate
+          ></v-progress-circular>
+        </div>
+      <!-- <div v-if="$apollo.queries.listThought.loading" class="ma-4"></div> -->
       <v-tabs-items
         v-model="tab"
         v-if="!$apollo.queries.listThought.loading && tab === 0"

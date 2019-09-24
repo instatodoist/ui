@@ -1,7 +1,14 @@
 <template>
   <v-container class="pa-2" fluid>
     <v-card color="basil">
-      <div v-if="$apollo.queries.todoList.loading">Loading...</div>
+      <div class="text-center" style="min-height: 500px;" v-if="$apollo.queries.todoList.loading">
+          <v-progress-circular
+            class="mt-10"
+            :size="50"
+            color="primary"
+            indeterminate
+          ></v-progress-circular>
+        </div>
       <v-timeline dense clipped v-if="!$apollo.queries.todoList.loading" align-top class="ma-10">
         <v-timeline-item fill-dot class="white--text mb-12" color="orange" large>
           <template v-slot:icon>
