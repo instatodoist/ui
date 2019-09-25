@@ -41,8 +41,11 @@
                   <v-btn icon @click="pinned(card)">
                     <v-icon>{{card.isPinned ? 'mdi-pin-off' : 'mdi-pin'}}</v-icon>
                   </v-btn>
-                  <v-btn icon @click="dialogDelete = true; thoughtObj = card">
+                  <v-btn icon @click="dialogDelete = true; populateThought(card)">
                     <v-icon>mdi-clipboard-play-outline</v-icon>
+                  </v-btn>
+                  <v-btn icon @click="dialog = !dialog; thought = card">
+                    <v-icon>mdi-border-color</v-icon>
                   </v-btn>
                 </v-card-actions>
               </v-card>
@@ -203,7 +206,6 @@ export default {
     thought: {
       title: "",
       description: "",
-      //accomplishTenure: new Date().toISOString().substr(0, 10),
       accomplishTenure: ''
     },
     nameRules: [
@@ -305,6 +307,11 @@ export default {
           }
         ]
       });
+    },
+    populateThought(thought) {
+      this.thought = thought;
+      console.log(thought);
+      this.thought.accomplishTenure = (thought.accomplishTenure) ? thought.accomplishTenure.toISOString().substr(0, 10) : '';
     }
   },
   computed: {

@@ -35,6 +35,7 @@ export const THOUGHT_QUERY = gql`
             data {
                 _id
                 title
+                accomplishTenure
                 isPinned
                 isAchieved
                 description
