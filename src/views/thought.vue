@@ -2,7 +2,7 @@
   <v-container class="pa-2" fluid>
     <v-card color="basil">
       <v-card-title class="text-center justify-center py-6">
-        <h1 class="font-weight-bold display-3 basil--text">Desires</h1>
+        <h1 class="font-weight-bold display-3 basil--text">My Goals</h1>
       </v-card-title>
       <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
         <v-tab v-for="item in items" :key="item">{{ item }}</v-tab>
@@ -24,7 +24,7 @@
         <v-tab-item v-for="item in items" :key="item">
           <v-row v-if="!$apollo.queries.listThought.loading">
             <v-col cols="4" v-for="(card, i) in notAchieved" :key="i" ma-4>
-              <v-card color="#fff" class="pa-5">
+              <v-card color="#fff" class="pa-5" v-bind:class="{'isPinned': card.isPinned}">
                 <v-list-item>
                   <v-list-item-content>
                     <v-list-item-title :title="card.title" class="headline">{{card.title}}</v-list-item-title>
@@ -338,3 +338,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+  .isPinned{
+    background-color: rgb(76, 206, 43) !important;
+  }
+</style>

@@ -1,7 +1,7 @@
-import localStorageService from './localStorage';
+// import localStorageService from './localStorage';
 
 function requireAuth(to, from, next) {
-  if (localStorageService.getToken()) {
+  if (localStorage.getItem('token')) {
     return next();
   }
   return next('/login');

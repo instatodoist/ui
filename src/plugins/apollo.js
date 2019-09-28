@@ -23,13 +23,25 @@ const authLink = setContext((_, { headers }) =>
   }));
 
 // Error Handling
-const errorLink = onError(({ graphQLErrors }) => {
+const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.map(({ message, locations, path }) => {
       console.error(
         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
       );
     });
+  }
+  if (networkError) {
+    const key = 'statusCode';
+    const statusCode = networkError[key] || null;
+    switch (statusCode) {
+      case 401:
+        localStorage.clear();
+        window.location.href = '/login';
+        break;
+      default:
+        return true;
+    }
   }
   if (graphQLErrors) console.log(graphQLErrors[0].message);
   let testMessage = graphQLErrors[0].message;

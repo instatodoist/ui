@@ -43,7 +43,7 @@ export default {
           localStorage.setItem('token', token);
           localStorage.setItem('user', JSON.stringify(user));
           this.isSubmit = false;
-          this.$router.push(this.$route.query.redirect || '/dashboard');
+           this.$router.replace('/dashboard');
         })
         .catch((err) => {
           this.isSubmit = false;
