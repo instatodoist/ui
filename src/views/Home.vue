@@ -278,6 +278,14 @@ export default {
         refetchQueries: [
           {
             query: TODO_LIST_QUERY
+          },
+          {
+            query: TODO_LIST_QUERY,
+            variables: {
+              filter: {
+                isCompleted: true
+              }
+            }
           }
         ]
       });
