@@ -48,9 +48,36 @@ export const TODO_LIST_QUERY = gql`
     }
 `;
 
+
+export const TODO_COMPLETED_QUERY = gql`
+    query{
+        todoCompleted {
+        totalCount
+        data {
+            _id
+            list {
+                _id
+                title
+                createdAt
+                updatedAt
+                label {
+                    name
+                }
+                comments {
+                    description
+                }
+            }
+        }
+        }
+    }
+`;
+
+
+
 export default {
-  TODO_ADD_MUTATION,
-  TODO_DELETE_MUTATION,
-  TODO_UPDATE_MUTATION,
-  TODO_LIST_QUERY,
+    TODO_ADD_MUTATION,
+    TODO_DELETE_MUTATION,
+    TODO_UPDATE_MUTATION,
+    TODO_LIST_QUERY,
+    TODO_COMPLETED_QUERY
 };

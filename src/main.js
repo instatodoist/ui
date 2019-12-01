@@ -49,6 +49,12 @@ Vue.filter('formatDate', (value) => {
   }
 });
 
+Vue.filter('formatDateLess', (value) => {
+  if (value) {
+    return moment(String(value)).format('LL');
+  }
+});
+
 new Vue({
   router,
   apolloProvider,
