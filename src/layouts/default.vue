@@ -95,7 +95,7 @@ export default {
   data: () => ({
     drawer: null,
     items: [
-      { icon: 'contacts', text: 'My Day', link: '/dashboard' },
+      { icon: 'contacts', text: 'Today', link: '/dashboard' },
       { icon: 'note_add', text: 'Completed Todos', link: '/completed-todos' },
       { icon: 'chat_bubble', text: 'My Goals', link: '/thoughts' },
       // { icon: "history", text: "Frequently contacted" },

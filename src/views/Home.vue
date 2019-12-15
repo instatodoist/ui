@@ -169,6 +169,7 @@
 
 
 <script>
+import * as moment from 'moment';
 import draggable from "vuedraggable";
 import {
   TODO_LIST_QUERY,
@@ -292,28 +293,18 @@ export default {
     },
     pending(todos) {
       return todos.filter(todo => {
-        const today = new Date();
-        const createdAt = new Date(todo.createdAt);
-        const dayCreatedDate = createdAt.getDate();
-        const monthCreatedDate = createdAt.getMonth();
-        return (
-          (!todo.isCompleted &&
-            dayCreatedDate < today.getDate() &&
-            monthCreatedDate === today.getMonth()) ||
-          (!todo.isCompleted && monthCreatedDate < today.getMonth())
-        );
+        var today = moment(new Date());
+        var createdAt = moment(todo.createdAt);
+        var iscurrentDate = today.isSame(createdAt, "day");
+        return ( !todo.isCompleted && !iscurrentDate );
       });
     },
     today(todos) {
       return todos.filter(todo => {
-        const today = new Date();
-        const createdAt = new Date(todo.createdAt);
-        const dayCreatedDate = createdAt.getDay();
-        const monthCreatedDate = createdAt.getMonth();
-        return (
-          dayCreatedDate === today.getDay() &&
-          monthCreatedDate === today.getMonth()
-        );
+        var today = moment(new Date());
+        var createdAt = moment(todo.createdAt);
+        var iscurrentDate = today.isSame(createdAt, "day");
+        return iscurrentDate;
       });
     }
   },
