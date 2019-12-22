@@ -40,6 +40,7 @@ export const THOUGHT_QUERY = gql`
                 isAchieved
                 description
                 createdAt
+                updatedAt
             }
         }
     }

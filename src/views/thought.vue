@@ -95,6 +95,27 @@
 
                 <v-card-text>{{card.description}}</v-card-text>
 
+                <v-list class="transparent">
+                  <v-list-item>
+                    <v-list-item-title>{{ 'Created' }}</v-list-item-title>
+                    <v-list-item-subtitle class="text-right">
+                      {{card.createdAt | formatDateLess}}
+                    </v-list-item-subtitle>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-title>{{ 'Target' }}</v-list-item-title>
+                    <v-list-item-subtitle class="text-right">
+                      {{card.accomplishTenure | formatDateLess}}
+                    </v-list-item-subtitle>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-title>{{ 'Achieved' }}</v-list-item-title>
+                    <v-list-item-subtitle class="text-right">
+                      {{card.updatedAt | formatDateLess}}
+                    </v-list-item-subtitle>
+                  </v-list-item>
+                </v-list>
+
                 <v-card-actions class="center">
                   <div class="flex-grow-1"></div>
                   <v-btn icon @click="markComplete(card)">
@@ -291,8 +312,8 @@ export default {
       this.dialog = false;
     },
     async markComplete(item) {
-      let postBody = null;
-      const recordId = typeof item !== 'undefined' ? item._id : this.thoughtObj._id;
+      let postBody = {};
+      const recordId = this.thought._id;
       if (typeof item !== 'undefined') {
         postBody = {
           title: item.title,
@@ -301,8 +322,8 @@ export default {
         };
       } else {
         postBody = {
-          title: this.thoughtObj.title,
-          description: this.thoughtObj.description,
+          title: this.thought.title,
+          description: this.thought.description,
           isAchieved: true
         };
       }
