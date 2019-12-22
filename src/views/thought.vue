@@ -21,22 +21,44 @@
         v-if="!$apollo.queries.listThought.loading && tab === 0"
         class="mt-10"
       >
-        <v-tab-item v-for="item in items" :key="item">
+        <v-tab-item v-for="item in items" :key="item" >
           <v-row v-if="!$apollo.queries.listThought.loading">
-            <v-col cols="4" v-for="(card, i) in notAchieved" :key="i" ma-4>
+            <v-col cols="4" v-for="(card, i) in notAchieved" :key="i" ma-4 :title="card.title">
               <v-card color="#fff" class="pa-5" v-bind:class="{'isPinned': card.isPinned}">
                 <v-list-item>
                   <v-list-item-content>
                     <v-list-item-title :title="card.title" class="headline">{{card.title}}</v-list-item-title>
-                    <v-list-item-subtitle
+                    <!-- <v-list-item-subtitle
                       v-bind:style="{color: getRandomColor}"
-                    >{{card.createdAt | formatDate}}</v-list-item-subtitle>
+                    >{{card.createdAt | formatDate}}</v-list-item-subtitle> -->
                   </v-list-item-content>
                 </v-list-item>
 
-                <v-card-text>{{card.description}}</v-card-text>
+                <v-card-text>
+                  {{card.description}}
+                  </v-card-text>
+                  <!-- <v-chip-group
+                    active-class="deep-purple accent-4 white--text"
+                    column
+                  >
+                    <v-chip>{{card.accomplishTenure | formatDate}}</v-chip>
+                  </v-chip-group> -->
 
-                <v-card-actions class="center">
+                  <v-list class="transparent">
+                    <v-list-item>
+                      <v-list-item-title>{{ 'Created' }}</v-list-item-title>
+                      <v-list-item-subtitle class="text-right">
+                        {{card.createdAt | formatDateLess}}
+                      </v-list-item-subtitle>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-title>{{ 'Timeline' }}</v-list-item-title>
+                      <v-list-item-subtitle class="text-right">
+                        {{card.accomplishTenure | formatDateLess}}
+                      </v-list-item-subtitle>
+                    </v-list-item>
+                  </v-list>
+                  <v-card-actions class="center">
                   <div class="flex-grow-1"></div>
                   <v-btn icon @click="pinned(card)">
                     <v-icon>{{card.isPinned ? 'mdi-pin-off' : 'mdi-pin'}}</v-icon>
@@ -199,6 +221,7 @@ export default {
     loading: false,
     dialog: false,
     thought: {
+      _id: '',
       title: '',
       description: '',
       accomplishTenure: ''
@@ -237,7 +260,7 @@ export default {
         && typeof title === 'string'
         && typeof description === 'string'
       ) {
-        return;
+        return false;
       }
       this.loading = true;
       let postBody = {
@@ -250,9 +273,14 @@ export default {
           accomplishTenure: this.thought.accomplishTenure
         };
       }
+      const variables = { input: postBody };
+      if (this.thought._id) {
+        variables.id = this.thought._id;
+      }
+
       await this.$apollo.mutate({
-        mutation: ADD_THOUGHT_MUTATION,
-        variables: { input: postBody },
+        mutation: (this.thought._id) ? UPDATE_THOUGHT_MUTATION : ADD_THOUGHT_MUTATION,
+        variables,
         refetchQueries: [
           {
             query: THOUGHT_QUERY
@@ -306,10 +334,6 @@ export default {
     },
     populateThought(thought) {
       this.thought = thought;
-      console.log(thought);
-      this.thought.accomplishTenure = thought.accomplishTenure
-        ? thought.accomplishTenure.toISOString().substr(0, 10)
-        : '';
     }
   },
   computed: {
