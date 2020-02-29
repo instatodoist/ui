@@ -1,16 +1,17 @@
 
 <script>
 import { EMAIL_VERIFICATION } from '../gql/auth.gql';
+
 export default {
-  name: "VerifyEmail",
+  name: 'VerifyEmail',
   data() {
     return {
       title: this.$APP_TITLE,
-      err: "",
+      err: '',
       isSubmit: false,
-      hashToken: "",
+      hashToken: '',
       user: {
-        otp: ""
+        otp: ''
       }
     };
   },
@@ -28,12 +29,12 @@ export default {
             input: postData
           }
         })
-        .then(response => {
+        .then((response) => {
           const { hashToken, message } = response.data.emailVerificationByOtp;
           this.$toast.success(message);
-          this.$router.push("/login");
+          this.$router.push('/login');
         })
-        .catch(err => {
+        .catch((err) => {
           this.isSubmit = false;
         });
     }

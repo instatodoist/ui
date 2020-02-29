@@ -15,6 +15,7 @@ const accessToken = localStorage.getItem('token');
 const authLink = setContext((_, { headers }) =>
   // get the authentication token from local storage if it exists
   // return the headers to the context so httpLink can read them
+  // eslint-disable-next-line implicit-arrow-linebreak
   ({
     headers: {
       ...headers,
@@ -23,8 +24,10 @@ const authLink = setContext((_, { headers }) =>
   }));
 
 // Error Handling
+// eslint-disable-next-line consistent-return
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
+    // eslint-disable-next-line array-callback-return
     graphQLErrors.map(({ message, locations, path }) => {
       console.error(
         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
@@ -35,12 +38,12 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
     const key = 'statusCode';
     const statusCode = networkError[key] || null;
     switch (statusCode) {
-      case 401:
-        localStorage.clear();
-        window.location.href = '/login';
-        break;
-      default:
-        return true;
+    case 401:
+      localStorage.clear();
+      window.location.href = '/login';
+      break;
+    default:
+      return true;
     }
   }
   if (graphQLErrors) console.log(graphQLErrors[0].message);

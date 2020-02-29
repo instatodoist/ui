@@ -170,30 +170,30 @@
 
 <script>
 import * as moment from 'moment';
-import draggable from "vuedraggable";
+import draggable from 'vuedraggable';
 import {
   TODO_LIST_QUERY,
   TODO_ADD_MUTATION,
   TODO_UPDATE_MUTATION,
   TODO_DELETE_MUTATION
-} from "../gql/todo.gql";
+} from '../gql/todo.gql';
 
 export default {
   order: 0,
-  name: "Home",
+  name: 'Home',
   data() {
     return {
       loading: false,
       isLoading: false,
-      targetTodo: "",
+      targetTodo: '',
       updateDialog: false,
       dialog: false,
       isLoggedIn: this.isLogged(),
       showModal: false,
       todos: [],
-      newTodo: "",
+      newTodo: '',
       editedTodo: null,
-      visibility: "all",
+      visibility: 'all',
       drag: false
     };
   },
@@ -233,8 +233,8 @@ export default {
           }
         ]
       });
-      this.newTodo = "";
-      this.$apollo.listThought;
+      this.newTodo = '';
+      this.$apollo.listThought();
     },
     async removeTodo(todo) {
       const todoId = todo._id;
@@ -247,7 +247,7 @@ export default {
           }
         ]
       });
-      this.newTodo = "";
+      this.newTodo = '';
     },
     editTodo(todo) {
       this.beforeEditCache = todo.title;
@@ -292,18 +292,18 @@ export default {
       });
     },
     pending(todos) {
-      return todos.filter(todo => {
-        var today = moment(new Date());
-        var createdAt = moment(todo.createdAt);
-        var iscurrentDate = today.isSame(createdAt, "day");
-        return ( !todo.isCompleted && !iscurrentDate );
+      return todos.filter((todo) => {
+        const today = moment(new Date());
+        const createdAt = moment(todo.createdAt);
+        const iscurrentDate = today.isSame(createdAt, 'day');
+        return (!todo.isCompleted && !iscurrentDate);
       });
     },
     today(todos) {
-      return todos.filter(todo => {
-        var today = moment(new Date());
-        var createdAt = moment(todo.createdAt);
-        var iscurrentDate = today.isSame(createdAt, "day");
+      return todos.filter((todo) => {
+        const today = moment(new Date());
+        const createdAt = moment(todo.createdAt);
+        const iscurrentDate = today.isSame(createdAt, 'day');
         return iscurrentDate;
       });
     }

@@ -10,7 +10,7 @@
           ></v-progress-circular>
         </div>
       <v-timeline dense clipped v-if="!$apollo.queries.todoCompleted.loading" align-top class="ma-10">
-        
+
         <v-timeline-item fill-dot class="white--text mb-12" color="orange" large>
           <template v-slot:icon>
             <span>
@@ -37,15 +37,15 @@
               <strong>{{index + 1}}</strong>
             </v-col>
             <v-col cols="4">
-             
+
               {{todo.title}}
             </v-col>
             <v-col cols="3">
-             
+
               {{todo.updatedAt | formatDate}}
             </v-col>
             <v-col cols="3">
-             
+
               {{todo.createdAt | formatDate}}
             </v-col>
             <!-- <v-col class="text-right" cols="5">
@@ -63,11 +63,11 @@
 </template>
 
 <script>
-import gql from "graphql-tag";
-import { TODO_COMPLETED_QUERY } from "../gql/todo.gql";
+import gql from 'graphql-tag';
+import { TODO_COMPLETED_QUERY } from '../gql/todo.gql';
 
 export default {
-  name: "TodoComplete",
+  name: 'TodoComplete',
   apollo: {
     todoCompleted: {
       query: TODO_COMPLETED_QUERY

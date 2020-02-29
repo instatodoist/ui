@@ -47,12 +47,14 @@ Vue.filter('formatDate', (value) => {
   if (value) {
     return moment(String(value)).format('llll');
   }
+  return '';
 });
 
 Vue.filter('formatDateLess', (value) => {
   if (value) {
     return moment(String(value)).format('LL');
   }
+  return '';
 });
 
 new Vue({
