@@ -311,7 +311,6 @@ export default {
       // this.todoObj.title = todo.title;
       this.todoObj = { ...todo };
       this.todoObj.scheduledDate = todo.scheduledDate ? todo.scheduledDate : null;
-      console.log(this.todoObj)
     },
     doneEdit(todo) {
       // debugger
@@ -367,18 +366,46 @@ export default {
     },
     pending(todos) {
       return todos.filter((todo) => {
+        if (!todo.scheduledDate) {
+          return false;
+        }
+        if (todo.isCompleted) {
+          return false;
+        }
         const today = moment(new Date());
-        const createdAt = moment(todo.createdAt);
-        const iscurrentDate = today.isSame(createdAt, 'day');
-        return !todo.isCompleted && !iscurrentDate;
+        const scheduledDate = moment(todo.scheduledDate);
+        const isBefore = moment(scheduledDate).isBefore(today);
+        const isTodayDate = today.isSame(scheduledDate, 'day');
+        if (isBefore && !isTodayDate) {
+          return true;
+        }
+        return false;
+      });
+    },
+    inbox(todos) {
+      return todos.filter((todo) => {
+        if (!todo.scheduledDate) {
+          return true;
+        }
+        const today = moment(new Date());
+        const scheduledDate = moment(todo.scheduledDate);
+        const isAfter = moment(scheduledDate).isAfter(today);
+        const isTodayDate = today.isSame(scheduledDate, 'day');
+        if (isAfter && !isTodayDate) {
+          return true;
+        }
+        return false;
       });
     },
     today(todos) {
       return todos.filter((todo) => {
         const today = moment(new Date());
-        const createdAt = moment(todo.createdAt);
-        const iscurrentDate = today.isSame(createdAt, 'day');
-        return iscurrentDate;
+        if (!todo.scheduledDate) {
+          return false;
+        }
+        const scheduledDate = moment(todo.scheduledDate);
+        const isTodayDate = today.isSame(scheduledDate, 'day');
+        return isTodayDate;
       });
     }
   },
