@@ -128,7 +128,10 @@
               </v-container>
               <!-- <small>*indicates required field</small> -->
             </v-card-text>
-            <v-row>
+            <v-row v-if="todoObj.scheduledDate">
+               <v-switch class="ml-12" v-model="todoObj.noDate" :label="`No Date`"></v-switch>
+            </v-row>
+            <v-row v-if="!todoObj.noDate">
               <!-- <v-date-picker
                 v-model="scheduledDate"
                 :allowed-dates="allowedDates"
@@ -216,6 +219,7 @@ export default {
   data() {
     return {
       todoObj: {
+        noDate: false,
         title: '',
         scheduledDate: this.todayDate(),
       },
@@ -305,8 +309,9 @@ export default {
     editTodo(todo) {
       // this.beforeEditCache = todo.title;
       // this.todoObj.title = todo.title;
-      // this.todoObj.scheduledDate = todo.scheduledDate ? todo.scheduledDate : null;
       this.todoObj = { ...todo };
+      this.todoObj.scheduledDate = todo.scheduledDate ? todo.scheduledDate : null;
+      console.log(this.todoObj)
     },
     doneEdit(todo) {
       // debugger
@@ -334,8 +339,10 @@ export default {
         title: todo.title,
         isCompleted: !!todo.isCompleted
       };
-      if (todo.scheduledDate) {
+      if (todo.scheduledDate && !todo.noDate) {
         postTodo.scheduledDate = todo.scheduledDate;
+      } else {
+        postTodo.scheduledDate = null;
       }
       await this.$apollo.mutate({
         mutation: TODO_UPDATE_MUTATION,
