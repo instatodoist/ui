@@ -329,7 +329,7 @@ export default {
           }
         ]
       });
-      this.todoObj.title = '';
+      this.title = '';
       // this.$apollo.listThought();
     },
     async removeTodo(todo) {
