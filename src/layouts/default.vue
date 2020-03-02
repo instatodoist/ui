@@ -51,21 +51,21 @@
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <span class="hidden-sm-and-down">{{title}}</span>
       </v-toolbar-title>
-      <v-text-field
+      <!-- <v-text-field
         flat
         solo-inverted
         hide-details
         prepend-inner-icon="search"
         label="Search"
         class="hidden-sm-and-down"
-      ></v-text-field>
+      ></v-text-field> -->
       <div class="flex-grow-1"></div>
-      <v-btn icon>
+      <!-- <v-btn icon>
         <v-icon>apps</v-icon>
       </v-btn>
       <v-btn icon>
         <v-icon>notifications</v-icon>
-      </v-btn>
+      </v-btn> -->
       <v-btn icon large>
         <v-icon @click="logout()" title="Log Out">logout</v-icon>
         <!-- <v-avatar size="32px" item>
@@ -101,13 +101,13 @@ export default {
       { icon: 'chat_bubble', text: 'My Goals', link: '/thoughts' },
       // { icon: "history", text: "Frequently contacted" },
       // { icon: "content_copy", text: "Duplicates" },
-      {
-        icon: 'keyboard_arrow_up',
-        'icon-alt': 'keyboard_arrow_down',
-        text: 'Labels',
-        model: true,
-        children: [{ icon: 'add', text: 'Create label' }],
-      },
+      // {
+      //   icon: 'keyboard_arrow_up',
+      //   'icon-alt': 'keyboard_arrow_down',
+      //   text: 'Labels',
+      //   model: true,
+      //   children: [{ icon: 'add', text: 'Create label' }],
+      // },
       // {
       //   icon: "keyboard_arrow_up",
       //   "icon-alt": "keyboard_arrow_down",
@@ -121,7 +121,7 @@ export default {
       //     { text: "Other contacts" }
       //   ]
       // },
-      { icon: 'settings', text: 'Settings' },
+      // { icon: 'settings', text: 'Settings' },
       // { icon: "chat_bubble", text: "Send feedback" },
       // { icon: "help", text: "Help" },
       // { icon: "phonelink", text: "App downloads" },
