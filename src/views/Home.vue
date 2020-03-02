@@ -14,7 +14,7 @@
                   autofocus
                   autocomplete="off"
                   placeholder="What needs to be done?"
-                  v-model="todoObj.title"
+                  v-model="title"
                   @keyup.enter="addTodo"
                 >
                   <template v-slot:append>
@@ -260,6 +260,7 @@ export default {
         title: '',
         scheduledDate: this.todayDate(),
       },
+      title: '',
       loading: false,
       isLoading: false,
       targetTodo: '',
@@ -311,7 +312,7 @@ export default {
       return false;
     },
     async addTodo() {
-      const value = this.todoObj.title && this.todoObj.title.trim();
+      const value = this.title && this.title.trim();
       if (!value) {
         return;
       }
