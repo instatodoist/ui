@@ -33,7 +33,44 @@
             </v-list>
             <!-- </v-row> -->
             <!-- <v-row justify="space-around" v-if="!$apollo.queries.todoList.loading"> -->
-            <v-list subheader style="width: 100% !important">
+            <v-list subheader style="width: 100% !important" v-if="currentRouteName === 'inbox'">
+              <v-list-item>
+                <v-card-title>
+                  <v-btn color="blue-grey" class="ma-2 white--text">Inbox ({{inboxTodos.length}})</v-btn>
+                </v-card-title>
+              </v-list-item>
+              <draggable
+                v-model="todos"
+                group="todos"
+                @start="drag=true"
+                @end="drag=false"
+                :move="checkMove"
+              >
+                <v-list-item v-for="todo in inboxTodos" :key="todo._id">
+                  <v-list-item-avatar>
+                    <v-checkbox v-model="todo.isCompleted" @change="updateTodo(todo, true)"></v-checkbox>
+                  </v-list-item-avatar>
+
+                  <v-list-item-content>
+                    <v-list-item-title
+                      v-if="todo.title"
+                      class="body-2"
+                      v-bind:class="{'strike-through': todo.isCompleted}"
+                      v-text="todo.title"
+                    ></v-list-item-title>
+                  </v-list-item-content>
+                  <v-list-item-icon>
+                    <v-btn color="primary" depressed @click="editTodo(todo); updateDialog = true;">
+                      <v-icon>create</v-icon>
+                    </v-btn>&nbsp;&nbsp;
+                    <v-btn color="primary" depressed @click.stop="dialog = true; targetTodo = todo">
+                      <v-icon>delete_forever</v-icon>
+                    </v-btn>
+                  </v-list-item-icon>
+                </v-list-item>
+              </draggable>
+            </v-list>
+            <v-list v-if="currentRouteName !== 'inbox'" subheader style="width: 100% !important">
               <v-list-item>
                 <v-card-title v-if="todayTodos.length">
                   <v-btn color="blue-grey" class="ma-2 white--text">Today ({{todayTodos.length}})</v-btn>
@@ -70,7 +107,7 @@
                 </v-list-item>
               </draggable>
             </v-list>
-            <v-list subheader style="width: 100% !important">
+            <v-list v-if="currentRouteName !== 'inbox'" subheader style="width: 100% !important">
               <v-list-item>
                 <v-card-title v-if="pendingTodos.length">
                   <v-btn
@@ -234,7 +271,8 @@ export default {
       menu: '',
       editedTodo: null,
       visibility: 'all',
-      drag: false
+      drag: false,
+      isInbox: false
     };
   },
   apollo: {
@@ -419,7 +457,16 @@ export default {
       get() {
         return this.today(this.todoList.data);
       }
+    },
+    inboxTodos: {
+      get() {
+        return this.inbox(this.todoList.data);
+      }
+    },
+    currentRouteName() {
+      return this.$route.name;
     }
+
   }
 };
 </script>

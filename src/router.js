@@ -55,6 +55,15 @@ export default new Router({
       },
     },
     {
+      path: '/inbox',
+      beforeEnter: requireAuth,
+      name: 'inbox',
+      component: Home,
+      meta: {
+        layout: 'default',
+      },
+    },
+    {
       path: '/thoughts',
       beforeEnter: requireAuth,
       name: 'thought',
