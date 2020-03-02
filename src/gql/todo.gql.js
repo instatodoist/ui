@@ -37,6 +37,7 @@ export const TODO_LIST_QUERY = gql`
                 title
                 isCompleted
                 createdAt
+                scheduledDate
                 comments {
                     description
                 }

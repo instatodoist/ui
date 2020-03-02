@@ -14,7 +14,7 @@
                   autofocus
                   autocomplete="off"
                   placeholder="What needs to be done?"
-                  v-model="newTodo"
+                  v-model="todoObj.title"
                   @keyup.enter="addTodo"
                 >
                   <template v-slot:append>
@@ -122,19 +122,51 @@
               <v-container>
                 <v-row>
                   <v-col cols="12">
-                    <v-text-field v-model="editedTodo.title" label="Todo*" required></v-text-field>
+                    <v-text-field v-model="todoObj.title" label="Todo*" required></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
-              <small>*indicates required field</small>
+              <!-- <small>*indicates required field</small> -->
             </v-card-text>
+            <v-row>
+              <!-- <v-date-picker
+                v-model="scheduledDate"
+                :allowed-dates="allowedDates"
+                class="mt-4"
+              ></v-date-picker>-->
+
+              <v-menu
+                ref="menu"
+                v-model="menu"
+                transition="scale-transition"
+                offset-y
+                max-width="290px"
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-text-field
+                    class="ml-12"
+                    v-model="todoObj.scheduledDate"
+                    label="Scheduled Date"
+                    prepend-icon="event"
+                    readonly
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker v-model="todoObj.scheduledDate" :allowed-dates="allowedDates" class="mt-4">
+                  <!-- <v-spacer></v-spacer>
+                  <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
+                  <v-btn text color="primary" @click="$refs.menu.save(scheduledDate)">OK</v-btn> -->
+                </v-date-picker>
+              </v-menu>
+            </v-row>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="updateDialog = false">Close</v-btn>
               <v-btn
                 color="blue darken-1"
                 text
-                @click="doneEdit(editedTodo); updateDialog = false;"
+                @click="doneEdit(todoObj); updateDialog = false;"
               >Save</v-btn>
             </v-card-actions>
           </v-card>
@@ -183,6 +215,10 @@ export default {
   name: 'Home',
   data() {
     return {
+      todoObj: {
+        title: '',
+        scheduledDate: this.todayDate(),
+      },
       loading: false,
       isLoading: false,
       targetTodo: '',
@@ -191,7 +227,7 @@ export default {
       isLoggedIn: this.isLogged(),
       showModal: false,
       todos: [],
-      newTodo: '',
+      menu: '',
       editedTodo: null,
       visibility: 'all',
       drag: false
@@ -206,6 +242,23 @@ export default {
     draggable
   },
   methods: {
+    allowedDates(val) {
+      return val === this.todayDate() || val > this.todayDate();
+    },
+    todayDate() {
+      const today = new Date();
+      let dd = today.getDate();
+      let mm = today.getMonth() + 1;
+      const yyyy = today.getFullYear();
+      if (dd < 10) {
+        dd = `0${dd}`;
+      }
+
+      if (mm < 10) {
+        mm = `0${mm}`;
+      }
+      return `${yyyy}-${mm}-${dd}`;
+    },
     checkMove(e) {
       window.console.log(e.draggedContext);
     },
@@ -216,7 +269,7 @@ export default {
       return false;
     },
     async addTodo() {
-      const value = this.newTodo && this.newTodo.trim();
+      const value = this.todoObj.title && this.todoObj.title.trim();
       if (!value) {
         return;
       }
@@ -233,8 +286,8 @@ export default {
           }
         ]
       });
-      this.newTodo = '';
-      this.$apollo.listThought();
+      this.todoObj.title = '';
+      // this.$apollo.listThought();
     },
     async removeTodo(todo) {
       const todoId = todo._id;
@@ -250,31 +303,45 @@ export default {
       this.newTodo = '';
     },
     editTodo(todo) {
-      this.beforeEditCache = todo.title;
-      this.editedTodo = { ...todo };
+      // this.beforeEditCache = todo.title;
+      // this.todoObj.title = todo.title;
+      // this.todoObj.scheduledDate = todo.scheduledDate ? todo.scheduledDate : null;
+      this.todoObj = { ...todo };
     },
     doneEdit(todo) {
-      if (!this.editedTodo) {
-        return;
-      }
-      this.editedTodo = null;
-      todo.title = todo.title.trim();
-      if (!todo.title) {
+      // debugger
+      // if (!this.editedTodo) {
+      //   return;
+      // }
+      // this.todoObj = {
+      //   title: '',
+      //   scheduledDate: null
+      // };
+      // const todoObj = {
+      //   title: todo.title.trim(),
+      // };
+      // if (todo.scheduledDate) {
+      //   todoObj.scheduledDate = todo.scheduledDate;
+      // }
+      if (!todo.title && !todo.scheduledDate) {
         this.removeTodo(todo);
       }
       this.updateTodo(todo);
     },
     async updateTodo(todo) {
       const todoId = todo._id;
-      const isCompleted = !!todo.isCompleted;
+      const postTodo = {
+        title: todo.title,
+        isCompleted: !!todo.isCompleted
+      };
+      if (todo.scheduledDate) {
+        postTodo.scheduledDate = todo.scheduledDate;
+      }
       await this.$apollo.mutate({
         mutation: TODO_UPDATE_MUTATION,
         variables: {
           id: todoId,
-          input: {
-            title: todo.title,
-            isCompleted
-          }
+          input: postTodo
         },
         refetchQueries: [
           {
@@ -296,7 +363,7 @@ export default {
         const today = moment(new Date());
         const createdAt = moment(todo.createdAt);
         const iscurrentDate = today.isSame(createdAt, 'day');
-        return (!todo.isCompleted && !iscurrentDate);
+        return !todo.isCompleted && !iscurrentDate;
       });
     },
     today(todos) {
