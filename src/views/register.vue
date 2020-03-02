@@ -1,6 +1,5 @@
 
 <script>
-import { constants } from 'crypto';
 import { REGISTER_MUTATION } from '../gql/auth.gql';
 
 export default {
@@ -81,8 +80,9 @@ export default {
                     <v-card-text>
                       <v-form>
                         <v-text-field
+                          autocomplete="off"
                           prepend-icon="email"
-                          label="Email address"
+                          placeholder="Email address"
                           name="email"
                           type="text"
                           v-model="user.email"
@@ -90,9 +90,10 @@ export default {
                         ></v-text-field>
 
                         <v-text-field
+                          autocomplete="off"
                           prepend-icon="lock"
                           id="password"
-                          label="Password"
+                          placeholder="Password"
                           name="password"
                           type="password"
                           v-model="user.password"
