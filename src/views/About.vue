@@ -7,7 +7,7 @@
       <v-parallax src="https://vuetifyjs.com/themes/parallax-starter/assets/hero.jpeg" height="600">
         <v-layout column align-center justify-center class="white--text">
           <img
-            src="https://vuetifyjs.com/themes/parallax-starter/assets/vuetify.png"
+            src="/img/bg.jpg"
             alt="Vuetify.js"
             height="200"
           />
