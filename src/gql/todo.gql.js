@@ -35,6 +35,10 @@ export const TODO_LIST_QUERY = gql`
             data {
                 _id
                 title
+                label {
+                    name
+                    _id
+                }
                 isCompleted
                 createdAt
                 scheduledDate

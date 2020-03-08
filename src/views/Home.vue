@@ -149,6 +149,7 @@
             </v-list>
           </v-row>
         </v-card>
+
         <!-- Update TODO Dialog -->
         <v-dialog v-if="updateDialog" v-model="updateDialog" persistent max-width="600px">
           <v-card>
@@ -200,6 +201,19 @@
                 </v-date-picker>
               </v-menu>
             </v-row>
+            <v-row>
+              <v-col cols="12">
+                <header class="ml-12">Labels</header>
+              </v-col>
+              <v-radio-group class="ml-12" v-model="labelId">
+                <v-radio
+                  v-for="label in labels"
+                  :key="label._id"
+                  :label="`${label.name}`"
+                  :value="label._id"
+                ></v-radio>
+              </v-radio-group>
+            </v-row>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="updateDialog = false">Close</v-btn>
@@ -211,6 +225,7 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+
         <!-- Delete Confirm Dialog -->
         <v-dialog v-model="dialog" max-width="290">
           <v-card>
@@ -247,7 +262,8 @@ import {
   TODO_LIST_QUERY,
   TODO_ADD_MUTATION,
   TODO_UPDATE_MUTATION,
-  TODO_DELETE_MUTATION
+  TODO_DELETE_MUTATION,
+  TODO_LABEL_QUERY
 } from '../gql/todo.gql';
 
 export default {
@@ -255,10 +271,12 @@ export default {
   name: 'Home',
   data() {
     return {
+      labelId: '',
       todoObj: {
         noDate: false,
         title: '',
         scheduledDate: this.todayDate(),
+        labeId: ''
       },
       title: '',
       loading: false,
@@ -273,7 +291,8 @@ export default {
       editedTodo: null,
       visibility: 'all',
       drag: false,
-      isInbox: false
+      isInbox: false,
+      labels: []
     };
   },
   apollo: {
@@ -346,29 +365,12 @@ export default {
       this.newTodo = '';
     },
     editTodo(todo) {
-      // this.beforeEditCache = todo.title;
-      // this.todoObj.title = todo.title;
       this.todoObj = { ...todo };
       this.todoObj.scheduledDate = todo.scheduledDate ? todo.scheduledDate : null;
+      this.labeId = todo.label._id ? todo.label._id : '';
     },
     doneEdit(todo) {
-      // debugger
-      // if (!this.editedTodo) {
-      //   return;
-      // }
-      // this.todoObj = {
-      //   title: '',
-      //   scheduledDate: null
-      // };
-      // const todoObj = {
-      //   title: todo.title.trim(),
-      // };
-      // if (todo.scheduledDate) {
-      //   todoObj.scheduledDate = todo.scheduledDate;
-      // }
-      if (!todo.title && !todo.scheduledDate) {
-        this.removeTodo(todo);
-      }
+      todo.labelId = this.labelId ? this.labelId : '';
       this.updateTodo(todo);
     },
     async updateTodo(todo) {
@@ -377,6 +379,9 @@ export default {
         title: todo.title,
         isCompleted: !!todo.isCompleted
       };
+      if (todo.labelId) {
+        postTodo.label = todo.labelId;
+      }
       if (todo.scheduledDate && !todo.noDate) {
         postTodo.scheduledDate = todo.scheduledDate;
       } else {
@@ -468,6 +473,10 @@ export default {
       return this.$route.name;
     }
 
+  },
+  async created() {
+    const response = await this.$apollo.query({ query: TODO_LABEL_QUERY });
+    this.labels = response.data.todoLabelList;
   }
 };
 </script>
