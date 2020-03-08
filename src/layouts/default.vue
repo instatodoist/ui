@@ -160,6 +160,12 @@ export default {
     };
   },
   methods: {
+    isLogged() {
+      if (localStorage.token) {
+        return true;
+      }
+      return false;
+    },
     logout() {
       return localStorageService.destroySession().then(() => {
         this.$router.push('/login');
@@ -211,7 +217,9 @@ export default {
   },
   async created() {
     this.title = this.$APP_TITLE;
-    this.getLabel();
+    if (this.isLogged()) {
+      this.getLabel();
+    }
   },
 };
 </script>
