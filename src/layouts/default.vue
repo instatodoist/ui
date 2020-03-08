@@ -82,24 +82,48 @@
         <slot />
       </v-container>
     </v-content>
+    <v-dialog v-if="labelDialog" v-model="labelDialog" persistent max-width="600px">
+          <v-card>
+            <v-card-title>
+              <span class="headline">Add Label</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field v-model="label.name" label="Label*" required></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <!-- <small>*indicates required field</small> -->
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="labelDialog = false">Close</v-btn>
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="saveLabel(label); labelDialog = false;"
+              >Save</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
   </div>
 </template>
 
 <script>
 import localStorageService from '../services/localStorage';
-// import AppFooter from '../components/layouts/AppFooter.vue';
-// import AppHeader from '../components/layouts/AppHeader.vue';
-import { TODO_LABEL_QUERY } from '../gql/todo.gql';
+import { TODO_LABEL_QUERY, TODO_LABEL_ADD_MUTATION } from '../gql/todo.gql';
 
 export default {
   name: 'DefaultLayout',
-  // components: {
-  //   AppFooter,
-  //   AppHeader,
-  // },
   data() {
     return {
       drawer: null,
+      labelDialog: false,
+      label: {
+        name: ''
+      },
       items: [
         { icon: 'email', text: 'Inbox', link: '/inbox' },
         { icon: 'contacts', text: 'Today', link: '/dashboard' },
@@ -135,11 +159,6 @@ export default {
       ],
     };
   },
-  // apollo: {
-  //   todoList: {
-  //     query: TODO_LABEL_QUERY
-  //   }
-  // },
   methods: {
     logout() {
       return localStorageService.destroySession().then(() => {
@@ -150,26 +169,49 @@ export default {
       if (link) {
         this.$router.push(link);
       } else {
-        console.log('No lInk ', link);
+        this.labelDialog = true;
       }
+    },
+    async getLabel() {
+      const response = await this.$apollo.query({ query: TODO_LABEL_QUERY });
+      const responseData = response.data.todoLabelList;
+      const responseLinks = responseData.map(item => ({
+        ...item, link: (item._id) ? `/labelled-todos/${item._id}` : '', text: (item.name) ? `${item.name}` : 'blank_label'
+      }));
+      const labels = {
+        icon: 'keyboard_arrow_up',
+        'icon-alt': 'keyboard_arrow_down',
+        text: 'Labels',
+        model: true,
+        children: [{ icon: 'add', text: 'Create label' }],
+      };
+      labels.children = [...responseLinks, ...labels.children];
+      this.items.push(labels);
+    },
+    async saveLabel(label) {
+      const value = label.name && label.name.trim();
+      if (!value) {
+        return;
+      }
+      this.loading = true;
+      const postBody = {
+        name: value
+      };
+      await this.$apollo.mutate({
+        mutation: TODO_LABEL_ADD_MUTATION,
+        variables: { input: postBody },
+        refetchQueries: [
+          {
+            query: TODO_LABEL_QUERY
+          }
+        ]
+      });
+      this.label.name = '';
     }
   },
   async created() {
     this.title = this.$APP_TITLE;
-    const response = await this.$apollo.query({ query: TODO_LABEL_QUERY });
-    const responseData = response.data.todoLabelList;
-    const responseLinks = responseData.map(item => ({
-      ...item, link: (item._id) ? `/labelled-todos/${item._id}` : '', text: (item.name) ? `${item.name}` : 'blank_label'
-    }));
-    const labels = {
-      icon: 'keyboard_arrow_up',
-      'icon-alt': 'keyboard_arrow_down',
-      text: 'Labels',
-      model: true,
-      children: [{ icon: 'add', text: 'Create label' }],
-    };
-    labels.children = [...responseLinks, ...labels.children];
-    this.items.push(labels);
+    this.getLabel();
   },
 };
 </script>

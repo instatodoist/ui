@@ -276,7 +276,6 @@ export default {
         noDate: false,
         title: '',
         scheduledDate: this.todayDate(),
-        labeId: ''
       },
       title: '',
       loading: false,
@@ -367,7 +366,7 @@ export default {
     editTodo(todo) {
       this.todoObj = { ...todo };
       this.todoObj.scheduledDate = todo.scheduledDate ? todo.scheduledDate : null;
-      this.labeId = todo.label._id ? todo.label._id : '';
+      this.labelId = todo.label._id ? todo.label._id : '';
     },
     doneEdit(todo) {
       todo.labelId = this.labelId ? this.labelId : '';

@@ -77,6 +77,15 @@ export const TODO_COMPLETED_QUERY = gql`
     }
 `;
 
+export const TODO_LABEL_ADD_MUTATION = gql`
+    mutation addTodoLabel( $input: TodoLabelInputType!) {
+        addTodoLabel(input: $input){
+            message
+            ok
+        }
+    }
+`;
+
 export const TODO_LABEL_QUERY = gql`
     query {
         todoLabelList {
