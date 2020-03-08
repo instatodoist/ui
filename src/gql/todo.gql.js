@@ -73,6 +73,14 @@ export const TODO_COMPLETED_QUERY = gql`
     }
 `;
 
+export const TODO_LABEL_QUERY = gql`
+    query {
+        todoLabelList {
+            name
+            _id
+        }
+    }
+`;
 
 export default {
   TODO_ADD_MUTATION,

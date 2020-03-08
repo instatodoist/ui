@@ -8,6 +8,7 @@ import Register from './views/register.vue';
 import VerifyEmail from './views/verify.vue';
 import requireAuth from './services/requireAuth';
 import localStorageService from './services/localStorage';
+import LabelTodo from './views/label.vue';
 
 Vue.use(Router);
 
@@ -77,6 +78,15 @@ export default new Router({
       beforeEnter: requireAuth,
       name: 'cTodos',
       component: TodoCompleted,
+      meta: {
+        layout: 'default',
+      },
+    },
+    {
+      path: '/labelled-todos/:label',
+      beforeEnter: requireAuth,
+      name: 'labelledTodos',
+      component: LabelTodo,
       meta: {
         layout: 'default',
       },

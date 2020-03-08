@@ -25,15 +25,18 @@
                 </v-list-item-content>
               </v-list-item>
             </template>
-            <v-list-item v-for="(child, i) in item.children" :key="i" @click>
-              <v-list-item-action v-if="child.icon">
-                <v-icon>{{ child.icon }}</v-icon>
+            <!-- Iterate child sub-links -->
+            <v-list-item v-for="(child, i) in item.children" :key="i" @click="navigateToRoute(child.link)">
+              <v-list-item-action>
+                <v-icon>{{ child.icon || ''}}</v-icon>
               </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title>{{ child.text }}</v-list-item-title>
+                <v-list-item-title>{{ child.text}}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
+            <!-- END-->
           </v-list-group>
+          <!-- Iterate child links -->
           <v-list-item v-else :key="item.text" :to="item.link? item.link: '/'">
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
@@ -42,6 +45,7 @@
               <v-list-item-title>{{ item.text }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <!-- END-->
         </template>
       </v-list>
     </v-navigation-drawer>
@@ -83,31 +87,33 @@
 
 <script>
 import localStorageService from '../services/localStorage';
-import AppFooter from '../components/layouts/AppFooter.vue';
-import AppHeader from '../components/layouts/AppHeader.vue';
+// import AppFooter from '../components/layouts/AppFooter.vue';
+// import AppHeader from '../components/layouts/AppHeader.vue';
+import { TODO_LABEL_QUERY } from '../gql/todo.gql';
 
 export default {
   name: 'DefaultLayout',
-  components: {
-    AppFooter,
-    AppHeader,
-  },
-  data: () => ({
-    drawer: null,
-    items: [
-      { icon: 'email', text: 'Inbox', link: '/inbox' },
-      { icon: 'contacts', text: 'Today', link: '/dashboard' },
-      { icon: 'note_add', text: 'Completed Todos', link: '/completed-todos' },
-      { icon: 'chat_bubble', text: 'My Goals', link: '/thoughts' },
-      // { icon: "history", text: "Frequently contacted" },
-      // { icon: "content_copy", text: "Duplicates" },
-      // {
-      //   icon: 'keyboard_arrow_up',
-      //   'icon-alt': 'keyboard_arrow_down',
-      //   text: 'Labels',
-      //   model: true,
-      //   children: [{ icon: 'add', text: 'Create label' }],
-      // },
+  // components: {
+  //   AppFooter,
+  //   AppHeader,
+  // },
+  data() {
+    return {
+      drawer: null,
+      items: [
+        { icon: 'email', text: 'Inbox', link: '/inbox' },
+        { icon: 'contacts', text: 'Today', link: '/dashboard' },
+        { icon: 'note_add', text: 'Completed Todos', link: '/completed-todos' },
+        { icon: 'chat_bubble', text: 'My Goals', link: '/thoughts' },
+        // { icon: "history", text: "Frequently contacted" },
+        // { icon: "content_copy", text: "Duplicates" },
+        // {
+        //   icon: 'keyboard_arrow_up',
+        //   'icon-alt': 'keyboard_arrow_down',
+        //   text: 'Labels',
+        //   model: true,
+        //   children: [{ icon: 'add', text: 'Create label' }],
+        // },
       // {
       //   icon: "keyboard_arrow_up",
       //   "icon-alt": "keyboard_arrow_down",
@@ -126,17 +132,44 @@ export default {
       // { icon: "help", text: "Help" },
       // { icon: "phonelink", text: "App downloads" },
       // { icon: "keyboard", text: "Go to the old version" }
-    ],
-  }),
+      ],
+    };
+  },
+  // apollo: {
+  //   todoList: {
+  //     query: TODO_LABEL_QUERY
+  //   }
+  // },
   methods: {
     logout() {
       return localStorageService.destroySession().then(() => {
         this.$router.push('/login');
       });
     },
+    navigateToRoute(link) {
+      if (link) {
+        this.$router.push(link);
+      } else {
+        console.log('No lInk ', link);
+      }
+    }
   },
-  created() {
+  async created() {
     this.title = this.$APP_TITLE;
+    const response = await this.$apollo.query({ query: TODO_LABEL_QUERY });
+    const responseData = response.data.todoLabelList;
+    const responseLinks = responseData.map(item => ({
+      ...item, link: (item._id) ? `/labelled-todos/${item._id}` : '', text: (item.name) ? `${item.name}` : 'blank_label'
+    }));
+    const labels = {
+      icon: 'keyboard_arrow_up',
+      'icon-alt': 'keyboard_arrow_down',
+      text: 'Labels',
+      model: true,
+      children: [{ icon: 'add', text: 'Create label' }],
+    };
+    labels.children = [...responseLinks, ...labels.children];
+    this.items.push(labels);
   },
 };
 </script>
