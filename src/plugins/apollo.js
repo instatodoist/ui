@@ -38,9 +38,12 @@ const errorLink = onError(({ graphQLErrors }) => {
     }
   }
   // parsing error message
-  let msg = message.match(/\[(.*?)\]/)[1] || 'Something went wrong';
-  msg = msg.replace(/"/g, '');
-  msg = msg.charAt(0).toUpperCase() + msg.slice(1);
+  let msg = message;
+  if (message.match(/\[(.*?)\]/)) {
+    msg = message.match(/\[(.*?)\]/)[1] || 'Something went wrong';
+    msg = msg.replace(/"/g, '');
+    msg = msg.charAt(0).toUpperCase() + msg.slice(1);
+  }
   Vue.prototype.$toast.error(msg);
 });
 

@@ -39,13 +39,13 @@ export default {
           },
         })
         .then((response) => {
-          const { token, user, message } = response.data.login;
+          const { token, user } = response.data.login;
           localStorage.setItem('token', token);
           localStorage.setItem('user', JSON.stringify(user));
           this.isSubmit = false;
           window.location.reload();
         })
-        .catch((err) => {
+        .catch(() => {
           this.isSubmit = false;
         });
 
