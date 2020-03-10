@@ -25,38 +25,23 @@ const authLink = setContext((_, { headers }) =>
 
 // Error Handling
 // eslint-disable-next-line consistent-return
-const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors) {
-    // eslint-disable-next-line array-callback-return
-    graphQLErrors.map(({ message, locations, path }) => {
-      console.error(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-      );
-    });
-  }
-  if (networkError) {
-    const key = 'statusCode';
-    const statusCode = networkError[key] || null;
-    switch (statusCode) {
+const errorLink = onError(({ graphQLErrors }) => {
+  const { message, status, code } = graphQLErrors[0];
+  // Checking Error codes
+  if (status && code !== 'ValidationError') {
+    switch (status) {
     case 401:
       localStorage.clear();
       window.location.href = '/login';
       break;
     default:
-      return true;
     }
   }
-  if (graphQLErrors) console.log(graphQLErrors[0].message);
-  let testMessage = graphQLErrors[0].message;
-  if (testMessage.includes('[')) {
-    const message = testMessage.substring(
-      testMessage.lastIndexOf('[') + 1,
-      testMessage.lastIndexOf(']'),
-    ).replace(/"/g, '');
-    testMessage = message.charAt(0).toUpperCase() + message.slice(1);
-  }
-
-  Vue.prototype.$toast.error(testMessage);
+  // parsing error message
+  let msg = message.match(/\[(.*?)\]/)[1] || 'Something went wrong';
+  msg = msg.replace(/"/g, '');
+  msg = msg.charAt(0).toUpperCase() + msg.slice(1);
+  Vue.prototype.$toast.error(msg);
 });
 
 // Create the apollo client
@@ -64,6 +49,11 @@ export const apolloClient = new ApolloClient({
   link: errorLink.concat(authLink).concat(httpLink),
   cache: new InMemoryCache(),
   connectToDevTools: true,
+  defaultOptions: {
+    watchQuery: {
+      errorPolicy: 'all'
+    }
+  }
 });
 
 // Install the Vue plugin
