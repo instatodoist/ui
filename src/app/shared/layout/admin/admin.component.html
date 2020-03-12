@@ -1,0 +1,21 @@
+<div style="display: flex;height: 100vh;">
+    <!-- sidebar menu -->
+    <aside class="mdc-drawer mdc-drawer--dismissible ltx-m10-sidebar">
+        <div class="mdc-drawer__header">
+            <h3 class="mdc-drawer__title" routerLink="/">InstaTodos</h3>
+        </div>
+        <div class="mdc-drawer__content">
+            <app-sidebar></app-sidebar>
+        </div>
+    </aside>
+    <!-- content -->
+    <div class="mdc-drawer-app-content">
+        <!-- header -->
+        <app-header></app-header>
+        <main class="main-content" id="main-content">
+            <div class="mdc-top-app-bar--fixed-adjust">
+                <router-outlet></router-outlet>
+            </div>
+        </main>
+    </div>
+</div>

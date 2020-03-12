@@ -1,0 +1,264 @@
+// overwrite material classes
+.mdc-menu-surface--anchor {
+  display: inline-block;
+}
+
+// default styles
+body {
+  font-family: "Roboto", sans-serif;
+}
+::-webkit-input-placeholder {
+  font-size: 15px !important;
+}
+::-moz-placeholder {
+  font-size: 16px !important;
+}
+
+/* firefox 19+ */
+:-ms-input-placeholder,
+input:-moz-placeholder {
+  font-size: 15px !important;
+}
+
+// width
+.w100 {
+  width: 100px;
+}
+.w98p {
+  width: 98%;
+}
+.w100p {
+  width: 100%;
+}
+.w30 {
+  width: 30px;
+}
+.w50 {
+  width: 50px;
+}
+.table-intent tbody tr td:nth-child(1) {
+  width: 40%;
+}
+select {
+  /* for Firefox */
+  -moz-appearance: none;
+  /* for Chrome */
+  -webkit-appearance: none;
+}
+
+/* For IE10 */
+select::-ms-expand {
+  display: none;
+}
+
+// loader with msg
+.loader-msg,
+.flex-center {
+  display: inline-flex;
+  align-items: center;
+}
+.clearfix {
+  clear: both;
+}
+select {
+  outline: 0;
+}
+.app-icon {
+  height: 40px;
+  width: auto;
+  vertical-align: middle;
+}
+.breadcrumb-arrow-forward {
+  padding-right: 8px;
+  color: #fff;
+  font-size: 1.25rem;
+  line-height: 2rem;
+  padding-left: 8px;
+}
+
+// colors
+.text-succss {
+  color: $succss;
+}
+.text-danger {
+  color: $danger;
+}
+.text-primary {
+  color: $mdc-theme-primary;
+}
+.text-secondary {
+  color: $mdc-theme-secondary;
+}
+.text-black {
+  color: #000;
+}
+.text-capitalize {
+  text-transform: capitalize;
+}
+.text-u-done {
+  text-decoration: none;
+}
+
+// cursor
+.cursor-pointer {
+  cursor: pointer;
+}
+.cursor-default {
+  cursor: default;
+}
+
+// colors
+.bg-primary {
+  background-color: $mdc-theme-primary;
+}
+.bg-primary-light {
+  background-color: lighten($mdc-theme-primary, 55%);
+}
+.bg-secondary {
+  background-color: $mdc-theme-secondary;
+}
+
+// border radius
+.border-radius-5 {
+  border-radius: 5px;
+}
+.border-radius-10 {
+  border-radius: 10px;
+}
+
+// scrollup
+.scroll-up {
+  position: fixed;
+  right: 20px;
+  bottom: 18px;
+  display: none;
+}
+
+// download link  with image
+.download-link {
+  display: flex;
+  align-items: end;
+  text-decoration: none;
+  outline: 0;
+}
+
+// Remove outlie for firefox
+a,
+i,
+td {
+  outline: 0;
+}
+
+// disble links
+.disablelinks {
+  pointer-events: none;
+  cursor: default;
+  color: #ccc !important;
+  i {
+    color: #ccc !important;
+  }
+}
+
+// image alignments
+.v-align-bottom {
+  vertical-align: text-bottom;
+}
+.v-align-top {
+  vertical-align: top;
+}
+.mdl-data-table thead tr th .arrow {
+  opacity: 0;
+  filter: alpha(opacity=00);
+  /* For IE8 and earlier */
+  height: 20px;
+}
+.mdl-data-table thead tr th:hover img,
+.mdl-data-table thead tr th img.active {
+  opacity: 0.6;
+  filter: alpha(opacity=60);
+  /* For IE8 and earlier */
+}
+
+// fonts
+.f-12 {
+  font-size: 12px;
+}
+
+.mdc-menu {
+  .mdc-list-item {
+    &.disabled {
+      cursor: no-drop;
+    }
+    font-size: 13px !important;
+  }
+}
+.filter-by {
+  .mdc-menu {
+    width: 250px;
+  }
+  .mdc-list-item__graphic {
+    margin-right: 12px !important;
+  }
+}
+.footer {
+  height: 50px;
+  padding-top: 30px;
+}
+.choose-box {
+  width: 100%;
+  background-color: whitesmoke !important;
+  height: 56px;
+  padding-left: 15px;
+  border-radius: 10px;
+  color: rgba(0, 0, 0, 0.87) !important;
+  font-size: 16px;
+  justify-content: left !important;
+  i {
+    position: absolute;
+    left: 89%;
+  }
+}
+.choose-box.disabled-class {
+  color: #555 !important;
+}
+.bb-0 {
+  border-bottom: 0px !important;
+}
+
+// column count
+.col-c-3 {
+  column-count: 3;
+  column-gap: 0;
+}
+.ace_editor {
+  min-height: 400px;
+  max-height: 500px;
+  font-size: 15px !important;
+}
+table.script-details tbody tr td.td1 {
+  width: 100px !important;
+}
+.pl-20 {
+  padding-left: 20px !important;
+}
+span.ports-count{
+  color: #9a9696 !important;
+}
+.device-selection-hover{
+  background-color: #f6f6f6;
+}
+// progress bar for autologout
+.progress-custom{
+  width: 70%;
+  margin: auto;
+  padding-top: 20px;
+}
+.progress-custom .progress-bar{
+  background-color: dimgray;
+}
+.hide{
+  display: none;
+}
+.df{
+  display: flex;
+}

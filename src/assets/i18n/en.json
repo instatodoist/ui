@@ -1,0 +1,19 @@
+{
+  "auth": {
+    "signin": "Sign-In",
+    "username": "Uesrname",
+    "password": "Password",
+    "email": "Email"
+  },
+  "app_dir": "Application Directory",
+  "blacklist_portals": "Blacklist Portals",
+  "blacklist_emails": "Blacklist Emails",
+  "docs": "Docs",
+  "domain_status": "Domain Mapping Status",
+  "subscription_request": "Subscription Request",
+  "inbox": "Inbox",
+  "today": "Today",
+  "upcoming": "Upcoming Next week",
+  "my_goals": "My Goals",
+  "completed_todos": "Completed Todos"
+}

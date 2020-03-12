@@ -1,0 +1,54 @@
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+body {
+  display: flex;
+  height: 100vh;
+  padding: 0px;
+  margin: 0px;
+}
+.mdc-drawer-app-content {
+  flex: auto;
+  overflow: auto;
+  position: relative;
+  overflow-y: hidden;
+  height: 100%;
+}
+.main-content {
+  .mdc-top-app-bar--fixed-adjust {
+    min-height: calc(100vh - 130px);
+    padding-top: 74px;
+  }
+  overflow: auto;
+  max-height: 100%;
+  min-height: 100%;
+  padding-left: 24px;
+  padding-right: 24px;
+  position: relative;
+  display: block;
+}
+.app-bar {
+  position: absolute;
+}
+.#{$css-prefix}app {
+  width: 100%;
+}
+
+// iframes
+.middle-iframe {
+  overflow: hidden;
+  .layout-fixed-header {
+    display: none;
+  }
+  #accounts {
+    height: 100vh !important;
+    overflow: auto !important;
+    width: 100% !important;
+    border: none !important;
+    display: block !important;
+  }
+}
+body.middle-iframe .app {
+  min-height: 0px;
+}

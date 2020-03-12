@@ -1,0 +1,66 @@
+<header class="mdc-top-app-bar app-bar" id="app-bar">
+    <div class="mdc-top-app-bar__row">
+        <!-- title -->
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+            <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</button>
+            <span class="mdc-top-app-bar__title">{{headerTitle | translate}}</span>
+        </section>
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+            <!-- help link -->
+            <a target="_blank" class="material-icons mdc-top-app-bar__action-item" aria-label="Print this page"
+                alt="Print this page">
+                help
+            </a>
+            <!-- lang dropdown menu -->
+            <!-- <div class="mdc-menu-surface--anchor">
+                <a href="javascript:void(0)" style="text-decoration: none;"
+                    class="mdc-top-app-bar__action-item mdc-button-dropdown df my-5" appDropdownMenu>
+                    <i class="material-icons">
+                        language
+                    </i>
+                </a>
+                <div class="mdc-menu mdc-menu-surface">
+                    <ul class="mdc-list mdc-list--two-line" style="width: 240px" role="menu" aria-hidden="true"
+                        aria-orientation="vertical" tabindex="-1">
+
+                        <li (click)="useLanguage('en')" class="mdc-list-item" style="height: 36px" role="menuitem">
+                            English
+                        </li>
+                        <li (click)="useLanguage('te')" class="mdc-list-item" style="height: 36px" role="menuitem">
+                            Telugu
+                        </li>
+                    </ul>
+                </div>
+            </div> -->
+            <!-- profile menu -->
+            <div class="mdc-menu-surface--anchor">
+                <a href="javascript:void(0)" style="text-decoration: none;"
+                    class="mdc-top-app-bar__action-item mdc-button-dropdown topbar-avatar" appDropdownMenu>
+                    <span>AK</span>
+                </a>
+                <div class="mdc-menu mdc-menu-surface">
+                    <ul class="mdc-list mdc-list--two-line" style="width: 240px" role="menu" aria-hidden="true"
+                        aria-orientation="vertical" tabindex="-1">
+                        <li class="mdc-list-item pl-2 pr-0" role="menuitem" ui-sref="app.profile.show">
+                            <span class="mdc-list-item__graphic topbar-avatar lg">AK</span>
+                            <span class="mdc-list-item__text pl-2">
+                                <span class="mdc-list-item__primary-text text-capitalize"
+                                    style="font-weight: bold;">Ashok Kumar</span>
+                                <span class="mdc-list-item__secondary-text"
+                                    style="font-size: x-small">anandam@lantronix.com</span>
+                            </span>
+                            <span class="mdc-list-item__meta material-icons ml10">keyboard_arrow_right</span>
+                        </li>
+                        <li role="separator" class="mdc-list-divider ml10 mr10"></li>
+                        <li class="mdc-list-item" style="height: 36px" role="menuitem">
+                            <button data-mdc-auto-init="MDCRipple" class="mdc-button rounded mdc-button--outlined w-100"
+                                (click)="signOut()" style="color: grey; border: 1px solid gray">
+                                Logout
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+</header>

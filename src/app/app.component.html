@@ -1,0 +1,14 @@
+<!-- loading -->
+<div role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate app-loader" *ngIf="loading"
+  aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0"
+  data-mdc-auto-init="MDCLinearProgress">
+  <div class="mdc-linear-progress__buffering-dots"></div>
+  <div class="mdc-linear-progress__buffer"></div>
+  <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+    <span class="mdc-linear-progress__bar-inner"></span>
+  </div>
+  <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+    <span class="mdc-linear-progress__bar-inner"></span>
+  </div>
+</div>
+<router-outlet></router-outlet>

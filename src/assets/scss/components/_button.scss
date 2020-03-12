@@ -1,0 +1,73 @@
+// gradient button .{{prefix-string-}}btn-gradine
+.#{$css-prefix}btn-gradient {
+  @include gradient-x(
+    $start-color: $gradient-color2,
+    $end-color: $gradient-color1,
+    $start-percent: 0%,
+    $end-percent: 85%
+  );
+}
+
+// mdc-tab buttons
+button.mdc-tab{
+  &:disabled:hover,&:disabled{
+    cursor: no-drop;
+    opacity: 0.5;
+  }
+}
+
+// round buttons
+.mdc-button{
+  text-transform: none;
+  letter-spacing: inherit;
+  font-weight: inherit;
+  span{
+    display: inline-flex;
+    align-items: center;
+  }
+  &.rounded{
+    border-radius: 50px;
+  }
+  &.three-dot{
+    padding: 0px;
+    color: black;
+    min-width: 36px;
+    .material-icons{
+      margin: 0px;
+    }
+  }
+  &.delete {
+    border-color:#dc3545;
+    color: #dc3545;
+  }
+  &.secondary:not(:disabled){
+    background-color: $seconday-color;
+  }
+  &.plain-border{
+    border:1px solid lightgrey;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+  &.mini{
+    height: 28px;
+  }
+  &.white{
+    border:1px solid lightgrey;
+    background-color: white;
+    color: black;    
+    box-shadow: none;
+  }
+  &:disabled{
+    cursor: no-drop;
+  }
+  &.default {
+    color: black;
+    border: 1px solid darkgray;
+  }
+}
+// disabled buttons
+.mdc-button--raised:disabled, .mdc-button--unelevated:disabled{
+  background-color: var(--mdc-theme-primary, #6200ee);
+  color: #FFF;
+  opacity: 0.6;
+}

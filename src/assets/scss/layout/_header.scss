@@ -1,0 +1,10 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the header of the site/application.
+// -----------------------------------------------------------------------------
+.app-loader {
+  .mdc-linear-progress__buffer {
+    background-color: lightskyblue;
+  }
+  position: absolute;
+  z-index: 9;
+}

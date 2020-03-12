@@ -1,0 +1,14 @@
+// remove hover black background color for checkbox in menu list for chrome
+.mdc-checkbox,
+.mdc-select,
+.mdc-top-app-bar__action-item,
+.mdc-top-app-bar__navigation-icon {
+  will-change: unset !important;
+}
+:not(.mdc-list--non-interactive)
+  > :not(.mdc-list-item--disabled).mdc-list-item {
+  will-change: unset !important;
+}
+.mdc-menu-surface {
+  will-change: unset !important;
+}

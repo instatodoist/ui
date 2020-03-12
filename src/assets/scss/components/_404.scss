@@ -1,0 +1,14 @@
+.page-not-found{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    .mdc-button{
+        position: absolute;
+        top:4%;
+        left: 46.7%;
+    }
+    img{
+        height: 70%;
+        margin: auto;
+    }    
+}
