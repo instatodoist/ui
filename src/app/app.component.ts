@@ -13,7 +13,7 @@ import {
 } from '@angular/router';
 import { Observable, Observer, fromEvent, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { UtilityService } from './service/utility.service'
+import { UtilityService } from './service/utility.service';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
 
   title = 'InstaTodo';
   loading = false;
-  constructor(private translate: TranslateService, private router: Router, private appConfig: AppConfig, private titleService: Title, private utilityService: UtilityService) {
+  constructor(translate: TranslateService, private router: Router, private titleService: Title, private utilityService: UtilityService) {
     // set default lang as english
     translate.setDefaultLang('en');
     // setting navigation start/end status
@@ -38,7 +38,7 @@ export class AppComponent implements OnInit {
         case event instanceof NavigationCancel:
         case event instanceof NavigationError: {
           this.loading = false;
-          mdc.autoInit(document, function () { });
+          mdc.autoInit(document, () => { });
           break;
         }
         default: {
@@ -52,7 +52,9 @@ export class AppComponent implements OnInit {
     this.titleService.setTitle(this.title);
     // network checking
     this.createOnline$().subscribe(isOnline => {
-      !isOnline ? this.utilityService.toastrWarning('Network is down', { close: false, timeout: false, overlay: true }) : this.utilityService.toastrSuccess('Network is up')
+      !isOnline ?
+      this.utilityService.toastrWarning('Network is down', { close: false, timeout: false, overlay: true }) :
+      this.utilityService.toastrSuccess('Network is up');
     });
   }
   createOnline$() {

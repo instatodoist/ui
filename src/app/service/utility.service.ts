@@ -11,7 +11,7 @@ export class UtilityService {
 
   // error toaster
   toastrError(message: any, options?: any): void {
-    var msg = this.translate.instant(message)
+    const msg = this.translate.instant(message);
     iziToast.destroy();
     iziToast.error({
       position: 'topCenter',
@@ -24,7 +24,7 @@ export class UtilityService {
 
   // error toaster
   toastrWarning(message: any, options?: any): void {
-    var msg = this.translate.instant(message)
+    const msg = this.translate.instant(message)
     iziToast.destroy();
     iziToast.warning({
       position: 'topCenter',
@@ -37,7 +37,7 @@ export class UtilityService {
 
   // success Toastr
   toastrSuccess(message: any, options?: any): void {
-    var msg = this.translate.instant(message)
+    const msg = this.translate.instant(message);
     iziToast.destroy();
     iziToast.success({
       position: 'topCenter',

@@ -11,9 +11,7 @@ import {map} from 'rxjs/operators';
 
 export class TodoService {
     API_URL = environment.API_URL;
-    
     constructor(private apollo: Apollo) { }
-    
     listTodos() {
         return this.apollo
       .watchQuery({
@@ -23,7 +21,7 @@ export class TodoService {
           },
         })
         .valueChanges.pipe(map(({data}) => {
-            return data
+            return data;
         }));
     }
 }

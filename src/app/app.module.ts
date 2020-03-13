@@ -7,9 +7,9 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { RouterModule } from '@angular/router';
-import { ApolloModule, APOLLO_OPTIONS } from "apollo-angular";
-import { HttpLinkModule, HttpLink } from "apollo-angular-link-http";
-import { InMemoryCache } from "apollo-cache-inmemory";
+import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
+import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import {
   NgrxCacheModule,
   NgrxCache,
@@ -110,14 +110,14 @@ import { GraphQLModule } from './graphql.module';
         link: httpLink.create({
           uri: environment.API_URL
         })
-      }
+      };
     },
     deps: [HttpLink]
     }
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { 
+export class AppModule {
   constructor(ngrxCache: NgrxCache) {
     const cache = ngrxCache.create({});
   }
