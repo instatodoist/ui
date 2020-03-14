@@ -2,10 +2,11 @@ import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest}
 import {catchError} from 'rxjs/internal/operators';
 import {Injectable} from '@angular/core';
 import {Observable, throwError} from 'rxjs/index';
+import {Router } from '@angular/router'
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-  constructor() {}
+  constructor( private router: Router) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next
@@ -32,9 +33,13 @@ export class ErrorInterceptor implements HttpInterceptor {
                 ok,
                 url: url || undefined,
             };
+            if (status && status === 401) {
+              localStorage.clear();
+              this.router.navigate(['/']);
+            }
             return throwError(errObject);
         })
-      )
+      );
   }
 
 }
