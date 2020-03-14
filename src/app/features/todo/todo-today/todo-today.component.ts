@@ -16,6 +16,7 @@ export class TodoTodayComponent implements OnInit {
   constructor(private toddService: TodoService, private sharedService: SharedService) { }
 
   ngOnInit(): void {
+    this.loader = true;
     const conditions: TodoConditions = {
       sort: {
         updatedAt: 'DESC'
@@ -28,6 +29,7 @@ export class TodoTodayComponent implements OnInit {
     this.toddService.listTodos(conditions)
       .subscribe((data) => {
         this.todosToday = data;
+        this.loader = false;
     });
   }
 

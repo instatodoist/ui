@@ -8,12 +8,13 @@ import { TodoService } from '../../../service/todo/todo.service';
   styleUrls: ['./todo-inbox.component.scss'],
 })
 export class TodoInboxComponent implements OnInit {
-  loader: boolean;
+  loader = false;
   todos: TodoListType;
 
   constructor(private toddService: TodoService) { }
 
   ngOnInit(): void {
+    this.loader = true;
     const conditions: TodoConditions = {
       sort: {
         updatedAt: 'DESC'
@@ -25,6 +26,7 @@ export class TodoInboxComponent implements OnInit {
     this.toddService.listTodos(conditions)
       .subscribe((data) => {
         this.todos = data;
+        this.loader = false;
     });
   }
 
