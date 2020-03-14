@@ -7,11 +7,15 @@ import { FrontComponent } from './../../shared/layout/front/front.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { AuthRegisterComponent } from './auth-register/auth-register.component';
+import { AuthVerifyComponent } from './auth-verify/auth-verify.component';
 
 @NgModule({
   declarations: [
     FrontComponent,
-    AuthComponent
+    AuthComponent,
+    AuthRegisterComponent,
+    AuthVerifyComponent
   ],
   imports: [
     CommonModule,

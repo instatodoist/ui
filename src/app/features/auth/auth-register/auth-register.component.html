@@ -1,0 +1,79 @@
+<div class="mdc-layout-grid auth p-0">
+    <div class="mdc-layout-grid__inner">
+        <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-8 left"></div>
+        <div class="mdc-layout-grid__cell text-center mdc-layout-grid__cell--span-4 right px-20p">
+            <div class="logo-block">
+                <img [src]="appData.logo">
+            </div>
+            <!-- signin section -->
+            <form [formGroup]="signinForm" #formDir="ngForm" (ngSubmit)="signIn()" name="signinForm">
+                <!-- username -->
+                <div class="mb-20">
+                    <div class="mdc-text-field mdc-text-field--outlined w-100" data-mdc-auto-init="MDCTextField">
+                        <input class="mdc-text-field__input" id="email" name="email" type="text"
+                            formControlName="email" required>
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <label for="email" class="mdc-floating-label">{{'auth.email'|translate}}</label>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </div>
+                    <div class="mdc-text-field-helper-line">
+                        <div id="email"
+                            class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg">
+                            <span
+                                *ngIf="signinForm.controls.email.touched && signinForm.controls.email.errors && signinForm.controls.username.errors.required">
+                                Email is required</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- password -->
+                <div class="mb-20">
+                    <div class="mdc-text-field mdc-text-field--outlined w-100" data-mdc-auto-init="MDCTextField">
+                        <input class="mdc-text-field__input" id="password" name="password" type="password"
+                            formControlName="password" required>
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <label for="password" class="mdc-floating-label">{{'auth.password'|translate}}</label>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </div>
+                    <div class="mdc-text-field-helper-line">
+                        <div id="password"
+                            class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg">
+                            <span
+                                *ngIf="signinForm.controls.password.touched && signinForm.controls.password.errors && signinForm.controls.password.errors.required">
+                                Password is required</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- loading bar -->
+                <div *ngIf="loader" role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate" aria-label="Example Progress Bar" aria-valuemin="0" data-mdc-auto-init="MDCLinearProgress"
+                    aria-valuemax="1" aria-valuenow="0">
+                    <div class="mdc-linear-progress__buffering-dots"></div>
+                    <div class="mdc-linear-progress__buffer"></div>
+                    <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+                        <span class="mdc-linear-progress__bar-inner"></span>
+                    </div>
+                    <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+                        <span class="mdc-linear-progress__bar-inner"></span>
+                    </div>
+                </div>
+
+                <!-- submit -->
+                <div class="mb-20">
+                    <button class="mdc-button mdc-button--raised signin w-100" type="submit"
+                        [disabled]="!signinForm.valid">
+                        <span class="mdc-button__ripple"></span> {{'auth.signin'|translate}}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
