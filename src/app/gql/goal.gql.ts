@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export const ADD_THOUGHT_MUTATION = gql`
+export const ADD_GOAL_MUTATION = gql`
     mutation addThought( $input: ThoughtInputType!) {
         addThought(input: $input){
             message
@@ -9,7 +9,7 @@ export const ADD_THOUGHT_MUTATION = gql`
     }
 `;
 
-export const UPDATE_THOUGHT_MUTATION = gql`
+export const UPDATE_GOAL_MUTATION = gql`
     mutation updateThought( $id: ID!, $input: ThoughtInputType!) {
         updateThought(id: $id, input: $input){
             message
@@ -28,7 +28,7 @@ export const UPDATE_THOUGHT_MUTATION = gql`
 // `;
 
 
-export const THOUGHT_QUERY = gql`
+export const GOAL_QUERY = gql`
     query listThought ($limit: Int = 100, $offset: Int = 1){
         listThought (limit: $limit, offset: $offset ){
             totalCount
@@ -47,5 +47,5 @@ export const THOUGHT_QUERY = gql`
 `;
 
 export default {
-  THOUGHT_QUERY,
+    GOAL_QUERY,
 };
