@@ -4,7 +4,7 @@ import { UserModel } from './../../ngrx/models'
 import { TODO_LIST_QUERY } from '../../gql/todo.gql';
 import {Apollo} from 'apollo-angular';
 import {map} from 'rxjs/operators';
-
+import {  TodoConditions} from '../../ngrx/models/todo.model';
 @Injectable({
     providedIn: 'root',
 })
@@ -12,16 +12,28 @@ import {map} from 'rxjs/operators';
 export class TodoService {
     API_URL = environment.API_URL;
     constructor(private apollo: Apollo) { }
-    listTodos() {
-        return this.apollo
+
+    listTodos(conditions: TodoConditions) {
+      return this.apollo
       .watchQuery({
           query: TODO_LIST_QUERY,
-          variables: {
-            sort: { updatedAt: 'DESC' }
-          },
+          variables: conditions,
         })
         .valueChanges.pipe(map(({data}) => {
             return data;
         }));
     }
+
+    listTodoLabels() {
+      return this.apollo
+        .watchQuery({
+            query: TODO_LIST_QUERY,
+            variables: {
+              sort: { updatedAt: 'ASC' }
+            },
+          })
+          .valueChanges.pipe(map(({data}) => {
+              return data;
+          }));
+  }
 }

@@ -1,7 +1,9 @@
 import { createAction, props } from '@ngrx/store';
+import { TodoConditions} from '../models/todo.model';
 
 export const loadTodos = createAction(
-  '[Todo] Load Todos'
+  '[Todo] Load Todos',
+  props<TodoConditions>()
 );
 
 export const loadTodosSuccess = createAction(
