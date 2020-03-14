@@ -1,7 +1,7 @@
 declare var mdc: any
 import { Component, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { ErrorState } from 'src/app/ngrx/reducers/error.reducer';
+// import { Store, select } from '@ngrx/store';
+// import { ErrorState } from 'src/app/ngrx/reducers/error.reducer';
 import { UtilityService } from './../../../service/utility.service'
 
 @Component({
@@ -11,7 +11,7 @@ import { UtilityService } from './../../../service/utility.service'
 })
 export class AdminComponent implements OnInit {
   snachBar: any;
-  constructor(private store: Store<{ error: ErrorState }>, private utilityService: UtilityService) { }
+  constructor(private utilityService: UtilityService) { }
 
   ngOnInit(): void {
     const drawer = new mdc.drawer.MDCDrawer.attachTo(
@@ -27,9 +27,9 @@ export class AdminComponent implements OnInit {
     });
 
     // subscribe to error store state
-    this.store.pipe(select('error')).subscribe((data: any) => {
-      (data && data.statusText) ? this.utilityService.toastrError(data.statusText): undefined
-    })
+    // this.store.pipe(select('error')).subscribe((data: any) => {
+    //   (data && data.statusText) ? this.utilityService.toastrError(data.statusText): undefined
+    // })
   }
 
 }

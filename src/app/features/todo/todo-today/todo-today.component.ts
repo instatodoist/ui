@@ -3,11 +3,12 @@ import { TodoListType, TodoSortType } from '../../../models/todo.model';
 import {  TodoConditions } from '../../../models/todo.model';
 import { TodoService } from '../../../service/todo/todo.service';
 @Component({
-  selector: 'app-todo-inbox',
-  templateUrl: './todo-inbox.component.html',
-  styleUrls: ['./todo-inbox.component.scss'],
+  selector: 'app-todo-today',
+  templateUrl: './todo-today.component.html',
+  styleUrls: ['./todo-today.component.scss']
 })
-export class TodoInboxComponent implements OnInit {
+export class TodoTodayComponent implements OnInit {
+
   loader: boolean;
   todos: TodoListType;
 

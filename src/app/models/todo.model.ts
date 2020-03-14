@@ -12,11 +12,6 @@ interface TodoType {
   title: string;
 }
 
-export interface TodoListType {
-    data: TodoType[];
-    totalCount: number;
-}
-
 export interface TodoFilterType {
   isCompleted?: boolean;
   title_contains?: string;
@@ -31,8 +26,18 @@ export interface TodoSortType {
   scheduledDate?: SortEnumType;
 }
 
-
 export interface TodoConditions {
   sort?: TodoSortType;
   filter?: TodoFilterType;
 }
+
+export interface TodoListType {
+  data: TodoType[];
+  totalCount: number;
+}
+
+// export interface TodoListResponseType {
+//   todoList: {
+//     data: TodoListType;
+//   };
+// }

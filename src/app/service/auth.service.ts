@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { UserModel } from './../ngrx/models'
+import { UserModel } from '../models'
 import { LOGIN_QUERY } from '../gql/auth.gql';
 import {Apollo} from 'apollo-angular';
 import {map} from 'rxjs/operators';

@@ -10,11 +10,6 @@ import { RouterModule } from '@angular/router';
 import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import {
-  NgrxCacheModule,
-  NgrxCache,
-} from 'apollo-angular-cache-ngrx';
-
 
 import { AuthModule } from './features/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -31,14 +26,8 @@ import { PageNotFoundComponent } from './component/page-not-found/page-not-found
 
 import { DropdownMenuDirective } from './directive/dropdown/dropdown-menu.directive';
 
-import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
-import { reducers, metaReducers } from './ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { AppEffects } from './app.effects';
 import { FormValidationDirective } from './directive/form-validation.directive';
-import { GraphQLModule } from './graphql.module';
 
 
 
@@ -68,28 +57,6 @@ import { GraphQLModule } from './graphql.module';
     HttpLinkModule,
     AuthModule,
     AppRoutingModule,
-    // StoreModule.forRoot({
-    //   apollo: apolloReducer,
-    // }),
-    StoreModule.forRoot(reducers, {
-      metaReducers,
-      runtimeChecks: {
-        strictStateImmutability: true,
-        strictActionImmutability: true
-      }
-    }),
-    NgrxCacheModule,
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    StoreModule.forRoot(reducers, {
-      metaReducers,
-      runtimeChecks: {
-        strictStateImmutability: true,
-        strictActionImmutability: true,
-      }
-    }),
-    !environment.production ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot([AppEffects]),
-    GraphQLModule
   ],
   exports: [
     RouterModule
@@ -101,27 +68,27 @@ import { GraphQLModule } from './graphql.module';
       useClass: AuthInterceptor,
       multi: true
     },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    },
     {
       provide: APOLLO_OPTIONS,
-    useFactory: (httpLink: HttpLink) => {
-      return {
-        cache: new InMemoryCache(),
-        link: httpLink.create({
-          uri: environment.API_URL
-        })
-      };
-    },
-    deps: [HttpLink]
+      useFactory: (httpLink: HttpLink) => {
+        return {
+          cache: new InMemoryCache(),
+          link: httpLink.create({
+            uri: environment.API_URL
+          })
+        };
+      },
+      deps: [HttpLink]
     }
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-  constructor(ngrxCache: NgrxCache) {
-    const cache = ngrxCache.create({});
-  }
-}
+export class AppModule {}
 
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient) {

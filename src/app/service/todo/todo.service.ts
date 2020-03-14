@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { UserModel } from './../../ngrx/models'
 import { TODO_LIST_QUERY } from '../../gql/todo.gql';
 import {Apollo} from 'apollo-angular';
+import { Observable } from 'rxjs';
 import {map} from 'rxjs/operators';
-import {  TodoConditions} from '../../ngrx/models/todo.model';
+import {  TodoConditions, TodoListType} from '../../models/todo.model';
 @Injectable({
     providedIn: 'root',
 })
@@ -13,14 +13,14 @@ export class TodoService {
     API_URL = environment.API_URL;
     constructor(private apollo: Apollo) { }
 
-    listTodos(conditions: TodoConditions) {
+    listTodos(conditions: TodoConditions): Observable<TodoListType> {
       return this.apollo
       .watchQuery({
           query: TODO_LIST_QUERY,
           variables: conditions,
         })
-        .valueChanges.pipe(map(({data}) => {
-            return data;
+        .valueChanges.pipe(map(({data}: any ) => {
+          return data.todoList;
         }));
     }
 

@@ -2,16 +2,10 @@ import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest}
 import {catchError} from 'rxjs/internal/operators';
 import {Injectable} from '@angular/core';
 import {Observable, throwError} from 'rxjs/index';
-import {ErrorState} from '../ngrx/reducers/error.reducer';
-import {Store} from '@ngrx/store';
-import {loadErrors} from '../ngrx/actions/error.actions';
-
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-  constructor(
-    private store: Store<ErrorState>
-  ) {}
+  constructor() {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next
@@ -37,8 +31,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                 message,
                 ok,
                 url: url || undefined,
-            }
-            this.store.dispatch(loadErrors({ data: errObject }));
+            };
             return throwError(errObject);
         })
       )
