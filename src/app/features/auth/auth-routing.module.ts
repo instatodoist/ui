@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthComponent } from './auth.component';
+import { AuthComponent } from './auth-login/auth.component';
 import { FrontComponent } from './../../shared/layout/front/front.component';
 import { CanActivateAuthenticateGuard } from '../../shared/guards/can-activate-authenticate.guard';
 const authRoutes: Routes = [

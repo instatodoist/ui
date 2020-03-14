@@ -2,9 +2,9 @@ declare var mdc: any;
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
-import { AppConfig } from './../../service/appconfig';
-import { AuthService } from './../../service/auth.service';
-import { LsService } from './../../service/ls.service';
+import { AppConfig } from '../../../service/appconfig';
+import { AuthService } from '../../../service/auth.service';
+import { LsService } from '../../../service/ls.service';
 
 @Component({
   selector: 'app-auth',
