@@ -25,7 +25,7 @@ export class AuthComponent implements OnInit {
   ngOnInit(): void {
     this.appConfig.appData.subscribe(data => {
       this.appData = data;
-    });    
+    });
   }
 
   // auth check after submit
@@ -36,7 +36,7 @@ export class AuthComponent implements OnInit {
       this.loader = false;
       this.lsService.setValue('isLoggedIn', true);
       this.lsService.setValue('__token', data.token);
-      this.router.navigate(['application/list']);
+      this.router.navigate(['tasks/inbox']);
     })
   }
 }

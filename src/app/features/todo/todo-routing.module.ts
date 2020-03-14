@@ -9,10 +9,17 @@ const routes: Routes = [
     path: '',
     children: [
       {
-        path: 'list',
+        path: 'inbox',
         component: TodoInboxComponent,
         data: {
           header_title: 'inbox'
+        }
+      },
+      {
+        path: 'today',
+        component: TodoTodayComponent,
+        data: {
+          header_title: 'today'
         }
       },
     ]
@@ -22,6 +29,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
-  declarations: [TodoTodayComponent]
+  declarations: [TodoInboxComponent, TodoTodayComponent]
 })
 export class TodoRoutingModule { }

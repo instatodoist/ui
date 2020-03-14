@@ -11,7 +11,7 @@ const routes: Routes = [
     canActivate: [CanActivateAuthenticateGuard],
     children: [
       {
-        path: 'application',
+        path: 'tasks',
         loadChildren: () => import('./features/todo/todo.module').then(m => m.TodoModule),
       }
     ]

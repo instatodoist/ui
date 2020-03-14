@@ -1,18 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TodoRoutingModule } from './todo-routing.module';
-// import { EffectsModule } from '@ngrx/effects';
-// import { TodoEffects } from '../../ngrx/effects/todo.effects';
-import { TodoInboxComponent } from './todo-inbox/todo-inbox.component';
-
 @NgModule({
-  declarations: [
-    TodoInboxComponent
-  ],
+  declarations: [],
   imports: [
     CommonModule,
-    TodoRoutingModule,
-    // EffectsModule.forFeature([TodoEffects])
+    TodoRoutingModule
   ]
 })
 export class TodoModule { }

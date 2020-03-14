@@ -15,7 +15,7 @@ export class CanActivateAuthenticateGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if(this.lsService.getValue('isLoggedIn') && state.url === '/'){
-      this.router.navigate(['/application/list']);
+      this.router.navigate(['/tasks/inbox']);
     } else if(this.lsService.getValue('isLoggedIn') && state.url !== '/') {
       return true;
     } else if(!this.lsService.getValue('isLoggedIn') && state.url !== '/') {
