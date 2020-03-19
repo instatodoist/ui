@@ -12,7 +12,7 @@
                     </div>
                     <div class="mdc-card__actions">
                         <div class="mdc-card__action-buttons">
-                            <button class="mdc-button mdc-card__action mdc-card__action--button">
+                            <button class="mdc-button mdc-card__action mdc-card__action--button" (click) = "openUpdatePopUp(goal)">
                                 <div class="mdc-button__ripple"></div>
                                 <span class="mdc-button__label">Action 1</span>
                             </button>
@@ -33,3 +33,4 @@
         </div>
     </div>
 </div>
+<app-goal-dialog [goal] = "goal" (isOpen)="updatePopupFlag($event)" *ngIf="isUpdate"></app-goal-dialog>

@@ -1,14 +1,14 @@
 import { SortEnumType } from './shared.model';
 
-interface GoalType {
+export interface GoalType {
     _id: string;
-    title: string;
-    description: string;
-    accomplishTenure: Date;
-    isPinned: boolean;
-    isAchieved: boolean;
-    createdAt: Date;
-    updatedAt: Date;
+    title?: string;
+    description?: string;
+    accomplishTenure?: Date;
+    isPinned?: boolean;
+    isAchieved?: boolean;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
 export interface GoalFilterType {

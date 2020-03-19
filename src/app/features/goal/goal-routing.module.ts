@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { GoalListComponent } from './goal-list/goal-list.component';
+import { GoalDialogComponent } from './goal-dialog/goal-dialog.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule, GoalDialogComponent],
+  declarations: [GoalDialogComponent]
 })
 export class GoalRoutingModule { }

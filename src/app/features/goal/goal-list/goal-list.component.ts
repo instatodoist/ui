@@ -1,8 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { GoalListType, GoalConditions } from '../../../models/goal.model';
+import { GoalListType, GoalConditions, GoalType } from '../../../models/goal.model';
 import { SharedService} from '../../../service/shared/shared.service';
 import { GoalService } from '../../../service/goal/goal.service';
-
 @Component({
   selector: 'app-goal-list',
   templateUrl: './goal-list.component.html',
@@ -12,6 +11,8 @@ export class GoalListComponent implements OnInit {
 
   loader = false;
   goals: GoalListType;
+  isUpdate = false;
+  goal: GoalType;
 
   constructor(private goalService: GoalService, private sharedService: SharedService) { }
 
@@ -28,6 +29,15 @@ export class GoalListComponent implements OnInit {
         this.goals = data;
         this.loader = false;
     });
+  }
+
+  openUpdatePopUp(todo: GoalType): void {
+    this.isUpdate = true;
+    this.goal = todo; // passing todo object to update dialog
+  }
+
+  updatePopupFlag($event : boolean): void {
+    this.isUpdate = $event;
   }
 
 }
