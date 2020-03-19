@@ -16,13 +16,15 @@
         <i class="icon icon-explorer material-icons mdc-list-item__graphic" aria-hidden="true"></i>
         <span class="mdc-list-item__text">{{'my_goals'| translate}}</span>
     </a>
-
-    <!-- <a class="mdc-list-item" routerLink="/domain/list" routerLinkActive="mdc-list-item--activated">
-        <i class="icon icon-firmware-update-solid material-icons mdc-list-item__graphic" aria-hidden="true"></i>
-        <span class="mdc-list-item__text">{{'domain_status'|translate}}</span>
+    <li role="separator" class="mdc-list-divider"></li>
+    <a class="mdc-list-item haschild" href="javascript:void(0)" routerLinkActive="mdc-list-item--activated">
+        <span class="mdc-list-item__meta">&#9656;</span>
+        <i class="icon icon-explorer material-icons mdc-list-item__graphic" aria-hidden="true"></i>
+        <span class="mdc-list-item__text">{{'labels'| translate}}</span>
     </a>
-    <a class="mdc-list-item" routerLink="/subscription/list" routerLinkActive="mdc-list-item--activated">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-        <span class="mdc-list-item__text">{{'subscription_request' | translate}}</span>
-    </a> -->
+    <nav class="mdc-list mdc-sub-list">
+        <a class="mdc-list-item" ui-sref-active="mdc-list-item--activated">
+        <span class="mdc-list-item__text">{{'labels'|translate}}</span>
+      </a>
+    </nav>
 </div>

@@ -1,25 +1,21 @@
-import { Component, OnInit, ChangeDetectionStrategy, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
-import { TodoListType, TodoSortType } from '../../../models/todo.model';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { TodoListType, TodoSortType, TodoType } from '../../../models/todo.model';
 import {  TodoConditions } from '../../../models/todo.model';
 import { TodoService } from '../../../service/todo/todo.service';
-import {MDCDialog} from '@material/dialog';
-import { Inject }  from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 @Component({
   selector: 'app-todo-inbox',
   templateUrl: './todo-inbox.component.html',
   styleUrls: ['./todo-inbox.component.scss'],
 })
-export class TodoInboxComponent implements OnInit, AfterViewInit {
-  @ViewChild('dialog',  { static: false }) public dialog: ElementRef;
+export class TodoInboxComponent implements OnInit {
+  @ViewChild('dialog') dialog: TemplateRef<any>;
   loader = false;
   todos: TodoListType;
+  isUpdate = false;
+  todo: TodoType;
 
-  constructor(private toddService: TodoService, @Inject(DOCUMENT) document) {
-    // setTimeout(()=>{
-    //   const dialog = new MDCDialog(document.getElementById('dialog'));
-    // }, 1000)
-   }
+  constructor(private toddService: TodoService) {
+  }
 
   ngOnInit(): void {
     this.loader = true;
@@ -35,15 +31,15 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
       .subscribe((data) => {
         this.todos = data;
         this.loader = false;
-        // const dialog = new MDCDialog(document.querySelector('.mdc-dialog'));
     });
   }
 
-  ngAfterViewInit() {
-    // viewChild is set after the view has been initialized
-    // setTimeout(()=>{
-    //   const dialog = new MDCDialog(document.getElementById('dialog'));
-    // }, 1000)
+  openUpdatePopUp(todo: TodoType): void {
+    this.isUpdate = true;
+    this.todo = todo; // passing todo object to update dialog
   }
 
+  updatePopupFlag($event : boolean): void {
+    this.isUpdate = $event;
+  }
 }

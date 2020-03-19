@@ -4,6 +4,7 @@ import { TodoInboxComponent } from './todo-inbox/todo-inbox.component';
 import { TodoTodayComponent } from './todo-today/todo-today.component';
 import { TodoCompletedComponent } from './todo-completed/todo-completed.component';
 import { TodoPendingComponent } from './todo-pending/todo-pending.component';
+import { TodoDialogComponent } from './todo-dialog/todo-dialog.component';
 
 
 const routes: Routes = [
@@ -44,6 +45,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule, TodoDialogComponent],
+  declarations: [TodoDialogComponent],
 })
 export class TodoRoutingModule { }

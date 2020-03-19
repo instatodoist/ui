@@ -7,7 +7,7 @@ enum TodoPriorityEnumType {
   'p4'
 }
 
-interface TodoType {
+export interface TodoType {
   _id: string;
   title: string;
 }
