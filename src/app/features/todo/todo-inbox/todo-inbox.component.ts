@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { TodoListType, TodoSortType, TodoType } from '../../../models/todo.model';
-import {  TodoConditions } from '../../../models/todo.model';
+import { TodoConditions } from '../../../models/todo.model';
 import { TodoService } from '../../../service/todo/todo.service';
-import { SharedService} from '../../../service/shared/shared.service';
+import { SharedService } from '../../../service/shared/shared.service';
 @Component({
   selector: 'app-todo-inbox',
   templateUrl: './todo-inbox.component.html',
@@ -14,6 +14,8 @@ export class TodoInboxComponent implements OnInit {
   loader = false;
   todos: TodoListType;
   isUpdate = false;
+  isDelete = false;
+  popupType: string;
   todo: TodoType;
   conditions: TodoConditions;
   TODOTYPES = [
@@ -69,16 +71,26 @@ export class TodoInboxComponent implements OnInit {
       .subscribe((data) => {
         this.todos = data;
         this.loader = false;
-    });
+      });
   }
 
-  openUpdatePopUp(todo: TodoType): void {
-    this.isUpdate = true;
+  openPopUp(todo: TodoType, popupType): void {
+    if (popupType === 'UPDATE') {
+      this.isUpdate = true;
+      this.popupType = 'UPDATE';
+    } else {
+      this.isDelete = true;
+      this.popupType = 'DELETE';
+    }
     this.todo = todo; // passing todo object to update dialog
   }
 
   updatePopupFlag($event: boolean): void {
-    this.isUpdate = $event;
+    if (this.popupType === 'UPDATE') {
+      this.isUpdate = $event;
+    } else {
+      this.isDelete = $event;
+    }
   }
 
   updateTodo(todo: TodoType) {
@@ -87,9 +99,9 @@ export class TodoInboxComponent implements OnInit {
       isCompleted: true
     };
     this.toddService
-        .updateTodo(postBody, this.conditions)
-        .subscribe(response => {
-          console.log(response);
-        });
+      .updateTodo(postBody, this.conditions)
+      .subscribe(response => {
+        console.log(response);
+      });
   }
 }

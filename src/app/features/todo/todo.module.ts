@@ -6,12 +6,15 @@ import { TodoInboxComponent } from './todo-inbox/todo-inbox.component';
 import { TodoTodayComponent } from './todo-today/todo-today.component';
 import { TodoCompletedComponent } from './todo-completed/todo-completed.component';
 import { TodoDialogComponent } from './todo-dialog/todo-dialog.component';
+import { TodoDeleteComponent } from './todo-delete/todo-delete.component';
+
 @NgModule({
   declarations: [
     TodoInboxComponent,
     TodoTodayComponent,
     TodoCompletedComponent,
-    TodoDialogComponent
+    TodoDialogComponent,
+    TodoDeleteComponent
   ],
   imports: [
     CommonModule,
@@ -19,7 +22,8 @@ import { TodoDialogComponent } from './todo-dialog/todo-dialog.component';
     TodoRoutingModule
   ],
   exports: [
-    TodoDialogComponent
+    TodoDialogComponent,
+    TodoDeleteComponent
   ]
 })
 export class TodoModule { }

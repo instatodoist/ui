@@ -38,11 +38,11 @@
                               </button>
                     </td>
                     <td>
-                        <i class="material-icons" (click) = "openUpdatePopUp(todo)">
+                        <i class="material-icons" (click) = "openPopUp(todo, 'UPDATE')">
                             edit
                         </i>
                     </td>
-                    <td *ngIf="todoCurrentType !== TODOTYPES[1]">
+                    <td *ngIf="todoCurrentType !== TODOTYPES[1]" (click) = "openPopUp(todo, 'DELETE')">
                         <i class="material-icons">
                             delete
                         </i>
@@ -60,5 +60,6 @@
         </table>
     </div>
 </div>
-<app-todo-dialog [todo] = "todo" (isOpen)="updatePopupFlag($event)" *ngIf="isUpdate"></app-todo-dialog>
+<app-todo-dialog [todo] = "todo" [conditions] = "conditions" (isOpen)="updatePopupFlag($event)" *ngIf="isUpdate"></app-todo-dialog>
+<app-todo-delete [todo] = "todo" [conditions] = "conditions" (isOpen)="updatePopupFlag($event)" *ngIf="isDelete"></app-todo-delete>
 </div>

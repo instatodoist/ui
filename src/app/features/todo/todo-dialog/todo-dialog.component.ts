@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MDCDialog } from '@material/dialog';
 import {MDCSwitch} from '@material/switch';
 import { TodoService } from '../../../service/todo/todo.service';
-import { TodoType, TodoLabelType } from '../../../models/todo.model';
+import { TodoType, TodoLabelType, TodoConditions } from '../../../models/todo.model';
 
 @Component({
   selector: 'app-todo-dialog',
@@ -14,6 +14,8 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
 
   @Input()
   todo: TodoType;
+  @Input()
+  conditions: TodoConditions = null;
 
   @Output()
   isOpen: EventEmitter<boolean> = new EventEmitter<boolean>();
