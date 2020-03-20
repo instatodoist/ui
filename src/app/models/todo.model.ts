@@ -7,9 +7,27 @@ enum TodoPriorityEnumType {
   'p4'
 }
 
+export interface SuccessType {
+  message?: string;
+  ok?: boolean;
+}
+
 export interface TodoType {
   _id: string;
-  title: string;
+  noDate?: boolean;
+  title?: string;
+  scheduledDate?: Date;
+  labelId?: string;
+  label?: {
+    name: string;
+    _id: string;
+  };
+  isCompleted?: boolean;
+}
+
+export interface TodoLabelType {
+  _id?: string;
+  name?: string;
 }
 
 export interface TodoFilterType {
@@ -33,6 +51,12 @@ export interface TodoConditions {
 
 export interface TodoListType {
   data: TodoType[];
+  totalCount: number;
+}
+
+
+export interface TodoLabelListType {
+  data?: TodoLabelType[];
   totalCount: number;
 }
 

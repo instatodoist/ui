@@ -29,8 +29,8 @@ export const TODO_DELETE_MUTATION = gql`
 
 
 export const TODO_LIST_QUERY = gql`
-    query todoList ($first: Int = 50, $offset: Int = 1, $filter: TodoFilterInputType){
-        todoList (first: $first, offset: $offset, filter: $filter ){
+    query todoList ($first: Int = 100, $offset: Int = 1, $filter: TodoFilterInputType, $sort: TodoSortInputType){
+        todoList (first: $first, offset: $offset, filter: $filter, sort: $sort ){
             totalCount
             data {
                 _id

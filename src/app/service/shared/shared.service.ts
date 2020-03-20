@@ -15,4 +15,10 @@ export class SharedService {
     today = new Date (yyyy + '-' + mm + '-' + dd);
     return today;
   }
+
+  yesterdayDate() {
+    const date = new Date();
+    date.setDate(date.getDate() - 1);
+    return date;
+  }
 }
