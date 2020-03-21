@@ -19,6 +19,7 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
 
 import { AppComponent } from './app.component';
 import { AdminComponent } from './shared/layout/admin/admin.component';
+import { TodoAddComponent } from './shared/components/todo-add/todo-add.component';
 import { HeaderComponent } from './shared/section/header/header.component';
 import { FooterComponent } from './shared/section/footer/footer.component';
 import { SidebarComponent } from './shared/section/sidebar/sidebar.component';
@@ -35,6 +36,7 @@ import { FormValidationDirective } from './directive/form-validation.directive';
   declarations: [
     AppComponent,
     AdminComponent,
+    TodoAddComponent,
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
@@ -85,6 +87,9 @@ import { FormValidationDirective } from './directive/form-validation.directive';
       },
       deps: [HttpLink]
     }
+  ],
+  entryComponents: [
+    TodoAddComponent
   ],
   bootstrap: [AppComponent]
 })

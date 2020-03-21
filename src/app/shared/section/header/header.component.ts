@@ -15,8 +15,15 @@ export class HeaderComponent {
 
   tabTitle = 'InstaTodo';
   headerTitle: string;
+  isOpen = false;
 
-  constructor(private router: Router, private lsService: LsService, private activatedRoute: ActivatedRoute, private titleService: Title, private translate: TranslateService) {
+  constructor(
+    private router: Router,
+    private lsService: LsService,
+    private activatedRoute: ActivatedRoute,
+    private titleService: Title,
+    private translate: TranslateService
+  ) {
     this.router
       .events
       .pipe(
@@ -26,8 +33,8 @@ export class HeaderComponent {
           while (child) {
             if (child.firstChild) {
               child = child.firstChild;
-            } else if (child.snapshot.data && child.snapshot.data['header_title']) {
-              return child.snapshot.data['header_title'];
+            } else if (child.snapshot.data && child.snapshot.data.header_title) {
+              return child.snapshot.data.header_title;
             } else {
               return null;
             }
@@ -37,15 +44,16 @@ export class HeaderComponent {
       )
       .subscribe((title: any) => {
         this.headerTitle = title;
+        // tslint:disable-next-line: no-shadowed-variable
         this.translate.get(title).subscribe(title => {
           this.titleService.setTitle(title + ' | ' + this.tabTitle);
-        })
+        });
       });
   }
 
   // do singout
   signOut(): boolean {
-    this.lsService.clearAll()
+    this.lsService.clearAll();
     this.router.navigate(['/']);
     return false;
   }
@@ -54,5 +62,14 @@ export class HeaderComponent {
   useLanguage(language: string) {
     this.translate.use(language);
   }
+
+  closePopUp($event: boolean): void {
+    this.isOpen = $event;
+  }
+
+  openPopUp(): void {
+    this.isOpen = true;
+  }
+
 
 }

@@ -63,7 +63,7 @@ export class TodoInboxComponent implements OnInit {
         },
         filter: {
           isCompleted: false,
-          endAt: this.sharedService.yesterdayDate()
+          // endAt: this.sharedService.yesterdayDate()
         }
       };
     }

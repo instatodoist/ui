@@ -7,9 +7,11 @@
         </section>
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
             <!-- help link -->
-            <a target="_blank" class="material-icons mdc-top-app-bar__action-item" aria-label="Print this page"
-                alt="Print this page">
-                help
+            <a class="material-icons mdc-top-app-bar__action-item" aria-label="Print this page"
+                alt="Print this page" title="Add Task" (click)="openPopUp()" href="javascript:void(0)">
+                <span class="material-icons" style="margin-right: 60px;font-size: 30px; cursor: pointer;">
+                    add_circle_outline
+                    </span>
             </a>
             <!-- lang dropdown menu -->
             <!-- <div class="mdc-menu-surface--anchor">
@@ -63,4 +65,5 @@
             </div>
         </section>
     </div>
+    <app-todo-add *ngIf="isOpen" (isOpen)="closePopUp($event)"></app-todo-add>
 </header>

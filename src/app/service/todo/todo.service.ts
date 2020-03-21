@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { TODO_LIST_QUERY, TODO_LABEL_QUERY, TODO_UPDATE_MUTATION, TODO_DELETE_MUTATION } from '../../gql/todo.gql';
+import { TODO_LIST_QUERY, TODO_LABEL_QUERY, TODO_UPDATE_MUTATION, TODO_DELETE_MUTATION, TODO_ADD_MUTATION } from '../../gql/todo.gql';
 import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -72,6 +72,38 @@ export class TodoService {
     })
     .pipe(map(({ data }: any) => {
       return data.updateTodo;
+    }));
+  }
+
+  addTodo(todo: TodoType, conditions: any = null): Observable<SuccessType> {
+    const postTodo: any = {
+      title: todo.title
+    };
+    if (todo.labelId) {
+      postTodo.label = todo.labelId;
+    }
+    if (todo.scheduledDate && todo.noDate) {
+      postTodo.scheduledDate = todo.scheduledDate;
+    } else {
+      postTodo.scheduledDate = null;
+    }
+    const refetchQuery: any = {
+      query: TODO_LIST_QUERY
+    };
+    if (conditions) {
+      refetchQuery.variables = conditions;
+    }
+    return this.apollo.mutate({
+      mutation: TODO_ADD_MUTATION,
+      variables: {
+        input: postTodo
+      },
+      refetchQueries: [
+        refetchQuery
+      ]
+    })
+    .pipe(map(({ data }: any) => {
+      return data.addTodo;
     }));
   }
 
