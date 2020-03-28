@@ -1,1 +1,69 @@
-<p>todo-pending works!</p>
+<div>
+    <div *ngIf="!loader && todos?.data?.length">
+        <div>
+            <h4>{{todoCurrentType | titlecase}} Tasks: {{todos?.data?.length? todos?.data?.length: 0 }}</h4>
+        </div>
+        <div class="mdc-data-table" data-mdc-auto-init="MDCDataTable">
+            <table class="mdc-data-table__table" aria-label="Dessert calories">
+                <!-- <thead>
+                        <tr class="mdc-data-table__header-row">
+                            <th class="mdc-data-table__header-cell w50" role="columnheader" scope="col"></th>
+                            <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Title</th>
+                            <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Description</th>
+                        </tr>
+                    </thead> -->
+                <tbody class="mdc-data-table__content">
+                    <tr class="mdc-data-table__row" *ngFor="let todo of todos?.data;">
+                        <td class="mdc-data-table__cell" *ngIf="todoCurrentType !== TODOTYPES?.completed">
+                            <div class="mdc-form-field">
+                                <div class="mdc-checkbox">
+                                    <input type="checkbox" class="mdc-checkbox__native-control" id="checkbox-1"
+                                        (change)="updateTodo(todo)" />
+                                    <div class="mdc-checkbox__background">
+                                        <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                                            <path class="mdc-checkbox__checkmark-path" fill="none"
+                                                d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                        </svg>
+                                        <div class="mdc-checkbox__mixedmark"></div>
+                                    </div>
+                                    <div class="mdc-checkbox__ripple"></div>
+                                </div>
+                                <!-- <label for="checkbox-1">Checkbox 1</label> -->
+                            </div>
+                        </td>
+                        <td class="mdc-data-table__cell">
+                            {{todo?.title}}
+                            <button *ngIf="todo?.label?.name" class="mdc-button">
+                                <div class="mdc-button__ripple"></div>
+                                <span class="mdc-button__label">{{todo?.label?.name}}</span>
+                                <!-- <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i> -->
+                            </button>
+                        </td>
+                        <td>
+                            <i class="material-icons" (click)="openPopUp(todo, 'UPDATE')">
+                                edit
+                            </i>
+                        </td>
+                        <td *ngIf="todoCurrentType !== TODOTYPES?.completed" (click)="openPopUp(todo, 'DELETE')">
+                            <i class="material-icons">
+                                delete
+                            </i>
+                        </td>
+                        <!-- <td class="mdc-data-table__cell">
+                                <a [href]="application.appdetails.application_url" target="_blank">
+                                    {{ application.appdetails.name }}
+                                </a>
+                            </td>
+                            <td class="mdc-data-table__cell mdl-data-table_cell--description">
+                                {{ application.appdetails.description }}
+                            </td> -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <app-todo-dialog [todo]="todo" [conditions]="conditions" (isOpen)="updatePopupFlag($event)" *ngIf="isUpdate">
+    </app-todo-dialog>
+    <app-todo-delete [todo]="todo" [conditions]="conditions" (isOpen)="updatePopupFlag($event)" *ngIf="isDelete">
+    </app-todo-delete>
+</div>
