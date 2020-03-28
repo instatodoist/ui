@@ -65,7 +65,7 @@ export class TodoService {
     if (todo.labelId) {
       postTodo.label = todo.labelId;
     }
-    if (todo.scheduledDate && todo.noDate) {
+    if (todo.scheduledDate && todo.scheduling) {
       postTodo.scheduledDate = todo.scheduledDate;
     } else {
       postTodo.scheduledDate = null;
@@ -98,10 +98,10 @@ export class TodoService {
     if (todo.labelId) {
       postTodo.label = todo.labelId;
     }
-    if (todo.scheduledDate && todo.noDate) {
+    if (todo.scheduledDate && todo.scheduling && todo.labelId) {
       postTodo.scheduledDate = todo.scheduledDate;
-    } else {
-      postTodo.scheduledDate = null;
+    } else if (todo.scheduledDate && !todo.scheduling && todo.labelId) {
+      postTodo.scheduledDate = todo.scheduledDate;
     }
     const refetchQuery: any = {
       query: TODO_LIST_QUERY
@@ -182,7 +182,6 @@ export class TodoService {
         };
         break;
     }
-    console.log(variables);
     return this.apollo.mutate({
       mutation: gqlOperation,
       variables,

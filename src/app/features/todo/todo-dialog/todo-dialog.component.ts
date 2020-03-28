@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MDCDialog } from '@material/dialog';
 import {MDCSwitch} from '@material/switch';
 import { TodoService } from '../../../service/todo/todo.service';
+import { SharedService } from '../../../service/shared/shared.service';
 import { TodoType, TodoLabelType, TodoConditions } from '../../../models/todo.model';
 
 @Component({
@@ -26,7 +27,8 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
 
   constructor(
     private fb: FormBuilder,
-    private todoService: TodoService
+    private todoService: TodoService,
+    private sharedService: SharedService
   ) { }
 
   ngOnInit(): void {
@@ -35,8 +37,8 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
       {
         _id: [this.todo._id],
         title: [this.todo.title, [Validators.required]],
-        noDate: [this.todo.scheduledDate ? true : false],
-        scheduledDate: [this.todo.scheduledDate ? this.todo.scheduledDate : this.todayDate()],
+        scheduling: [this.todo.scheduledDate ? true : false],
+        scheduledDate: [this.todo.scheduledDate ? this.todo.scheduledDate : this.sharedService.todayDisplayDate()],
         labelId: [labelIdVal]
       }
     );
@@ -57,21 +59,6 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
         this.isOpen.emit(false);
       });
     }
-  }
-
-  todayDate() {
-    const today = new Date();
-    let dd: any = today.getDate();
-    let mm: any = today.getMonth() + 1;
-    const yyyy = today.getFullYear();
-    if (dd < 10) {
-      dd = `0${dd}`;
-    }
-
-    if (mm < 10) {
-      mm = `0${mm}`;
-    }
-    return `${yyyy}-${mm}-${dd}`;
   }
 
   getLabels() {

@@ -35,13 +35,13 @@
                                     <div class="mdc-switch__thumb-underlay">
                                         <div class="mdc-switch__thumb"></div>
                                         <input type="checkbox" id="basic-switch" class="mdc-switch__native-control"
-                                            role="switch" formControlName="noDate">
+                                            role="switch" formControlName="scheduling">
                                     </div>
                                 </div>
                             </div>
                             <!-- Scheduled Date -->
                             <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-                                *ngIf="formObj.value.noDate">
+                                *ngIf="formObj.value.scheduling">
                                 <div class="mdc-text-field w-100" data-mdc-auto-init="MDCTextField">
                                     <input id="scheduledDate" name="scheduledDate" type="date"
                                         class="mdc-text-field__input" spellcheck="false" required

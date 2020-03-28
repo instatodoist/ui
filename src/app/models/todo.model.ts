@@ -17,7 +17,7 @@ export interface SuccessType {
 
 export interface TodoType {
   _id: string;
-  noDate?: boolean;
+  scheduling?: boolean;
   title?: string;
   scheduledDate?: Date;
   labelId?: string;
