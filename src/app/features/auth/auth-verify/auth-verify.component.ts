@@ -44,7 +44,7 @@ export class AuthVerifyComponent implements OnInit {
   register(): void {
     this.loader = true;
     this.authService.verification(this.formObj.value).subscribe((response: UserModel.RegisterResponse) => {
-      this.router.navigate(['login']);
+      this.router.navigate(['/']);
       this.loader = false;
     });
   }
