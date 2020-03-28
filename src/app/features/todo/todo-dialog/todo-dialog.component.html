@@ -28,7 +28,7 @@
                                 </div>
                             </div>
                             <!-- Scheduled Option -->
-                            <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                            <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12" [hidden]="origin === 'COMPLETED'">
                                 <label for="basic-switch"> Scheduling</label><br>
                                 <div class="mdc-switch">
                                     <div class="mdc-switch__track"></div>

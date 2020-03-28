@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { TodoListType, TodoSortType, TodoType } from '../../../models/todo.model';
+import { TodoListType, TodoType } from '../../../models/todo.model';
 import { TodoConditions } from '../../../models/todo.model';
 import { TodoService } from '../../../service/todo/todo.service';
-import { SharedService } from '../../../service/shared/shared.service';
 @Component({
   selector: 'app-todo-inbox',
   templateUrl: './todo-inbox.component.html',
@@ -29,7 +28,6 @@ export class TodoInboxComponent implements OnInit {
 
   constructor(
     private toddService: TodoService,
-    private sharedService: SharedService,
     private router: Router
   ) {
   }
@@ -118,6 +116,7 @@ export class TodoInboxComponent implements OnInit {
     };
     this.isRefreshPendingList = true;
     this.toddService
-      .updateTodo(postBody, this.conditions);
+      .updateTodo(postBody, this.conditions)
+      .subscribe();
   }
 }

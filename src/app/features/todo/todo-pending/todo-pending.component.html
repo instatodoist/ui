@@ -1,4 +1,5 @@
 <div>
+    <div *ngIf="loader" class="lds-dual-ring small"></div>
     <div *ngIf="!loader && todos?.data?.length">
         <div>
             <h4>{{todoCurrentType | titlecase}} Tasks: {{todos?.data?.length? todos?.data?.length: 0 }}</h4>

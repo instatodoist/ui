@@ -1,5 +1,5 @@
 <div>
-<!-- loader -->
+    <!-- loader -->
     <div *ngIf="loader" class="lds-dual-ring small"></div>
     <div *ngIf="!loader && todos?.data?.length">
         <div>
@@ -19,7 +19,8 @@
                         <td class="mdc-data-table__cell" *ngIf="todoCurrentType !== TODOTYPES?.completed">
                             <div class="mdc-form-field">
                                 <div class="mdc-checkbox">
-                                    <input type="checkbox" class="mdc-checkbox__native-control" id="checkbox-1" (change)="updateTodo(todo)"/>
+                                    <input type="checkbox" class="mdc-checkbox__native-control" id="checkbox-1"
+                                        (change)="updateTodo(todo)" />
                                     <div class="mdc-checkbox__background">
                                         <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
                                             <path class="mdc-checkbox__checkmark-path" fill="none"
@@ -35,17 +36,17 @@
                         <td class="mdc-data-table__cell">
                             {{todo?.title}}
                             <button *ngIf="todo?.label?.name" class="mdc-button">
-                                    <div class="mdc-button__ripple"></div>
-                                    <span class="mdc-button__label">{{todo?.label?.name}}</span>
-                                    <!-- <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i> -->
-                                </button>
+                                <div class="mdc-button__ripple"></div>
+                                <span class="mdc-button__label">{{todo?.label?.name}}</span>
+                                <!-- <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i> -->
+                            </button>
                         </td>
                         <td>
-                            <i class="material-icons" (click) = "openPopUp(todo, 'UPDATE')">
+                            <i class="material-icons" (click)="openPopUp(todo, 'UPDATE')">
                                 edit
                             </i>
                         </td>
-                        <td *ngIf="todoCurrentType !== TODOTYPES?.completed" (click) = "openPopUp(todo, 'DELETE')">
+                        <td (click)="openPopUp(todo, 'DELETE')">
                             <i class="material-icons">
                                 delete
                             </i>
@@ -67,9 +68,8 @@
         <img src="assets/images/no-result.svg">
         <p class="m0 p0">{{ "No Tasks"}}
     </div>
-    <app-todo-dialog [todo] = "todo" [conditions] = "conditions" (isOpen)="updatePopupFlag($event)" *ngIf="isUpdate"></app-todo-dialog>
-    <app-todo-delete [todo] = "todo" [conditions] = "conditions" (isOpen)="updatePopupFlag($event)" *ngIf="isDelete"></app-todo-delete>
-</div>
-<div *ngIf="todoCurrentType === TODOTYPES?.today">
-    <app-todo-pending></app-todo-pending>
+    <app-todo-dialog [todo]="todo" [conditions]="conditions" [origin]="todoCurrentType === TODOTYPES.completed? 'COMPLETED' : null" (isOpen)="updatePopupFlag($event)" *ngIf="isUpdate">
+    </app-todo-dialog>
+    <app-todo-delete [todo]="todo" [conditions]="conditions" (isOpen)="updatePopupFlag($event)" *ngIf="isDelete">
+    </app-todo-delete>
 </div>

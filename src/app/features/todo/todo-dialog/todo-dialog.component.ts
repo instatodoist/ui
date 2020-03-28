@@ -17,6 +17,8 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
   todo: TodoType;
   @Input()
   conditions: TodoConditions = null;
+  @Input()
+  origin = null;
 
   @Output()
   isOpen: EventEmitter<boolean> = new EventEmitter<boolean>();
