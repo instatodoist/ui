@@ -30,6 +30,7 @@ import { DropdownMenuDirective } from './directive/dropdown/dropdown-menu.direct
 import { environment } from '../environments/environment';
 import { FormValidationDirective } from './directive/form-validation.directive';
 import { TodoLabelComponent } from './shared/components/todo-label/todo-label.component';
+import { TodoLabelListComponent } from './shared/components/todo-label-list/todo-label-list.component';
 
 
 
@@ -44,7 +45,8 @@ import { TodoLabelComponent } from './shared/components/todo-label/todo-label.co
     PageNotFoundComponent,
     FormValidationDirective,
     DropdownMenuDirective,
-    TodoLabelComponent
+    TodoLabelComponent,
+    TodoLabelListComponent
   ],
   imports: [
     BrowserModule,
@@ -92,7 +94,8 @@ import { TodoLabelComponent } from './shared/components/todo-label/todo-label.co
   ],
   entryComponents: [
     TodoAddComponent,
-    TodoLabelComponent
+    TodoLabelComponent,
+    TodoLabelListComponent
   ],
   bootstrap: [AppComponent]
 })
