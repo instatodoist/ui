@@ -86,6 +86,24 @@ export const TODO_LABEL_ADD_MUTATION = gql`
     }
 `;
 
+export const TODO_LABEL_UPDATE_MUTATION = gql`
+    mutation addTodoLabel( $id: ID!, $input: TodoLabelInputType!) {
+        updateTodoLabel(id: $id, input: $input){
+            message
+            ok
+        }
+    }
+`;
+
+export const TODO_LABEL_DELETE_MUTATION = gql`
+    mutation deleteTodoLabel( $id: ID!) {
+        deleteTodoLabel(id: $id){
+            message
+            ok
+        }
+    }
+`;
+
 export const TODO_LABEL_QUERY = gql`
     query {
         todoLabelList {

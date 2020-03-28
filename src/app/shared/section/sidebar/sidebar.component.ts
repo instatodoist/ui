@@ -7,9 +7,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidebarComponent implements OnInit {
 
+  isOpen = false;
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+
+  closePopUp($event: boolean): void {
+    this.isOpen = $event;
+  }
+
+  openPopUp(): void {
+    this.isOpen = true;
   }
 
 }

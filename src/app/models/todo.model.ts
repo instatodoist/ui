@@ -8,6 +8,7 @@ enum TodoPriorityEnumType {
 }
 
 type TodoEnumType = 'today' | 'backlog' | 'pending';
+export type OperationEnumType = 'ADD' | 'UPDATE' | 'DELETE';
 
 export interface SuccessType {
   message?: string;
@@ -30,6 +31,7 @@ export interface TodoType {
 export interface TodoLabelType {
   _id?: string;
   name?: string;
+  operationType?: string;
 }
 
 export interface TodoFilterType {

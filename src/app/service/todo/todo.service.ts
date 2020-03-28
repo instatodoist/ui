@@ -1,10 +1,26 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { TODO_LIST_QUERY, TODO_LABEL_QUERY, TODO_UPDATE_MUTATION, TODO_DELETE_MUTATION, TODO_ADD_MUTATION } from '../../gql/todo.gql';
+import {
+  TODO_LIST_QUERY,
+  TODO_LABEL_QUERY,
+  TODO_UPDATE_MUTATION,
+  TODO_DELETE_MUTATION,
+  TODO_ADD_MUTATION,
+  TODO_LABEL_ADD_MUTATION,
+  TODO_LABEL_UPDATE_MUTATION,
+  TODO_LABEL_DELETE_MUTATION
+} from '../../gql/todo.gql';
 import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { TodoConditions, TodoListType, TodoLabelType, TodoType, SuccessType } from '../../models/todo.model';
+import {
+  TodoConditions,
+  TodoListType,
+  TodoLabelType,
+  TodoType,
+  SuccessType,
+  OperationEnumType
+} from '../../models/todo.model';
 @Injectable({
   providedIn: 'root',
 })
@@ -123,6 +139,59 @@ export class TodoService {
     })
     .pipe(map(({ data }: any) => {
       return data.deleteTodo;
+    }));
+  }
+
+  todoLabelOperation(body: TodoLabelType, conditions: any = null): Observable<SuccessType> {
+    let gqlOperation = TODO_LABEL_ADD_MUTATION;
+    let defaultDataKey = 'addTodoLabel';
+    const operationType = body.operationType;
+    // refetch query after add or update
+    const refetchQuery: any = {
+      query: TODO_LABEL_QUERY
+    };
+    // if passing conditions
+    if (conditions) {
+      refetchQuery.variables = conditions;
+    }
+     // gql variables
+    let variables: any = {};
+    switch (operationType) {
+      case 'UPDATE':
+        gqlOperation = TODO_LABEL_UPDATE_MUTATION;
+        defaultDataKey = 'updateTodoLabel';
+        variables = {
+          ...variables,
+          input: {
+            name: body.name
+          },
+          id: body._id
+        };
+        break;
+      case 'DELETE':
+        gqlOperation = TODO_LABEL_DELETE_MUTATION;
+        defaultDataKey = 'deleteTodoLabel';
+        variables.id = body._id;
+        break;
+      default:
+        variables = {
+          ...variables,
+          input: {
+            name: body.name
+          }
+        };
+        break;
+    }
+    console.log(variables);
+    return this.apollo.mutate({
+      mutation: gqlOperation,
+      variables,
+      refetchQueries: [
+        refetchQuery
+      ]
+    })
+    .pipe(map(({ data }: any) => {
+      return data[defaultDataKey];
     }));
   }
 }
