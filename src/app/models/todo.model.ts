@@ -7,6 +7,8 @@ enum TodoPriorityEnumType {
   'p4'
 }
 
+type TodoEnumType = 'today' | 'backlog' | 'pending';
+
 export interface SuccessType {
   message?: string;
   ok?: boolean;
@@ -36,6 +38,7 @@ export interface TodoFilterType {
   labelId?: string;
   startAt?: Date;
   endAt?: Date;
+  type?: TodoEnumType;
   priority?: TodoPriorityEnumType;
 }
 export interface TodoSortType {

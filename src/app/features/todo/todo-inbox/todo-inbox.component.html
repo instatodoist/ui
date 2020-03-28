@@ -13,7 +13,7 @@
             </thead>
             <tbody class="mdc-data-table__content">
                 <tr class="mdc-data-table__row" *ngFor="let todo of todos?.data;">
-                    <td class="mdc-data-table__cell" *ngIf="todoCurrentType !== TODOTYPES[1]">
+                    <td class="mdc-data-table__cell" *ngIf="todoCurrentType !== TODOTYPES?.completed">
                         <div class="mdc-form-field">
                             <div class="mdc-checkbox">
                                 <input type="checkbox" class="mdc-checkbox__native-control" id="checkbox-1" (change)="updateTodo(todo)"/>
@@ -42,7 +42,7 @@
                             edit
                         </i>
                     </td>
-                    <td *ngIf="todoCurrentType !== TODOTYPES[1]" (click) = "openPopUp(todo, 'DELETE')">
+                    <td *ngIf="todoCurrentType !== TODOTYPES?.completed" (click) = "openPopUp(todo, 'DELETE')">
                         <i class="material-icons">
                             delete
                         </i>

@@ -18,13 +18,13 @@ export class TodoInboxComponent implements OnInit {
   popupType: string;
   todo: TodoType;
   conditions: TodoConditions;
-  TODOTYPES = [
-    'INBOX',
-    'COMPLETED',
-    'TODAY',
-    'PENDING'
-  ];
-  todoCurrentType = this.TODOTYPES[0];
+  TODOTYPES = {
+    inbox: 'backlog',
+    today: 'today',
+    pending: 'pending',
+    completed: 'completed',
+  };
+  todoCurrentType = this.TODOTYPES.inbox;
 
   constructor(
     private toddService: TodoService,
@@ -36,19 +36,32 @@ export class TodoInboxComponent implements OnInit {
   ngOnInit(): void {
     this.loader = true;
     if (this.router.url === '/tasks/today') {
-      this.todoCurrentType = this.TODOTYPES[2];
-      this.conditions = {
+      this.todoCurrentType = this.TODOTYPES.today;
+    } else if (this.router.url === '/tasks/completed') {
+      this.todoCurrentType = this.TODOTYPES.completed;
+    } else if (this.router.url === '/tasks/inbox') {
+      this.todoCurrentType = this.TODOTYPES.inbox;
+    }
+    this.conditions = this.getConditions(this.todoCurrentType);
+    this.toddService.listTodos(this.conditions)
+      .subscribe((data) => {
+        this.todos = data;
+        this.loader = false;
+      });
+  }
+
+  getConditions(type: string): TodoConditions {
+    if (type === this.TODOTYPES.today) {
+      return {
         sort: {
           updatedAt: 'DESC'
         },
         filter: {
-          startAt: this.sharedService.todayDate(),
-          isCompleted: false
+          type: 'today'
         }
       };
-    } else if (this.router.url === '/tasks/completed') {
-      this.todoCurrentType = this.TODOTYPES[1];
-      this.conditions = {
+    } else if (type === this.TODOTYPES.completed) {
+      return {
         sort: {
           updatedAt: 'DESC'
         },
@@ -56,22 +69,25 @@ export class TodoInboxComponent implements OnInit {
           isCompleted: true
         }
       };
-    } else {
-      this.conditions = {
+    } else if (type === this.TODOTYPES.pending) {
+      return {
         sort: {
           updatedAt: 'DESC'
         },
         filter: {
-          isCompleted: false,
-          // endAt: this.sharedService.yesterdayDate()
+          type: 'pending'
+        }
+      };
+    } else {
+      return {
+        sort: {
+          updatedAt: 'DESC'
+        },
+        filter: {
+          type: 'backlog'
         }
       };
     }
-    this.toddService.listTodos(this.conditions)
-      .subscribe((data) => {
-        this.todos = data;
-        this.loader = false;
-      });
   }
 
   openPopUp(todo: TodoType, popupType): void {
