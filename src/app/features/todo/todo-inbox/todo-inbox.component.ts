@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router';
 import { TodoListType, TodoType } from '../../../models/todo.model';
 import { TodoConditions } from '../../../models/todo.model';
 import { TodoService } from '../../../service/todo/todo.service';
@@ -22,19 +23,24 @@ export class TodoInboxComponent implements OnInit {
     today: 'today',
     pending: 'pending',
     completed: 'completed',
+    label: 'label'
   };
   todoCurrentType = this.TODOTYPES.inbox;
   isRefreshPendingList = false;
 
   constructor(
     private toddService: TodoService,
-    private router: Router
+    private router: Router,
+    private location: Location,
+    private activatedRoute: ActivatedRoute
   ) {
   }
 
   ngOnInit(): void {
     this.loader = true;
-    if (this.router.url === '/tasks/today') {
+    if (this.activatedRoute.snapshot.paramMap.get('label')) {
+      this.todoCurrentType = 'label';
+    } else if (this.router.url === '/tasks/today') {
       this.todoCurrentType = this.TODOTYPES.today;
     } else if (this.router.url === '/tasks/completed') {
       this.todoCurrentType = this.TODOTYPES.completed;
@@ -77,13 +83,23 @@ export class TodoInboxComponent implements OnInit {
           type: 'pending'
         }
       };
-    } else {
+    } else if (type === this.TODOTYPES.inbox) {
       return {
         sort: {
           updatedAt: 'DESC'
         },
         filter: {
           type: 'backlog'
+        }
+      };
+    } else {
+      return {
+        sort: {
+          updatedAt: 'DESC'
+        },
+        filter: {
+         labelId: this.activatedRoute.snapshot.paramMap.get('labelId'),
+         isCompleted: false
         }
       };
     }
