@@ -38,9 +38,7 @@ export class TodoInboxComponent implements OnInit {
 
   ngOnInit(): void {
     this.loader = true;
-    if (this.activatedRoute.snapshot.paramMap.get('label')) {
-      this.todoCurrentType = 'label';
-    } else if (this.router.url === '/tasks/today') {
+    if (this.router.url === '/tasks/today') {
       this.todoCurrentType = this.TODOTYPES.today;
     } else if (this.router.url === '/tasks/completed') {
       this.todoCurrentType = this.TODOTYPES.completed;
@@ -48,11 +46,23 @@ export class TodoInboxComponent implements OnInit {
       this.todoCurrentType = this.TODOTYPES.inbox;
     }
     this.conditions = this.getConditions(this.todoCurrentType);
-    this.toddService.listTodos(this.conditions)
+    if (this.activatedRoute.snapshot.paramMap.get('label')) {
+      this.todoCurrentType = 'label';
+      this.activatedRoute.params.subscribe((params) => {
+        this.conditions = this.getConditions(this.todoCurrentType);
+        this.toddService.listTodos(this.conditions)
+          .subscribe((data) => {
+            this.todos = data;
+            this.loader = false;
+          });
+      });
+    } else {
+      this.toddService.listTodos(this.conditions)
       .subscribe((data) => {
         this.todos = data;
         this.loader = false;
       });
+    }
   }
 
   getConditions(type: string): TodoConditions {
