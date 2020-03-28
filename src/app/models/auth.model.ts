@@ -1,3 +1,8 @@
+export interface UserProfileType {
+    _id: string;
+    email: string;
+}
+
 export interface UserType {
     email: string;
     password: string;

@@ -1,28 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { LsService } from './../../../service/ls.service';
-import { ActivatedRoute } from '@angular/router'
-import { filter, map } from 'rxjs/operators'
+import { AuthService } from '../../../service/auth/auth.service';
+import { ActivatedRoute } from '@angular/router';
+import { filter, map } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
+import { UserModel } from '../../../models';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styles: []
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
 
   tabTitle = 'InstaTodo';
   headerTitle: string;
   isOpen = false;
+  session: any;
 
   constructor(
     private router: Router,
     private lsService: LsService,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private userService: AuthService
   ) {
     this.router
       .events
@@ -51,6 +55,10 @@ export class HeaderComponent {
       });
   }
 
+  ngOnInit() {
+    this.getProfile();
+  }
+
   // do singout
   signOut(): boolean {
     this.lsService.clearAll();
@@ -71,5 +79,10 @@ export class HeaderComponent {
     this.isOpen = true;
   }
 
-
+  getProfile() {
+    this.userService.profile()
+      .subscribe(data => {
+        this.session = data;
+      });
+  }
 }

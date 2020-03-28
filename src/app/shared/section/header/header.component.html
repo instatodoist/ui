@@ -38,18 +38,20 @@
             <div class="mdc-menu-surface--anchor">
                 <a href="javascript:void(0)" style="text-decoration: none;"
                     class="mdc-top-app-bar__action-item mdc-button-dropdown topbar-avatar" appDropdownMenu>
-                    <span>AK</span>
+                    <span>{{session?.email.charAt(0) | titlecase}} {{session?.email.charAt(1) | titlecase}}</span>
                 </a>
                 <div class="mdc-menu mdc-menu-surface">
                     <ul class="mdc-list mdc-list--two-line" style="width: 240px" role="menu" aria-hidden="true"
                         aria-orientation="vertical" tabindex="-1">
                         <li class="mdc-list-item pl-2 pr-0" role="menuitem" ui-sref="app.profile.show">
-                            <span class="mdc-list-item__graphic topbar-avatar lg">AK</span>
+                            <span class="mdc-list-item__graphic topbar-avatar lg">
+                                {{session?.email.charAt(0) | titlecase}} {{session?.email.charAt(1) | titlecase}}
+                            </span>
                             <span class="mdc-list-item__text pl-2">
-                                <span class="mdc-list-item__primary-text text-capitalize"
-                                    style="font-weight: bold;">Ashok Kumar</span>
+                                <!-- <span class="mdc-list-item__primary-text text-capitalize"
+                                    style="font-weight: bold;">Ashok Kumar</span> -->
                                 <span class="mdc-list-item__secondary-text"
-                                    style="font-size: x-small">anandam@lantronix.com</span>
+                                    style="font-size: x-small">{{session?.email}}</span>
                             </span>
                             <span class="mdc-list-item__meta material-icons ml10">keyboard_arrow_right</span>
                         </li>

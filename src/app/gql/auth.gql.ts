@@ -1,5 +1,16 @@
 import gql from 'graphql-tag';
 
+export const PROFILE_QUERY = gql`
+  query profile{
+    profile {
+      email
+      id
+      firstname
+      lastname
+    }
+  }
+`;
+
 export const REGISTER_MUTATION = gql`
     mutation register( $input: UserRegisterInputType!) {
       register(input: $input){

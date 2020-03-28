@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LsService } from './../../service/ls.service';
 import { environment } from '../../../environments/environment';
 import { UserModel } from '../../models';
-import { LOGIN_QUERY, REGISTER_MUTATION } from '../../gql/auth.gql';
+import { LOGIN_QUERY, REGISTER_MUTATION, PROFILE_QUERY } from '../../gql/auth.gql';
 import {Apollo} from 'apollo-angular';
 import {map} from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -45,6 +45,16 @@ export class AuthService {
       })
       .pipe(map(({data}: any ) => {
         return data.register;
+      }));
+  }
+
+  profile(): Observable<UserModel.UserProfileType> {
+    return this.apollo
+      .watchQuery({
+        query: PROFILE_QUERY
+      })
+      .valueChanges.pipe(map(({ data }: any) => {
+        return data.profile;
       }));
   }
 }
