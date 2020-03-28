@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { TodoInboxComponent } from './todo-inbox/todo-inbox.component';
-import { TodoTodayComponent } from './todo-today/todo-today.component';
-import { TodoCompletedComponent } from './todo-completed/todo-completed.component';
 import { TodoPendingComponent } from './todo-pending/todo-pending.component';
+import { TodoLabelFilterComponent } from './todo-label-filter/todo-label-filter.component';
 
 const routes: Routes = [
   {
@@ -35,6 +34,13 @@ const routes: Routes = [
         component: TodoPendingComponent,
         data: {
           header_title: 'pending'
+        }
+      },
+      {
+        path: 'labels/:label',
+        component: TodoLabelFilterComponent,
+        data: {
+          header_title: 'label_filter'
         }
       },
     ]

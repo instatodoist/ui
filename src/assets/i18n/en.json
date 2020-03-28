@@ -15,5 +15,6 @@
   "today": "Today",
   "upcoming": "Upcoming Next week",
   "my_goals": "My Goals",
-  "completed_todos": "Completed Tasks"
+  "completed_todos": "Completed Tasks",
+  "label_filter": "Filtered tasks"
 }

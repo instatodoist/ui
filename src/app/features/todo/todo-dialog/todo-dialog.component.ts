@@ -73,9 +73,8 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
     if (this.formObj.valid) {
       const postBody = this.formObj.value;
       this.todoService
-        .updateTodo(postBody)
+        .updateTodo(postBody, this.conditions)
         .subscribe(response => {
-          console.log(response);
           this.dialog.close();
         });
     }

@@ -25,6 +25,7 @@ export class TodoInboxComponent implements OnInit {
     completed: 'completed',
   };
   todoCurrentType = this.TODOTYPES.inbox;
+  isRefreshPendingList = false;
 
   constructor(
     private toddService: TodoService,
@@ -104,6 +105,7 @@ export class TodoInboxComponent implements OnInit {
   updatePopupFlag($event: boolean): void {
     if (this.popupType === 'UPDATE') {
       this.isUpdate = $event;
+      this.isRefreshPendingList = false;
     } else {
       this.isDelete = $event;
     }
@@ -114,10 +116,8 @@ export class TodoInboxComponent implements OnInit {
       _id: todo._id,
       isCompleted: true
     };
+    this.isRefreshPendingList = true;
     this.toddService
-      .updateTodo(postBody, this.conditions)
-      .subscribe(response => {
-        console.log(response);
-      });
+      .updateTodo(postBody, this.conditions);
   }
 }

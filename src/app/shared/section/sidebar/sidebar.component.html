@@ -17,20 +17,11 @@
         <span class="mdc-list-item__text">{{'my_goals'| translate}}</span>
     </a> -->
     <!-- <li role="separator" class="mdc-list-divider"></li> -->
-    <!-- <a class="mdc-list-item haschild" href="javascript:void(0)" routerLinkActive="mdc-list-item--activated">
-        <span class="mdc-list-item__meta">&#9656;</span>
-        <i class="icon icon-explorer material-icons mdc-list-item__graphic" aria-hidden="true"></i>
-        <span class="mdc-list-item__text">{{'labels'| translate}}</span>
-    </a> -->
     <li role="separator" class="mdc-list-divider"></li>
-    <app-todo-label-list></app-todo-label-list>
-    <a class="mdc-list-item haschild" href="javascript:void(0)" (click)="openPopUp()">
-        <i class="icon material-icons" aria-hidden="true">edit</i> Labels
+    <a class="mdc-list-item" href="javascript:void(0)" (click)="openPopUp()">
+        Labels
+        <i class="icon material-icons" aria-hidden="true">edit</i>
     </a>
-    <!-- <nav class="mdc-list mdc-sub-list">
-        <a class="mdc-list-item" ui-sref-active="mdc-list-item--activated">
-        <span class="mdc-list-item__text">{{'labels'|translate}}</span>
-      </a>
-    </nav> -->
+    <app-todo-label-list></app-todo-label-list>
     <app-todo-label *ngIf="isOpen" (isOpen)="closePopUp($event)"></app-todo-label>
 </div>
