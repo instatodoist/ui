@@ -29,9 +29,9 @@ export class AuthRegisterComponent implements OnInit {
     private lsService: LsService ) { }
 
   ngOnInit(): void {
-    // this.appConfig.appData.subscribe(data => {
-    //   this.appData = data;
-    // });
+    this.appConfig.appData.subscribe(data => {
+      this.appData = data;
+    });
   }
 
   // auth check after submit
@@ -39,6 +39,7 @@ export class AuthRegisterComponent implements OnInit {
     this.loader = true;
     this.authService.register(this.signinForm.value).subscribe((response: UserModel.RegisterResponse) => {
       const data = response;
+      this.router.navigate(['verification', data.hashToken]);
       this.loader = false;
     });
   }

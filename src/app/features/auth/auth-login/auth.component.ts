@@ -19,8 +19,14 @@ export class AuthComponent implements OnInit {
     email: ['', Validators.required],
     password: ['', Validators.required],
   });
-  
-  constructor(private appConfig: AppConfig, private fb: FormBuilder, private authService: AuthService, private router: Router, private lsService:LsService) { }
+
+  constructor(
+    private appConfig: AppConfig,
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private lsService: LsService
+  ) { }
 
   ngOnInit(): void {
     this.appConfig.appData.subscribe(data => {

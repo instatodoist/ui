@@ -1,0 +1,25 @@
+.auth {
+    .left{
+      height: 100vh;
+      background-image: url(./../../../../assets/images/login-page-graphic.jpg);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 70%;
+    }
+    .rigt{
+      overflow: auto;
+    }
+    .logo-block {
+      margin-top: 50px;
+      margin-bottom: 50px;  
+      img {
+        width: 60%;
+      }
+    }
+    button{
+        &.signin{
+          width: 54%;
+        }
+    }
+  }
+  

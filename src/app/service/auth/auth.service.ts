@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LsService } from './../../service/ls.service';
 import { environment } from '../../../environments/environment';
 import { UserModel } from '../../models';
-import { LOGIN_QUERY, REGISTER_MUTATION, PROFILE_QUERY } from '../../gql/auth.gql';
+import { LOGIN_QUERY, REGISTER_MUTATION, PROFILE_QUERY, EMAIL_VERIFICATION } from '../../gql/auth.gql';
 import {Apollo} from 'apollo-angular';
 import {map} from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -41,11 +41,28 @@ export class AuthService {
     return this.apollo
       .mutate({
         mutation: REGISTER_MUTATION,
-        variables: postData
+        variables: {
+          input: postData
+        }
       })
       .pipe(map(({data}: any ) => {
         return data.register;
-      }));
+      })
+      );
+  }
+
+  verification(postData: UserModel.UserType): Observable<UserModel.RegisterResponse> {
+    return this.apollo
+      .mutate({
+        mutation: EMAIL_VERIFICATION,
+        variables: {
+          input: postData
+        }
+      })
+      .pipe(map(({data}: any ) => {
+        return data.emailVerificationByOtp;
+      })
+      );
   }
 
   profile(): Observable<UserModel.UserProfileType> {

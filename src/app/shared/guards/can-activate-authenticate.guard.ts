@@ -14,11 +14,11 @@ export class CanActivateAuthenticateGuard implements CanActivate {
     private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if(this.lsService.getValue('isLoggedIn') && state.url === '/'){
+    if (this.lsService.getValue('isLoggedIn') && state.url === '/') {
       this.router.navigate(['/tasks/inbox']);
-    } else if(this.lsService.getValue('isLoggedIn') && state.url !== '/') {
+    } else if (this.lsService.getValue('isLoggedIn') && state.url !== '/') {
       return true;
-    } else if(!this.lsService.getValue('isLoggedIn') && state.url !== '/') {
+    } else if (!this.lsService.getValue('isLoggedIn') && state.url !== '/' && state.url !== '/register') {
       this.router.navigate(['/']);
       return false;
     } else {
