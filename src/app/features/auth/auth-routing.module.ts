@@ -8,7 +8,7 @@ import { AuthVerifyComponent } from './auth-verify/auth-verify.component';
 
 const authRoutes: Routes = [
   {
-   // canActivate: [CanActivateAuthenticateGuard],
+    canActivate: [CanActivateAuthenticateGuard],
     path: '',
     component: FrontComponent,
     children: [
