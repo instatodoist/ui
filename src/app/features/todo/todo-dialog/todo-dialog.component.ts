@@ -54,6 +54,15 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
     return this.formObj.value.labelId.indexOf(labelId) !== -1 ? true : false;
   }
 
+  checkLabels($event, labelId: string) {
+    const index = this.formObj.value.labelId.indexOf(labelId);
+    if (index === -1) {
+      this.formObj.value.labelId.push(labelId);
+    } else {
+      this.formObj.value.labelId.splice(index, 1);
+    }
+  }
+
   ngAfterViewInit() {
     if (this.todo._id) {
       this.dialog = new MDCDialog(document.querySelector('.mdc-dialog'));
@@ -82,7 +91,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
       const postBody = this.formObj.value;
       this.todoService
         .updateTodo(postBody, this.conditions)
-        .subscribe(response => {
+        .subscribe(() => {
           this.dialog.close();
         });
     }

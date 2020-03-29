@@ -64,7 +64,7 @@
                                     <div *ngFor="let label of labels; let i = index">
                                         <div class="mdc-checkbox">
                                             <input type="checkbox" class="mdc-checkbox__native-control" id="radio-{{i + 1}}"
-                                            fromControlName="labelId" [checked]="isChecked(label._id)" (change)="formObj.value.labelId.push(label._id)"/>
+                                            fromControlName="labelId" [checked]="isChecked(label._id)" (change)="checkLabels($event, label._id)"/>
                                             <div class="mdc-checkbox__background">
                                                 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
                                                     <path class="mdc-checkbox__checkmark-path" fill="none"
