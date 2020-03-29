@@ -41,7 +41,7 @@
                             </div>
                             <!-- Scheduled Date -->
                             <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-                                *ngIf="formObj.value.scheduling">
+                                *ngIf="formObj.value.scheduling" [hidden]="origin === 'COMPLETED'">
                                 <div class="mdc-text-field w-100" data-mdc-auto-init="MDCTextField">
                                     <input id="scheduledDate" name="scheduledDate" type="date"
                                         class="mdc-text-field__input" spellcheck="false" required
@@ -62,18 +62,19 @@
                                 <label for="basic-switch"> Labels</label><br>
                                 <div class="mdc-touch-target-wrapper">
                                     <div *ngFor="let label of labels; let i = index">
-                                        <div class="mdc-radio mdc-radio--touch">
-                                            <input class="mdc-radio__native-control" type="radio" id="radio-{{i + 1}}"
-                                                fromControlName="labelId" value="label._id"
-                                                [checked]="label._id === formObj.value.labelId"
-                                                (change)="formObj.value.labelId = label._id">
-                                            <div class="mdc-radio__background">
-                                                <div class="mdc-radio__outer-circle"></div>
-                                                <div class="mdc-radio__inner-circle"></div>
+                                        <div class="mdc-checkbox">
+                                            <input type="checkbox" class="mdc-checkbox__native-control" id="radio-{{i + 1}}"
+                                            fromControlName="labelId" [checked]="isChecked(label._id)" (change)="formObj.value.labelId.push(label._id)"/>
+                                            <div class="mdc-checkbox__background">
+                                                <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                                                    <path class="mdc-checkbox__checkmark-path" fill="none"
+                                                        d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                                </svg>
+                                                <div class="mdc-checkbox__mixedmark"></div>
                                             </div>
-                                            <div class="mdc-radio__ripple"></div>
+                                            <div class="mdc-checkbox__ripple"></div>
                                         </div>
-                                        <label for="radio-{{i + 1}}">{{label?.name}}</label>
+                                        <label for="check-{{i + 1}}">{{label?.name}}</label>
                                     </div>
                                 </div>
                             </div>

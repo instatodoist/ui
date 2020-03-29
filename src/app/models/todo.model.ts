@@ -21,10 +21,7 @@ export interface TodoType {
   title?: string;
   scheduledDate?: Date;
   labelId?: string;
-  label?: {
-    name: string;
-    _id: string;
-  };
+  label?: TodoLabelType[];
   isCompleted?: boolean;
 }
 

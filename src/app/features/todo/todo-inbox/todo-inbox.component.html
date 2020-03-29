@@ -34,12 +34,24 @@
                             </div>
                         </td>
                         <td class="mdc-data-table__cell">
-                            {{todo?.title}}
-                            <button *ngIf="todo?.label?.name" class="mdc-button">
+                            <div class="mdc-chip-set" role="grid">
+                                {{todo?.title}}
+                                <div class="mdc-chip" role="row" *ngFor="let label of todo?.label">
+                                    <div class="mdc-chip__ripple"></div>
+                                    <span role="gridcell">
+                                        <span role="button" tabindex="0" class="mdc-chip__primary-action">
+                                            <span class="mdc-chip__text">{{label?.name}}</span>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <!-- <button *ngIf="todo?.label?.length" class="mdc-button">
                                 <div class="mdc-button__ripple"></div>
-                                <span class="mdc-button__label">{{todo?.label?.name}}</span>
-                                <!-- <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i> -->
-                            </button>
+                                <span class="mdc-button__label" *ngFor="let label of todo?.label" style="margin-right: 5px;">
+                                    {{label?.name}}
+                                </span>
+                                <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i>
+                            </button> -->
                         </td>
                         <td>
                             <i class="material-icons" (click)="openPopUp(todo, 'UPDATE')">
@@ -68,7 +80,9 @@
         <img src="assets/images/no-result.svg">
         <p class="m0 p0">{{ "No Tasks"}}
     </div>
-    <app-todo-dialog [todo]="todo" [conditions]="conditions" [origin]="todoCurrentType === TODOTYPES.completed? 'COMPLETED' : null" (isOpen)="updatePopupFlag($event)" *ngIf="isUpdate">
+    <app-todo-dialog [todo]="todo" [conditions]="conditions"
+        [origin]="todoCurrentType === TODOTYPES.completed? 'COMPLETED' : null" (isOpen)="updatePopupFlag($event)"
+        *ngIf="isUpdate">
     </app-todo-dialog>
     <app-todo-delete [todo]="todo" [conditions]="conditions" (isOpen)="updatePopupFlag($event)" *ngIf="isDelete">
     </app-todo-delete>

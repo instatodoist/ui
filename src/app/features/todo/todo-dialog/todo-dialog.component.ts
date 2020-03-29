@@ -34,7 +34,10 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
-    const labelIdVal = this.todo.label._id ? this.todo.label._id : '';
+    const labelIdVal = this.todo.label.length ? (this.todo.label.map(label  => {
+      return label._id;
+    })) : [];
+    console.log(labelIdVal);
     this.formObj = this.fb.group(
       {
         _id: [this.todo._id],
@@ -47,9 +50,12 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
     this.getLabels();
   }
 
+  isChecked(labelId: string) {
+    return this.formObj.value.labelId.indexOf(labelId) !== -1 ? true : false;
+  }
+
   ngAfterViewInit() {
     if (this.todo._id) {
-      console.log(this.todo);
       this.dialog = new MDCDialog(document.querySelector('.mdc-dialog'));
       const switchControl = new MDCSwitch(document.querySelector('.mdc-switch'));
       this.dialog.open();

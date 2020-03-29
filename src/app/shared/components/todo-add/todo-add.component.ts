@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { MDCDialog } from '@material/dialog';
 import { TodoService } from '../../../service/todo/todo.service';
 import { TodoType, TodoLabelType, TodoConditions } from '../../../models/todo.model';
@@ -33,11 +33,19 @@ export class TodoAddComponent implements OnInit, AfterViewInit {
       {
         title: ['', [Validators.required]],
         scheduledDate: [null],
-        labelId: ['']
+        labelId: [[]]
       }
     );
     this.getLabels();
   }
+
+  isChecked(labelId: string) {
+    return (this.formObj.value.labelId.indexOf(labelId) !== -1) ? true : false;
+  }
+
+  // onRemoveSpecialRequest(index) {
+  //   this.formObj.controls.labelId.removeAt(index);
+  // }
 
   ngAfterViewInit() {
     this.dialog = new MDCDialog(document.querySelector('.mdc-dialog'));
