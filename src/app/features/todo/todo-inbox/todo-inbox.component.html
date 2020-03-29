@@ -3,7 +3,7 @@
     <div *ngIf="loader" class="lds-dual-ring small"></div>
     <div *ngIf="!loader && todos?.data?.length">
         <div>
-            <h4>{{todoCurrentType | titlecase}} Tasks: {{todos?.data?.length? todos?.data?.length: 0 }}</h4>
+            <h4>{{todoCurrentType | titlecase}} Tasks: {{todos?.totalCount ? todos?.totalCount: 0}}</h4>
         </div>
         <div class="mdc-data-table" data-mdc-auto-init="MDCDataTable">
             <table class="mdc-data-table__table" aria-label="Dessert calories">
@@ -53,7 +53,7 @@
                                 <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i>
                             </button> -->
                         </td>
-                        <td>
+                        <td *ngIf="todoCurrentType !== TODOTYPES?.completed">
                             <i class="material-icons" (click)="openPopUp(todo, 'UPDATE')">
                                 edit
                             </i>
