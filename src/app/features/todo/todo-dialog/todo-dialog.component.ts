@@ -43,7 +43,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
         _id: [this.todo._id],
         title: [this.todo.title, [Validators.required]],
         scheduling: [this.todo.scheduledDate ? true : false],
-        scheduledDate: [this.todo.scheduledDate ? this.todo.scheduledDate : this.sharedService.todayDisplayDate()],
+        scheduledDate: [this.todo.scheduledDate ? this.todo.scheduledDate : this.sharedService.todayDate()],
         labelId: [labelIdVal]
       }
     );

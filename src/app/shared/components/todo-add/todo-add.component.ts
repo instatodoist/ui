@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { MDCDialog } from '@material/dialog';
 import { TodoService } from '../../../service/todo/todo.service';
+import { SharedService } from '../../../service/shared/shared.service';
 import { TodoType, TodoLabelType, TodoConditions } from '../../../models/todo.model';
 
 @Component({
@@ -25,14 +26,15 @@ export class TodoAddComponent implements OnInit, AfterViewInit {
 
   constructor(
     private fb: FormBuilder,
-    private todoService: TodoService
+    private todoService: TodoService,
+    private sharedService: SharedService
   ) { }
 
   ngOnInit(): void {
     this.formObj = this.fb.group(
       {
         title: ['', [Validators.required]],
-        scheduledDate: [null],
+        scheduledDate: [this.sharedService.todayDate()],
         labelId: [[]]
       }
     );

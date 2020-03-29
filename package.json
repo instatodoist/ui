@@ -34,6 +34,7 @@
     "graphql": "^14.5.0",
     "graphql-tag": "^2.10.0",
     "izitoast": "^1.4.0",
+    "moment": "^2.24.0",
     "ngx-pagination": "^5.0.0",
     "rxjs": "^6.5.4",
     "tslib": "^1.10.0",
