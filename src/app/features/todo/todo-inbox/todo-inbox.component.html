@@ -18,19 +18,14 @@
                     <tr class="mdc-data-table__row" *ngFor="let todo of todos?.data;">
                         <td class="mdc-data-table__cell" *ngIf="todoCurrentType !== TODOTYPES?.completed">
                             <div class="mdc-form-field">
-                                <div class="mdc-checkbox">
-                                    <input type="checkbox" class="mdc-checkbox__native-control" id="checkbox-1"
-                                        (change)="updateTodo(todo)" />
-                                    <div class="mdc-checkbox__background">
-                                        <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                                            <path class="mdc-checkbox__checkmark-path" fill="none"
-                                                d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                        </svg>
-                                        <div class="mdc-checkbox__mixedmark"></div>
+                                <div class="mdc-radio">
+                                    <input class="mdc-radio__native-control" type="radio" id="radio-1" name="radios" (change)="updateTodo(todo)">
+                                    <div class="mdc-radio__background">
+                                      <div class="mdc-radio__outer-circle"></div>
+                                      <div class="mdc-radio__inner-circle"></div>
                                     </div>
-                                    <div class="mdc-checkbox__ripple"></div>
+                                    <div class="mdc-radio__ripple"></div>
                                 </div>
-                                <!-- <label for="checkbox-1">Checkbox 1</label> -->
                             </div>
                         </td>
                         <td class="mdc-data-table__cell">
@@ -45,13 +40,9 @@
                                     </span>
                                 </div>
                             </div>
-                            <!-- <button *ngIf="todo?.label?.length" class="mdc-button">
-                                <div class="mdc-button__ripple"></div>
-                                <span class="mdc-button__label" *ngFor="let label of todo?.label" style="margin-right: 5px;">
-                                    {{label?.name}}
-                                </span>
-                                <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i>
-                            </button> -->
+                        </td>
+                        <td *ngIf="todoCurrentType === TODOTYPES?.completed" class="mdc-data-table__cell">
+                            {{todo?.updatedAt | date: 'medium'}}
                         </td>
                         <td *ngIf="todoCurrentType !== TODOTYPES?.completed">
                             <i class="material-icons" (click)="openPopUp(todo, 'UPDATE')">
