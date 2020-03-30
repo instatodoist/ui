@@ -6,7 +6,6 @@ import { TodoInboxComponent } from './todo-inbox/todo-inbox.component';
 import { TodoCompletedComponent } from './todo-completed/todo-completed.component';
 import { TodoDialogComponent } from './todo-dialog/todo-dialog.component';
 import { TodoDeleteComponent } from './todo-delete/todo-delete.component';
-import { TodoPendingComponent } from './todo-pending/todo-pending.component';
 import { TodoLabelFilterComponent } from './todo-label-filter/todo-label-filter.component';
 
 @NgModule({
@@ -15,7 +14,6 @@ import { TodoLabelFilterComponent } from './todo-label-filter/todo-label-filter.
     TodoCompletedComponent,
     TodoDialogComponent,
     TodoDeleteComponent,
-    TodoPendingComponent,
     TodoLabelFilterComponent
   ],
   imports: [
@@ -26,7 +24,6 @@ import { TodoLabelFilterComponent } from './todo-label-filter/todo-label-filter.
   exports: [
     TodoDialogComponent,
     TodoDeleteComponent,
-    TodoPendingComponent
   ]
 })
 export class TodoModule { }

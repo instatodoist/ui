@@ -58,7 +58,7 @@
                                 edit
                             </i>
                         </td>
-                        <td (click)="openPopUp(todo, 'DELETE')">
+                        <td *ngIf="todoCurrentType !== TODOTYPES?.completed" (click)="openPopUp(todo, 'DELETE')">
                             <i class="material-icons">
                                 delete
                             </i>

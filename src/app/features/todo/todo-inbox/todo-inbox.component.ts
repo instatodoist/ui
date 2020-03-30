@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
-import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TodoListType, TodoType } from '../../../models/todo.model';
 import { TodoConditions } from '../../../models/todo.model';
@@ -12,109 +11,67 @@ import { TodoService } from '../../../service/todo/todo.service';
 export class TodoInboxComponent implements OnInit {
   @ViewChild('dialog') dialog: TemplateRef<any>;
   loader = false;
-  todos: TodoListType;
-  isUpdate = false;
-  isDelete = false;
-  popupType: string;
-  todo: TodoType;
-  conditions: TodoConditions;
-  TODOTYPES = {
-    inbox: 'backlog',
-    today: 'today',
-    pending: 'pending',
-    completed: 'completed',
-    label: 'label'
-  };
-  todoCurrentType = this.TODOTYPES.inbox;
-  isRefreshPendingList = false;
+  todos: TodoListType; // todos var
+  isUpdate = false; // if update popup
+  isDelete = false; // if delete popup
+  popupType: string; // popup type - update/delete
+  todo: TodoType; // single todo object
+  conditions: TodoConditions; // aploo refreshfetch conditions
+  TODOTYPES: any; // todo types wrt routes
+  todoCurrentType: string; // current route
 
   constructor(
     private toddService: TodoService,
     private router: Router,
-    private location: Location,
     private activatedRoute: ActivatedRoute
   ) {
   }
 
   ngOnInit(): void {
+    this.TODOTYPES = this.toddService.todoTypes(); // todo types
+    this.todoCurrentType = this.TODOTYPES.inbox; // default to inbox
     this.loader = true;
-    if (this.router.url === '/tasks/today') {
+    this.checkingRouteTypes();
+  }
+
+  checkingRouteTypes() {
+    if (this.router.url === '/tasks/today') { // checking route if today
       this.todoCurrentType = this.TODOTYPES.today;
-    } else if (this.router.url === '/tasks/completed') {
+    } else if (this.router.url === '/tasks/completed') { // checking route if completed
       this.todoCurrentType = this.TODOTYPES.completed;
-    } else if (this.router.url === '/tasks/inbox') {
+    } else if (this.router.url === '/tasks/inbox') { // checking route if inbox
       this.todoCurrentType = this.TODOTYPES.inbox;
+    } else if (this.router.url === '/tasks/pending') { // checking route if inbox
+      this.todoCurrentType = this.TODOTYPES.pending;
     }
-    this.conditions = this.getConditions(this.todoCurrentType);
-    if (this.activatedRoute.snapshot.paramMap.get('label')) {
-      this.todoCurrentType = 'label';
-      this.activatedRoute.params.subscribe((params) => {
-        this.conditions = this.getConditions(this.todoCurrentType);
-        this.toddService.listTodos(this.conditions)
-          .subscribe((data) => {
-            this.todos = data;
-            this.loader = false;
-          });
+    if (this.router.url.match('tasks/labels')) { // special case for labelled type
+      // this.todoCurrentType = 'label';
+      this.activatedRoute.params.subscribe(params => {
+        this.todoCurrentType = params.label;
+        this.conditions = this.toddService.getConditions(params.labelId);
+        this.getTodos(this.conditions);
       });
     } else {
-      this.toddService.listTodos(this.conditions)
+      this.conditions = this.toddService.getConditions(this.todoCurrentType); // default case for all types except labelled
+      this.getTodos(this.conditions);
+    }
+  }
+
+  /**
+   * @param conditions - based on route
+   */
+  getTodos(conditions: TodoConditions) {
+    this.toddService.listTodos(conditions)
       .subscribe((data) => {
         this.todos = data;
         this.loader = false;
       });
-    }
   }
 
-  getConditions(type: string): TodoConditions {
-    if (type === this.TODOTYPES.today) {
-      return {
-        sort: {
-          updatedAt: 'DESC'
-        },
-        filter: {
-          type: 'today'
-        }
-      };
-    } else if (type === this.TODOTYPES.completed) {
-      return {
-        sort: {
-          updatedAt: 'DESC'
-        },
-        filter: {
-          isCompleted: true
-        }
-      };
-    } else if (type === this.TODOTYPES.pending) {
-      return {
-        sort: {
-          updatedAt: 'DESC'
-        },
-        filter: {
-          type: 'pending'
-        }
-      };
-    } else if (type === this.TODOTYPES.inbox) {
-      return {
-        sort: {
-          updatedAt: 'DESC'
-        },
-        filter: {
-          type: 'backlog'
-        }
-      };
-    } else {
-      return {
-        sort: {
-          updatedAt: 'DESC'
-        },
-        filter: {
-         labelId: this.activatedRoute.snapshot.paramMap.get('labelId'),
-         isCompleted: false
-        }
-      };
-    }
-  }
-
+  /**
+   * @param todo - todo object
+   * @param popupType - update/delete
+   */
   openPopUp(todo: TodoType, popupType): void {
     if (popupType === 'UPDATE') {
       this.isUpdate = true;
@@ -126,21 +83,25 @@ export class TodoInboxComponent implements OnInit {
     this.todo = todo; // passing todo object to update dialog
   }
 
+  /**
+   * @param $event - flag after closing the popup
+   */
   updatePopupFlag($event: boolean): void {
     if (this.popupType === 'UPDATE') {
       this.isUpdate = $event;
-      this.isRefreshPendingList = false;
     } else {
       this.isDelete = $event;
     }
   }
 
+  /**
+   * @param todo - todo object
+   */
   updateTodo(todo: TodoType) {
     const postBody: TodoType = {
       _id: todo._id,
       isCompleted: true
     };
-    this.isRefreshPendingList = true;
     this.toddService
       .updateTodo(postBody, this.conditions)
       .subscribe();

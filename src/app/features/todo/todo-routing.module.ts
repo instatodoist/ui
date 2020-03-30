@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { TodoInboxComponent } from './todo-inbox/todo-inbox.component';
-import { TodoPendingComponent } from './todo-pending/todo-pending.component';
 import { TodoLabelFilterComponent } from './todo-label-filter/todo-label-filter.component';
 
 const routes: Routes = [
@@ -31,7 +30,7 @@ const routes: Routes = [
       },
       {
         path: 'pending',
-        component: TodoPendingComponent,
+        component: TodoInboxComponent,
         data: {
           header_title: 'pending'
         }

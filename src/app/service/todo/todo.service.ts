@@ -19,16 +19,88 @@ import {
   TodoLabelType,
   TodoType,
   SuccessType,
-  OperationEnumType
 } from '../../models/todo.model';
 @Injectable({
   providedIn: 'root',
 })
 
 export class TodoService {
-  API_URL = environment.API_URL;
-  constructor(private apollo: Apollo) { }
+  private API_URL = environment.API_URL; // API Url
+  private TODOTYPES = this.todoTypes(); // todo route types
+  constructor(
+    private apollo: Apollo
+  ) { }
 
+  /**
+   * @description - Return route modules
+   */
+  todoTypes() {
+    return {
+      inbox: 'backlog',
+      today: 'today',
+      pending: 'pending',
+      completed: 'completed',
+      label: 'label'
+    };
+  }
+
+  /**
+   * @param type - current route type
+   * @description - used to get the refetch condition for current route for aplolo
+   */
+  getConditions(type: string): TodoConditions {
+    if (type === this.TODOTYPES.today) {
+      return {
+        sort: {
+          updatedAt: 'DESC'
+        },
+        filter: {
+          type: 'today'
+        }
+      };
+    } else if (type === this.TODOTYPES.completed) {
+      return {
+        sort: {
+          updatedAt: 'DESC'
+        },
+        filter: {
+          isCompleted: true
+        }
+      };
+    } else if (type === this.TODOTYPES.pending) {
+      return {
+        sort: {
+          updatedAt: 'DESC'
+        },
+        filter: {
+          type: 'pending'
+        }
+      };
+    } else if (type === this.TODOTYPES.inbox) {
+      return {
+        sort: {
+          updatedAt: 'DESC'
+        },
+        filter: {
+          type: 'backlog'
+        }
+      };
+    } else {
+      return {
+        sort: {
+          updatedAt: 'DESC'
+        },
+        filter: {
+         labelId: type,
+         isCompleted: false
+        }
+      };
+    }
+  }
+
+  /**
+   * @param conditions - filter params while fetching todos
+   */
   listTodos(conditions: TodoConditions): Observable<TodoListType> {
     return this.apollo
       .watchQuery({
@@ -41,6 +113,9 @@ export class TodoService {
       }));
   }
 
+  /**
+   * @description - fetching todos labels
+   */
   listTodoLabels(): Observable<TodoLabelType[]> {
     return this.apollo
       .watchQuery({
@@ -54,6 +129,10 @@ export class TodoService {
       }));
   }
 
+  /**
+   * @param todo - single todo object
+   * @param conditions - refetch conditions for todos wrt apolo
+   */
   updateTodo(todo: TodoType, conditions: any = null): Observable<SuccessType> {
     const todoId = todo._id;
     const postTodo: any = {
@@ -91,6 +170,10 @@ export class TodoService {
     }));
   }
 
+  /**
+   * @param todo - single todo object
+   * @param conditions - refetch conditions for todos wrt apolo
+   */
   addTodo(todo: TodoType, conditions: any = null): Observable<SuccessType> {
     const postTodo: any = {
       title: todo.title
@@ -123,6 +206,10 @@ export class TodoService {
     }));
   }
 
+  /**
+   * @param todoId - todo Id
+   * @param conditions - refetch conditions for todos-label wrt apolo
+   */
   deleteTodo(todoId: string, conditions: any = null): Observable<SuccessType> {
     const refetchQuery: any = {
       query: TODO_LIST_QUERY
@@ -142,6 +229,10 @@ export class TodoService {
     }));
   }
 
+  /**
+   * @param body - postbody for add/update/delete label
+   * @param conditions - refetch conditions for todos-label wrt apolo
+   */
   todoLabelOperation(body: TodoLabelType, conditions: any = null): Observable<SuccessType> {
     let gqlOperation = TODO_LABEL_ADD_MUTATION;
     let defaultDataKey = 'addTodoLabel';
