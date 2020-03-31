@@ -31,6 +31,36 @@ export class TodoService {
     private apollo: Apollo
   ) { }
 
+  // priorities array
+  getPriorities() {
+    return [
+      {
+        name: 'P1',
+        color: 'red'
+      },
+      {
+        name: 'P2',
+        color: 'orange'
+      },
+      {
+        name: 'P3',
+        color: 'blue'
+      },
+      {
+        name: 'P4',
+        color: 'black'
+      }
+    ];
+  }
+
+  // populate color for the label
+  getColor(priority: string): string {
+    const priorityObj = this.getPriorities().filter(item => {
+      return item.name === priority;
+    });
+    return priorityObj[0].color;
+  }
+
   /**
    * @description - Return route modules
    */

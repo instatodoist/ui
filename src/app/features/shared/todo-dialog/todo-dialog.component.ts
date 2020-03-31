@@ -31,24 +31,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
   labels: TodoLabelType[]; // labels array
   dialog: MDCDialog; // dialog instance
   priorityColor = 'black'; // default color for priority
-  priorities = [ // priorities array
-    {
-      name: 'P1',
-      color: 'red'
-    },
-    {
-      name: 'P2',
-      color: 'orange'
-    },
-    {
-      name: 'P3',
-      color: 'blue'
-    },
-    {
-      name: 'P4',
-      color: 'black'
-    }
-  ];
+  priorities = [];
   TODOTYPES: any; // todo types wrt routes
   todoCurrentType: string; // current route
   operationType: OperationEnumType = 'ADD';
@@ -61,6 +44,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
+    this.priorities = this.todoService.getPriorities();
     // checking labels if update
     const labelIdVal = this.todo ? (this.todo.label.map(label  => {
       return label._id;
@@ -84,7 +68,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
         priority: this.todo.priority,
         operationType: 'UPDATE'
       });
-      this.priorityColor = this.getColor(this.formObj.value.priority);
+      this.priorityColor = this.todoService.getColor(this.formObj.value.priority);
     }
     this.menu = new MDCMenu(document.querySelector('.mdc-menu-labels'));
     this.menuPriority = new MDCMenu(document.querySelector('.mdc-menu-priority'));
@@ -167,14 +151,6 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
       .subscribe(response => {
         this.labels = response;
       });
-  }
-
-  // populate color for the label
-  private getColor(priority: string): string {
-    const priorityObj = this.priorities.filter(item => {
-      return item.name === priority;
-    });
-    return priorityObj[0].color;
   }
 
   // add/update the task

@@ -39,6 +39,11 @@
                                         </span>
                                     </span>
                                 </div>
+                                <span *ngIf="todoCurrentType !== TODOTYPES?.completed && todoCurrentType !== TODOTYPES?.inbox">
+                                    <span class="material-icons" [ngStyle]="{color: getPriorityColor(todo?.priority)}">
+                                        flag
+                                    </span>
+                                </span>
                             </div>
                         </td>
                         <td *ngIf="todoCurrentType === TODOTYPES?.completed" class="mdc-data-table__cell">
