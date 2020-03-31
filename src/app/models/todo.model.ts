@@ -47,6 +47,7 @@ export interface TodoSortType {
   createdAt?: SortEnumType;
   updatedAt?: SortEnumType;
   scheduledDate?: SortEnumType;
+  priority?: SortEnumType;
 }
 
 export interface TodoConditions {

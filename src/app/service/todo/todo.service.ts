@@ -82,7 +82,7 @@ export class TodoService {
     if (type === this.TODOTYPES.today) {
       return {
         sort: {
-          updatedAt: 'DESC'
+          priority: 'ASC'
         },
         filter: {
           type: 'today'
@@ -100,7 +100,7 @@ export class TodoService {
     } else if (type === this.TODOTYPES.pending) {
       return {
         sort: {
-          updatedAt: 'DESC'
+          priority: 'ASC'
         },
         filter: {
           type: 'pending'

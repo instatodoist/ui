@@ -96,6 +96,8 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
       this.todoCurrentType = this.TODOTYPES.completed;
     } else if (this.router.url === '/tasks/inbox') { // checking route if inbox
       this.todoCurrentType = this.TODOTYPES.inbox;
+    } else if (this.router.url === '/tasks/pending') { // checking route if inbox
+      this.todoCurrentType = this.TODOTYPES.pending;
     }
     if (this.router.url.match('tasks/labels')) { // special case for labelled type
       const routerStrArr = this.router.url.split('/');

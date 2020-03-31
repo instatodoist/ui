@@ -76,9 +76,7 @@
         <img src="assets/images/no-result.svg">
         <p class="m0 p0">{{ "No Tasks"}}
     </div>
-    <app-todo-dialog [todo]="todo" [conditions]="conditions"
-        [origin]="todoCurrentType === TODOTYPES.completed? 'COMPLETED' : null" (isOpen)="updatePopupFlag($event)"
-        *ngIf="isUpdate">
+    <app-todo-dialog [todo]="todo" [origin]="todoCurrentType === TODOTYPES.completed? 'COMPLETED' : null" (isOpen)="updatePopupFlag($event)" *ngIf="isUpdate">
     </app-todo-dialog>
     <app-todo-delete [todo]="todo" [conditions]="conditions" (isOpen)="updatePopupFlag($event)" *ngIf="isDelete">
     </app-todo-delete>
