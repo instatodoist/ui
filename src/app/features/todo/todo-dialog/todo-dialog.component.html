@@ -27,8 +27,10 @@
                                     </div>
                                 </div>
                             </div>
+
                             <!-- Scheduled Option -->
-                            <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12" [hidden]="origin === 'COMPLETED'">
+                            <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+                                [hidden]="origin === 'COMPLETED'">
                                 <label for="basic-switch"> Scheduling</label><br>
                                 <div class="mdc-switch">
                                     <div class="mdc-switch__track"></div>
@@ -39,6 +41,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <!-- Scheduled Date -->
                             <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
                                 *ngIf="formObj.value.scheduling" [hidden]="origin === 'COMPLETED'">
@@ -57,27 +60,86 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Label -->
+
+                            <!-- Setting Labels-->
                             <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                                <label for="basic-switch"> Labels</label><br>
-                                <div class="mdc-touch-target-wrapper">
-                                    <div *ngFor="let label of labels; let i = index">
-                                        <div class="mdc-checkbox">
-                                            <input type="checkbox" class="mdc-checkbox__native-control" id="radio-{{i + 1}}"
-                                            fromControlName="labelId" [checked]="isChecked(label._id)" (change)="checkLabels($event, label._id)"/>
-                                            <div class="mdc-checkbox__background">
-                                                <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                                                    <path class="mdc-checkbox__checkmark-path" fill="none"
-                                                        d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                                </svg>
-                                                <div class="mdc-checkbox__mixedmark"></div>
+                                <div class="mdc-menu-surface--anchor">
+                                    <label>Labels</label>
+                                    <div class="mdc-chip-set" role="grid">
+                                        <div *ngFor="let label of labels; let i = index">
+                                            <div class="mdc-chip" role="row" *ngIf="isChecked(label._id)">
+                                                <div class="mdc-chip__ripple"></div>
+                                                <span role="gridcell">
+                                                    <span role="button" tabindex="0" class="mdc-chip__primary-action">
+                                                        <span class="mdc-chip__text">{{label?.name}}</span>
+                                                        <span class="material-icons"
+                                                            (click)="checkLabels($event, label._id)">
+                                                            clear
+                                                        </span>
+                                                    </span>
+                                                </span>
                                             </div>
-                                            <div class="mdc-checkbox__ripple"></div>
                                         </div>
-                                        <label for="check-{{i + 1}}">{{label?.name}}</label>
+                                        <a href="javascript:void(0)" style="text-decoration: none;"
+                                            class="mdc-top-app-bar__action-item mdc-button-dropdown topbar-avatar"
+                                            (click)="openLabels()">
+                                            <span class="material-icons">
+                                                label
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <div class="mdc-menu mdc-menu-surface mdc-menu-labels">
+                                        <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical"
+                                            tabindex="-1">
+                                            <li class="mdc-list-item" role="menuitem"
+                                                *ngFor="let label of labels; let i = index">
+                                                <div class="mdc-checkbox">
+                                                    <input type="checkbox" class="mdc-checkbox__native-control"
+                                                        id="radio-{{i + 1}}" fromControlName="labelId"
+                                                        [checked]="isChecked(label._id)"
+                                                        (change)="checkLabels($event, label._id)" />
+                                                    <div class="mdc-checkbox__background">
+                                                        <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                                                            <path class="mdc-checkbox__checkmark-path" fill="none"
+                                                                d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                                        </svg>
+                                                        <div class="mdc-checkbox__mixedmark"></div>
+                                                    </div>
+                                                    <div class="mdc-checkbox__ripple"></div>
+                                                </div>
+                                                <label for="check-{{i + 1}}">{{label?.name}}</label>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Setting Priority-->
+                            <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+                                <div class="mdc-menu-surface--anchor">
+                                    <a href="javascript:void(0)"
+                                        title="{{this.formObj.value.priority}}"
+                                        class="mdc-top-app-bar__action-item mdc-button-dropdown"
+                                        (click)="openPriority()">
+                                        <span class="material-icons" [ngStyle]="{color: priorityColor}">
+                                            flag
+                                        </span>
+                                    </a>
+                                    <div class="mdc-menu mdc-menu-surface mdc-menu-priority">
+                                        <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical"
+                                            tabindex="-1">
+                                            <li class="mdc-list-item" role="menuitem"
+                                                *ngFor="let priority of priorities; let i = index" (click)="setPriority(priority)">
+                                                <span class="material-icons" [ngStyle]="{color: priority.color}">
+                                                    flag
+                                                </span>
+                                                <label for="check-{{i + 1}}">{{priority.name}}</label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </form>

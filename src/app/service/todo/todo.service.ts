@@ -141,6 +141,9 @@ export class TodoService {
     if (todo.title) {
       postTodo.title = todo.title;
     }
+    if (todo.priority) {
+      postTodo.priority = todo.priority;
+    }
     if (todo.labelId) {
       postTodo.label = todo.labelId;
     }

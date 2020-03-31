@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MDCDialog } from '@material/dialog';
 import {MDCSwitch} from '@material/switch';
+import {MDCMenu} from '@material/menu';
 import { TodoService } from '../../../service/todo/todo.service';
 import { SharedService } from '../../../service/shared/shared.service';
 import { TodoType, TodoLabelType, TodoConditions } from '../../../models/todo.model';
@@ -19,13 +20,32 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
   conditions: TodoConditions = null;
   @Input()
   origin = null;
-
   @Output()
   isOpen: EventEmitter<boolean> = new EventEmitter<boolean>();
-
+  menu: MDCMenu;
+  menuPriority: MDCMenu;
   formObj: FormGroup;
   labels: TodoLabelType[];
   dialog: MDCDialog;
+  priorityColor = 'black';
+  priorities = [
+    {
+      name: 'P1',
+      color: 'red'
+    },
+    {
+      name: 'P2',
+      color: 'orange'
+    },
+    {
+      name: 'P3',
+      color: 'blue'
+    },
+    {
+      name: 'P4',
+      color: 'black'
+    }
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -38,16 +58,33 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
       return label._id;
     })) : [];
     console.log(labelIdVal);
-    this.formObj = this.fb.group(
-      {
+    this.formObj = this.fb.group({
         _id: [this.todo._id],
         title: [this.todo.title, [Validators.required]],
         scheduling: [this.todo.scheduledDate ? true : false],
         scheduledDate: [this.todo.scheduledDate ? this.todo.scheduledDate : this.sharedService.todayDate()],
-        labelId: [labelIdVal]
+        labelId: [labelIdVal],
+        priority: ['P4']
       }
     );
     this.getLabels();
+    this.menu = new MDCMenu(document.querySelector('.mdc-menu-labels'));
+    this.menuPriority = new MDCMenu(document.querySelector('.mdc-menu-priority'));
+  }
+
+  openPriority() {
+    this.menuPriority.open = true;
+  }
+
+  setPriority(priority: any) {
+    this.formObj.patchValue({
+      priority: priority.name
+    });
+    this.priorityColor = priority.color;
+  }
+
+  openLabels() {
+    this.menu.open = true;
   }
 
   isChecked(labelId: string) {
@@ -84,6 +121,13 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
       .subscribe(response => {
         this.labels = response;
       });
+  }
+
+  private getColor(priority: string): string {
+    const priorityObj = this.priorities.filter(item => {
+      return item.name === priority;
+    });
+    return priorityObj[0].color;
   }
 
   submit() {
