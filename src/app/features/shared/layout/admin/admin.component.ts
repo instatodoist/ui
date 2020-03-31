@@ -2,7 +2,7 @@ declare var mdc: any
 import { Component, OnInit } from '@angular/core';
 // import { Store, select } from '@ngrx/store';
 // import { ErrorState } from 'src/app/ngrx/reducers/error.reducer';
-import { UtilityService } from './../../../service/utility.service'
+import { UtilityService } from '../../../../service/utility.service'
 
 @Component({
   selector: 'app-admin',

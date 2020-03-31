@@ -13,16 +13,16 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 
 import { AuthModule } from './features/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
-import { CanActivateAuthenticateGuard } from './shared/guards/can-activate-authenticate.guard';
+import { CanActivateAuthenticateGuard } from './guards/can-activate-authenticate.guard';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 
 import { AppComponent } from './app.component';
-import { AdminComponent } from './shared/layout/admin/admin.component';
-import { HeaderComponent } from './shared/section/header/header.component';
-import { FooterComponent } from './shared/section/footer/footer.component';
-import { SidebarComponent } from './shared/section/sidebar/sidebar.component';
-import { PageNotFoundComponent } from './component/page-not-found/page-not-found.component';
+import { AdminComponent } from './features/shared/layout/admin/admin.component';
+import { HeaderComponent } from './features/shared/section/header/header.component';
+import { FooterComponent } from './features/shared/section/footer/footer.component';
+import { SidebarComponent } from './features/shared/section/sidebar/sidebar.component';
+import { PageNotFoundComponent } from './features/shared/page-not-found/page-not-found.component';
 
 import { DropdownMenuDirective } from './directive/dropdown/dropdown-menu.directive';
 

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { LsService } from './../../../service/ls.service';
-import { AuthService } from '../../../service/auth/auth.service';
+import { LsService } from '../../../../service/ls.service';
+import { AuthService } from '../../../../service/auth/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
-import { UserModel } from '../../../models';
+import { UserModel } from '../../../../models';
 
 @Component({
   selector: 'app-header',

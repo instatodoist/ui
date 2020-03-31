@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AdminComponent } from './shared/layout/admin/admin.component';
-import { CanActivateAuthenticateGuard } from './shared/guards/can-activate-authenticate.guard';
-import { PageNotFoundComponent } from './component/page-not-found/page-not-found.component';
+import { AdminComponent } from './features/shared/layout/admin/admin.component';
+import { CanActivateAuthenticateGuard } from './guards/can-activate-authenticate.guard';
+import { PageNotFoundComponent } from './features/shared/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {

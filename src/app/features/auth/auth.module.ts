@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FrontRoutingModule } from './auth-routing.module'
 import { AuthComponent } from './auth-login/auth.component';
-import { FrontComponent } from '../../shared/layout/front/front.component';
+import { FrontComponent } from '../shared/layout/front/front.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
