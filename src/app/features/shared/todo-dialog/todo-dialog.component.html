@@ -4,7 +4,7 @@
             aria-describedby="my-dialog-content">
             <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
             <h2 class="mdc-dialog__title" id="my-dialog-title">
-                Update Todo
+                {{title}}
             </h2>
             <div class="mdc-dialog__content" id="my-dialog-content">
                 <form class="form-horizontal" role="form" name="form" id="form" [formGroup]="formObj"
@@ -83,7 +83,7 @@
                                         <a href="javascript:void(0)" style="text-decoration: none;"
                                             class="mdc-top-app-bar__action-item mdc-button-dropdown topbar-avatar"
                                             (click)="openLabels()">
-                                            <span class="material-icons">
+                                            <span class="material-icons" style="color: darkgray;">
                                                 label
                                             </span>
                                         </a>

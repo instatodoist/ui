@@ -32,7 +32,7 @@ export class TodoDeleteComponent implements OnInit, AfterViewInit {
       console.log(this.todo);
       this.dialog = new MDCDialog(document.querySelector('.mdc-dialog'));
       this.dialog.open();
-      this.dialog.listen('MDCDialog:closing', () =>  {
+      this.dialog.listen('MDCDialog:closing', () => {
         this.isOpen.emit(false);
       });
     }
@@ -40,10 +40,13 @@ export class TodoDeleteComponent implements OnInit, AfterViewInit {
 
   submit() {
     this.todoService
-        .deleteTodo(this.todo._id, this.conditions)
-        .subscribe(() => {
-          this.dialog.close();
-        });
-    }
+      .todoOperation({
+        _id: this.todo._id,
+        operationType: 'DELETE'
+      }, this.conditions)
+      .subscribe(() => {
+        this.dialog.close();
+      });
+  }
 
 }

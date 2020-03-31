@@ -100,10 +100,11 @@ export class TodoInboxComponent implements OnInit {
   updateTodo(todo: TodoType) {
     const postBody: TodoType = {
       _id: todo._id,
-      isCompleted: true
+      isCompleted: true,
+      operationType: 'UPDATE'
     };
     this.toddService
-      .updateTodo(postBody, this.conditions)
+      .todoOperation(postBody, this.conditions)
       .subscribe();
   }
 }

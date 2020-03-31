@@ -32,7 +32,7 @@ import { FormValidationDirective } from './directive/form-validation.directive';
 import { TodoLabelComponent } from './shared/components/todo-label/todo-label.component';
 import { TodoLabelListComponent } from './shared/components/todo-label-list/todo-label-list.component';
 
-
+import { SharedModule} from './features/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -63,6 +63,7 @@ import { TodoLabelListComponent } from './shared/components/todo-label-list/todo
     HttpLinkModule,
     AuthModule,
     AppRoutingModule,
+    SharedModule
   ],
   exports: [
     RouterModule

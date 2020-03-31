@@ -25,6 +25,7 @@ export interface TodoType {
   label?: TodoLabelType[];
   isCompleted?: boolean;
   priority?: PriorityEnumType;
+  operationType?: string;
 }
 
 export interface TodoLabelType {

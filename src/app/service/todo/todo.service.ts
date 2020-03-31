@@ -91,8 +91,8 @@ export class TodoService {
           updatedAt: 'DESC'
         },
         filter: {
-         labelId: type,
-         isCompleted: false
+          labelId: type,
+          isCompleted: false
         }
       };
     }
@@ -168,9 +168,9 @@ export class TodoService {
         refetchQuery
       ]
     })
-    .pipe(map(({ data }: any) => {
-      return data.updateTodo;
-    }));
+      .pipe(map(({ data }: any) => {
+        return data.updateTodo;
+      }));
   }
 
   /**
@@ -204,9 +204,9 @@ export class TodoService {
         refetchQuery
       ]
     })
-    .pipe(map(({ data }: any) => {
-      return data.addTodo;
-    }));
+      .pipe(map(({ data }: any) => {
+        return data.addTodo;
+      }));
   }
 
   /**
@@ -227,9 +227,82 @@ export class TodoService {
       },
       refetchQueries: [refetchQuery]
     })
-    .pipe(map(({ data }: any) => {
-      return data.deleteTodo;
-    }));
+      .pipe(map(({ data }: any) => {
+        return data.deleteTodo;
+      }));
+  }
+
+  /**
+   * @param body - postbody for add/update/delete task
+   * @param conditions - refetch conditions for todos-task wrt apolo
+   */
+  todoOperation(body: TodoType, conditions: any = null): Observable<SuccessType> {
+    let gqlOperation = TODO_ADD_MUTATION;
+    let defaultDataKey = 'addTodo';
+    const operationType = body.operationType;
+    // refetch query after add or update
+    const refetchQuery: any = {
+      query: TODO_LIST_QUERY
+    };
+    // if passing conditions
+    if (conditions) {
+      refetchQuery.variables = conditions;
+    }
+    // initialising gql variables
+    let variables: any = {};
+    // initialising input body
+    const postTodo: any = {};
+    // checking title
+    if (body.title) {
+      postTodo.title = body.title;
+    }
+    // checking priority
+    if (body.priority) {
+      postTodo.priority = body.priority;
+    }
+    // checking labels
+    if (body.labelId) {
+      postTodo.label = body.labelId;
+    }
+    // checking scheduling
+    if (body.scheduledDate && body.scheduling) {
+      postTodo.scheduledDate = body.scheduledDate;
+    } else if (body.scheduledDate && !body.scheduling) {
+      postTodo.scheduledDate = null;
+    }
+    // checking which operation - 'ADD' | 'UPDATE' | 'DELETE'
+    switch (operationType) {
+      case 'UPDATE':
+        gqlOperation = TODO_UPDATE_MUTATION;
+        defaultDataKey = 'updateTodo';
+        variables = {
+          ...variables,
+          input: {...postTodo, isCompleted: !!body.isCompleted },
+          id: body._id
+        };
+        break;
+      case 'DELETE':
+        gqlOperation = TODO_DELETE_MUTATION;
+        defaultDataKey = 'deleteTodo';
+        variables.id = body._id;
+        break;
+      default:
+        variables = {
+          ...variables,
+          input: postTodo
+        };
+        break;
+    }
+    return this.apollo.mutate({
+      mutation: gqlOperation,
+      variables,
+      refetchQueries: [
+        refetchQuery
+      ]
+    })
+      .pipe(map(({ data }: any) => {
+        return data[defaultDataKey];
+      }));
   }
 
   /**
@@ -248,7 +321,7 @@ export class TodoService {
     if (conditions) {
       refetchQuery.variables = conditions;
     }
-     // gql variables
+    // gql variables
     let variables: any = {};
     switch (operationType) {
       case 'UPDATE':
@@ -283,8 +356,8 @@ export class TodoService {
         refetchQuery
       ]
     })
-    .pipe(map(({ data }: any) => {
-      return data[defaultDataKey];
-    }));
+      .pipe(map(({ data }: any) => {
+        return data[defaultDataKey];
+      }));
   }
 }
