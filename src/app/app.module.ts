@@ -28,9 +28,6 @@ import { DropdownMenuDirective } from './directive/dropdown/dropdown-menu.direct
 
 import { environment } from '../environments/environment';
 import { FormValidationDirective } from './directive/form-validation.directive';
-import { TodoLabelComponent } from './shared/components/todo-label/todo-label.component';
-import { TodoLabelListComponent } from './shared/components/todo-label-list/todo-label-list.component';
-
 import { SharedModule} from './features/shared/shared.module';
 
 @NgModule({
@@ -42,9 +39,7 @@ import { SharedModule} from './features/shared/shared.module';
     SidebarComponent,
     PageNotFoundComponent,
     FormValidationDirective,
-    DropdownMenuDirective,
-    TodoLabelComponent,
-    TodoLabelListComponent
+    DropdownMenuDirective
   ],
   imports: [
     BrowserModule,
@@ -91,10 +86,7 @@ import { SharedModule} from './features/shared/shared.module';
       deps: [HttpLink]
     }
   ],
-  entryComponents: [
-    TodoLabelComponent,
-    TodoLabelListComponent
-  ],
+  entryComponents: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
