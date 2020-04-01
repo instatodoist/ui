@@ -41,7 +41,7 @@
                                     </span>
                                 </div>
                                 <span>
-                                    <span class="material-icons" [ngStyle]="{color: getPriorityColor(todo?.priority)}">
+                                    <span *ngIf="todo?.priority !== 'P4'" class="material-icons" [ngStyle]="{color: getPriorityColor(todo?.priority)}">
                                         flag
                                     </span>
                                 </span>
