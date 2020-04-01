@@ -42,9 +42,9 @@
                                 </span>
                             </div>
                         </td>
-                        <td class="mdc-data-table__cell">
+                        <!-- <td class="mdc-data-table__cell" style="font-size: 10px;">
                             {{todo?.updatedAt | date: 'medium'}}
-                        </td>
+                        </td> -->
                         <td *ngIf="todoCurrentType !== TODOTYPES?.completed">
                             <i class="material-icons" (click)="openPopUp(todo, 'UPDATE')">
                                 edit
