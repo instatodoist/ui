@@ -188,7 +188,7 @@ export class TodoService {
       postTodo.priority = body.priority;
     }
     // checking labels
-    if (body.labelId) {
+    if (body.labelId.length) {
       postTodo.label = body.labelId;
     }
     // checking scheduling
