@@ -1,4 +1,3 @@
-declare var mdc: any;
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -37,12 +36,20 @@ export class AuthComponent implements OnInit {
   // auth check after submit
   signIn(): void {
     this.loader = true;
-    this.authService.signIn(this.signinForm.value).subscribe((response: any) => {
-      const data = response.login;
-      this.loader = false;
-      this.lsService.setValue('isLoggedIn', true);
-      this.lsService.setValue('__token', data.token);
-      this.router.navigate(['tasks/inbox']);
-    })
+    this.authService.signIn(this.signinForm.value)
+      .subscribe(
+        (response: any) => {
+          const data = response.login;
+          this.loader = false;
+          this.lsService.setValue('isLoggedIn', true);
+          this.lsService.setValue('__token', data.token);
+          // this.router.navigate(['tasks/today']);
+          // Kind of hack will fix after for the timebeing
+          window.location.reload();
+        },
+        () => {
+          this.loader = false;
+        }
+      );
   }
 }

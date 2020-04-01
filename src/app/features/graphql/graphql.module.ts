@@ -8,6 +8,7 @@ import { setContext } from 'apollo-link-context';
 import { onError } from 'apollo-link-error';
 import { environment } from '../../../environments/environment';
 import { UtilityService } from '../../service/utility.service';
+import {LsService} from '../../service/ls.service';
 import { ApolloClient } from 'apollo-client';
 
 @NgModule({
@@ -19,13 +20,13 @@ import { ApolloClient } from 'apollo-client';
   ]
 })
 export class GraphqlModule {
-  constructor(apollo: Apollo, httpLink: HttpLink, utilityService: UtilityService) {
+  constructor(apollo: Apollo, httpLink: HttpLink, utilityService: UtilityService, lsService: LsService) {
 
     const httpLink2 = httpLink.create({
       uri: environment.API_URL,
     });
 
-    const accessToken = localStorage.getItem('__token');
+    const accessToken = lsService.getValue('__token');
     // auth link
     const authLink = setContext((_, { headers }) =>
       // get the authentication token from local storage if it exists
@@ -38,17 +39,17 @@ export class GraphqlModule {
         },
       }));
     // error link
-    // Error Handling
-    // eslint-disable-next-line consistent-return
-    const errorLink = onError(({ graphQLErrors, networkError }) => {
+    const errorLink = onError(({ graphQLErrors, networkError, response, operation }) => {
       if (typeof (networkError) !== 'undefined') {
-        const { message, status, code } = networkError.error.errors[0];
+        const { error }: any = networkError;
+        const errors = error.errors[0];
+        const { status, code, message } = errors;
         // Checking Error codes
         if (status && code !== 'ValidationError') {
           switch (status) {
             case 401:
               localStorage.clear();
-              window.location.href = '/login';
+              window.location.href = '/';
               break;
             default:
           }
@@ -67,7 +68,7 @@ export class GraphqlModule {
       errorLink,
       authLink,
       httpLink2
-   ]);
+    ]);
     apollo.create({
       link: httpLinkWithErrorHandling,
       cache: new InMemoryCache(),
