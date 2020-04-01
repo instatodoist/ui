@@ -43,8 +43,12 @@ export class AuthVerifyComponent implements OnInit {
   // auth check after submit
   register(): void {
     this.loader = true;
-    this.authService.verification(this.formObj.value).subscribe((response: UserModel.RegisterResponse) => {
+    this.authService.verification(this.formObj.value)
+    .subscribe((response: UserModel.RegisterResponse) => {
       this.router.navigate(['/']);
+      this.loader = false;
+    },
+    () => {
       this.loader = false;
     });
   }
