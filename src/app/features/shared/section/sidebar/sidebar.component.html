@@ -2,19 +2,19 @@
     <a class="mdc-list-item" routerLink="/tasks/inbox" routerLinkActive="mdc-list-item--activated"
         aria-current="page">
         <i class="icon icon-script-outline mdc-list-item__graphic" aria-hidden="true"></i>
-        <span class="mdc-list-item__text">{{ 'inbox' | translate }}</span>
+        <span class="mdc-list-item__text">{{ 'inbox' | translate }} {{count?.inbox? count?.inbox: ''}}</span>
     </a>
     <a class="mdc-list-item" routerLink="/tasks/today" routerLinkActive="mdc-list-item--activated">
         <i class="icon icon-explorer material-icons mdc-list-item__graphic" aria-hidden="true"></i>
-        <span class=" mdc-list-item__text">{{'today'| translate}}</span>
+        <span class=" mdc-list-item__text">{{'today'| translate}} {{count?.today? count?.today: ''}}</span>
     </a>
     <a class="mdc-list-item" routerLink="/tasks/pending" routerLinkActive="mdc-list-item--activated">
         <i class="icon icon-explorer material-icons mdc-list-item__graphic" aria-hidden="true"></i>
-        <span class=" mdc-list-item__text">{{'pending'| translate}}</span>
+        <span class=" mdc-list-item__text">{{'pending'| translate}} {{count?.pending? count?.pending: ''}}</span>
     </a>
     <a class="mdc-list-item" routerLink="/tasks/completed" routerLinkActive="mdc-list-item--activated">
         <i class="icon icon-group-solid material-icons mdc-list-item__graphic" aria-hidden="true"></i>
-        <span class="mdc-list-item__text">{{'completed_todos'| translate}}</span>
+        <span class="mdc-list-item__text">{{'completed_todos'| translate}} {{count?.completed? count?.completed: ''}}</span>
     </a>
     <!-- <a class="mdc-list-item" routerLink="/goals/list" routerLinkActive="mdc-list-item--activated">
         <i class="icon icon-explorer material-icons mdc-list-item__graphic" aria-hidden="true"></i>

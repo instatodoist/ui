@@ -25,7 +25,6 @@ export class TodoLabelListComponent implements OnInit {
       .listTodoLabels()
       .subscribe(response => {
         this.labels = response;
-        console.log(this.labels)
       });
   }
 }

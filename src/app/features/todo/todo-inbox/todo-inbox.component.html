@@ -26,7 +26,12 @@
                         </td>
                         <td class="mdc-data-table__cell">
                             <div class="mdc-chip-set" role="grid">
-                                {{todo?.title}}
+                                <div>
+                                    {{todo?.title}}
+                                    <span class="mdc-data-table__cell" style="font-size: 10px; color: red;" *ngIf="todoCurrentType !== TODOTYPES?.today">
+                                        {{todo?.scheduledDate | date: 'MMM d, y'}}
+                                    </span>
+                                </div>
                                 <div class="mdc-chip" role="row" *ngFor="let label of todo?.label">
                                     <div class="mdc-chip__ripple"></div>
                                     <span role="gridcell">
@@ -35,7 +40,7 @@
                                         </span>
                                     </span>
                                 </div>
-                                <span *ngIf="todoCurrentType !== TODOTYPES?.inbox">
+                                <span>
                                     <span class="material-icons" [ngStyle]="{color: getPriorityColor(todo?.priority)}">
                                         flag
                                     </span>

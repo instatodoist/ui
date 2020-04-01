@@ -55,26 +55,42 @@ export const TODO_LIST_QUERY = gql`
     }
 `;
 
+export const TODO_LIST_COUNT_QUERY = gql`
+    query todoList ($first: Int = 100, $offset: Int = 1, $filter: TodoFilterInputType, $sort: TodoSortInputType){
+        todoList (first: $first, offset: $offset, filter: $filter, sort: $sort ){
+            totalCount
+        }
+    }
+`;
+
 
 export const TODO_COMPLETED_QUERY = gql`
     query{
         todoCompleted {
-        totalCount
-        data {
-            _id
-            list {
+            totalCount
+            data {
                 _id
-                title
-                createdAt
-                updatedAt
-                label {
-                    name
-                }
-                comments {
-                    description
+                list {
+                    _id
+                    title
+                    createdAt
+                    updatedAt
+                    label {
+                        name
+                    }
+                    comments {
+                        description
+                    }
                 }
             }
         }
+    }
+`;
+
+export const TODO_COMPLETED_COUNT_QUERY = gql`
+    query{
+        todoCompleted {
+            totalCount
         }
     }
 `;

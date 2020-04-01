@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {
   TODO_LIST_QUERY,
+  TODO_LIST_COUNT_QUERY,
   TODO_COMPLETED_QUERY,
+  TODO_COMPLETED_COUNT_QUERY,
   TODO_LABEL_QUERY,
   TODO_UPDATE_MUTATION,
   TODO_DELETE_MUTATION,
@@ -12,7 +14,7 @@ import {
   TODO_LABEL_DELETE_MUTATION
 } from '../../gql/todo.gql';
 import { Apollo } from 'apollo-angular';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
   TodoConditions,
@@ -148,10 +150,40 @@ export class TodoService {
   /**
    * @param conditions - filter params while fetching todos
    */
+  listTodosCount(conditions: TodoConditions): Observable<TodoListType> {
+    return this.apollo
+      .watchQuery({
+        query: TODO_LIST_COUNT_QUERY,
+        variables: conditions,
+        fetchPolicy: 'network-only'
+      })
+      .valueChanges.pipe(map(({ data }: any) => {
+        return data.todoList;
+      }));
+  }
+
+  /**
+   * @param conditions - filter params while fetching todos
+   */
   listCompletedTodos(conditions: TodoConditions): Observable<TodoCompletedListType> {
     return this.apollo
       .watchQuery({
         query: TODO_COMPLETED_QUERY,
+        variables: conditions,
+        fetchPolicy: 'network-only'
+      })
+      .valueChanges.pipe(map(({ data }: any) => {
+        return data.todoCompleted;
+      }));
+  }
+
+  /**
+   * @param conditions - filter params while fetching todos
+   */
+  listCompletedTodosCount(conditions: TodoConditions): Observable<TodoCompletedListType> {
+    return this.apollo
+      .watchQuery({
+        query: TODO_COMPLETED_COUNT_QUERY,
         variables: conditions,
         fetchPolicy: 'network-only'
       })
@@ -303,5 +335,22 @@ export class TodoService {
       .pipe(map(({ data }: any) => {
         return data[defaultDataKey];
       }));
+  }
+
+  /**
+   * @description - getting count for tasks
+   */
+  callTodoCountService() {
+    const todoTypes = this.todoTypes();
+    const obs1 = this.listTodosCount(this.getConditions(todoTypes.inbox));
+    const obs2 = this.listTodosCount(this.getConditions(todoTypes.today));
+    const obs3 = this.listTodosCount(this.getConditions(todoTypes.pending));
+    const obs4 = this.listCompletedTodosCount(this.getConditions(todoTypes.completed));
+    return forkJoin([
+      obs1,
+      obs2,
+      obs3,
+      obs4
+    ]);
   }
 }

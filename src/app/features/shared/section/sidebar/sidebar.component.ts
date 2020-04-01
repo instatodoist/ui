@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { TodoService } from '../../../../service/todo/todo.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,11 +11,31 @@ import { Component, OnInit } from '@angular/core';
 export class SidebarComponent implements OnInit {
 
   isOpen = false;
-  constructor() { }
+  count = {
+    inbox: 0,
+    today: 0,
+    pending: 0,
+    completed: 0
+  };
+  constructor(
+    private todoService: TodoService
+  ) { }
 
   ngOnInit(): void {
+    this.callTodoCountService();
   }
 
+  callTodoCountService() {
+    this.todoService.callTodoCountService()
+      .subscribe(response => {
+        this.count = {
+          inbox: response[0].totalCount,
+          today: response[1].totalCount,
+          pending: response[2].totalCount,
+          completed: response[3].totalCount
+        };
+    });
+  }
 
   closePopUp($event: boolean): void {
     this.isOpen = $event;
