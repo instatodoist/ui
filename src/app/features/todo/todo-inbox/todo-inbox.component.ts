@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { TodoListType, TodoType } from '../../../models/todo.model';
+import { TodoListType, TodoCompletedListType ,TodoType } from '../../../models/todo.model';
 import { TodoConditions } from '../../../models/todo.model';
 import { TodoService } from '../../../service/todo/todo.service';
 @Component({
@@ -11,7 +11,7 @@ import { TodoService } from '../../../service/todo/todo.service';
 export class TodoInboxComponent implements OnInit {
   @ViewChild('dialog') dialog: TemplateRef<any>;
   loader = false;
-  todos: TodoListType; // todos var
+  todos: any; // todos var
   isUpdate = false; // if update popup
   isDelete = false; // if delete popup
   popupType: string; // popup type - update/delete
@@ -53,7 +53,7 @@ export class TodoInboxComponent implements OnInit {
       });
     } else {
       this.conditions = this.toddService.getConditions(this.todoCurrentType); // default case for all types except labelled
-      this.getTodos(this.conditions);
+      this.todoCurrentType === this.TODOTYPES.completed ? this.getCompletedTodos(this.conditions) : this.getTodos(this.conditions);
     }
   }
 
@@ -67,6 +67,17 @@ export class TodoInboxComponent implements OnInit {
    */
   getTodos(conditions: TodoConditions) {
     this.toddService.listTodos(conditions)
+      .subscribe((data) => {
+        this.todos = data;
+        this.loader = false;
+      });
+  }
+
+  /**
+   * @param conditions - based on route
+   */
+  getCompletedTodos(conditions: TodoConditions) {
+    this.toddService.listCompletedTodos(conditions)
       .subscribe((data) => {
         this.todos = data;
         this.loader = false;

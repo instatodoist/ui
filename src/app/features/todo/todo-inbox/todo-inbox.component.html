@@ -7,22 +7,18 @@
         </div>
         <div class="mdc-data-table" data-mdc-auto-init="MDCDataTable">
             <table class="mdc-data-table__table" aria-label="Dessert calories">
-                <!-- <thead>
-                    <tr class="mdc-data-table__header-row">
-                        <th class="mdc-data-table__header-cell w50" role="columnheader" scope="col"></th>
-                        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Title</th>
-                        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Description</th>
-                    </tr>
-                </thead> -->
-                <tbody class="mdc-data-table__content">
+
+                <!-- For tasks other than todos -->
+                <tbody *ngIf="todoCurrentType !== TODOTYPES?.completed" class="mdc-data-table__content">
                     <tr class="mdc-data-table__row" *ngFor="let todo of todos?.data;">
-                        <td class="mdc-data-table__cell" *ngIf="todoCurrentType !== TODOTYPES?.completed">
+                        <td class="mdc-data-table__cell">
                             <div class="mdc-form-field">
                                 <div class="mdc-radio">
-                                    <input class="mdc-radio__native-control" type="radio" id="radio-1" name="radios" (change)="updateTodo(todo)">
+                                    <input class="mdc-radio__native-control" type="radio" id="radio-1" name="radios"
+                                        (change)="updateTodo(todo)">
                                     <div class="mdc-radio__background">
-                                      <div class="mdc-radio__outer-circle"></div>
-                                      <div class="mdc-radio__inner-circle"></div>
+                                        <div class="mdc-radio__outer-circle"></div>
+                                        <div class="mdc-radio__inner-circle"></div>
                                     </div>
                                     <div class="mdc-radio__ripple"></div>
                                 </div>
@@ -39,14 +35,14 @@
                                         </span>
                                     </span>
                                 </div>
-                                <span *ngIf="todoCurrentType !== TODOTYPES?.completed && todoCurrentType !== TODOTYPES?.inbox">
+                                <span *ngIf="todoCurrentType !== TODOTYPES?.inbox">
                                     <span class="material-icons" [ngStyle]="{color: getPriorityColor(todo?.priority)}">
                                         flag
                                     </span>
                                 </span>
                             </div>
                         </td>
-                        <td *ngIf="todoCurrentType === TODOTYPES?.completed" class="mdc-data-table__cell">
+                        <td class="mdc-data-table__cell">
                             {{todo?.updatedAt | date: 'medium'}}
                         </td>
                         <td *ngIf="todoCurrentType !== TODOTYPES?.completed">
@@ -54,20 +50,47 @@
                                 edit
                             </i>
                         </td>
-                        <td *ngIf="todoCurrentType !== TODOTYPES?.completed" (click)="openPopUp(todo, 'DELETE')">
+                        <td (click)="openPopUp(todo, 'DELETE')">
                             <i class="material-icons">
                                 delete
                             </i>
                         </td>
-                        <!-- <td class="mdc-data-table__cell">
-                            <a [href]="application.appdetails.application_url" target="_blank">
-                                {{ application.appdetails.name }}
-                            </a>
-                        </td>
-                        <td class="mdc-data-table__cell mdl-data-table_cell--description">
-                            {{ application.appdetails.description }}
-                        </td> -->
                     </tr>
+                </tbody>
+
+                <!-- For Completed -->
+                <tbody *ngIf="todoCurrentType === TODOTYPES?.completed" class="mdc-data-table__content">
+                    <ng-container *ngFor="let todo of todos?.data;">
+                        <tr class="mdc-data-table__row">
+                            <td class="mdc-data-table__cell nested-parent-cell" colspan="3" title="Completion Date">
+                                <div>
+                                    <span class="nested-parent-cell title">{{todo?._id  | date: 'mediumDate'}}</span>
+                                    <span> - Tasks Completed: {{todo?.list?.length}}</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="mdc-data-table__row" *ngFor="let data of todo?.list; let i = index">
+                            <td class="mdc-data-table__cell">
+                                {{i + 1}}.
+                            </td>
+                            <td class="mdc-data-table__cell">
+                                <div class="mdc-chip-set" role="grid">
+                                    {{data?.title}}
+                                    <div class="mdc-chip" role="row" *ngFor="let label of data?.label">
+                                        <div class="mdc-chip__ripple"></div>
+                                        <span role="gridcell">
+                                            <span role="button" tabindex="0" class="mdc-chip__primary-action">
+                                                <span class="mdc-chip__text">{{label?.name}}</span>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="mdc-data-table__cell" title="Creation Date">
+                                {{data?.createdAt | date: 'medium'}}
+                            </td>
+                        </tr>
+                    </ng-container>
                 </tbody>
             </table>
         </div>
@@ -76,7 +99,8 @@
         <img src="assets/images/no-result.svg">
         <p class="m0 p0">{{ "No Tasks"}}
     </div>
-    <app-todo-dialog [todo]="todo" [origin]="todoCurrentType === TODOTYPES.completed? 'COMPLETED' : null" (isOpen)="updatePopupFlag($event)" *ngIf="isUpdate">
+    <app-todo-dialog [todo]="todo" [origin]="todoCurrentType === TODOTYPES.completed? 'COMPLETED' : null"
+        (isOpen)="updatePopupFlag($event)" *ngIf="isUpdate">
     </app-todo-dialog>
     <app-todo-delete [todo]="todo" [conditions]="conditions" (isOpen)="updatePopupFlag($event)" *ngIf="isDelete">
     </app-todo-delete>

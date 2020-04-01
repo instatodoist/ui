@@ -60,6 +60,13 @@ export interface TodoListType {
   totalCount: number;
 }
 
+export interface TodoCompletedListType {
+  data: {
+    _id: string;
+    list: TodoType[];
+  };
+  totalCount: number;
+}
 
 export interface TodoLabelListType {
   data?: TodoLabelType[];

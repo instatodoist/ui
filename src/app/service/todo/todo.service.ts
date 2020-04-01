@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {
   TODO_LIST_QUERY,
+  TODO_COMPLETED_QUERY,
   TODO_LABEL_QUERY,
   TODO_UPDATE_MUTATION,
   TODO_DELETE_MUTATION,
@@ -16,6 +17,7 @@ import { map } from 'rxjs/operators';
 import {
   TodoConditions,
   TodoListType,
+  TodoCompletedListType,
   TodoLabelType,
   TodoType,
   SuccessType,
@@ -140,6 +142,21 @@ export class TodoService {
       })
       .valueChanges.pipe(map(({ data }: any) => {
         return data.todoList;
+      }));
+  }
+
+  /**
+   * @param conditions - filter params while fetching todos
+   */
+  listCompletedTodos(conditions: TodoConditions): Observable<TodoCompletedListType> {
+    return this.apollo
+      .watchQuery({
+        query: TODO_COMPLETED_QUERY,
+        variables: conditions,
+        fetchPolicy: 'network-only'
+      })
+      .valueChanges.pipe(map(({ data }: any) => {
+        return data.todoCompleted;
       }));
   }
 
