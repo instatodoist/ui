@@ -2,7 +2,7 @@ import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest}
 import {catchError} from 'rxjs/internal/operators';
 import {Injectable} from '@angular/core';
 import {Observable, throwError} from 'rxjs/index';
-import {Router } from '@angular/router'
+import {Router } from '@angular/router';
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
@@ -36,8 +36,9 @@ export class ErrorInterceptor implements HttpInterceptor {
             if (status && status === 401) {
               localStorage.clear();
               this.router.navigate(['/']);
+            } else {
+              return throwError(errObject);
             }
-            return throwError(errObject);
         })
       );
   }

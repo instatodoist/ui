@@ -1,21 +1,22 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+// import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { RouterModule } from '@angular/router';
-import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
-import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+// import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
+// import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
+// import { InMemoryCache } from 'apollo-cache-inmemory';
 
 import { AuthModule } from './features/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { CanActivateAuthenticateGuard } from './guards/can-activate-authenticate.guard';
-import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { ErrorInterceptor } from './interceptors/error.interceptor';
+// import { AuthInterceptor } from './interceptors/auth.interceptor';
+// import { ErrorInterceptor } from './interceptors/error.interceptor';
 
 import { AppComponent } from './app.component';
 import { AdminComponent } from './features/shared/layout/admin/admin.component';
@@ -26,9 +27,10 @@ import { PageNotFoundComponent } from './features/shared/page-not-found/page-not
 
 import { DropdownMenuDirective } from './directive/dropdown/dropdown-menu.directive';
 
-import { environment } from '../environments/environment';
+// import { environment } from '../environments/environment';
 import { FormValidationDirective } from './directive/form-validation.directive';
 import { SharedModule} from './features/shared/shared.module';
+import { GraphqlModule } from './features/graphql/graphql.module';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,8 @@ import { SharedModule} from './features/shared/shared.module';
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,
+    // HttpClientModule,
+    GraphqlModule,
     ReactiveFormsModule,
     TranslateModule.forRoot({
       loader: {
@@ -52,8 +55,8 @@ import { SharedModule} from './features/shared/shared.module';
         deps: [HttpClient]
       }
     }),
-    ApolloModule,
-    HttpLinkModule,
+    // ApolloModule,
+    // HttpLinkModule,
     AuthModule,
     AppRoutingModule,
     SharedModule
@@ -63,28 +66,28 @@ import { SharedModule} from './features/shared/shared.module';
   ],
   providers: [
     CanActivateAuthenticateGuard,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor,
-      multi: true
-    },
-    {
-      provide: APOLLO_OPTIONS,
-      useFactory: (httpLink: HttpLink) => {
-        return {
-          cache: new InMemoryCache(),
-          link: httpLink.create({
-            uri: environment.API_URL
-          })
-        };
-      },
-      deps: [HttpLink]
-    }
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: AuthInterceptor,
+    //   multi: true
+    // },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: ErrorInterceptor,
+    //   multi: true
+    // },
+    // {
+    //   provide: APOLLO_OPTIONS,
+    //   useFactory: (httpLink: HttpLink) => {
+    //     return {
+    //       cache: new InMemoryCache(),
+    //       link: httpLink.create({
+    //         uri: environment.API_URL
+    //       })
+    //     };
+    //   },
+    //   deps: [HttpLink]
+    // }
   ],
   entryComponents: [],
   bootstrap: [AppComponent]
