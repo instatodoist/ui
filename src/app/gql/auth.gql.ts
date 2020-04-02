@@ -43,7 +43,7 @@ export const RESET_PASSWORD = gql`
     mutation userResetPassword( $input: ResetPasswordInputType!) {
       userResetPassword(input: $input){
         message
-        hashToken
+        ok
     }
   }
 `;

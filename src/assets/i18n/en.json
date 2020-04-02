@@ -4,7 +4,8 @@
     "signup": "SignUp",
     "username": "Uesrname",
     "password": "Password",
-    "email": "Email"
+    "email": "Email",
+    "reset": "Reset Password"
   },
   "app_dir": "Application Directory",
   "blacklist_portals": "Blacklist Portals",
