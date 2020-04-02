@@ -30,6 +30,24 @@ export const EMAIL_VERIFICATION = gql`
   }
 `;
 
+export const FORGOT_PASSWORD = gql`
+    mutation userForgotpassword( $input: UserForgotPasswordInputType!) {
+      userForgotpassword(input: $input){
+        message
+        hashToken
+    }
+  }
+`;
+
+export const RESET_PASSWORD = gql`
+    mutation userResetPassword( $input: ResetPasswordInputType!) {
+      userResetPassword(input: $input){
+        message
+        hashToken
+    }
+  }
+`;
+
 
 export const LOGIN_QUERY = gql`
     query login( $input: UserLoginInputType!) {

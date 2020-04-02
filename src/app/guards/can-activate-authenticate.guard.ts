@@ -19,7 +19,11 @@ export class CanActivateAuthenticateGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     let isUnprotectedRoute = false;
-    if (state.url.match('verification') || this.routes.indexOf(state.url) !== -1) {
+    if (
+      state.url.match('verification') ||
+      state.url.match('forgot-password') ||
+      state.url.match('reset-password') ||
+      this.routes.indexOf(state.url) !== -1) {
       isUnprotectedRoute = true;
     }
     if (this.lsService.getValue('isLoggedIn') && isUnprotectedRoute) {

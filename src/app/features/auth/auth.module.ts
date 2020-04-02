@@ -9,13 +9,17 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AuthRegisterComponent } from './auth-register/auth-register.component';
 import { AuthVerifyComponent } from './auth-verify/auth-verify.component';
+import { AuthForgotComponent } from './auth-forgot/auth-forgot.component';
+import { AuthResetPasswordComponent } from './auth-reset-password/auth-reset-password.component';
 
 @NgModule({
   declarations: [
     FrontComponent,
     AuthComponent,
     AuthRegisterComponent,
-    AuthVerifyComponent
+    AuthVerifyComponent,
+    AuthForgotComponent,
+    AuthResetPasswordComponent
   ],
   imports: [
     CommonModule,

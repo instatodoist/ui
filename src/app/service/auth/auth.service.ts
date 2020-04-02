@@ -2,7 +2,14 @@ import { Injectable } from '@angular/core';
 import { LsService } from './../../service/ls.service';
 import { environment } from '../../../environments/environment';
 import { UserModel } from '../../models';
-import { LOGIN_QUERY, REGISTER_MUTATION, PROFILE_QUERY, EMAIL_VERIFICATION } from '../../gql/auth.gql';
+import {
+  LOGIN_QUERY,
+  REGISTER_MUTATION,
+  FORGOT_PASSWORD,
+  EMAIL_VERIFICATION,
+  PROFILE_QUERY,
+  RESET_PASSWORD
+} from '../../gql/auth.gql';
 import {Apollo} from 'apollo-angular';
 import {map} from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -63,6 +70,30 @@ export class AuthService {
         return data.emailVerificationByOtp;
       })
       );
+  }
+
+  forgotPassword(postBody: any): Observable<any> {
+    return this.apollo.mutate({
+      mutation: FORGOT_PASSWORD,
+      variables: {
+        input: postBody
+      }
+    })
+      .pipe(map(({ data }: any) => {
+        return data.userForgotpassword;
+      }));
+  }
+
+  resetPassword(postBody: any): Observable<any> {
+    return this.apollo.mutate({
+      mutation: RESET_PASSWORD,
+      variables: {
+        input: postBody
+      }
+    })
+      .pipe(map(({ data }: any) => {
+        return data.userResetPassword;
+      }));
   }
 
   profile(): Observable<UserModel.UserProfileType> {

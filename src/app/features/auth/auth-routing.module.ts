@@ -5,6 +5,8 @@ import { FrontComponent } from '../shared/layout/front/front.component';
 import { CanActivateAuthenticateGuard } from '../../guards/can-activate-authenticate.guard';
 import { AuthRegisterComponent } from './auth-register/auth-register.component';
 import { AuthVerifyComponent } from './auth-verify/auth-verify.component';
+import { AuthForgotComponent } from './auth-forgot/auth-forgot.component';
+import { AuthResetPasswordComponent } from './auth-reset-password/auth-reset-password.component';
 
 const authRoutes: Routes = [
   {
@@ -15,6 +17,18 @@ const authRoutes: Routes = [
       {
         path: '',
         component: AuthComponent,
+      },
+      {
+        path: 'forgot-password',
+        component: AuthForgotComponent,
+      },
+      {
+        path: 'forgot-password/confirmation/:hash',
+        component: AuthVerifyComponent,
+      },
+      {
+        path: 'reset-password/:hash',
+        component: AuthResetPasswordComponent,
       },
       {
         path: 'register',

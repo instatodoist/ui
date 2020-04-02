@@ -1,4 +1,3 @@
-declare var mdc: any;
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
@@ -45,8 +44,14 @@ export class AuthVerifyComponent implements OnInit {
     this.loader = true;
     this.authService.verification(this.formObj.value)
     .subscribe((response: UserModel.RegisterResponse) => {
-      this.router.navigate(['/']);
       this.loader = false;
+      if (this.router.url.match('forgot-password/confirmation')) {
+        const data = response;
+        this.router.navigate(['reset-password/', data.hashToken]);
+        this.loader = false;
+      } else {
+        this.router.navigate(['/']);
+      }
     },
     () => {
       this.loader = false;
