@@ -92,6 +92,9 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
   checkingRouteTypes() {
     if (this.router.url === '/tasks/today') { // checking route if today
       this.todoCurrentType = this.TODOTYPES.today;
+      this.formObj.patchValue({
+        scheduling: true
+      });
     } else if (this.router.url === '/tasks/completed') { // checking route if completed
       this.todoCurrentType = this.TODOTYPES.completed;
     } else if (this.router.url === '/tasks/inbox') { // checking route if inbox
