@@ -10,7 +10,8 @@
 
                 <!-- For tasks other than todos -->
                 <tbody *ngIf="todoCurrentType !== TODOTYPES?.completed" class="mdc-data-table__content">
-                    <tr class="mdc-data-table__row" *ngFor="let todo of todos?.data;">
+                    <tr class="mdc-data-table__row cursor" *ngFor="let todo of todos?.data;"
+                        (click)="openPopUp(todo, 'UPDATE')">
                         <td class="mdc-data-table__cell">
                             <div class="mdc-form-field">
                                 <div class="mdc-radio">
@@ -28,7 +29,8 @@
                             <div class="mdc-chip-set" role="grid">
                                 <div>
                                     {{todo?.title}}
-                                    <span class="mdc-data-table__cell" style="font-size: 10px; color: red;" *ngIf="todoCurrentType !== TODOTYPES?.today">
+                                    <span class="mdc-data-table__cell" style="font-size: 10px; color: red;"
+                                        *ngIf="todoCurrentType !== TODOTYPES?.today">
                                         {{todo?.scheduledDate | date: 'MMM d, y'}}
                                     </span>
                                 </div>
@@ -41,7 +43,8 @@
                                     </span>
                                 </div>
                                 <span>
-                                    <span *ngIf="todo?.priority !== 'P4'" class="material-icons" [ngStyle]="{color: getPriorityColor(todo?.priority)}">
+                                    <span *ngIf="todo?.priority !== 'P4'" class="material-icons"
+                                        [ngStyle]="{color: getPriorityColor(todo?.priority)}">
                                         flag
                                     </span>
                                 </span>
@@ -50,16 +53,16 @@
                         <!-- <td class="mdc-data-table__cell" style="font-size: 10px;">
                             {{todo?.updatedAt | date: 'medium'}}
                         </td> -->
-                        <td *ngIf="todoCurrentType !== TODOTYPES?.completed">
+                        <!-- <td *ngIf="todoCurrentType !== TODOTYPES?.completed">
                             <i class="material-icons" (click)="openPopUp(todo, 'UPDATE')">
                                 edit
                             </i>
-                        </td>
-                        <td (click)="openPopUp(todo, 'DELETE')">
+                        </td> -->
+                        <!-- <td (click)="openPopUp(todo, 'DELETE')">
                             <i class="material-icons">
                                 delete
                             </i>
-                        </td>
+                        </td> -->
                     </tr>
                 </tbody>
 
