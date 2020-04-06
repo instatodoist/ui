@@ -1,7 +1,6 @@
 declare var mdc: any;
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AppConfig } from './service/appconfig';
 import { Title } from '@angular/platform-browser';
 import {
   Router,
@@ -14,6 +13,8 @@ import {
 import { Observable, Observer, fromEvent, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UtilityService } from './service/utility.service';
+import { VersionCheckService } from './service/version-check/version-check.service';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,13 @@ export class AppComponent implements OnInit {
 
   title = 'InstaTodo';
   loading = false;
-  constructor(translate: TranslateService, private router: Router, private titleService: Title, private utilityService: UtilityService) {
+  constructor(
+    translate: TranslateService,
+    private router: Router,
+    private titleService: Title,
+    private utilityService: UtilityService,
+    private versionCheckService: VersionCheckService
+  ) {
     // set default lang as english
     translate.setDefaultLang('en');
     // setting navigation start/end status
@@ -49,6 +56,9 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (environment.production) {
+      this.versionCheckService.initVersionCheck(environment.versionUrl);
+    }
     this.titleService.setTitle(this.title);
     // network checking
     this.createOnline$().subscribe(isOnline => {

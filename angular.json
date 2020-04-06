@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "admin-webapp": {
+    "instatodo": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/admin-webapp",
+            "outputPath": "dist/instatodo",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -76,20 +76,20 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "admin-webapp:build",
+            "browserTarget": "instatodo:build",
             "host": "localhost",
             "port": 4200
           },
           "configurations": {
             "production": {
-              "browserTarget": "admin-webapp:build:production"
+              "browserTarget": "instatodo:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "admin-webapp:build"
+            "browserTarget": "instatodo:build"
           }
         },
         "test": {
@@ -126,18 +126,18 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "admin-webapp:serve"
+            "devServerTarget": "instatodo:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "admin-webapp:serve:production"
+              "devServerTarget": "instatodo:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "admin-webapp",
+  "defaultProject": "instatodo",
   "cli": {
     "defaultCollection": "@ngrx/schematics"
   }
