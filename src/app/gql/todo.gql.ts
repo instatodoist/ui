@@ -44,8 +44,13 @@ export const TODO_LIST_QUERY = gql`
                 updatedAt
                 priority
                 scheduledDate
-                comments {
+                notes {
                     description
+                    _id
+                    userId {
+                        email
+                        _id
+                    }
                 }
                 user {
                     email
@@ -77,9 +82,6 @@ export const TODO_COMPLETED_QUERY = gql`
                     updatedAt
                     label {
                         name
-                    }
-                    comments {
-                        description
                     }
                 }
             }
