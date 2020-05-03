@@ -44,13 +44,16 @@
                     </div>
                   </td>
                   <!-- Title-->
-                  <td class="title-cell">{{todo?.title}}</td>
+                  <td class="title-cell" [ngStyle]="{color: getPriorityColor(todo?.priority)}">
+                    <span *ngIf="todo?.priority !== 'P4'" title="Priority - {{todo?.priority}}" >{{todo?.title}}</span>
+                    <span *ngIf="todo?.priority === 'P4'">{{todo?.title}}</span>
+                  </td>
                   <!-- Flag-->
-                  <td class="first-cell"><span *ngIf="todo?.priority !== 'P4'" class="material-icons"
+                  <!-- <td class="first-cell"><span *ngIf="todo?.priority !== 'P4'" class="material-icons"
                       [ngStyle]="{color: getPriorityColor(todo?.priority)}">
                       <i class="fa fa-flag" aria-hidden="true"></i>
                     </span>
-                  </td>
+                  </td> -->
                   <!-- Tags-->
                   <td class="common-cell">
                     <div *ngFor="let label of todo?.label" class="badge badge-pill badge-primary mr-2">{{label?.name}}
