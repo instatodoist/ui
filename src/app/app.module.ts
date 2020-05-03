@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -36,6 +36,7 @@ import { PageNotFoundComponent } from './features/shared/page-not-found/page-not
   imports: [
     BrowserModule,
     GraphqlModule,
+    FormsModule,
     ReactiveFormsModule,
     TranslateModule.forRoot({
       loader: {

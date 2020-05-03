@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
         case event instanceof NavigationCancel:
         case event instanceof NavigationError: {
           this.loading = false;
-          mdc.autoInit(document, () => { });
+          // mdc.autoInit(document, () => { });
           break;
         }
         default: {

@@ -14,17 +14,17 @@ export class AdminComponent implements OnInit {
   constructor(private utilityService: UtilityService) { }
 
   ngOnInit(): void {
-    const drawer = new mdc.drawer.MDCDrawer.attachTo(
-      document.querySelector(".mdc-drawer")
-    );
-    drawer.open = true;
-    const topAppBar = new mdc.topAppBar.MDCTopAppBar(
-      document.getElementById("app-bar")
-    );
-    topAppBar.setScrollTarget(document.getElementById("main-content"));
-    topAppBar.listen("MDCTopAppBar:nav", () => {
-      drawer.open = !drawer.open;
-    });
+    // const drawer = new mdc.drawer.MDCDrawer.attachTo(
+    //   document.querySelector(".mdc-drawer")
+    // );
+    // drawer.open = true;
+    // const topAppBar = new mdc.topAppBar.MDCTopAppBar(
+    //   document.getElementById("app-bar")
+    // );
+    // topAppBar.setScrollTarget(document.getElementById("main-content"));
+    // topAppBar.listen("MDCTopAppBar:nav", () => {
+    //   drawer.open = !drawer.open;
+    // });
 
     // subscribe to error store state
     // this.store.pipe(select('error')).subscribe((data: any) => {
