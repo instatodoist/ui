@@ -1,84 +1,89 @@
-<div class="mdc-layout-grid auth p-0">
-    <div class="mdc-layout-grid__inner">
-        <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-8 left"></div>
-        <div class="mdc-layout-grid__cell text-center mdc-layout-grid__cell--span-4 right px-20p">
-            <div class="logo-block">
-                <img [src]="appData.logo">
+<!-- <div id="loading">
+  <div id="loading-center">
+  </div>
+</div> -->
+<!-- loader END -->
+<!-- Sign in Start -->
+<section class="sign-in-page">
+  <div id="container-inside">
+    <div class="cube"></div>
+    <div class="cube"></div>
+    <div class="cube"></div>
+    <div class="cube"></div>
+    <div class="cube"></div>
+  </div>
+  <div class="container p-0">
+    <div class="row no-gutters height-self-center">
+      <div class="col-sm-12 align-self-center bg-primary rounded">
+        <div class="row m-0">
+          <div class="col-md-5 bg-white sign-in-page-data">
+            <div class="sign-in-from">
+              <h1 class="mb-0 text-center">Sign In</h1>
+              <p class="text-center text-dark">Enter your email address and password to access ToDo App.</p>
+              <form class="mt-4" [formGroup]="signinForm" #formDir="ngForm" (ngSubmit)="signIn()" name="signinForm">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Email address</label>
+                  <input type="email" class="form-control mb-0" id="exampleInputEmail1" placeholder="Enter email"
+                    formControlName="email" required>
+                  <div>
+                    <span
+                      *ngIf="signinForm.controls.email.touched && signinForm.controls.email.errors && signinForm.controls.username.errors.required">
+                      Email is required</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Password</label>
+                  <a routerLink="/forgot-password" class="float-right">Forgot password?</a>
+                  <input type="password" class="form-control mb-0" id="exampleInputPassword1" placeholder="Password"
+                    formControlName="password" required>
+                  <div>
+                    <span
+                      *ngIf="signinForm.controls.password.touched && signinForm.controls.password.errors && signinForm.controls.password.errors.required">
+                      Password is required</span>
+                  </div>
+                </div>
+                <!-- <div class="d-inline-block w-100">
+                  <div class="custom-control custom-checkbox d-inline-block mt-2 pt-1">
+                    <input type="checkbox" class="custom-control-input" id="customCheck1">
+                    <label class="custom-control-label" for="customCheck1">Remember Me</label>
+                  </div>
+                </div> -->
+                <div class="sign-info text-center">
+                  <button type="submit" class="btn btn-primary d-block w-100 mb-2">Sign in</button>
+                  <span class="text-dark dark-color d-inline-block line-height-2">Don't have an account? <a
+                    routerLink="/register">{{'auth.signup'|translate}}</a></span>
+                </div>
+              </form>
             </div>
-            <!-- signin section -->
-            <form [formGroup]="signinForm" #formDir="ngForm" (ngSubmit)="signIn()" name="signinForm">
-                <!-- username -->
-                <div class="mb-20">
-                    <div class="mdc-text-field mdc-text-field--outlined w-100" data-mdc-auto-init="MDCTextField">
-                        <input class="mdc-text-field__input" id="email" name="email" type="text"
-                            formControlName="email" required>
-                        <div class="mdc-notched-outline">
-                            <div class="mdc-notched-outline__leading"></div>
-                            <div class="mdc-notched-outline__notch">
-                                <label for="email" class="mdc-floating-label">{{'auth.email'|translate}}</label>
-                            </div>
-                            <div class="mdc-notched-outline__trailing"></div>
-                        </div>
-                    </div>
-                    <div class="mdc-text-field-helper-line">
-                        <div id="email"
-                            class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg">
-                            <span
-                                *ngIf="signinForm.controls.email.touched && signinForm.controls.email.errors && signinForm.controls.username.errors.required">
-                                Email is required</span>
-                        </div>
-                    </div>
+          </div>
+          <div class="col-md-7 text-center sign-in-page-image">
+            <div class="sign-in-detail text-white">
+              <a class="sign-in-logo mb-5" href="#"><img src="/assets/facelift/images/logo-full.png" class="img-fluid"
+                  alt="logo"></a>
+              <div class="owl-carousel" data-autoplay="true" data-loop="true" data-nav="false" data-dots="true"
+                data-items="1" data-items-laptop="1" data-items-tab="1" data-items-mobile="1" data-items-mobile-sm="1"
+                data-margin="0">
+                <div class="item">
+                  <img src="/assets/facelift/images/login/1.png" class="img-fluid mb-4" alt="logo">
+                  <h4 class="mb-1 text-white">Find new friends</h4>
+                  <p>It is a long established fact that a reader will be distracted by the readable content.</p>
                 </div>
-
-                <!-- password -->
-                <div class="mb-20">
-                    <div class="mdc-text-field mdc-text-field--outlined w-100" data-mdc-auto-init="MDCTextField">
-                        <input class="mdc-text-field__input" id="password" name="password" type="password"
-                            formControlName="password" required>
-                        <div class="mdc-notched-outline">
-                            <div class="mdc-notched-outline__leading"></div>
-                            <div class="mdc-notched-outline__notch">
-                                <label for="password" class="mdc-floating-label">{{'auth.password'|translate}}</label>
-                            </div>
-                            <div class="mdc-notched-outline__trailing"></div>
-                        </div>
-                    </div>
-                    <div class="mdc-text-field-helper-line">
-                        <div id="password"
-                            class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg">
-                            <span
-                                *ngIf="signinForm.controls.password.touched && signinForm.controls.password.errors && signinForm.controls.password.errors.required">
-                                Password is required</span>
-                        </div>
-                    </div>
+                <div class="item">
+                  <img src="/assets/facelift/images/login/1.png" class="img-fluid mb-4" alt="logo">
+                  <h4 class="mb-1 text-white">Connect with the world</h4>
+                  <p>It is a long established fact that a reader will be distracted by the readable content.</p>
                 </div>
-
-                <!-- loading bar -->
-                <div *ngIf="loader" role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate" aria-label="Example Progress Bar" aria-valuemin="0" data-mdc-auto-init="MDCLinearProgress"
-                    aria-valuemax="1" aria-valuenow="0">
-                    <div class="mdc-linear-progress__buffering-dots"></div>
-                    <div class="mdc-linear-progress__buffer"></div>
-                    <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
-                        <span class="mdc-linear-progress__bar-inner"></span>
-                    </div>
-                    <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
-                        <span class="mdc-linear-progress__bar-inner"></span>
-                    </div>
+                <div class="item">
+                  <img src="/assets/facelift/images/login/1.png" class="img-fluid mb-4" alt="logo">
+                  <h4 class="mb-1 text-white">Create new events</h4>
+                  <p>It is a long established fact that a reader will be distracted by the readable content.</p>
                 </div>
-
-                <!-- submit -->
-                <div class="mb-20">
-                    <button class="mdc-button mdc-button--raised signin w-100" type="submit"
-                        [disabled]="!signinForm.valid">
-                        <span class="mdc-button__ripple"></span> {{'auth.signin'|translate}}
-                    </button>
-                    <div>
-                        <br/>
-                        Don't have an account,<a routerLink="/register"> SignUp</a>
-                    </div>
-                    Forgot Password,<a routerLink="/forgot-password"> Forgot Password</a>
-                </div>
-            </form>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+  </div>
+</section>
+<!-- Sign in END -->
