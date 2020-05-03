@@ -1,11 +1,25 @@
+.todo-inbox {
+  table tbody:first-child  {
+    border-top: none !important;
+  }
+  .first-cell{
+    width: 5% !important;
+  }
+  .title-cell{
+    width: 40% !important;
+  }
+  .common-cell{
+    width: 40% !important;
+  }
+}
 td.nested-parent-cell {
-    border: 1px solid rgba(114, 187, 92, 0.8);
-    div{
-        text-align: center;
-        span.title {
-            font-size: medium;
-            font-weight: 800;
-            text-align: center;
-        }
+  border: 1px solid rgba(114, 187, 92, 0.8);
+  div{
+    text-align: center;
+    span.title {
+      font-size: medium;
+      font-weight: 800;
+      text-align: center;
     }
+  }
 }
