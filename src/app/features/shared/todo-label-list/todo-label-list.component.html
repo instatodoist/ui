@@ -1,3 +1,6 @@
-<a class="mdc-list-item" *ngFor="let data of labels" [routerLink]="['/tasks/labels', data?._id, data?.name]" routerLinkActive="mdc-list-item--activated">
-    <span class="mdc-list-item__text">{{data?.name}}</span>
-</a>
+<li *ngFor="let data of labels">
+  <a [routerLink]="['/tasks/labels', data?._id, data?.name]">
+    <i class="fa fa-empire" aria-hidden="true"></i>
+    {{data?.name}}
+  </a>
+</li>
