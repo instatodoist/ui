@@ -4,7 +4,7 @@
       <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
         <div class="iq-card-header d-flex justify-content-between">
           <div class="iq-header-title">
-            <h4 class="card-title">{{todoCurrentType | titlecase}} Tasks: <span
+            <h4 class="card-title">[ <span class="text-info">{{todoCurrentType | titlecase}}</span> ] Tasks: <span
                 class="text-info">{{todos?.totalCount ? todos?.totalCount: 0}}</span>
             </h4>
           </div>
@@ -58,7 +58,7 @@
                         </span>
                       </div>
                     </td>
-                    <td class="common-cell">
+                    <td class="common-cell" *ngIf="todoCurrentType === TODOTYPES?.pending || todoCurrentType === TODOTYPES?.inbox || todoCurrentType === TODOTYPES?.today">
                       <div *ngFor="let label of todo?.label" class="badge badge-info mr-2">{{label?.name}}
                       </div>
                     </td>

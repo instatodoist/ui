@@ -58,7 +58,7 @@
                     <div class="dropdown">
                       <span class="dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown"
                         aria-expanded="false">
-                        <i class="fa fa-tasks" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="Set Project"></i>
+                        <i class="fa fa-tasks" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="Set Project" [ngStyle]="{'color': currentLabel ? 'green' : 'rgb(86, 75, 75)' }"></i>
                       </span>
                       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton1">
                         <select multiple="" class="form-control" id="exampleFormControlSelect2">
