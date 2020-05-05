@@ -1,13 +1,15 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MDCDialog } from '@material/dialog';
-import {MDCSwitch} from '@material/switch';
-import {MDCMenu} from '@material/menu';
+// import { MDCDialog } from '@material/dialog';
+// import {MDCSwitch} from '@material/switch';
+// import {MDCMenu} from '@material/menu';
 import { TodoService } from '../../../service/todo/todo.service';
 import { SharedService } from '../../../service/shared/shared.service';
 import { TodoType, TodoLabelType, TodoConditions, OperationEnumType } from '../../../models/todo.model';
 
+declare var $: any;
+declare var flatpickr: any;
 
 @Component({
   selector: 'app-todo-dialog',
@@ -24,17 +26,19 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
   origin = null;
   @Output()
   isOpen: EventEmitter<boolean> = new EventEmitter<boolean>(); // open flag
-  menu: MDCMenu; // mdc instance for label
-  menuPriority: MDCMenu; // mdc instance for priority
+  // menu: MDCMenu; // mdc instance for label
+  // menuPriority: MDCMenu; // mdc instance for priority
   title = 'Add Task';
   formObj: FormGroup;
   labels: TodoLabelType[]; // labels array
-  dialog: MDCDialog; // dialog instance
+  // dialog: MDCDialog; // dialog instance
   priorityColor = 'black'; // default color for priority
   priorities = [];
   TODOTYPES: any; // todo types wrt routes
   todoCurrentType: string; // current route
   operationType: OperationEnumType = 'ADD';
+  currentLabel = '';
+  labelIdVal: string[] = [];
 
   constructor(
     private router: Router,
@@ -46,19 +50,19 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.priorities = this.todoService.getPriorities();
     // checking labels if update
-    const labelIdVal = this.todo ? (this.todo.label.map(label  => {
+    this.labelIdVal = this.todo ? (this.todo.label.map(label => {
       return label._id;
     })) : [];
     // creating form
     this.formObj = this.fb.group({
-        _id: [this.todo && this.todo._id || ''],
-        title: [this.todo && this.todo.title, [Validators.required]],
-        scheduling: [this.todo && this.todo.scheduledDate ? true : false],
-        scheduledDate: [this.todo && this.todo.scheduledDate ? this.todo.scheduledDate : this.sharedService.todayDate()],
-        labelId: [labelIdVal],
-        priority: ['P4'],
-        operationType: [this.operationType]
-      }
+      _id: [this.todo && this.todo._id || ''],
+      title: [this.todo && this.todo.title, [Validators.required]],
+      scheduling: [this.todo && this.todo.scheduledDate ? true : false],
+      scheduledDate: [this.todo && this.todo.scheduledDate ? this.todo.scheduledDate : this.sharedService.todayDate()],
+      labelId: [this.labelIdVal],
+      priority: ['P4'],
+      operationType: [this.operationType]
+    }
     );
     // setting title
     if (this.todo) {
@@ -70,20 +74,19 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
       });
       this.priorityColor = this.todoService.getColor(this.formObj.value.priority);
     }
-    this.menu = new MDCMenu(document.querySelector('.mdc-menu-labels'));
-    this.menuPriority = new MDCMenu(document.querySelector('.mdc-menu-priority'));
+    // this.menu = new MDCMenu(document.querySelector('.mdc-menu-labels'));
+    // this.menuPriority = new MDCMenu(document.querySelector('.mdc-menu-priority'));
     this.TODOTYPES = this.todoService.todoTypes(); // getting route types
-    this.getLabels(); // getting labels
     this.checkingRouteTypes(); // checking route types wrt current route
   }
 
   ngAfterViewInit() {
-    this.dialog = new MDCDialog(document.querySelector('.mdc-dialog'));
-    const switchControl = new MDCSwitch(document.querySelector('.mdc-switch'));
-    this.dialog.open();
-    this.dialog.listen('MDCDialog:closing', () =>  {
-      this.isOpen.emit(false);
-    });
+    if (typeof flatpickr !== 'undefined' && $.isFunction(flatpickr)) {
+      $('.flatpicker').flatpickr({
+          inline: true
+      });
+    }
+    $('[data-toggle="tooltip"]').tooltip();
   }
 
   /**
@@ -110,15 +113,18 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
       // populating label wrt route label
       if (this.todoCurrentType) {
         this.formObj.value.labelId.push(labelId);
+        this.labelIdVal = this.formObj.value.labelId;
+        this.getLabels(); // getting labels
       }
     } else {
+      this.getLabels(); // getting labels
       this.conditions = this.todoService.getConditions(this.todoCurrentType); // default case for all types except labelled
     }
   }
 
   // open priority menu
   openPriority() {
-    this.menuPriority.open = true;
+    // this.menuPriority.open = true;
   }
 
   // set priority
@@ -131,7 +137,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
 
   // open labels menu
   openLabels() {
-    this.menu.open = true;
+   // this.menu.open = true;
   }
 
   // auto checked the labels if exist
@@ -140,7 +146,9 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
   }
 
   // check & uncheck labels
-  checkLabels($event, labelId: string) {
+  checkLabels($event, label: any) {
+    this.currentLabel = label.name;
+    const labelId = label._id;
     const index = this.formObj.value.labelId.indexOf(labelId);
     if (index === -1) {
       this.formObj.value.labelId.push(labelId);
@@ -155,7 +163,17 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
       .listTodoLabels()
       .subscribe(response => {
         this.labels = response;
+        const filterLabel = this.labels.filter(item => item._id === this.labelIdVal[0]);
+        if (filterLabel.length) {
+          this.currentLabel = filterLabel[0].name;
+        }
       });
+  }
+
+  isScheduling() {
+    this.formObj.patchValue({
+      scheduling: !this.formObj.value.scheduling
+    });
   }
 
   // add/update the task
@@ -165,8 +183,9 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
       this.todoService
         .todoOperation(postBody, this.conditions)
         .subscribe(() => {
-          this.dialog.close();
+          // this.dialog.close();
           this.formObj.reset();
+          $('#todo-dialog').modal('hide');
         });
     }
   }

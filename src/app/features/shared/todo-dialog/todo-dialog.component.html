@@ -1,160 +1,83 @@
-<div class="mdc-dialog">
-    <div class="mdc-dialog__container">
-        <div class="mdc-dialog__surface" role="alertdialog" aria-modal="true" aria-labelledby="my-dialog-title"
-            aria-describedby="my-dialog-content">
-            <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
-            <h2 class="mdc-dialog__title" id="my-dialog-title">
-                {{title}}
-            </h2>
-            <div class="mdc-dialog__content" id="my-dialog-content">
-                <form class="form-horizontal" role="form" name="form" id="form" [formGroup]="formObj"
-                    (ngSubmit)="submit()" novalidate>
-                    <div class="mdc-layout-grid">
-                        <div class="mdc-layout-grid__inner">
-                            <!-- Title -->
-                            <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                                <div class="mdc-text-field w-100" data-mdc-auto-init="MDCTextField">
-                                    <input id="title" name="title" type="text" class="mdc-text-field__input"
-                                        spellcheck="false" required formControlName="title" />
-                                    <label class="mdc-floating-label"
-                                        [ngClass]="{'mdc-floating-label--float-above': formObj.value.title}"
-                                        for="title">Title</label>
-                                    <div class="mdc-line-ripple"></div>
-                                </div>
-                                <div class="mdc-text-field-helper-line">
-                                    <div id="title"
-                                        class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Scheduled Option -->
-                            <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-                                [hidden]="origin === 'COMPLETED'">
-                                <label for="basic-switch"> Scheduling</label><br>
-                                <div class="mdc-switch">
-                                    <div class="mdc-switch__track"></div>
-                                    <div class="mdc-switch__thumb-underlay">
-                                        <div class="mdc-switch__thumb"></div>
-                                        <input type="checkbox" id="basic-switch" class="mdc-switch__native-control"
-                                            role="switch" formControlName="scheduling">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Scheduled Date -->
-                            <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-                                *ngIf="formObj.value.scheduling" [hidden]="origin === 'COMPLETED'">
-                                <div class="mdc-text-field w-100" data-mdc-auto-init="MDCTextField">
-                                    <input id="scheduledDate" name="scheduledDate" type="date"
-                                        class="mdc-text-field__input" spellcheck="false" required
-                                        formControlName="scheduledDate" />
-                                    <label class="mdc-floating-label"
-                                        [ngClass]="{'mdc-floating-label--float-above': formObj.value.scheduledDate}"
-                                        for="scheduledDate">Scheduled Date</label>
-                                    <div class="mdc-line-ripple"></div>
-                                </div>
-                                <div class="mdc-text-field-helper-line">
-                                    <div id="scheduledDate"
-                                        class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Setting Labels-->
-                            <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                                <div class="mdc-menu-surface--anchor">
-                                    <label>Labels</label>
-                                    <div class="mdc-chip-set" role="grid">
-                                        <div *ngFor="let label of labels; let i = index">
-                                            <div class="mdc-chip" role="row" *ngIf="isChecked(label._id)">
-                                                <div class="mdc-chip__ripple"></div>
-                                                <span role="gridcell">
-                                                    <span role="button" tabindex="0" class="mdc-chip__primary-action">
-                                                        <span class="mdc-chip__text">{{label?.name}}</span>
-                                                        <span class="material-icons"
-                                                            (click)="checkLabels($event, label._id)">
-                                                            clear
-                                                        </span>
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <a href="javascript:void(0)" style="text-decoration: none;"
-                                            class="mdc-top-app-bar__action-item mdc-button-dropdown topbar-avatar"
-                                            (click)="openLabels()">
-                                            <span class="material-icons" style="color: darkgray;">
-                                                label
-                                            </span>
-                                        </a>
-                                    </div>
-                                    <div class="mdc-menu mdc-menu-surface mdc-menu-labels">
-                                        <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical"
-                                            tabindex="-1">
-                                            <li class="mdc-list-item" role="menuitem"
-                                                *ngFor="let label of labels; let i = index">
-                                                <div class="mdc-checkbox">
-                                                    <input type="checkbox" class="mdc-checkbox__native-control"
-                                                        id="radio-{{i + 1}}" fromControlName="labelId"
-                                                        [checked]="isChecked(label._id)"
-                                                        (change)="checkLabels($event, label._id)" />
-                                                    <div class="mdc-checkbox__background">
-                                                        <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                                                            <path class="mdc-checkbox__checkmark-path" fill="none"
-                                                                d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                                        </svg>
-                                                        <div class="mdc-checkbox__mixedmark"></div>
-                                                    </div>
-                                                    <div class="mdc-checkbox__ripple"></div>
-                                                </div>
-                                                <label for="check-{{i + 1}}">{{label?.name}}</label>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Setting Priority-->
-                            <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-                                <div class="mdc-menu-surface--anchor">
-                                    <a href="javascript:void(0)"
-                                        title="{{this.formObj.value.priority}}"
-                                        class="mdc-top-app-bar__action-item mdc-button-dropdown"
-                                        (click)="openPriority()">
-                                        <span class="material-icons" [ngStyle]="{color: priorityColor}">
-                                            flag
-                                        </span>
-                                    </a>
-                                    <div class="mdc-menu mdc-menu-surface mdc-menu-priority">
-                                        <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical"
-                                            tabindex="-1">
-                                            <li class="mdc-list-item" role="menuitem"
-                                                *ngFor="let priority of priorities; let i = index" (click)="setPriority(priority)">
-                                                <span class="material-icons" [ngStyle]="{color: priority.color}">
-                                                    flag
-                                                </span>
-                                                <label for="check-{{i + 1}}">{{priority.name}}</label>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <footer class="mdc-dialog__actions">
-                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
-                    <div class="mdc-button__ripple"></div>
-                    <span class="mdc-button__label">Cancel</span>
-                </button>
-                <button type="submit" form="form" class="mdc-button mdc-dialog__button">
-                    <div class="mdc-button__ripple"></div>
-                    <span class="mdc-button__label">Update</span>
-                </button>
-            </footer>
+<div class="modal fade" id="todo-dialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle"
+  aria-hidden="true" style="display: none;">
+  <form class="form-horizontal" role="form" name="form" id="form" [formGroup]="formObj" (ngSubmit)="submit()"
+    novalidate>
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalScrollableTitle">Add Task</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
         </div>
+        <div class="modal-body">
+          <div class="iq-card">
+            <div class="iq-card-body">
+              <div class="row">
+                <div class="col-sm-9">
+                  <input formControlName="title" type="text" class="form-control"
+                    placeholder="What is on your mind today?">
+                </div>
+                <div class="col-sm-3">
+                  <div *ngIf="currentLabel" class="badge badge-pill badge-primary mr-2">{{currentLabel}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="iq-card-body">
+              <div class="row">
+                <div class="col-sm-8">
+                  <div class="iq-card calender-small" [hidden]="!formObj.value.scheduling">
+                    <div class="iq-card-body smaill-calender-home">
+                      <input type="text" class="flatpicker d-none" formControlName="scheduledDate">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-4 it-icon-size">
+                  <!-- <i class="fa fa-comment cursor" aria-hidden="true"></i> -->
+
+                  <!-- Calendar-->
+                  <div class="iq-card-header-toolbar d-flex align-items-center cursor">
+                    <i class="fa fa-calendar mr-3 cursor" aria-hidden="true" (click)="isScheduling()"
+                      [ngStyle]="{'color': formObj.value.scheduling ? 'green' : '' }" data-toggle="tooltip"
+                      data-placement="top" data-original-title="Set Scheduling On/Off"></i>
+                    <div class="dropdown mr-3">
+                      <span class="dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown"
+                        aria-expanded="false" role="button">
+                        <i class="fa fa-flag cursor" aria-hidden="true" [ngStyle]="{color: priorityColor}"
+                          data-toggle="tooltip" data-placement="top" data-original-title="Set Priority"></i>
+                      </span>
+                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton1">
+                        <a class="dropdown-item" *ngFor="let priority of priorities; let i = index"
+                          (click)="setPriority(priority)" title="{{priority.name}}">
+                          <i [ngStyle]="{color: priority.color}" class="fa fa-flag cursor mr-4" aria-hidden="true"></i>
+                          <span>{{priority.label}}</span>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="dropdown">
+                      <span class="dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="fa fa-tasks" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="Set Project"></i>
+                      </span>
+                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton1">
+                        <select multiple="" class="form-control" id="exampleFormControlSelect2">
+                          <option (click)="checkLabels($event, label)" *ngFor="let label of labels; let i = index">
+                            {{label?.name | titlecase}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!formObj.valid">Save changes</button>
+        </div>
+      </div>
     </div>
-    <div class="mdc-dialog__scrim"></div>
+  </form>
 </div>

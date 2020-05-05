@@ -63,8 +63,8 @@ export class AppComponent implements OnInit {
     // network checking
     this.createOnline$().subscribe(isOnline => {
       !isOnline ?
-      this.utilityService.toastrWarning('Network is down', { close: false, timeout: false, overlay: true }) :
-      this.utilityService.toastrSuccess('Network is up');
+      this.utilityService.toastrWarning('Network is down', { close: false, timeout: false, overlay: true }) : null;
+      // this.utilityService.toastrSuccess('Network is up');
     });
   }
   createOnline$() {

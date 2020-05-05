@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MDCDialog } from '@material/dialog';
+// import { MDCDialog } from '@material/dialog';
 import { TodoService } from '../../../service/todo/todo.service';
 import { TodoType, TodoLabelType, TodoConditions, OperationEnumType } from '../../../models/todo.model';
 
@@ -22,7 +22,7 @@ export class TodoLabelComponent implements OnInit, AfterViewInit {
 
   formObj: FormGroup;
   labels: TodoLabelType[];
-  dialog: MDCDialog;
+  // dialog: MDCDialog;
   operationType: OperationEnumType = 'ADD';
 
   constructor(
@@ -42,11 +42,11 @@ export class TodoLabelComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.dialog = new MDCDialog(document.querySelector('.mdc-dialog'));
-    this.dialog.open();
-    this.dialog.listen('MDCDialog:closing', () => {
-      this.isOpen.emit(false);
-    });
+    // this.dialog = new MDCDialog(document.querySelector('.mdc-dialog'));
+    // this.dialog.open();
+    // this.dialog.listen('MDCDialog:closing', () => {
+    //   this.isOpen.emit(false);
+    // });
   }
 
   getLabels() {

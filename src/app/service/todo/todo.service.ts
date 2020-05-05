@@ -39,18 +39,22 @@ export class TodoService {
   getPriorities() {
     return [
       {
+        label: 'Priority 1',
         name: 'P1',
         color: 'red'
       },
       {
+        label: 'Priority 2',
         name: 'P2',
         color: 'orange'
       },
       {
+        label: 'Priority 3',
         name: 'P3',
         color: 'blue'
       },
       {
+        label: 'Priority 4',
         name: 'P4',
         color: 'black'
       }

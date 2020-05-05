@@ -123,4 +123,17 @@ export class TodoInboxComponent implements OnInit {
       .todoOperation(postBody, this.conditions)
       .subscribe();
   }
+
+  /**
+   * @param todo - todo object
+   */
+  deleteTodo(todo: TodoType) {
+    const postBody: TodoType = {
+      _id: todo._id,
+      operationType: 'DELETE'
+    };
+    this.toddService
+      .todoOperation(postBody, this.conditions)
+      .subscribe();
+  }
 }

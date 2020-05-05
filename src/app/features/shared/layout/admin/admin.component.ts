@@ -1,35 +1,54 @@
-declare var mdc: any
-import { Component, OnInit } from '@angular/core';
-// import { Store, select } from '@ngrx/store';
-// import { ErrorState } from 'src/app/ngrx/reducers/error.reducer';
-import { UtilityService } from '../../../../service/utility.service'
+declare var $: any;
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { UtilityService } from '../../../../service/utility.service';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit, AfterViewInit {
   snachBar: any;
   constructor(private utilityService: UtilityService) { }
 
-  ngOnInit(): void {
-    // const drawer = new mdc.drawer.MDCDrawer.attachTo(
-    //   document.querySelector(".mdc-drawer")
-    // );
-    // drawer.open = true;
-    // const topAppBar = new mdc.topAppBar.MDCTopAppBar(
-    //   document.getElementById("app-bar")
-    // );
-    // topAppBar.setScrollTarget(document.getElementById("main-content"));
-    // topAppBar.listen("MDCTopAppBar:nav", () => {
-    //   drawer.open = !drawer.open;
-    // });
+  ngAfterViewInit() {
+    // tslint:disable-next-line: only-arrow-functions
+    $(document).ready(function($) {
+      const styleSwitcher = $('.iq-colorbox');
+      const panelWidth = styleSwitcher.outerWidth(true);
+      // tslint:disable-next-line: only-arrow-functions
+      $('.iq-colorbox .color-full').on('click', function() {
+        if ($('.iq-colorbox.color-fix').length > 0) {
+          styleSwitcher.animate({ right: '0px' });
+          $('.iq-colorbox.color-fix').removeClass('color-fix');
+          $('.iq-colorbox').addClass('opened');
+        } else {
+          $('.iq-colorbox.opened').removeClass('opened');
+          $('.iq-colorbox').addClass('color-fix');
+          styleSwitcher.animate({ right: '-' + panelWidth });
+        }
+        return false;
+      });
 
-    // subscribe to error store state
-    // this.store.pipe(select('error')).subscribe((data: any) => {
-    //   (data && data.statusText) ? this.utilityService.toastrError(data.statusText): undefined
-    // })
+      $('.iq-colorbox .iq-colorselect li').on('click', function() {
+        const $this = $(this);
+        const iqColor = $this.css('background-color');
+        $('.iq-colorbox .iq-colorselect .iq-colormark').removeClass('iq-colormark');
+        $this.addClass('iq-colormark');
+        const str = iqColor;
+        const res = str.replace('rgb(', '');
+        const res1 = res.replace(')', '');
+        const iqColor2 = 'rgba(' + res1.concat(',', 0.1) + ')';
+        const iqColor3 = 'rgba(' + res1.concat(',', 0.8) + ')';
+        document.documentElement.style.setProperty('--iq-primary', iqColor);
+        document.documentElement.style.setProperty('--iq-light-primary', iqColor2);
+        document.documentElement.style.setProperty('--iq-primary-hover', iqColor3);
+      });
+    });
+
+  }
+
+  ngOnInit(): void {
   }
 
 }
