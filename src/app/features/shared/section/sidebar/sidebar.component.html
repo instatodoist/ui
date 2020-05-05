@@ -31,12 +31,10 @@
               class="ripple rippleEffect"></span><i class="fa fa-tasks iq-arrow-left"></i><span>Lists</span><i
               class="ri-arrow-right-s-line iq-arrow-right"></i>
           </a>
-          <ul id="userinfo" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle" style="">
-            <li>
-              <a href="javascript:void(0)" data-toggle="modal" data-target="#exampleModalScrollable"><i
-                  class="fa fa-pencil-square-o mr-2" aria-hidden="true"></i></a>
-            </li>
-            <app-todo-label-list></app-todo-label-list>
+          <ul id="userinfo" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle" style="margin-bottom: 50px !important;">
+            <ng-container>
+              <app-todo-label-list></app-todo-label-list>
+            </ng-container>
           </ul>
         </li>
       </ul>
