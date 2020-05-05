@@ -193,7 +193,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
           // this.dialog.close();
           this.formObj.reset();
           this.isOpen.emit(false);
-          $('#todo-dialog').modal('hide');
+          $(`#${this.modelId}`).modal('hide');
         });
     }
   }
