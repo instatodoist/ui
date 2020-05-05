@@ -1,14 +1,15 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { TodoListType, TodoCompletedListType ,TodoType } from '../../../models/todo.model';
+import { TodoListType, TodoCompletedListType , TodoType } from '../../../models/todo.model';
 import { TodoConditions } from '../../../models/todo.model';
 import { TodoService } from '../../../service/todo/todo.service';
+declare var $: any;
 @Component({
   selector: 'app-todo-inbox',
   templateUrl: './todo-inbox.component.html',
   styleUrls: ['./todo-inbox.component.scss'],
 })
-export class TodoInboxComponent implements OnInit {
+export class TodoInboxComponent implements OnInit, AfterViewInit {
   @ViewChild('dialog') dialog: TemplateRef<any>;
   loader = false;
   todos: any; // todos var
@@ -25,6 +26,10 @@ export class TodoInboxComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
+  }
+
+  ngAfterViewInit() {
+    $('[data-toggle="tooltip"]').tooltip();
   }
 
   ngOnInit(): void {

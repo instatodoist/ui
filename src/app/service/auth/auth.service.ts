@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AppConfig as AppService } from './../../service/appconfig';
 import { LsService } from './../../service/ls.service';
 import { environment } from '../../../environments/environment';
 import { UserModel } from '../../models';
@@ -21,14 +22,20 @@ export class AuthService {
   authKey = 'isLoggedIn';
   API_URL = environment.API_URL;
 
-  constructor(private lsService: LsService, private apollo: Apollo) { }
+  constructor(
+    private lsService: LsService,
+    private apollo: Apollo,
+    private appService: AppService
+  ) { }
 
   login() {
     return this.lsService.getValue(this.authKey) ? true : false;
   }
 
   logout() {
-    return this.lsService.deleteValue(this.authKey);
+    localStorage.clear();
+    // this.appService.changeTheme(this.appService.defaultSettings.app.theme);
+    return true;
   }
 
   signIn(postData: UserModel.UserType) {

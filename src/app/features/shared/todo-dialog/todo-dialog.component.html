@@ -16,7 +16,7 @@
               <div class="row">
                 <div class="col-sm-9">
                   <input formControlName="title" type="text" class="form-control"
-                    placeholder="What is on your mind today?">
+                    placeholder="What is on your mind today?" autofocus>
                 </div>
                 <div class="col-sm-3">
                   <div *ngIf="currentLabel" class="badge badge-pill badge-primary mr-2">{{currentLabel}}</div>
@@ -39,7 +39,7 @@
                   <!-- Calendar-->
                   <div class="iq-card-header-toolbar d-flex align-items-center cursor">
                     <i class="fa fa-calendar mr-3 cursor" aria-hidden="true" (click)="isScheduling()"
-                      [ngStyle]="{'color': formObj.value.scheduling ? 'green' : '' }" data-toggle="tooltip"
+                      [ngStyle]="{'color': formObj.value.scheduling ? 'green' : 'rgb(86, 75, 75)' }" data-toggle="tooltip"
                       data-placement="top" data-original-title="Set Scheduling On/Off"></i>
                     <div class="dropdown mr-3">
                       <span class="dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown"

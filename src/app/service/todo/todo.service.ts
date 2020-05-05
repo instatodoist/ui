@@ -36,7 +36,7 @@ export class TodoService {
   ) { }
 
   // priorities array
-  getPriorities() {
+  get getPriorities() {
     return [
       {
         label: 'Priority 1',
@@ -56,14 +56,14 @@ export class TodoService {
       {
         label: 'Priority 4',
         name: 'P4',
-        color: 'black'
+        color: 'rgb(86, 75, 75)'
       }
     ];
   }
 
   // populate color for the label
   getColor(priority: string): string {
-    const priorityObj = this.getPriorities().filter(item => {
+    const priorityObj = this.getPriorities.filter(item => {
       return item.name === priority;
     });
     return priorityObj[0].color;

@@ -1,6 +1,6 @@
 declare var $: any;
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { UtilityService } from '../../../../service/utility.service';
+import { AppConfig as AppService } from '../../../../service/appconfig';
 
 @Component({
   selector: 'app-admin',
@@ -9,9 +9,15 @@ import { UtilityService } from '../../../../service/utility.service';
 })
 export class AdminComponent implements OnInit, AfterViewInit {
   snachBar: any;
-  constructor(private utilityService: UtilityService) { }
+  defaultTheme =  this.appService.defaultSettings.app.theme;
+
+  constructor(
+    private appService: AppService
+  ) { }
 
   ngAfterViewInit() {
+    const updateThemFunc = this.appService.changeTheme;
+    updateThemFunc(this.defaultTheme);
     // tslint:disable-next-line: only-arrow-functions
     $(document).ready(function($) {
       const styleSwitcher = $('.iq-colorbox');
@@ -35,17 +41,10 @@ export class AdminComponent implements OnInit, AfterViewInit {
         const iqColor = $this.css('background-color');
         $('.iq-colorbox .iq-colorselect .iq-colormark').removeClass('iq-colormark');
         $this.addClass('iq-colormark');
-        const str = iqColor;
-        const res = str.replace('rgb(', '');
-        const res1 = res.replace(')', '');
-        const iqColor2 = 'rgba(' + res1.concat(',', 0.1) + ')';
-        const iqColor3 = 'rgba(' + res1.concat(',', 0.8) + ')';
-        document.documentElement.style.setProperty('--iq-primary', iqColor);
-        document.documentElement.style.setProperty('--iq-light-primary', iqColor2);
-        document.documentElement.style.setProperty('--iq-primary-hover', iqColor3);
+        updateThemFunc(iqColor);
       });
-    });
 
+    });
   }
 
   ngOnInit(): void {

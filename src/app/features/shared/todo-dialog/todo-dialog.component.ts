@@ -32,7 +32,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
   formObj: FormGroup;
   labels: TodoLabelType[]; // labels array
   // dialog: MDCDialog; // dialog instance
-  priorityColor = 'black'; // default color for priority
+  priorityColor = this.todoService.getPriorities[3].color; // default color for priority
   priorities = [];
   TODOTYPES: any; // todo types wrt routes
   todoCurrentType: string; // current route
@@ -48,7 +48,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
-    this.priorities = this.todoService.getPriorities();
+    this.priorities = this.todoService.getPriorities;
     // checking labels if update
     this.labelIdVal = this.todo ? (this.todo.label.map(label => {
       return label._id;
@@ -57,7 +57,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
     this.formObj = this.fb.group({
       _id: [this.todo && this.todo._id || ''],
       title: [this.todo && this.todo.title, [Validators.required]],
-      scheduling: [this.todo && this.todo.scheduledDate ? true : false],
+      scheduling: [this.todo && this.todo.scheduledDate ? true : true],
       scheduledDate: [this.todo && this.todo.scheduledDate ? this.todo.scheduledDate : this.sharedService.todayDate()],
       labelId: [this.labelIdVal],
       priority: ['P4'],

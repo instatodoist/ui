@@ -2,11 +2,12 @@
   <div class="row">
     <div class="col-lg-12">
       <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-        <!-- <div class="iq-card-header d-flex justify-content-between">
+        <div class="iq-card-header d-flex justify-content-between">
           <div class="iq-header-title">
-            <h4 class="card-title"> Product Details </h4>
+            <h4 class="card-title">{{todoCurrentType | titlecase}} Tasks: {{todos?.totalCount ? todos?.totalCount: 0}}
+            </h4>
           </div>
-          <div class="iq-card-header-toolbar d-flex align-items-center">
+          <!-- <div class="iq-card-header-toolbar d-flex align-items-center">
             <div class="dropdown">
               <span class="dropdown-toggle" id="dropdownMenuButton2" data-toggle="dropdown">
                 <i class="ri-more-fill"></i>
@@ -19,59 +20,58 @@
                 <a class="dropdown-item" href="#"><i class="ri-file-download-fill mr-2"></i>Download</a>
               </div>
             </div>
-          </div>
-        </div> -->
+          </div> -->
+        </div>
         <div class="iq-card-body">
           <div class="table-responsive">
             <table class="table mb-0">
-              <!-- <thead>
-                <tr>
-                  <th scope="col">Product Id</th>
-                  <th scope="col">Product</th>
-                  <th scope="col">Product Cost</th>
-                  <th scope="col">Payment Mode</th>
-                  <th scope="col">Status</th>
-                </tr>
-              </thead> -->
               <tbody *ngIf="todoCurrentType !== TODOTYPES?.completed">
-                <tr *ngFor="let todo of todos?.data;" (click)="openPopUp(todo, 'UPDATE')">
+                <tr class="tr-{{ i + 1}} cursor" *ngFor="let todo of todos?.data; let i = index"
+                  (click)="openPopUp(todo, 'UPDATE')" data-toggle="modal" data-target="#todo-dialog">
                   <!-- Radio Box-->
-                  <td class="first-cell">
+                  <td class="first-cell" (click)="$event.stopPropagation(); updateTodo(todo)">
                     <div class="custom-control custom-radio custom-control-inline">
-                      <input type="radio" id="customRadio8" name="customRadio-1" class="custom-control-input"
-                        (click)="$event.stopPropagation(); updateTodo(todo)">
+                      <input type="radio" id="customRadio8" name="customRadio-1" class="custom-control-input">
                       <label class="custom-control-label" for="customRadio8"></label>
                     </div>
                   </td>
                   <!-- Title-->
-                  <td class="title-cell" [ngStyle]="{color: getPriorityColor(todo?.priority)}">
-                    <span *ngIf="todo?.priority !== 'P4'" title="Priority - {{todo?.priority}}" >{{todo?.title}}</span>
-                    <span *ngIf="todo?.priority === 'P4'">{{todo?.title}}</span>
-                  </td>
-                  <!-- Flag-->
-                  <!-- <td class="first-cell"><span *ngIf="todo?.priority !== 'P4'" class="material-icons"
-                      [ngStyle]="{color: getPriorityColor(todo?.priority)}">
-                      <i class="fa fa-flag" aria-hidden="true"></i>
+                  <td class="title-cell">
+                    <div class="d-flex align-items-center justify-content-between">
+                      <span> {{todo?.title}}
+                        <span class="ml-2" *ngIf="todo?.priority !== 'P4'"
+                          [ngStyle]="{color: getPriorityColor(todo?.priority)}">
+                          <i class="fa fa-flag" aria-hidden="true"></i>
+                        </span>
+                      </span>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between">
+                      <span class="badge border border-warning text-warning"
+                        *ngIf="todoCurrentType !== TODOTYPES?.pending && todoCurrentType !== TODOTYPES?.today && todo?.scheduledDate">
+                        {{todo?.scheduledDate | date: 'MMM d, y'}}
+                      </span>
+                      <span class="badge border border-danger text-danger"
+                      *ngIf="todoCurrentType === TODOTYPES?.pending && todo?.scheduledDate">
+                      {{todo?.scheduledDate | date: 'MMM d, y'}}
                     </span>
-                  </td> -->
-                  <!-- Tags-->
+                    </div>
+                  </td>
                   <td class="common-cell">
-                    <div *ngFor="let label of todo?.label" class="badge badge-pill badge-primary mr-2">{{label?.name}}
+                    <div *ngFor="let label of todo?.label" class="badge badge-info mr-2">{{label?.name}}
                     </div>
                   </td>
                   <td>
-                    <div>
-                      <i class="fa fa-pencil-square-o mr-2" aria-hidden="true"></i>
-                      <i class="fa fa-calendar mr-2" aria-hidden="true"></i>
-                      <i class="fa fa-comment mr-2" aria-hidden="true"></i>
-                      <i class="fa fa-times cursor" aria-hidden="true" (click)="deleteTodo(todo)"></i>
+                    <div style="color:darkgray">
+                      <i class="fa fa-pencil-square-o mr-2" aria-hidden="true"
+                        (click)="$event.stopPropagation(); updateTodo(todo)"></i>
+                      <i class="fa fa-calendar mr-2" aria-hidden="true"
+                        (click)="$event.stopPropagation(); updateTodo(todo)"></i>
+                      <i class="fa fa-comment mr-2" aria-hidden="true"
+                        (click)="$event.stopPropagation(); updateTodo(todo)"></i>
+                      <i class="fa fa-times cursor" aria-hidden="true"
+                        (click)="$event.stopPropagation(); deleteTodo(todo)"></i>
                     </div>
                   </td>
-                  <!-- <td *ngIf="todoCurrentType !== TODOTYPES?.today">
-                    <span class="mdc-data-table__cell" style="font-size: 10px; color: red;">
-                      {{todo?.scheduledDate | date: 'MMM d, y'}}
-                    </span>
-                  </td> -->
                 </tr>
               </tbody>
             </table>
