@@ -1,47 +1,35 @@
-<!-- loader -->
-<div *ngIf="loader" class="lds-dual-ring small"></div>
-<div *ngIf="!loader">
-    <div class="mdc-data-table" data-mdc-auto-init="MDCDataTable">
-        <table class="mdc-data-table__table" aria-label="Dessert calories">
-            <thead>
-                <tr class="mdc-data-table__header-row">
-                    <!-- <th class="mdc-data-table__header-cell w50" role="columnheader" scope="col"></th>
-                    <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Title</th> -->
-                    <!-- <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Description</th> -->
-                </tr>
-            </thead>
-            <tbody class="mdc-data-table__content">
-                <tr class="mdc-data-table__row" *ngFor="let todo of todos?.data; index as i;">
-                    <td class="mdc-data-table__cell">
-                        <div class="mdc-form-field">
-                            <div class="mdc-checkbox">
-                                <input type="checkbox" class="mdc-checkbox__native-control" id="checkbox-1" />
-                                <div class="mdc-checkbox__background">
-                                    <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                                        <path class="mdc-checkbox__checkmark-path" fill="none"
-                                            d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                    </svg>
-                                    <div class="mdc-checkbox__mixedmark"></div>
-                                </div>
-                                <div class="mdc-checkbox__ripple"></div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="mdc-data-table__cell">
-                        {{todo?.title}}
-                    </td>
-                    <td>
-                        <i class="material-icons">
-                            edit
-                        </i>
-                    </td>
-                    <td>
-                        <i class="material-icons">
-                            delete
-                        </i>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+<tbody>
+  <ng-container *ngFor="let todo of todos?.data;">
+    <tr>
+      <td colspan="4" title="Completion Date">
+        <div class="d-flex align-items-center justify-content-between text-warning">
+          <span> Tasks Completed: <span class="text-info">{{todo?.list?.length}}</span>
+          </span>
+        </div>
+        <div class="d-flex align-items-center justify-content-between">
+          <span class="badge border border-info text-info">
+            {{todo?._id  | date: 'mediumDate'}}
+          </span>
+        </div>
+      </td>
+    </tr>
+    <tr *ngFor="let data of todo?.list; let i = index">
+      <td class="mdc-data-table__cell">
+        {{i + 1}}.
+      </td>
+      <td>
+        <div>
+          {{data?.title}}
+
+        </div>
+      </td>
+      <td>
+        <div *ngFor="let label of data?.label" class="badge badge-info mr-2">{{label?.name}}
+        </div>
+      </td>
+      <td>
+        {{data?.createdAt | date: 'medium'}}
+      </td>
+    </tr>
+  </ng-container>
+</tbody>

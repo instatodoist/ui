@@ -4,7 +4,8 @@
       <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
         <div class="iq-card-header d-flex justify-content-between">
           <div class="iq-header-title">
-            <h4 class="card-title">{{todoCurrentType | titlecase}} Tasks: {{todos?.totalCount ? todos?.totalCount: 0}}
+            <h4 class="card-title">{{todoCurrentType | titlecase}} Tasks: <span
+                class="text-info">{{todos?.totalCount ? todos?.totalCount: 0}}</span>
             </h4>
           </div>
           <!-- <div class="iq-card-header-toolbar d-flex align-items-center">
@@ -25,55 +26,59 @@
         <div class="iq-card-body">
           <div class="table-responsive">
             <table class="table mb-0">
-              <tbody *ngIf="todoCurrentType !== TODOTYPES?.completed">
-                <tr class="tr-{{ i + 1}} cursor" *ngFor="let todo of todos?.data; let i = index"
-                  (click)="openPopUp(todo, 'UPDATE')" data-toggle="modal" data-target="#todo-dialog">
-                  <!-- Radio Box-->
-                  <td class="first-cell" (click)="$event.stopPropagation(); updateTodo(todo)">
-                    <div class="custom-control custom-radio custom-control-inline">
-                      <input type="radio" id="customRadio8" name="customRadio-1" class="custom-control-input">
-                      <label class="custom-control-label" for="customRadio8"></label>
-                    </div>
-                  </td>
-                  <!-- Title-->
-                  <td class="title-cell">
-                    <div class="d-flex align-items-center justify-content-between">
-                      <span> {{todo?.title}}
-                        <span class="ml-2" *ngIf="todo?.priority !== 'P4'"
-                          [ngStyle]="{color: getPriorityColor(todo?.priority)}">
-                          <i class="fa fa-flag" aria-hidden="true"></i>
+              <ng-container *ngIf="todoCurrentType !== TODOTYPES?.completed">
+                <tbody>
+                  <tr class="tr-{{ i + 1}} cursor" *ngFor="let todo of todos?.data; let i = index"
+                    (click)="openPopUp(todo, 'UPDATE')" data-toggle="modal" data-target="#todo-dialog">
+                    <!-- Radio Box-->
+                    <td class="first-cell" (click)="$event.stopPropagation(); updateTodo(todo)">
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="customRadio8" name="customRadio-1" class="custom-control-input">
+                        <label class="custom-control-label" for="customRadio8"></label>
+                      </div>
+                    </td>
+                    <!-- Title-->
+                    <td class="title-cell">
+                      <div class="d-flex align-items-center justify-content-between">
+                        <span> {{todo?.title}}
+                          <span class="ml-2" *ngIf="todo?.priority !== 'P4'"
+                            [ngStyle]="{color: getPriorityColor(todo?.priority)}">
+                            <i class="fa fa-flag" aria-hidden="true"></i>
+                          </span>
                         </span>
-                      </span>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between">
-                      <span class="badge border border-warning text-warning"
-                        *ngIf="todoCurrentType !== TODOTYPES?.pending && todoCurrentType !== TODOTYPES?.today && todo?.scheduledDate">
-                        {{todo?.scheduledDate | date: 'MMM d, y'}}
-                      </span>
-                      <span class="badge border border-danger text-danger"
-                      *ngIf="todoCurrentType === TODOTYPES?.pending && todo?.scheduledDate">
-                      {{todo?.scheduledDate | date: 'MMM d, y'}}
-                    </span>
-                    </div>
-                  </td>
-                  <td class="common-cell">
-                    <div *ngFor="let label of todo?.label" class="badge badge-info mr-2">{{label?.name}}
-                    </div>
-                  </td>
-                  <td>
-                    <div style="color:darkgray">
-                      <i class="fa fa-pencil-square-o mr-2" aria-hidden="true"
-                        (click)="$event.stopPropagation(); updateTodo(todo)"></i>
-                      <i class="fa fa-calendar mr-2" aria-hidden="true"
-                        (click)="$event.stopPropagation(); updateTodo(todo)"></i>
-                      <i class="fa fa-comment mr-2" aria-hidden="true"
-                        (click)="$event.stopPropagation(); updateTodo(todo)"></i>
-                      <i class="fa fa-times cursor" aria-hidden="true"
-                        (click)="$event.stopPropagation(); deleteTodo(todo)"></i>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
+                      </div>
+                      <div class="d-flex align-items-center justify-content-between">
+                        <span class="badge border border-warning text-warning"
+                          *ngIf="todoCurrentType !== TODOTYPES?.pending && todoCurrentType !== TODOTYPES?.today && todo?.scheduledDate">
+                          {{todo?.scheduledDate | date: 'MMM d, y'}}
+                        </span>
+                        <span class="badge border border-danger text-danger"
+                          *ngIf="todoCurrentType === TODOTYPES?.pending && todo?.scheduledDate">
+                          {{todo?.scheduledDate | date: 'MMM d, y'}}
+                        </span>
+                      </div>
+                    </td>
+                    <td class="common-cell">
+                      <div *ngFor="let label of todo?.label" class="badge badge-info mr-2">{{label?.name}}
+                      </div>
+                    </td>
+                    <td>
+                      <div style="color:darkgray">
+                        <i class="fa fa-pencil-square-o mr-2" aria-hidden="true"></i>
+                        <!-- <i class="fa fa-calendar mr-2" aria-hidden="true"
+                          (click)="$event.stopPropagation(); updateTodo(todo)"></i> -->
+                        <!-- <i class="fa fa-comment mr-2" aria-hidden="true"
+                          (click)="$event.stopPropagation(); updateTodo(todo)"></i> -->
+                        <i class="fa fa-times cursor" aria-hidden="true"
+                          (click)="$event.stopPropagation(); deleteTodo(todo)"></i>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </ng-container>
+              <ng-container *ngIf="todoCurrentType === TODOTYPES?.completed">
+                <app-todo-completed [todos]="todos"></app-todo-completed>
+              </ng-container>
             </table>
           </div>
         </div>
@@ -83,5 +88,5 @@
 </div>
 <!-- <app-todo-dialog></app-todo-dialog> -->
 <app-todo-dialog [todo]="todo" [origin]="todoCurrentType === TODOTYPES.completed? 'COMPLETED' : null"
-        (isOpen)="updatePopupFlag($event)" *ngIf="isUpdate">
+  (isOpen)="updatePopupFlag($event)" *ngIf="isUpdate">
 </app-todo-dialog>
