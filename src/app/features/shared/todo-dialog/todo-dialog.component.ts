@@ -19,6 +19,8 @@ declare var flatpickr: any;
 export class TodoDialogComponent implements OnInit, AfterViewInit {
 
   @Input()
+  modelId = 'todo-dialog';
+  @Input()
   todo: TodoType = null; // todo object if update
   @Input()
   conditions: TodoConditions = null; // conditions object
@@ -87,6 +89,11 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
       });
     }
     $('[data-toggle="tooltip"]').tooltip();
+    const isOpenInstance = this.isOpen;
+    // tslint:disable-next-line: only-arrow-functions
+    $('#todo-dialog').on('hidden.bs.modal', function() {
+      isOpenInstance.emit(false);
+    });
   }
 
   /**
@@ -185,6 +192,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
         .subscribe(() => {
           // this.dialog.close();
           this.formObj.reset();
+          this.isOpen.emit(false);
           $('#todo-dialog').modal('hide');
         });
     }

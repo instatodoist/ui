@@ -28,7 +28,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto navbar-list">
           <li class="nav-item nav-icon">
-            <a href="#" data-toggle="modal" data-target="#todo-dialog" class="iq-waves-effect btn-danger rounded"><span
+            <a href="#" data-toggle="modal" data-target="#todo-dialog-add" class="iq-waves-effect btn-danger rounded"><span
                 class="ripple rippleEffect"></span><i class="fa fa-plus" aria-hidden="true"></i></a>
           </li>
           <li class="nav-item">
@@ -263,4 +263,4 @@
     </nav>
   </div>
 </div>
-<app-todo-dialog></app-todo-dialog>
+<app-todo-dialog [modelId]="'todo-dialog-add'"></app-todo-dialog>

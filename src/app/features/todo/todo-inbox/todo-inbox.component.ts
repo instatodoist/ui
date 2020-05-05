@@ -16,7 +16,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
   isUpdate = false; // if update popup
   isDelete = false; // if delete popup
   popupType: string; // popup type - update/delete
-  todo: TodoType; // single todo object
+  todo: TodoType = null; // single todo object
   conditions: TodoConditions; // aploo refreshfetch conditions
   TODOTYPES: any; // todo types wrt routes
   todoCurrentType: string; // current route

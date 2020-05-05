@@ -81,3 +81,7 @@
     </div>
   </div>
 </div>
+<!-- <app-todo-dialog></app-todo-dialog> -->
+<app-todo-dialog [todo]="todo" [origin]="todoCurrentType === TODOTYPES.completed? 'COMPLETED' : null"
+        (isOpen)="updatePopupFlag($event)" *ngIf="isUpdate">
+</app-todo-dialog>
