@@ -88,7 +88,6 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
           inline: true
       });
     }
-    $('[data-toggle="tooltip"]').tooltip();
     const isOpenInstance = this.isOpen;
     // tslint:disable-next-line: only-arrow-functions
     $('#todo-dialog').on('hidden.bs.modal', function() {
