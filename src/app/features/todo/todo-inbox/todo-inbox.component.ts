@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { TodoListType, TodoCompletedListType , TodoType } from '../../../models/todo.model';
+import { TodoListType, TodoCompletedListType, TodoType } from '../../../models/todo.model';
 import { TodoConditions } from '../../../models/todo.model';
 import { TodoService } from '../../../service/todo/todo.service';
 declare var $: any;
@@ -20,6 +20,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
   conditions: TodoConditions; // aploo refreshfetch conditions
   TODOTYPES: any; // todo types wrt routes
   todoCurrentType: string; // current route
+  queryStr = '';
 
   constructor(
     private toddService: TodoService,
@@ -54,12 +55,29 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
       this.activatedRoute.params.subscribe(params => {
         this.todoCurrentType = params.label;
         this.conditions = this.toddService.getConditions(params.labelId);
-        this.getTodos(this.conditions);
+        this.checkQueryParams();
       });
     } else {
       this.conditions = this.toddService.getConditions(this.todoCurrentType); // default case for all types except labelled
-      this.todoCurrentType === this.TODOTYPES.completed ? this.getCompletedTodos(this.conditions) : this.getTodos(this.conditions);
+      this.checkQueryParams();
+      // this.todoCurrentType === this.TODOTYPES.completed ? this.getCompletedTodos(this.conditions) : this.getTodos(this.conditions);
     }
+  }
+
+  checkQueryParams(labelRoute = false) {
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params.q) {
+        this.queryStr = params.q;
+      } else {
+        this.queryStr = '';
+      }
+      this.conditions = { ...this.conditions, filter: { ...this.conditions.filter, title_contains: this.queryStr } };
+      if (!labelRoute) {
+        this.todoCurrentType === this.TODOTYPES.completed ? this.getCompletedTodos(this.conditions) : this.getTodos(this.conditions);
+      } else {
+        this.getTodos(this.conditions);
+      }
+    });
   }
 
   // get priority color

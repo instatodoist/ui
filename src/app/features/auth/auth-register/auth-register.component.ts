@@ -16,6 +16,7 @@ export class AuthRegisterComponent implements OnInit {
 
   appData: any;
   loader: boolean;
+  isSubmit = false;
   signinForm = this.fb.group({
     email: ['', Validators.required],
     password: ['', Validators.required],
@@ -37,13 +38,16 @@ export class AuthRegisterComponent implements OnInit {
   // auth check after submit
   register(): void {
     this.loader = true;
+    this.isSubmit = true;
     this.authService.register(this.signinForm.value)
     .subscribe((response: UserModel.RegisterResponse) => {
       const data = response;
       this.router.navigate(['verification', data.hashToken]);
       this.loader = false;
+      this.isSubmit = false;
     },
     () => {
+      this.isSubmit = false;
       this.loader = false;
     }
     );

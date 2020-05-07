@@ -14,6 +14,7 @@ export class AuthComponent implements OnInit {
 
   appData: any;
   loader: boolean;
+  isSubmit = false;
   signinForm = this.fb.group({
     email: ['', Validators.required],
     password: ['', Validators.required],
@@ -36,6 +37,7 @@ export class AuthComponent implements OnInit {
   // auth check after submit
   signIn(): void {
     this.loader = true;
+    this.isSubmit = true;
     this.authService.signIn(this.signinForm.value)
       .subscribe(
         (response: any) => {
@@ -48,6 +50,7 @@ export class AuthComponent implements OnInit {
           window.location.reload();
         },
         () => {
+          this.isSubmit = false;
           this.loader = false;
         }
       );

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { LsService } from '../../../../service/ls.service';
 import { AuthService } from '../../../../service/auth/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
-import { UserModel } from '../../../../models';
 
 @Component({
   selector: 'app-header',
@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit {
   headerTitle: string;
   isOpen = false;
   session: any;
+  formObj: FormGroup;
 
   constructor(
     private router: Router,
@@ -26,7 +27,8 @@ export class HeaderComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
     private translate: TranslateService,
-    private userService: AuthService
+    private userService: AuthService,
+    private fb: FormBuilder
   ) {
     this.router
       .events
@@ -53,6 +55,15 @@ export class HeaderComponent implements OnInit {
           this.titleService.setTitle(title + ' | ' + this.tabTitle);
         });
       });
+    this.formObj = this.fb.group({
+      query: ['']
+    });
+    const urlTree = this.router.parseUrl(this.router.url);
+    if (urlTree.queryParams.q) {
+      this.formObj.patchValue({
+        query: urlTree.queryParams.q
+      });
+    }
   }
 
   ngOnInit() {
@@ -84,5 +95,14 @@ export class HeaderComponent implements OnInit {
       .subscribe(data => {
         this.session = data;
       });
+  }
+
+  onSearch() {
+    const urlTree = this.router.createUrlTree([], {
+      queryParams: { q: this.formObj.value.query ? this.formObj.value.query : null  },
+      queryParamsHandling: 'merge',
+      preserveFragment: true
+    });
+    this.router.navigateByUrl(urlTree);
   }
 }
