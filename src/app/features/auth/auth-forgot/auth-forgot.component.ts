@@ -11,6 +11,7 @@ import { AuthService } from '../../../service/auth/auth.service';
 })
 export class AuthForgotComponent implements OnInit {
 
+  isSubmit = false;
   appData: any;
   loader: boolean;
   signinForm = this.fb.group({
@@ -33,15 +34,18 @@ export class AuthForgotComponent implements OnInit {
   // auth check after submit
   submit(): void {
     this.loader = true;
+    this.isSubmit = true;
     this.authService.forgotPassword(this.signinForm.value)
       .subscribe(
         (response: any) => {
           const data = response;
           this.router.navigate(['forgot-password/confirmation', data.hashToken]);
           this.loader = false;
+          this.isSubmit = false;
         },
         () => {
           this.loader = false;
+          this.isSubmit = false;
         }
       );
   }

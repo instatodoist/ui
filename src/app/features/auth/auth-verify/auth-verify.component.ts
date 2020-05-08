@@ -11,6 +11,7 @@ import { UserModel } from '../../../models';
 })
 export class AuthVerifyComponent implements OnInit {
 
+  isSubmit = false;
   appData: any;
   loader: boolean;
   formObj: FormGroup;
@@ -42,6 +43,7 @@ export class AuthVerifyComponent implements OnInit {
   // auth check after submit
   register(): void {
     this.loader = true;
+    this.isSubmit = true;
     this.authService.verification(this.formObj.value)
     .subscribe((response: UserModel.RegisterResponse) => {
       this.loader = false;
@@ -50,10 +52,12 @@ export class AuthVerifyComponent implements OnInit {
         this.router.navigate(['reset-password/', data.hashToken]);
         this.loader = false;
       } else {
+        this.isSubmit = false;
         this.router.navigate(['/']);
       }
     },
     () => {
+      this.isSubmit = false;
       this.loader = false;
     });
   }

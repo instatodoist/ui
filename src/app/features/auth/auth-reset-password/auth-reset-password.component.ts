@@ -11,6 +11,7 @@ import { UserModel } from '../../../models';
 })
 export class AuthResetPasswordComponent implements OnInit {
 
+  isSubmit = false;
   appData: any;
   loader: boolean;
   formObj: FormGroup;
@@ -42,12 +43,15 @@ export class AuthResetPasswordComponent implements OnInit {
   // auth check after submit
   submit(): void {
     this.loader = true;
+    this.isSubmit = true;
     this.authService.resetPassword(this.formObj.value)
     .subscribe(() => {
       this.loader = false;
+      this.isSubmit = false;
       this.router.navigate(['/']);
     },
     () => {
+      this.isSubmit = false;
       this.loader = false;
     });
   }

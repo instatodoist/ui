@@ -29,7 +29,9 @@
     </div>
   </div> -->
   <div class="sign-info text-center">
-    <button type="submit" class="btn btn-primary d-block w-100 mb-2" [disabled]="!signinForm.valid || isSubmit">Sign in</button>
+    <button type="submit" class="btn btn-primary d-block w-100 mb-2" [disabled]="!signinForm.valid || isSubmit">
+      Sign in <i *ngIf="isSubmit" class="fa fa-spinner fa-spin ml-2"></i>
+    </button>
     <span class="text-dark dark-color d-inline-block line-height-2">Don't have an account? <a
         routerLink="/register">{{'auth.signup'|translate}}</a></span>
   </div>
