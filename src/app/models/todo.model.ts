@@ -51,6 +51,8 @@ export interface TodoSortType {
 }
 
 export interface TodoConditions {
+  first?: number;
+  offset?: number;
   sort?: TodoSortType;
   filter?: TodoFilterType;
 }
@@ -60,12 +62,14 @@ export interface TodoListType {
   totalCount: number;
 }
 
+export interface ITodoComplete {
+  _id?: string;
+  list?: TodoType[];
+}
+
 export interface TodoCompletedListType {
-  data: {
-    _id: string;
-    list: TodoType[];
-  };
-  totalCount: number;
+  data?: ITodoComplete[];
+  totalCount?: number;
 }
 
 export interface TodoLabelListType {

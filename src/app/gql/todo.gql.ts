@@ -70,22 +70,22 @@ export const TODO_LIST_COUNT_QUERY = gql`
 
 
 export const TODO_COMPLETED_QUERY = gql`
-    query{
-        todoCompleted {
-            totalCount
-            data {
+    query todoCompleted ($first: Int = 100, $offset: Int = 1, $sort: TodoCompletedSortInputType){
+      todoCompleted (first: $first, offset: $offset, sort: $sort ){
+        totalCount
+        data {
+            _id
+            list {
                 _id
-                list {
-                    _id
-                    title
-                    createdAt
-                    updatedAt
-                    label {
-                        name
-                    }
+                title
+                createdAt
+                updatedAt
+                label {
+                    name
                 }
             }
         }
+      }
     }
 `;
 

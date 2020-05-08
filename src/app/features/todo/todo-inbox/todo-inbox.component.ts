@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TodoListType, TodoCompletedListType, TodoType } from '../../../models/todo.model';
 import { TodoConditions } from '../../../models/todo.model';
@@ -8,11 +8,16 @@ declare var $: any;
   selector: 'app-todo-inbox',
   templateUrl: './todo-inbox.component.html',
   styleUrls: ['./todo-inbox.component.scss'],
+ // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodoInboxComponent implements OnInit, AfterViewInit {
   @ViewChild('dialog') dialog: TemplateRef<any>;
   loader = false;
-  todos: any; // todos var
+  todosC: TodoCompletedListType = {
+    totalCount: 0,
+    data: []
+  };
+  todos: TodoListType;
   isUpdate = false; // if update popup
   isDelete = false; // if delete popup
   popupType: string; // popup type - update/delete
@@ -60,7 +65,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
     } else {
       this.conditions = this.toddService.getConditions(this.todoCurrentType); // default case for all types except labelled
       this.checkQueryParams();
-      // this.todoCurrentType === this.TODOTYPES.completed ? this.getCompletedTodos(this.conditions) : this.getTodos(this.conditions);
+      this.todoCurrentType === this.TODOTYPES.completed ? this.getCompletedTodos(this.conditions) : this.getTodos(this.conditions);
     }
   }
 
@@ -73,7 +78,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
       }
       this.conditions = { ...this.conditions, filter: { ...this.conditions.filter, title_contains: this.queryStr } };
       if (!labelRoute) {
-        this.todoCurrentType === this.TODOTYPES.completed ? this.getCompletedTodos(this.conditions) : this.getTodos(this.conditions);
+      //  this.todoCurrentType === this.TODOTYPES.completed ? this.getCompletedTodos(this.conditions) : this.getTodos(this.conditions);
       } else {
         this.getTodos(this.conditions);
       }
@@ -89,8 +94,9 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
    * @param conditions - based on route
    */
   getTodos(conditions: TodoConditions) {
+    this.loader = true;
     this.toddService.listTodos(conditions)
-      .subscribe((data) => {
+      .subscribe((data: any) => {
         this.todos = data;
         this.loader = false;
       });
@@ -101,9 +107,12 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
    */
   getCompletedTodos(conditions: TodoConditions) {
     this.toddService.listCompletedTodos(conditions)
-      .subscribe((data) => {
-        this.todos = data;
-        this.loader = false;
+      .subscribe((data: any) => {
+        const { totalCount, data: newdata} = data;
+        this.todosC = {totalCount, data: [...this.todosC.data, ...newdata]};
+        if (totalCount === 0) {
+          this.loader = false;
+        }
       });
   }
 
@@ -158,5 +167,17 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
     this.toddService
       .todoOperation(postBody, this.conditions)
       .subscribe();
+  }
+
+  refresh() {
+    const { totalCount, data } = this.todosC;
+    if (data.length < totalCount && this.loader) {
+      const { offset } = this.conditions;
+      this.conditions = { ...this.conditions, offset: offset + 1 };
+      console.log(totalCount, data.length, offset);
+      this.getCompletedTodos(this.conditions);
+    } else if (data.length) {
+      this.loader = false;
+    }
   }
 }

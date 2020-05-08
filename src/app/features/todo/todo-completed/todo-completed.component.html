@@ -1,35 +1,49 @@
-<tbody>
-  <ng-container *ngFor="let todo of todos?.data;">
-    <tr>
-      <td colspan="4" title="Completion Date">
-        <div class="d-flex align-items-center justify-content-between text-warning">
-          <span> Tasks Completed: <span class="text-info">{{todo?.list?.length}}</span>
-          </span>
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="home">
+    <ng-container *ngFor="let todo of todos?.data;">
+      <div class=" d-flex tasks-card" role="alert">
+        <div class="custom-control">
+          <!--  Title -->
+          <label class="">
+            <div class="d-flex align-items-center justify-content-between text-warning">
+              <span> Tasks Completed: <span class="text-info">{{todo?.list?.length}}</span>
+              </span>
+            </div>
+            <div class="d-flex align-items-center justify-content-between">
+              <span class="badge border border-info text-info">
+                {{todo?._id  | date: 'mediumDate'}}
+              </span>
+            </div>
+          </label>
         </div>
-        <div class="d-flex align-items-center justify-content-between">
-          <span class="badge border border-info text-info">
-            {{todo?._id  | date: 'mediumDate'}}
-          </span>
-        </div>
-      </td>
-    </tr>
-    <tr *ngFor="let data of todo?.list; let i = index">
-      <td class="mdc-data-table__cell">
-        {{i + 1}}.
-      </td>
-      <td>
-        <div>
-          {{data?.title}}
+      </div>
 
+      <!-- Childs-->
+      <div class="d-flex tasks-card" role="alert" *ngFor="let data of todo?.list; let i = index">
+        <div class="custom-control custom-checkbox">
+
+          <!--  Title -->
+          <label>
+            <div class="d-flex align-items-center justify-content-between">
+              <span class="mr-2">{{i + 1}}.</span> <span> {{data?.title}}
+              </span>
+            </div>
+          </label>
+
+          <!-- Labels-->
+          <ng-container>
+            <div *ngFor="let label of data?.label" class="badge badge-info ml-2">{{label?.name}}
+            </div>
+          </ng-container>
         </div>
-      </td>
-      <td>
-        <div *ngFor="let label of data?.label" class="badge badge-info mr-2">{{label?.name}}
-        </div>
-      </td>
-      <td>
-        {{data?.createdAt | date: 'medium'}}
-      </td>
-    </tr>
-  </ng-container>
-</tbody>
+
+        <!-- Created Date-->
+        <ng-container>
+          <div class=" ml-auto  ml-4">
+            {{data?.createdAt | date: 'medium'}}
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+  </div>
+</div>

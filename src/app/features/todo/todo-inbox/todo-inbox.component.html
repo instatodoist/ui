@@ -1,44 +1,31 @@
-<div class="container-fluid todo-inbox">
+<div class="container-fluid todo-inbox" #container>
   <div class="row">
     <div class="col-lg-12">
       <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
         <div class="iq-card-header d-flex justify-content-between">
           <div class="iq-header-title">
             <h4 class="card-title">[ <span class="text-info">{{todoCurrentType | titlecase}}</span> ] Tasks: <span
-                class="text-info">{{todos?.totalCount ? todos?.totalCount: 0}}</span>
+                class="text-info">
+                {{todoCurrentType === TODOTYPES.completed ? (todosC?.totalCount) : (todos?.totalCount ||  0)}}
+              </span>
             </h4>
           </div>
-          <!-- <div class="iq-card-header-toolbar d-flex align-items-center">
-            <div class="dropdown">
-              <span class="dropdown-toggle" id="dropdownMenuButton2" data-toggle="dropdown">
-                <i class="ri-more-fill"></i>
-              </span>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton2" style="">
-                <a class="dropdown-item" href="#"><i class="ri-eye-fill mr-2"></i>View</a>
-                <a class="dropdown-item" href="#"><i class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
-                <a class="dropdown-item" href="#"><i class="ri-pencil-fill mr-2"></i>Edit</a>
-                <a class="dropdown-item" href="#"><i class="ri-printer-fill mr-2"></i>Print</a>
-                <a class="dropdown-item" href="#"><i class="ri-file-download-fill mr-2"></i>Download</a>
-              </div>
-            </div>
-          </div> -->
         </div>
         <div class="iq-card-body">
-          <div class="table-responsive">
-            <table class="table mb-0">
-              <ng-container *ngIf="todoCurrentType !== TODOTYPES?.completed">
-                <tbody>
-                  <tr class="tr-{{ i + 1}} cursor" *ngFor="let todo of todos?.data; let i = index"
-                    (click)="openPopUp(todo, 'UPDATE')" data-toggle="modal" data-target="#todo-dialog">
-                    <!-- Radio Box-->
-                    <td class="first-cell" (click)="$event.stopPropagation(); updateTodo(todo)">
-                      <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="customRadio8" name="customRadio-1" class="custom-control-input">
-                        <label class="custom-control-label" for="customRadio8"></label>
-                      </div>
-                    </td>
-                    <!-- Title-->
-                    <td class="title-cell">
+          <!-- Current Todos-->
+          <ng-container *ngIf="todoCurrentType !== TODOTYPES?.completed">
+            <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"
+                data-toggle="modal" data-target="#todo-dialog">
+                <div class="d-flex tasks-card" role="alert" class="tr-{{ i + 1}} cursor"
+                  *ngFor="let todo of todos?.data; let i = index" (click)="openPopUp(todo, 'UPDATE')">
+
+                  <div class="custom-control custom-checkbox" (click)="$event.stopPropagation(); updateTodo(todo)">
+                    <!-- Checkbox-->
+                    <input type="checkbox" class="custom-control-input" id="customCheck11">
+
+                    <!--  Title -->
+                    <label class="custom-control-label" for="customCheck11">
                       <div class="d-flex align-items-center justify-content-between">
                         <span> {{todo?.title}}
                           <span class="ml-2" *ngIf="todo?.priority !== 'P4'"
@@ -57,30 +44,45 @@
                           {{todo?.scheduledDate | date: 'MMM d, y'}}
                         </span>
                       </div>
-                    </td>
-                    <td class="common-cell" *ngIf="todoCurrentType === TODOTYPES?.pending || todoCurrentType === TODOTYPES?.inbox || todoCurrentType === TODOTYPES?.today">
-                      <div *ngFor="let label of todo?.label" class="badge badge-info mr-2">{{label?.name}}
+                    </label>
+
+                    <!-- Labels-->
+                    <ng-container
+                      *ngIf="todoCurrentType === TODOTYPES?.pending || todoCurrentType === TODOTYPES?.inbox || todoCurrentType === TODOTYPES?.today">
+                      <div *ngFor="let label of todo?.label" class="badge badge-info ml-2">{{label?.name}}
                       </div>
-                    </td>
-                    <td>
-                      <div style="color:darkgray">
-                        <i class="fa fa-pencil-square-o mr-2" aria-hidden="true"></i>
-                        <!-- <i class="fa fa-calendar mr-2" aria-hidden="true"
-                          (click)="$event.stopPropagation(); updateTodo(todo)"></i> -->
-                        <!-- <i class="fa fa-comment mr-2" aria-hidden="true"
-                          (click)="$event.stopPropagation(); updateTodo(todo)"></i> -->
-                        <i class="fa fa-times cursor" aria-hidden="true"
-                          (click)="$event.stopPropagation(); deleteTodo(todo)"></i>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </ng-container>
-              <ng-container *ngIf="todoCurrentType === TODOTYPES?.completed">
-                <app-todo-completed [todos]="todos"></app-todo-completed>
-              </ng-container>
-            </table>
-          </div>
+                    </ng-container>
+                  </div>
+
+                  <!-- Actions-->
+                  <ng-container>
+                    <div class=" ml-auto  ml-4">
+                      <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close">
+                        <i class="fa fa-times cursor" aria-hidden="true"></i>
+                      </button>
+                      <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close"
+                        (click)="$event.stopPropagation(); deleteTodo(todo)">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </ng-container>
+
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <!-- Co0mpleted Todos-->
+          <ng-container *ngIf="todoCurrentType === TODOTYPES?.completed">
+            <app-infinite-scroll (scrolled)="refresh()">
+              <app-todo-completed [todos]="todosC"></app-todo-completed>
+              <div *ngIf="loader" class="ml-auto">
+                <div class="iq-alert-text">
+                  Loading ...
+               </div>
+              </div>
+            </app-infinite-scroll>
+          </ng-container>
         </div>
       </div>
     </div>

@@ -98,11 +98,10 @@ export class TodoService {
       };
     } else if (type === this.TODOTYPES.completed) {
       return {
+        offset: 1,
+        first: 10,
         sort: {
           updatedAt: 'DESC'
-        },
-        filter: {
-          isCompleted: true
         }
       };
     } else if (type === this.TODOTYPES.pending) {

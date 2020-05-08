@@ -5,12 +5,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TodoDialogComponent } from './todo-dialog/todo-dialog.component';
 import {TodoLabelComponent} from './todo-label/todo-label.component';
 import {TodoLabelListComponent} from './todo-label-list/todo-label-list.component';
+import { InfiniteScrollComponent } from './infinite-scroll/infinite-scroll.component';
 
 @NgModule({
   declarations: [
     TodoDialogComponent,
     TodoLabelComponent,
-    TodoLabelListComponent
+    TodoLabelListComponent,
+    InfiniteScrollComponent
   ],
   imports: [
     CommonModule,
@@ -20,7 +22,8 @@ import {TodoLabelListComponent} from './todo-label-list/todo-label-list.componen
   exports: [
     TodoDialogComponent,
     TodoLabelComponent,
-    TodoLabelListComponent
+    TodoLabelListComponent,
+    InfiniteScrollComponent
   ]
 })
 export class SharedModule { }
