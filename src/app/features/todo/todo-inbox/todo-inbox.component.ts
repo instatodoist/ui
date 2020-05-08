@@ -65,7 +65,6 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
     } else {
       this.conditions = this.toddService.getConditions(this.todoCurrentType); // default case for all types except labelled
       this.checkQueryParams();
-      this.todoCurrentType === this.TODOTYPES.completed ? this.getCompletedTodos(this.conditions) : this.getTodos(this.conditions);
     }
   }
 
@@ -78,7 +77,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
       }
       this.conditions = { ...this.conditions, filter: { ...this.conditions.filter, title_contains: this.queryStr } };
       if (!labelRoute) {
-      //  this.todoCurrentType === this.TODOTYPES.completed ? this.getCompletedTodos(this.conditions) : this.getTodos(this.conditions);
+        this.todoCurrentType === this.TODOTYPES.completed ? this.getCompletedTodos(this.conditions) : this.getTodos(this.conditions);
       } else {
         this.getTodos(this.conditions);
       }
