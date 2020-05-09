@@ -77,7 +77,7 @@ export class TodoService {
    */
   todoTypes() {
     return {
-      inbox: 'backlog',
+      inbox: 'inbox',
       today: 'today',
       pending: 'pending',
       completed: 'completed',

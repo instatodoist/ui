@@ -1,4 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 .cursor {
-    cursor: pointer;
+  cursor: pointer;
+}
+button:disabled, button[disabled] {
+  background-color: var(--iq-primary) !important;
+  border-color: var(--iq-primary) !important;
+}
+
+a:hover {
+  color: var(--iq-primary) !important;
 }

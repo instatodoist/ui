@@ -28,7 +28,8 @@ export class HeaderComponent implements OnInit {
     private titleService: Title,
     private translate: TranslateService,
     private userService: AuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private authService: AuthService
   ) {
     this.router
       .events
@@ -72,7 +73,7 @@ export class HeaderComponent implements OnInit {
 
   // do singout
   signOut(): boolean {
-    this.lsService.clearAll();
+    this.authService.logout();
     this.router.navigate(['/']);
     return false;
   }

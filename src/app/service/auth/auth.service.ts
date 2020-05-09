@@ -33,8 +33,8 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.clear();
-    // this.appService.changeTheme(this.appService.defaultSettings.app.theme);
+    this.lsService.deleteValue(this.authKey);
+    this.lsService.deleteValue('__token');
     return true;
   }
 

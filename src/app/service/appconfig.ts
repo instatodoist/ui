@@ -23,6 +23,7 @@ export class AppConfig {
   }
 
   changeTheme(iqColor: any) {
+    console.log(iqColor);
     localStorage.setItem('defaultTheme', iqColor);
     const str = iqColor;
     const res = str.replace('rgb(', '');
