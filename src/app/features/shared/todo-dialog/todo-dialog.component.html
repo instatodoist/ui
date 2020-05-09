@@ -75,9 +75,9 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary" [disabled]="!formObj.valid">Save changes</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!formObj.valid || isSubmit">Save changes <i *ngIf="isSubmit" class="fa fa-spinner fa-spin ml-2"></i></button>
         </div>
-      </div>
+      </div> 
     </div>
   </form>
 </div>

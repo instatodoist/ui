@@ -36,6 +36,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
   operationType: OperationEnumType = 'ADD';
   currentLabel = '';
   labelIdVal: string[] = [];
+  isSubmit = false;
 
   constructor(
     private router: Router,
@@ -197,15 +198,20 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
   // add/update the task
   submit() {
     if (this.formObj.valid) {
-      console.log(this.conditions);
+      this.isSubmit = true;
       const postBody = this.formObj.value;
       this.todoService
         .todoOperation(postBody, this.conditions)
         .subscribe(() => {
+          this.isSubmit = false;
           // this.dialog.close();
           this.isOpen.emit(false);
           $(`#${this.modelId}`).modal('hide');
-        });
+        },
+        () => {
+          this.isSubmit = false;
+        }
+        );
     }
   }
 }
