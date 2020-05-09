@@ -8,7 +8,7 @@ declare var $: any;
   selector: 'app-todo-inbox',
   templateUrl: './todo-inbox.component.html',
   styleUrls: ['./todo-inbox.component.scss'],
- // changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodoInboxComponent implements OnInit, AfterViewInit {
   @ViewChild('dialog') dialog: TemplateRef<any>;
@@ -43,6 +43,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
     this.todoCurrentType = this.TODOTYPES.inbox; // default to inbox
     this.loader = true;
     this.checkingRouteTypes();
+    this.checkQueryParams();
   }
 
   checkingRouteTypes() {
@@ -60,28 +61,26 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
       this.activatedRoute.params.subscribe(params => {
         this.todoCurrentType = params.label;
         this.conditions = this.toddService.getConditions(params.labelId);
-        this.checkQueryParams();
+        this.getTodos(this.conditions);
       });
     } else {
       this.conditions = this.toddService.getConditions(this.todoCurrentType); // default case for all types except labelled
-      this.checkQueryParams();
+      this.todoCurrentType === this.TODOTYPES.completed ? this.getCompletedTodos(this.conditions) : this.getTodos(this.conditions);
     }
   }
 
   checkQueryParams(labelRoute = false) {
-    // this.activatedRoute.queryParams.subscribe(params => {
-    //   if (params.q) {
-    //     this.queryStr = params.q;
-    //   } else {
-    //     this.queryStr = '';
-    //   }
-      this.conditions = { ...this.conditions, filter: { ...this.conditions.filter, title_contains: this.queryStr } };
-      if (!labelRoute) {
-        this.todoCurrentType === this.TODOTYPES.completed ? this.getCompletedTodos(this.conditions) : this.getTodos(this.conditions);
-      } else {
-        this.getTodos(this.conditions);
-      }
-   // });
+      this.activatedRoute.queryParams.subscribe(params => {
+        if (params.q) {
+          this.queryStr = params.q;
+        } else {
+          this.queryStr = '';
+        }
+        this.conditions = { ...this.conditions, filter: { ...this.conditions.filter, title_contains: this.queryStr } };
+        if (this.todoCurrentType !== this.TODOTYPES.completed) {
+          this.getTodos(this.conditions);
+        }
+      });
   }
 
   // get priority color
@@ -107,8 +106,8 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
   getCompletedTodos(conditions: TodoConditions) {
     this.toddService.listCompletedTodos(conditions)
       .subscribe((data: any) => {
-        const { totalCount, data: newdata} = data;
-        this.todosC = {totalCount, data: [...this.todosC.data, ...newdata]};
+        const { totalCount, data: newdata } = data;
+        this.todosC = { totalCount, data: [...this.todosC.data, ...newdata] };
         if (totalCount === 0) {
           this.loader = false;
         }
