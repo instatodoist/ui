@@ -88,6 +88,9 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
       .subscribe((data: any) => {
         this.todos = data;
         this.extraLoader = false;
+      },
+      () => {
+        this.extraLoader = false;
       });
   }
 

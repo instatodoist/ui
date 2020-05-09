@@ -4,8 +4,8 @@
       <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
         <div class="iq-card-header d-flex justify-content-between">
           <div class="iq-header-title">
-            <h4 class="card-title">[ <span class="text-info">{{todoCurrentType | titlecase}}</span> ] Tasks: <span
-                class="text-info">
+            <h4 class="card-title">[ <span class="text-primary">{{todoCurrentType | titlecase}}</span> ] Tasks: <span
+                class="text-primary">
                 {{todoCurrentType === TODOTYPES.completed ? (todosC?.totalCount) : (todos?.totalCount ||  0)}}
               </span>
             </h4>
@@ -52,7 +52,7 @@
                     <!-- Labels-->
                     <ng-container
                       *ngIf="todoCurrentType === TODOTYPES?.pending || todoCurrentType === TODOTYPES?.inbox || todoCurrentType === TODOTYPES?.today">
-                      <div *ngFor="let label of todo?.label" class="badge badge-info ml-2">{{label?.name}}
+                      <div *ngFor="let label of todo?.label" class="badge badge-primary ml-2">{{label?.name}}
                       </div>
                     </ng-container>
                   </div>
