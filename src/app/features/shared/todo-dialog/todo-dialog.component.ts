@@ -1,13 +1,11 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-// import { MDCDialog } from '@material/dialog';
-// import {MDCSwitch} from '@material/switch';
-// import {MDCMenu} from '@material/menu';
 import { TodoService } from '../../../service/todo/todo.service';
 import { SharedService } from '../../../service/shared/shared.service';
 import { TodoType, TodoLabelType, TodoConditions, OperationEnumType } from '../../../models/todo.model';
-
+import {  map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 declare var $: any;
 declare var flatpickr: any;
 
@@ -28,12 +26,9 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
   origin = null;
   @Output()
   isOpen: EventEmitter<boolean> = new EventEmitter<boolean>(); // open flag
-  // menu: MDCMenu; // mdc instance for label
-  // menuPriority: MDCMenu; // mdc instance for priority
   title = 'Add Task';
   formObj: FormGroup;
   labels: TodoLabelType[]; // labels array
-  // dialog: MDCDialog; // dialog instance
   priorityColor = this.todoService.getPriorities[3].color; // default color for priority
   priorities = [];
   TODOTYPES: any; // todo types wrt routes
@@ -77,30 +72,42 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
       });
       this.priorityColor = this.todoService.getColor(this.formObj.value.priority);
     }
-    // this.menu = new MDCMenu(document.querySelector('.mdc-menu-labels'));
-    // this.menuPriority = new MDCMenu(document.querySelector('.mdc-menu-priority'));
     this.TODOTYPES = this.todoService.todoTypes(); // getting route types
-    this.checkingRouteTypes(); // checking route types wrt current route
+
+    combineLatest([
+      this.activatedRoute.params
+    ])
+      .pipe(
+        map(data => ({
+          params: data[0]
+        }))
+      )
+      .subscribe(data => {
+        const { params = null } = data;
+        console.log(params);
+        const { label = null, labelId = null } = params;
+        if (!labelId) {
+          this.todoCurrentType = this.todoService.getCurentRoute();
+          this.conditions = this.todoService.getConditions(this.todoCurrentType);
+        } else {
+          this.formObj.value.labelId.push(labelId);
+          this.labelIdVal = this.formObj.value.labelId;
+          this.todoCurrentType = label;
+          this.conditions = this.todoService.getConditions(labelId);
+        }
+        this.getLabels(); // getting labels
+      });
   }
 
   ngAfterViewInit() {
     if (typeof flatpickr !== 'undefined' && $.isFunction(flatpickr)) {
       $('.flatpicker').flatpickr({
-          inline: true
+        inline: true
       });
     }
     const isOpenInstance = this.isOpen;
     // tslint:disable-next-line: only-arrow-functions
-    $('#todo-dialog').on('hidden.bs.modal', function() {
-      this.formObj.reset();
-      this.labelIdVal = [];
-      this.formObj.patchValue({
-        scheduling: false,
-        labelId: this.labelIdVal,
-        priority: 'P4',
-        scheduledDate: this.sharedService.todayDate(),
-        operationType: 'ADD'
-      });
+    $(`#${this.modelId}`).on('hidden.bs.modal', function() {
       isOpenInstance.emit(false);
     });
   }
@@ -108,29 +115,29 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
   /**
    * @description - use to check conditions wrt current route
    */
-  checkingRouteTypes() {
-    if (this.router.url === '/tasks/today') { // checking route if today
-      this.todoCurrentType = this.TODOTYPES.today;
-      this.formObj.patchValue({
-        scheduling: true
-      });
-    } else if (this.router.url === '/tasks/completed') { // checking route if completed
-      this.todoCurrentType = this.TODOTYPES.completed;
-    } else if (this.router.url === '/tasks/inbox') { // checking route if inbox
-      this.todoCurrentType = this.TODOTYPES.inbox;
-    } else if (this.router.url === '/tasks/pending') { // checking route if inbox
-      this.todoCurrentType = this.TODOTYPES.pending;
-    } else {
-      const routerStrArr = this.router.url.split('/');
-      const labelId = routerStrArr[routerStrArr.length - 2];
-      this.todoCurrentType = labelId;
-      // populating label wrt route label
-      this.formObj.value.labelId.push(labelId);
-      this.labelIdVal = this.formObj.value.labelId;
-    }
-    this.getLabels(); // getting labels
-    this.conditions = this.todoService.getConditions(this.todoCurrentType); // default case for 
-  }
+  // checkingRouteTypes() {
+  //   if (this.router.url === '/tasks/today') { // checking route if today
+  //     this.todoCurrentType = this.TODOTYPES.today;
+  //     this.formObj.patchValue({
+  //       scheduling: true
+  //     });
+  //   } else if (this.router.url === '/tasks/completed') { // checking route if completed
+  //     this.todoCurrentType = this.TODOTYPES.completed;
+  //   } else if (this.router.url === '/tasks/inbox') { // checking route if inbox
+  //     this.todoCurrentType = this.TODOTYPES.inbox;
+  //   } else if (this.router.url === '/tasks/pending') { // checking route if inbox
+  //     this.todoCurrentType = this.TODOTYPES.pending;
+  //   } else {
+  //     const routerStrArr = this.router.url.split('/');
+  //     const labelId = routerStrArr[routerStrArr.length - 2];
+  //     this.todoCurrentType = labelId;
+  //     // populating label wrt route label
+  //     this.formObj.value.labelId.push(labelId);
+  //     this.labelIdVal = this.formObj.value.labelId;
+  //   }
+  //   this.getLabels(); // getting labels
+  //   this.conditions = this.todoService.getConditions(this.todoCurrentType); // default case for 
+  // }
 
   // open priority menu
   openPriority() {
@@ -147,7 +154,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
 
   // open labels menu
   openLabels() {
-   // this.menu.open = true;
+    // this.menu.open = true;
   }
 
   // auto checked the labels if exist

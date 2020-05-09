@@ -16,7 +16,8 @@
       </div>
       <div class="iq-search-bar">
         <form class="searchbox" [formGroup]="formObj">
-          <input type="text" class="text search-input" placeholder="Type here to search..." formControlName="query" (keyup)="onSearch()">
+          <input type="text" class="text search-input" placeholder="Type here to search..." formControlName="query"
+            (keyup)="onSearch()">
           <a class="search-link" href="#"><i class="ri-search-line"></i></a>
         </form>
       </div>
@@ -28,8 +29,10 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto navbar-list">
           <li class="nav-item nav-icon">
-            <a href="#" data-toggle="modal" data-target="#todo-dialog-add" class="iq-waves-effect btn-danger rounded"><span
-                class="ripple rippleEffect"></span><i class="fa fa-plus" aria-hidden="true"></i></a>
+
+            <a href="javascript:void(0)" (click)="openPopUp()" data-toggle="modal" data-target="#todo-dialog-add"
+              class="iq-waves-effect btn-danger rounded"><span class="ripple rippleEffect"></span><i class="fa fa-plus"
+                aria-hidden="true"></i></a>
           </li>
           <li class="nav-item">
             <a class="search-toggle iq-waves-effect language-title" href="#"><span class="ripple rippleEffect"
@@ -263,4 +266,4 @@
     </nav>
   </div>
 </div>
-<app-todo-dialog [modelId]="'todo-dialog-add'"></app-todo-dialog>
+<app-todo-dialog [modelId]="'todo-dialog-add'" *ngIf="isOpen" (isOpen)="closePopUp($event)"></app-todo-dialog>
