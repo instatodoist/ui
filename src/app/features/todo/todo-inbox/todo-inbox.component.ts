@@ -69,19 +69,19 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
   }
 
   checkQueryParams(labelRoute = false) {
-    this.activatedRoute.queryParams.subscribe(params => {
-      if (params.q) {
-        this.queryStr = params.q;
-      } else {
-        this.queryStr = '';
-      }
+    // this.activatedRoute.queryParams.subscribe(params => {
+    //   if (params.q) {
+    //     this.queryStr = params.q;
+    //   } else {
+    //     this.queryStr = '';
+    //   }
       this.conditions = { ...this.conditions, filter: { ...this.conditions.filter, title_contains: this.queryStr } };
       if (!labelRoute) {
         this.todoCurrentType === this.TODOTYPES.completed ? this.getCompletedTodos(this.conditions) : this.getTodos(this.conditions);
       } else {
         this.getTodos(this.conditions);
       }
-    });
+   // });
   }
 
   // get priority color

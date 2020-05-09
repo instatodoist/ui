@@ -89,6 +89,8 @@ export class TodoService {
   getConditions(type: string): TodoConditions {
     if (type === this.TODOTYPES.today) {
       return {
+        offset: 1,
+        first: 50,
         sort: {
           updatedAt: 'DESC'
         },
@@ -106,8 +108,10 @@ export class TodoService {
       };
     } else if (type === this.TODOTYPES.pending) {
       return {
+        offset: 1,
+        first: 50,
         sort: {
-          updatedAt: 'DESC'
+          createdAt: 'DESC'
         },
         filter: {
           type: 'pending'
@@ -115,6 +119,8 @@ export class TodoService {
       };
     } else if (type === this.TODOTYPES.inbox) {
       return {
+        offset: 1,
+        first: 50,
         sort: {
           createdAt: 'DESC'
         },
@@ -124,8 +130,10 @@ export class TodoService {
       };
     } else {
       return {
+        offset: 1,
+        first: 50,
         sort: {
-          updatedAt: 'DESC'
+          createdAt: 'DESC'
         },
         filter: {
           labelId: type,
@@ -225,7 +233,7 @@ export class TodoService {
     };
     // if passing conditions
     if (conditions) {
-      refetchQuery.variables = conditions;
+      refetchQuery.variables = { ...conditions };
     }
     // initialising gql variables
     let variables: any = {};

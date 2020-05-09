@@ -57,11 +57,11 @@
                   <!-- Actions-->
                   <ng-container>
                     <div class=" ml-auto  ml-4">
-                      <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close">
-                        <i class="fa fa-times cursor" aria-hidden="true"></i>
-                      </button>
                       <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close"
-                        (click)="$event.stopPropagation(); deleteTodo(todo)">
+                      (click)="$event.stopPropagation(); deleteTodo(todo)">
+                      <i class="fa fa-times cursor" aria-hidden="true"></i>
+                    </button>
+                      <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close">
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                       </button>
                     </div>

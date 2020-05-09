@@ -22,7 +22,7 @@ export class SidebarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.callTodoCountService();
+    // this.callTodoCountService();
   }
 
   callTodoCountService() {

@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 // import { MDCDialog } from '@material/dialog';
 // import {MDCSwitch} from '@material/switch';
@@ -44,6 +44,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
 
   constructor(
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
     private todoService: TodoService,
     private sharedService: SharedService
@@ -59,7 +60,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
     this.formObj = this.fb.group({
       _id: [this.todo && this.todo._id || ''],
       title: [this.todo && this.todo.title, [Validators.required]],
-      scheduling: [this.todo && this.todo.scheduledDate ? true : true],
+      scheduling: [this.todo && this.todo.scheduledDate ? true : false],
       scheduledDate: [this.todo && this.todo.scheduledDate ? this.todo.scheduledDate : this.sharedService.todayDate()],
       labelId: [this.labelIdVal],
       priority: ['P4'],
@@ -91,6 +92,15 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
     const isOpenInstance = this.isOpen;
     // tslint:disable-next-line: only-arrow-functions
     $('#todo-dialog').on('hidden.bs.modal', function() {
+      this.formObj.reset();
+      this.labelIdVal = [];
+      this.formObj.patchValue({
+        scheduling: false,
+        labelId: this.labelIdVal,
+        priority: 'P4',
+        scheduledDate: this.sharedService.todayDate(),
+        operationType: 'ADD'
+      });
       isOpenInstance.emit(false);
     });
   }
@@ -110,22 +120,16 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
       this.todoCurrentType = this.TODOTYPES.inbox;
     } else if (this.router.url === '/tasks/pending') { // checking route if inbox
       this.todoCurrentType = this.TODOTYPES.pending;
-    }
-    if (this.router.url.match('tasks/labels')) { // special case for labelled type
+    } else {
       const routerStrArr = this.router.url.split('/');
       const labelId = routerStrArr[routerStrArr.length - 2];
       this.todoCurrentType = labelId;
-      this.conditions = this.todoService.getConditions(this.todoCurrentType);
       // populating label wrt route label
-      if (this.todoCurrentType) {
-        this.formObj.value.labelId.push(labelId);
-        this.labelIdVal = this.formObj.value.labelId;
-        this.getLabels(); // getting labels
-      }
-    } else {
-      this.getLabels(); // getting labels
-      this.conditions = this.todoService.getConditions(this.todoCurrentType); // default case for all types except labelled
+      this.formObj.value.labelId.push(labelId);
+      this.labelIdVal = this.formObj.value.labelId;
     }
+    this.getLabels(); // getting labels
+    this.conditions = this.todoService.getConditions(this.todoCurrentType); // default case for 
   }
 
   // open priority menu
@@ -155,12 +159,13 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
   checkLabels($event, label: any) {
     this.currentLabel = label.name;
     const labelId = label._id;
-    const index = this.formObj.value.labelId.indexOf(labelId);
-    if (index === -1) {
-      this.formObj.value.labelId.push(labelId);
-    } else {
-      this.formObj.value.labelId.splice(index, 1);
-    }
+    this.formObj.value.labelId = [labelId];
+    // const index = this.formObj.value.labelId.indexOf(labelId);
+    // if (index === -1) {
+    //   this.formObj.value.labelId.push(labelId);
+    // } else {
+    //   this.formObj.value.labelId.splice(index, 1);
+    // }
   }
 
   // fetching labels
@@ -185,12 +190,12 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
   // add/update the task
   submit() {
     if (this.formObj.valid) {
+      console.log(this.conditions);
       const postBody = this.formObj.value;
       this.todoService
         .todoOperation(postBody, this.conditions)
         .subscribe(() => {
           // this.dialog.close();
-          this.formObj.reset();
           this.isOpen.emit(false);
           $(`#${this.modelId}`).modal('hide');
         });
