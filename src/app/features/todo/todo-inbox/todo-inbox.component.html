@@ -76,10 +76,8 @@
           <ng-container *ngIf="todoCurrentType === TODOTYPES?.completed">
             <app-infinite-scroll (scrolled)="refresh()">
               <app-todo-completed [todos]="todosC"></app-todo-completed>
-              <div *ngIf="loader" class="ml-auto">
-                <div class="iq-alert-text">
-                  Loading ...
-               </div>
+              <div class="col-sm-12 text-center" *ngIf="loader">
+                <img src="/assets/facelift/images/page-img/page-load-loader.gif" alt="loader" style="height: 100px;">
               </div>
             </app-infinite-scroll>
           </ng-container>
