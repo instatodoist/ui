@@ -15,6 +15,7 @@ declare var $: any;
 export class TodoInboxComponent implements OnInit, AfterViewInit {
   @ViewChild('dialog') dialog: TemplateRef<any>;
   loader = false;
+  extraLoader = false;
   todosC: TodoCompletedListType = {
     totalCount: 0,
     data: []
@@ -82,11 +83,11 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
    * @param conditions - based on route
    */
   getTodos(conditions: TodoConditions) {
-    this.loader = true;
+    this.extraLoader = true;
     this.toddService.listTodos(conditions)
       .subscribe((data: any) => {
         this.todos = data;
-        this.loader = false;
+        this.extraLoader = false;
       });
   }
 
@@ -94,6 +95,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
    * @param conditions - based on route
    */
   getCompletedTodos(conditions: TodoConditions) {
+    this.extraLoader = false;
     this.toddService.listCompletedTodos(conditions)
       .subscribe((data: any) => {
         const { totalCount, data: newdata } = data;
