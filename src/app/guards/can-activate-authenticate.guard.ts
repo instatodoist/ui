@@ -11,7 +11,7 @@ import { stat } from 'fs';
 @Injectable()
 export class CanActivateAuthenticateGuard implements CanActivate {
 
-  routes = ['/', '/register', '/verification'];
+  routes = ['/', '/auth/login', '/auth/register', '/auth/verification'];
 
   constructor(
     private lsService: LsService,

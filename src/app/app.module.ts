@@ -21,6 +21,7 @@ import { HeaderComponent } from './features/shared/section/header/header.compone
 import { FooterComponent } from './features/shared/section/footer/footer.component';
 import { SidebarComponent } from './features/shared/section/sidebar/sidebar.component';
 import { PageNotFoundComponent } from './features/shared/page-not-found/page-not-found.component';
+import { HomeLayoutComponent } from './features/shared/layout/home-layout/home-layout.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { PageNotFoundComponent } from './features/shared/page-not-found/page-not
     SidebarComponent,
     PageNotFoundComponent,
     FormValidationDirective,
-    DropdownMenuDirective
+    DropdownMenuDirective,
+    HomeLayoutComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +49,8 @@ import { PageNotFoundComponent } from './features/shared/page-not-found/page-not
     }),
     AuthModule,
     AppRoutingModule,
-    SharedModule
+    SharedModule,
+    // HomeModule
   ],
   exports: [
     RouterModule
