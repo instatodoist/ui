@@ -3,6 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { TodoListType, TodoCompletedListType, TodoType } from '../../../models/todo.model';
 import { TodoConditions } from '../../../models/todo.model';
 import { TodoService } from '../../../service/todo/todo.service';
+import { merge, mergeMap, map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 declare var $: any;
 @Component({
   selector: 'app-todo-inbox',
@@ -42,44 +44,32 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
     this.TODOTYPES = this.toddService.todoTypes(); // todo types
     this.todoCurrentType = this.TODOTYPES.inbox; // default to inbox
     this.loader = true;
-    this.checkingRouteTypes();
-    this.checkQueryParams();
-  }
-
-  checkingRouteTypes() {
-    if (this.router.url === '/tasks/today') { // checking route if today
-      this.todoCurrentType = this.TODOTYPES.today;
-    } else if (this.router.url === '/tasks/completed') { // checking route if completed
-      this.todoCurrentType = this.TODOTYPES.completed;
-    } else if (this.router.url === '/tasks/inbox') { // checking route if inbox
-      this.todoCurrentType = this.TODOTYPES.inbox;
-    } else if (this.router.url === '/tasks/pending') { // checking route if inbox
-      this.todoCurrentType = this.TODOTYPES.pending;
-    }
-    if (this.router.url.match('tasks/labels')) { // special case for labelled type
-      // this.todoCurrentType = 'label';
-      this.activatedRoute.params.subscribe(params => {
-        this.todoCurrentType = params.label;
-        this.conditions = this.toddService.getConditions(params.labelId);
-        this.getTodos(this.conditions);
-      });
-    } else {
-      this.conditions = this.toddService.getConditions(this.todoCurrentType); // default case for all types except labelled
-      this.todoCurrentType === this.TODOTYPES.completed ? this.getCompletedTodos(this.conditions) : this.getTodos(this.conditions);
-    }
-  }
-
-  checkQueryParams(labelRoute = false) {
-      this.activatedRoute.queryParams.subscribe(params => {
-        if (params.q) {
-          this.queryStr = params.q;
+    combineLatest([
+      this.activatedRoute.params,
+      this.activatedRoute.queryParams
+    ])
+      .pipe(
+        map(data => ({
+          params: data[0],
+          query: data[1]
+        }))
+      )
+      .subscribe(data => {
+        const { params = null, query = null } = data;
+        const { label = null, labelId = null } = params;
+        const { q = null } = query;
+        if (!labelId) {
+          this.todoCurrentType = this.toddService.getCurentRoute();
+          this.conditions = this.toddService.getConditions(this.todoCurrentType);
         } else {
-          this.queryStr = '';
+          this.todoCurrentType = label;
+          this.conditions = this.toddService.getConditions(labelId);
         }
-        this.conditions = { ...this.conditions, filter: { ...this.conditions.filter, title_contains: this.queryStr } };
-        if (this.todoCurrentType !== this.TODOTYPES.completed) {
-          this.getTodos(this.conditions);
+        if (q) {
+          this.queryStr = q;
+          this.conditions = { ...this.conditions, filter: { ...this.conditions.filter, title_contains: this.queryStr } };
         }
+        this.todoCurrentType === this.TODOTYPES.completed ? this.getCompletedTodos(this.conditions) : this.getTodos(this.conditions);
       });
   }
 
@@ -172,7 +162,6 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
     if (data.length < totalCount && this.loader) {
       const { offset } = this.conditions;
       this.conditions = { ...this.conditions, offset: offset + 1 };
-      console.log(totalCount, data.length, offset);
       this.getCompletedTodos(this.conditions);
     } else if (data.length) {
       this.loader = false;

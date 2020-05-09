@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { Router, ActivatedRoute } from '@angular/router';
 import {
   TODO_LIST_QUERY,
   TODO_LIST_COUNT_QUERY,
@@ -13,7 +14,7 @@ import {
   TODO_LABEL_UPDATE_MUTATION,
   TODO_LABEL_DELETE_MUTATION
 } from '../../gql/todo.gql';
-import { Apollo } from 'apollo-angular';
+import { Apollo, Query } from 'apollo-angular';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
@@ -32,7 +33,9 @@ export class TodoService {
   private API_URL = environment.API_URL; // API Url
   private TODOTYPES = this.todoTypes(); // todo route types
   constructor(
-    private apollo: Apollo
+    private apollo: Apollo,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   // priorities array
@@ -264,7 +267,7 @@ export class TodoService {
         defaultDataKey = 'updateTodo';
         variables = {
           ...variables,
-          input: {...postTodo, isCompleted: !!body.isCompleted },
+          input: { ...postTodo, isCompleted: !!body.isCompleted },
           id: body._id
         };
         break;
@@ -363,5 +366,19 @@ export class TodoService {
       obs3,
       obs4
     ]);
+  }
+
+  getCurentRoute(): string {
+    let todoCurrentType = '';
+    if (this.router.url.match('/tasks/today')) { // checking route if today
+      todoCurrentType = this.TODOTYPES.today;
+    } else if (this.router.url.match('/tasks/completed')) { // checking route if completed
+      todoCurrentType = this.TODOTYPES.completed;
+    } else if (this.router.url.match('/tasks/inbox')) { // checking route if inbox
+      todoCurrentType = this.TODOTYPES.inbox;
+    } else if (this.router.url.match('/tasks/pending')) { // checking route if inbox
+      todoCurrentType = this.TODOTYPES.pending;
+    }
+    return todoCurrentType;
   }
 }
