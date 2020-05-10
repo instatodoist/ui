@@ -1,9 +1,8 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { TodoService } from '../../../service/todo/todo.service';
-import { SharedService } from '../../../service/shared/shared.service';
-import { TodoType, TodoLabelType, TodoConditions, OperationEnumType } from '../../../models/todo.model';
+import { TodoService, SharedService } from '../../../service';
+import { TodoType, TodoLabelType, TodoConditions, OperationEnumType } from '../../../models';
 import {  map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 declare var $: any;
@@ -76,27 +75,34 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
     this.TODOTYPES = this.todoService.todoTypes(); // getting route types
 
     combineLatest([
-      this.activatedRoute.params
+      this.activatedRoute.params,
+      this.todoService.listTodoLabels()
     ])
       .pipe(
         map(data => ({
-          params: data[0]
+          params: data[0],
+          labels: data[1]
         }))
       )
       .subscribe(data => {
-        const { params = null } = data;
-        console.log(params);
-        const { label = null, labelId = null } = params;
-        if (!labelId) {
+        const { params = null, labels = [] } = data;
+        const { label = null } = params;
+        this.labels = labels;
+        if (!label) {
           this.todoCurrentType = this.todoService.getCurentRoute();
           this.conditions = this.todoService.getConditions(this.todoCurrentType);
         } else {
+          const labelId = labels.filter(obj => obj.name === label)[0]._id;
           this.formObj.value.labelId.push(labelId);
           this.labelIdVal = this.formObj.value.labelId;
           this.todoCurrentType = label;
           this.conditions = this.todoService.getConditions(labelId);
         }
-        this.getLabels(); // getting labels
+        // populate label if any
+        const filterLabel: TodoLabelType[] = this.labels.filter(item => item._id === this.labelIdVal[0]);
+        if (filterLabel.length) {
+          this.currentLabel = filterLabel[0].name;
+        }
       });
   }
 

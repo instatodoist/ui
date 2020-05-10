@@ -1,9 +1,11 @@
-import { Component, OnInit, ViewChild, TemplateRef, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
+import { combineLatest, from } from 'rxjs';
 import { TodoListType, TodoCompletedListType, TodoType, TodoConditions } from '../../../models';
 import { TodoService, AppService } from '../../../service';
+import { Apollo } from 'apollo-angular';
+
 declare var $: any;
 @Component({
   selector: 'app-todo-inbox',
@@ -35,7 +37,8 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
     private toddService: TodoService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private appService: AppService
+    private appService: AppService,
+    private apollo: Apollo
   ) {
   }
 
@@ -49,23 +52,26 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
     this.loader = true;
     combineLatest([
       this.activatedRoute.params,
-      this.activatedRoute.queryParams
+      this.activatedRoute.queryParams,
+      this.toddService.listTodoLabels()
     ])
       .pipe(
         map(data => ({
           params: data[0],
-          query: data[1]
+          query: data[1],
+          labels: data[2]
         }))
       )
       .subscribe(data => {
-        const { params = null, query = null } = data;
-        const { label = null, labelId = null } = params;
+        const { params = null, query = null, labels } = data;
+        const { label = null } = params;
         const { q = null } = query;
-        if (!labelId) {
+        if (!label) {
           this.todoCurrentType = this.toddService.getCurentRoute();
           this.conditions = this.toddService.getConditions(this.todoCurrentType);
         } else {
           this.todoCurrentType = label;
+          const labelId = labels.filter(obj => obj.name === label)[0]._id;
           this.conditions = this.toddService.getConditions(labelId);
         }
         if (q) {
@@ -96,9 +102,9 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
         this.todos = data;
         this.extraLoader = false;
       },
-      () => {
-        this.extraLoader = false;
-      });
+        () => {
+          this.extraLoader = false;
+        });
   }
 
   /**

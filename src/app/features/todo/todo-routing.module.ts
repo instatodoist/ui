@@ -36,7 +36,7 @@ const routes: Routes = [
         }
       },
       {
-        path: 'labels/:labelId/:label',
+        path: 'labels/:label',
         component: TodoInboxComponent,
         data: {
           header_title: 'label_filter'
