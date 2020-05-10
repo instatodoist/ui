@@ -108,9 +108,13 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     if (typeof flatpickr !== 'undefined' && $.isFunction(flatpickr)) {
-      $('.flatpicker').flatpickr({
+      const config: any = {
         inline: true
-      });
+      };
+      if (!this.todo) {
+        config.minDate = new Date();
+      }
+      $('.flatpicker').flatpickr(config);
     }
     const isOpenInstance = this.isOpen;
     // tslint:disable-next-line: only-arrow-functions
