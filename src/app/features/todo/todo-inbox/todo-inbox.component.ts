@@ -32,6 +32,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
   queryStr = '';
   compltedCount = 0;
   loaderImage = this.appService.loaderImage;
+  isDeleting = false;
 
   constructor(
     private toddService: TodoService,
@@ -162,17 +163,29 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
       .subscribe();
   }
 
+  deleteRequest(todo: TodoType) {
+    todo.deleteRequest = true;
+    setTimeout(() => {
+      todo.deleteRequest = false;
+    }, 3000);
+  }
+
   /**
    * @param todo - todo object
    */
-  deleteTodo(todo: TodoType) {
-    const postBody: TodoType = {
-      _id: todo._id,
-      operationType: 'DELETE'
-    };
-    this.toddService
-      .todoOperation(postBody, this.conditions)
-      .subscribe();
+  deleteTodo(todo: TodoType): void {
+    if (todo.deleteRequest) {
+      this.isDeleting = true;
+      const postBody: TodoType = {
+        _id: todo._id,
+        operationType: 'DELETE'
+      };
+      this.toddService
+        .todoOperation(postBody, this.conditions)
+        .subscribe(() => {
+          this.isDeleting = false;
+        });
+    }
   }
 
   refresh() {
