@@ -16,7 +16,7 @@ export class AuthInterceptor implements HttpInterceptor {
     if (lsService.getValue('isLoggedIn')) {
       request = request.clone({
         setHeaders: {
-          'Authorization': `Bearer ${lsService.getValue('__token')}`
+          Authorization: `Bearer ${lsService.getValue('__token')}`
         }
       });
     }
