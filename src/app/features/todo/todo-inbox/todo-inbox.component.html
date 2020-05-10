@@ -12,7 +12,7 @@
           </div>
         </div>
         <div class="col-sm-12 text-center" *ngIf="todoCurrentType !== TODOTYPES?.completed && extraLoader">
-          <img src="/assets/facelift/images/page-img/page-load-loader.gif" alt="loader" style="height: 100px;">
+          <img src="{{loaderImage}}" alt="loader" style="height: 100px;">
         </div>
         <div class="iq-card-body" *ngIf="!extraLoader">
           <!-- Current Todos-->
@@ -80,7 +80,7 @@
             <app-infinite-scroll (scrolled)="refresh()">
               <app-todo-completed [todos]="todosC"></app-todo-completed>
               <div class="col-sm-12 text-center" *ngIf="loader">
-                <img src="/assets/facelift/images/page-img/page-load-loader.gif" alt="loader" style="height: 100px;">
+                <img src="{{loaderImage}}" alt="loader" style="height: 100px;">
               </div>
             </app-infinite-scroll>
           </ng-container>

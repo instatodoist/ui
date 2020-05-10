@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild, TemplateRef, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { TodoListType, TodoCompletedListType, TodoType } from '../../../models/todo.model';
-import { TodoConditions } from '../../../models/todo.model';
-import { TodoService } from '../../../service/todo/todo.service';
 import { map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
+import { TodoListType, TodoCompletedListType, TodoType, TodoConditions } from '../../../models';
+import { TodoService, AppService } from '../../../service';
 declare var $: any;
 @Component({
   selector: 'app-todo-inbox',
@@ -30,11 +29,13 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
   todoCurrentType: string; // current route
   queryStr = '';
   compltedCount = 0;
+  loaderImage = this.appService.loaderImage;
 
   constructor(
     private toddService: TodoService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private appService: AppService
   ) {
   }
 
@@ -109,7 +110,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
       .subscribe((data: any) => {
         const { totalCount, data: newdata } = data;
         this.todosC = { totalCount, data: [...this.todosC.data, ...newdata] };
-        if (totalCount === 0) {
+        if (!totalCount || totalCount === 0) {
           this.loader = false;
         }
       });

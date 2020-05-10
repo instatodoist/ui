@@ -34,4 +34,8 @@ export class AppConfig {
     document.documentElement.style.setProperty('--iq-light-primary', iqColor2);
     document.documentElement.style.setProperty('--iq-primary-hover', iqColor3);
   }
+
+  get loaderImage() {
+    return '/assets/facelift/images/page-img/page-load-loader.gif';
+  }
 }
