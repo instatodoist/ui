@@ -22,6 +22,8 @@ import { FooterComponent } from './features/shared/section/footer/footer.compone
 import { SidebarComponent } from './features/shared/section/sidebar/sidebar.component';
 import { PageNotFoundComponent } from './features/shared/page-not-found/page-not-found.component';
 import { HomeLayoutComponent } from './features/shared/layout/home-layout/home-layout.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -50,6 +52,7 @@ import { HomeLayoutComponent } from './features/shared/layout/home-layout/home-l
     AuthModule,
     AppRoutingModule,
     SharedModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     // HomeModule
   ],
   exports: [
