@@ -1,7 +1,8 @@
-<div class="container-fluid todo-inbox" #container>
+<div class="container-fluid todo-inbox">
   <div class="row">
     <div class="col-lg-12">
       <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+        <!-- Page haeder -->
         <div class="iq-card-header d-flex justify-content-between">
           <div class="iq-header-title">
             <h4 class="card-title">[ <span class="text-primary">{{todoCurrentType | titlecase}}</span> ] Tasks: <span
@@ -11,24 +12,34 @@
             </h4>
           </div>
         </div>
+        <!--END-->
+
+        <!-- Loader on fetching data-->
         <div class="col-sm-12 text-center" *ngIf="todoCurrentType !== TODOTYPES?.completed && extraLoader">
           <img src="{{loaderImage}}" alt="loader" style="height: 100px;">
         </div>
+        <!--END-->
+
         <div class="iq-card-body" *ngIf="!extraLoader">
-          <!-- Current Todos-->
+
+          <!-- Section for Current Todos-->
           <ng-container *ngIf="todoCurrentType !== TODOTYPES?.completed">
+
             <div class="tab-content" id="myTabContent">
               <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"
                 data-toggle="modal" data-target="#todo-dialog">
                 <div class="d-flex tasks-card" role="alert" class="tr-{{ i + 1}} cursor"
                   *ngFor="let todo of todos?.data; let i = index" (click)="openPopUp(todo, 'UPDATE')">
 
-                  <div class="custom-control custom-checkbox" (click)="$event.stopPropagation(); updateTodo(todo)">
-                    <!-- Checkbox-->
-                    <input type="checkbox" class="custom-control-input" id="customCheck11">
+                  <div class="custom-control custom-checkbox custom-control-inline"
+                    (click)="$event.stopPropagation(); updateTodo(todo)">
+                    <input type="checkbox" class="custom-control-input" id="customCheck-f{{i+1}}">
+                    <label class="custom-control-label" for="customCheck-f{{i+1}}"></label>
+                  </div>
 
+                  <div class="cursor">
                     <!--  Title -->
-                    <label class="custom-control-label" for="customCheck11">
+                    <label>
                       <div class="d-flex align-items-center justify-content-between">
                         <span> {{todo?.title}}
                           <span class="ml-2" *ngIf="todo?.priority !== 'P4'"
@@ -52,7 +63,8 @@
                     <!-- Labels-->
                     <ng-container
                       *ngIf="todoCurrentType === TODOTYPES?.pending || todoCurrentType === TODOTYPES?.inbox || todoCurrentType === TODOTYPES?.today">
-                      <div *ngFor="let label of todo?.label" class="badge badge-pill border border-primary text-primary ml-2">{{label?.name}}
+                      <div *ngFor="let label of todo?.label"
+                        class="badge badge-pill border border-primary text-primary ml-2">{{label?.name}}
                       </div>
                     </ng-container>
                   </div>
@@ -61,9 +73,9 @@
                   <ng-container>
                     <div class=" ml-auto  ml-4">
                       <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close"
-                      (click)="$event.stopPropagation(); deleteTodo(todo)">
-                      <i class="fa fa-times cursor" aria-hidden="true"></i>
-                    </button>
+                        (click)="$event.stopPropagation(); deleteTodo(todo)">
+                        <i class="fa fa-times cursor" aria-hidden="true"></i>
+                      </button>
                       <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close">
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                       </button>
@@ -74,8 +86,9 @@
               </div>
             </div>
           </ng-container>
+          <!--END-->
 
-          <!-- Co0mpleted Todos-->
+          <!-- Section for Completed Todos-->
           <ng-container *ngIf="todoCurrentType === TODOTYPES?.completed">
             <app-infinite-scroll (scrolled)="refresh()">
               <app-todo-completed [todos]="todosC"></app-todo-completed>
@@ -84,12 +97,15 @@
               </div>
             </app-infinite-scroll>
           </ng-container>
+          <!--END-->
+
         </div>
       </div>
     </div>
   </div>
 </div>
-<!-- <app-todo-dialog></app-todo-dialog> -->
+
+<!--Popup for Updating todo-->
 <app-todo-dialog [todo]="todo" [origin]="todoCurrentType === TODOTYPES.completed? 'COMPLETED' : null"
   (isOpen)="updatePopupFlag($event)" *ngIf="isUpdate">
 </app-todo-dialog>
