@@ -6,14 +6,21 @@
           <!--  Title -->
           <label class="">
             <div class="d-flex align-items-center justify-content-between text-primary">
-              <span> Tasks Completed: <span class="text-primary">{{todo?.list?.length}}</span>
-              </span>
+              <!-- <span>  <span class="text-primary"><span class="badge border border-info text-primary">
+                {{todo?._id  | date: 'mediumDate'}}
+              </span></span>
+            </span> -->
+              <button type="button" class="btn mb-1 iq-bg-primary">
+                {{todo?._id  | date: 'mediumDate'}} <span class="badge badge-light ml-2">{{todo?.list?.length}}</span>
+                </button>
+             
             </div>
-            <div class="d-flex align-items-center justify-content-between">
+            <!-- <div class="d-flex align-items-center justify-content-between text-primary">
+              Tasks Completed - <span class="badge badge-primary">{{todo?.list?.length}}</span>
               <span class="badge border border-info text-primary">
                 {{todo?._id  | date: 'mediumDate'}}
               </span>
-            </div>
+            </div> -->
           </label>
         </div>
       </div>
@@ -32,7 +39,7 @@
 
           <!-- Labels-->
           <ng-container>
-            <div *ngFor="let label of data?.label" class="badge badge-primary ml-2">{{label?.name}}
+            <div *ngFor="let label of data?.label" class="badge badge-pill border border-primary text-primary ml-2">{{label?.name}}
             </div>
           </ng-container>
         </div>

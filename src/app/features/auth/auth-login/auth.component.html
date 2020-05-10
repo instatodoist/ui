@@ -13,7 +13,7 @@
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Password</label>
-    <a routerLink="/forgot-password" class="float-right">Forgot password?</a>
+    <a routerLink="/auth/forgot-password" class="float-right">Forgot password?</a>
     <input type="password" class="form-control mb-0" id="exampleInputPassword1" placeholder="Password"
       formControlName="password" required>
     <div>
@@ -33,6 +33,6 @@
       Sign in <i *ngIf="isSubmit" class="fa fa-spinner fa-spin ml-2"></i>
     </button>
     <span class="text-dark dark-color d-inline-block line-height-2">Don't have an account? <a
-        routerLink="/register">{{'auth.signup'|translate}}</a></span>
+        routerLink="/auth/register">{{'auth.signup'|translate}}</a></span>
   </div>
 </form>

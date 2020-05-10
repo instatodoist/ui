@@ -6,7 +6,7 @@
           <div class="iq-header-title">
             <h4 class="card-title">[ <span class="text-primary">{{todoCurrentType | titlecase}}</span> ] Tasks: <span
                 class="text-primary">
-                {{todoCurrentType === TODOTYPES.completed ? (todosC?.totalCount) : (todos?.totalCount ||  0)}}
+                {{todoCurrentType === TODOTYPES.completed ? (compltedCount) : (todos?.totalCount ||  0)}}
               </span>
             </h4>
           </div>
@@ -52,7 +52,7 @@
                     <!-- Labels-->
                     <ng-container
                       *ngIf="todoCurrentType === TODOTYPES?.pending || todoCurrentType === TODOTYPES?.inbox || todoCurrentType === TODOTYPES?.today">
-                      <div *ngFor="let label of todo?.label" class="badge badge-primary ml-2">{{label?.name}}
+                      <div *ngFor="let label of todo?.label" class="badge badge-pill border border-primary text-primary ml-2">{{label?.name}}
                       </div>
                     </ng-container>
                   </div>

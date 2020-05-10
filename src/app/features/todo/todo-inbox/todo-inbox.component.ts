@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { TodoListType, TodoCompletedListType, TodoType } from '../../../models/todo.model';
 import { TodoConditions } from '../../../models/todo.model';
 import { TodoService } from '../../../service/todo/todo.service';
-import { merge, mergeMap, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 declare var $: any;
 @Component({
@@ -29,6 +29,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
   TODOTYPES: any; // todo types wrt routes
   todoCurrentType: string; // current route
   queryStr = '';
+  compltedCount = 0;
 
   constructor(
     private toddService: TodoService,
@@ -70,7 +71,12 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
           this.queryStr = q;
           this.conditions = { ...this.conditions, filter: { ...this.conditions.filter, title_contains: this.queryStr } };
         }
-        this.todoCurrentType === this.TODOTYPES.completed ? this.getCompletedTodos(this.conditions) : this.getTodos(this.conditions);
+        if (this.todoCurrentType === this.TODOTYPES.completed) {
+          this.getTotalCount();
+          this.getCompletedTodos(this.conditions);
+        } else {
+          this.getTodos(this.conditions);
+        }
       });
   }
 
@@ -172,4 +178,16 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
       this.loader = false;
     }
   }
+
+  getTotalCount() {
+    const query: TodoConditions = {
+      filter: {
+        isCompleted: true
+      }
+    };
+    this.toddService.listTodosCount(query).subscribe(response => {
+      this.compltedCount = response.totalCount;
+    });
+  }
+
 }
