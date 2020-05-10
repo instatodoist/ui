@@ -42,7 +42,7 @@ export class AuthRegisterComponent implements OnInit {
     this.authService.register(this.signinForm.value)
     .subscribe((response: UserModel.RegisterResponse) => {
       const data = response;
-      this.router.navigate(['verification', data.hashToken]);
+      this.router.navigate(['auth/verification', data.hashToken]);
       this.loader = false;
       this.isSubmit = false;
     },

@@ -47,13 +47,13 @@ export class AuthVerifyComponent implements OnInit {
     this.authService.verification(this.formObj.value)
     .subscribe((response: UserModel.RegisterResponse) => {
       this.loader = false;
-      if (this.router.url.match('forgot-password/confirmation')) {
+      if (this.router.url.match('auth/forgot-password/confirmation')) {
         const data = response;
-        this.router.navigate(['reset-password/', data.hashToken]);
+        this.router.navigate(['auth/reset-password/', data.hashToken]);
         this.loader = false;
       } else {
         this.isSubmit = false;
-        this.router.navigate(['/']);
+        this.router.navigate(['/auth/login']);
       }
     },
     () => {

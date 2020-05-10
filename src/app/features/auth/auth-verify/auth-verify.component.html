@@ -3,7 +3,7 @@
 <form class="mt-4" [formGroup]="formObj" #formDir="ngForm" (ngSubmit)="register()" name="formObj">
   <div class="form-group">
     <!-- <label for="exampleInputEmail1">{{'auth.email'|translate}}</label> -->
-    <input type="email" class="form-control mb-0" id="exampleInputEmail1" formControlName="otp" maxlength="6" required>
+    <input type="email" class="form-control mb-0" id="exampleInputEmail1" formControlName="otp" maxlength="6" required placeholder="Enter OTP">
     <div>
       <span *ngIf="formObj.controls.otp.touched && formObj.controls.otp.errors && formObj.controls.otp.errors.required">
         Otp is required</span>
