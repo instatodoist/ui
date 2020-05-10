@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TodoRoutingModule } from './todo-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { TodoInboxComponent } from './todo-inbox/todo-inbox.component';
@@ -19,7 +20,8 @@ import { TodoLabelFilterComponent } from './todo-label-filter/todo-label-filter.
     CommonModule,
     ReactiveFormsModule,
     TodoRoutingModule,
-    SharedModule
+    SharedModule,
+    DragDropModule
   ],
   exports: [
     TodoDeleteComponent,

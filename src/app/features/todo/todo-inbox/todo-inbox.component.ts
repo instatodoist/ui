@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { map } from 'rxjs/operators';
 import { combineLatest, from } from 'rxjs';
 import { TodoListType, TodoCompletedListType, TodoType, TodoConditions } from '../../../models';
@@ -208,6 +209,30 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
     this.toddService.listTodosCount(query).subscribe(response => {
       this.compltedCount = response.totalCount;
     });
+  }
+
+  get trackIds(): string[] {
+    return this.todos.data.map(track => track._id);
+  }
+
+  // onTodoDropToDifferentLocation(event: CdkDragDrop<TodoType[]>) {
+  //   // In case the destination container is different from the previous container, we
+  //   // need to transfer the given task to the target data array. This happens if
+  //   // a task has been dropped on a different track.
+  //   if (event.previousContainer === event.container) {
+  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  //   } else {
+  //     transferArrayItem(event.previousContainer.data,
+  //       event.container.data,
+  //       event.previousIndex,
+  //       event.currentIndex);
+  //   }
+  // }
+
+  onTodoDrop(event: CdkDragDrop<TodoType[]>) {
+    console.log(event.previousIndex, event.currentIndex)
+    console.log(event.container.data)
+    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
   }
 
 }

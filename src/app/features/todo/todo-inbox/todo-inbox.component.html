@@ -22,62 +22,69 @@
 
         <div class="iq-card-body" *ngIf="!extraLoader">
 
-          <ul class="list-group list-group-flush">
+          <ul class="list-group list-group-flush" cdkDropList [cdkDropListData]="todos?.data"
+            (cdkDropListDropped)="onTodoDrop($event)" cdkDropListOrientation="horizontal">
             <ng-container *ngIf="todoCurrentType !== TODOTYPES?.completed">
-              <li class="list-group-item tr-{{ i + 1}} cursor" data-toggle="modal" data-target="#todo-dialog"
-                *ngFor="let todo of todos?.data; let i = index" (click)="openPopUp(todo, 'UPDATE')">
-
-                <div class="custom-control custom-checkbox custom-control-inline flota-l"
-                  (click)="$event.stopPropagation(); updateTodo(todo)">
-                  <input type="checkbox" class="custom-control-input" id="customCheck-f{{i+1}}">
-                  <label class="custom-control-label" for="customCheck-f{{i+1}}"></label>
-                </div>
-                <div class="cursor flota-l">
-                  <!--  Title -->
-                  <label>
-                    <div class="d-flex align-items-center justify-content-between">
-                      <span> {{todo?.title}}
-                        <span class="ml-2" *ngIf="todo?.priority !== 'P4'"
-                          [ngStyle]="{color: getPriorityColor(todo?.priority)}">
-                          <i class="fa fa-flag" aria-hidden="true"></i>
+              <ng-container *ngFor="let todo of todos?.data; let i = index">
+                <li class="list-group-item tr-{{ i + 1}} cursor" data-toggle="modal" data-target="#todo-dialog"
+                  cdkDropList [id]="todo._id" [cdkDropListData]="todo" [cdkDropListConnectedTo]="trackIds"
+                  (cdkDropListDropped)="onTodoDrop($event)" cdkDrag>
+                  <div class="custom-control custom-checkbox custom-control-inline flota-l mr-4"
+                    style="padding-left: 0px; margin-top: 5px;">
+                    <i class="fa fa-arrows flota-l" aria-hidden="true" cdkDragHandle></i>
+                  </div>
+                  <div class="custom-control custom-checkbox custom-control-inline flota-l"
+                    (click)="$event.stopPropagation(); updateTodo(todo)">
+                    <input type="checkbox" class="custom-control-input" id="customCheck-f{{i+1}}">
+                    <label class="custom-control-label" for="customCheck-f{{i+1}}"></label>
+                  </div>
+                  <div class="cursor flota-l">
+                    <!--  Title -->
+                    <label>
+                      <div class="d-flex align-items-center justify-content-between">
+                        <span> {{todo?.title}}
+                          <span class="ml-2" *ngIf="todo?.priority !== 'P4'"
+                            [ngStyle]="{color: getPriorityColor(todo?.priority)}">
+                            <i class="fa fa-flag" aria-hidden="true"></i>
+                          </span>
                         </span>
-                      </span>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between">
-                      <span class="badge border border-warning text-warning"
-                        *ngIf="todoCurrentType !== TODOTYPES?.pending && todoCurrentType !== TODOTYPES?.today && todo?.scheduledDate">
-                        {{todo?.scheduledDate | date: 'MMM d, y'}}
-                      </span>
-                      <span class="badge border border-danger text-danger"
-                        *ngIf="todoCurrentType === TODOTYPES?.pending && todo?.scheduledDate">
-                        {{todo?.scheduledDate | date: 'MMM d, y'}}
-                      </span>
-                    </div>
-                  </label>
-                  <!-- Labels-->
-                  <ng-container
-                    *ngIf="todoCurrentType === TODOTYPES?.pending || todoCurrentType === TODOTYPES?.inbox || todoCurrentType === TODOTYPES?.today">
-                    <div *ngFor="let label of todo?.label"
-                      class="badge badge-pill border border-primary text-primary ml-2">{{label?.name}}
+                      </div>
+                      <div class="d-flex align-items-center justify-content-between">
+                        <span class="badge border border-warning text-warning"
+                          *ngIf="todoCurrentType !== TODOTYPES?.pending && todoCurrentType !== TODOTYPES?.today && todo?.scheduledDate">
+                          {{todo?.scheduledDate | date: 'MMM d, y'}}
+                        </span>
+                        <span class="badge border border-danger text-danger"
+                          *ngIf="todoCurrentType === TODOTYPES?.pending && todo?.scheduledDate">
+                          {{todo?.scheduledDate | date: 'MMM d, y'}}
+                        </span>
+                      </div>
+                    </label>
+                    <!-- Labels-->
+                    <ng-container
+                      *ngIf="todoCurrentType === TODOTYPES?.pending || todoCurrentType === TODOTYPES?.inbox || todoCurrentType === TODOTYPES?.today">
+                      <div *ngFor="let label of todo?.label"
+                        class="badge badge-pill border border-primary text-primary ml-2">{{label?.name}}
+                      </div>
+                    </ng-container>
+                  </div>
+                  <ng-container>
+                    <div class=" ml-auto  ml-4">
+                      <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close"
+                        (click)="$event.stopPropagation(); deleteRequest(todo)">
+                        <span *ngIf="todo?.deleteRequest" (click)="$event.stopPropagation(); deleteTodo(todo)"
+                          class="text-primary"> <i class="fa fa-info-circle mr-2" aria-hidden="true"></i>
+                          click to confirm</span>
+                        <i *ngIf="!todo?.deleteRequest" class="fa fa-times cursor" aria-hidden="true"></i>
+                      </button>
+                      <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                      </button>
                     </div>
                   </ng-container>
-                </div>
-                <ng-container>
-                  <div class=" ml-auto  ml-4">
-                    <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close"
-                      (click)="$event.stopPropagation(); deleteRequest(todo)">
-                      <span *ngIf="todo?.deleteRequest" (click)="$event.stopPropagation(); deleteTodo(todo)"
-                        class="text-primary"> <i class="fa fa-info-circle mr-2" aria-hidden="true"></i>
-                        click to confirm</span>
-                      <i *ngIf="!todo?.deleteRequest" class="fa fa-times cursor" aria-hidden="true"></i>
-                    </button>
-                    <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close">
-                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                    </button>
-                  </div>
-                </ng-container>
 
-              </li>
+                </li>
+              </ng-container>
             </ng-container>
 
             <!-- Section for Completed Todos-->
