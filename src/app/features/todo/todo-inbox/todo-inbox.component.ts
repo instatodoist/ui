@@ -110,7 +110,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
       .subscribe((data: any) => {
         const { totalCount, data: newdata } = data;
         this.todosC = { totalCount, data: [...this.todosC.data, ...newdata] };
-        if (!totalCount || totalCount === 0) {
+        if (!totalCount || totalCount === 0 || !data.length) {
           this.loader = false;
         }
       });
