@@ -22,85 +22,76 @@
 
         <div class="iq-card-body" *ngIf="!extraLoader">
 
-          <!-- Section for Current Todos-->
-          <ng-container *ngIf="todoCurrentType !== TODOTYPES?.completed">
+          <ul class="list-group list-group-flush">
+            <ng-container *ngIf="todoCurrentType !== TODOTYPES?.completed">
+              <li class="list-group-item tr-{{ i + 1}} cursor" data-toggle="modal" data-target="#todo-dialog"
+                *ngFor="let todo of todos?.data; let i = index" (click)="openPopUp(todo, 'UPDATE')">
 
-            <div class="tab-content" id="myTabContent">
-              <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"
-                data-toggle="modal" data-target="#todo-dialog">
-                <div class="d-flex tasks-card" role="alert" class="tr-{{ i + 1}} cursor"
-                  *ngFor="let todo of todos?.data; let i = index" (click)="openPopUp(todo, 'UPDATE')">
-
-                  <div class="custom-control custom-checkbox custom-control-inline"
-                    (click)="$event.stopPropagation(); updateTodo(todo)">
-                    <input type="checkbox" class="custom-control-input" id="customCheck-f{{i+1}}">
-                    <label class="custom-control-label" for="customCheck-f{{i+1}}"></label>
-                  </div>
-
-                  <div class="cursor">
-                    <!--  Title -->
-                    <label>
-                      <div class="d-flex align-items-center justify-content-between">
-                        <span> {{todo?.title}}
-                          <span class="ml-2" *ngIf="todo?.priority !== 'P4'"
-                            [ngStyle]="{color: getPriorityColor(todo?.priority)}">
-                            <i class="fa fa-flag" aria-hidden="true"></i>
-                          </span>
+                <div class="custom-control custom-checkbox custom-control-inline flota-l"
+                  (click)="$event.stopPropagation(); updateTodo(todo)">
+                  <input type="checkbox" class="custom-control-input" id="customCheck-f{{i+1}}">
+                  <label class="custom-control-label" for="customCheck-f{{i+1}}"></label>
+                </div>
+                <div class="cursor flota-l">
+                  <!--  Title -->
+                  <label>
+                    <div class="d-flex align-items-center justify-content-between">
+                      <span> {{todo?.title}}
+                        <span class="ml-2" *ngIf="todo?.priority !== 'P4'"
+                          [ngStyle]="{color: getPriorityColor(todo?.priority)}">
+                          <i class="fa fa-flag" aria-hidden="true"></i>
                         </span>
-                      </div>
-                      <div class="d-flex align-items-center justify-content-between">
-                        <span class="badge border border-warning text-warning"
-                          *ngIf="todoCurrentType !== TODOTYPES?.pending && todoCurrentType !== TODOTYPES?.today && todo?.scheduledDate">
-                          {{todo?.scheduledDate | date: 'MMM d, y'}}
-                        </span>
-                        <span class="badge border border-danger text-danger"
-                          *ngIf="todoCurrentType === TODOTYPES?.pending && todo?.scheduledDate">
-                          {{todo?.scheduledDate | date: 'MMM d, y'}}
-                        </span>
-                      </div>
-                    </label>
-
-                    <!-- Labels-->
-                    <ng-container
-                      *ngIf="todoCurrentType === TODOTYPES?.pending || todoCurrentType === TODOTYPES?.inbox || todoCurrentType === TODOTYPES?.today">
-                      <div *ngFor="let label of todo?.label"
-                        class="badge badge-pill border border-primary text-primary ml-2">{{label?.name}}
-                      </div>
-                    </ng-container>
-                  </div>
-
-                  <!-- Actions-->
-                  <ng-container>
-                    <div class=" ml-auto  ml-4">
-                      <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close"
-                        (click)="$event.stopPropagation(); deleteRequest(todo)">
-                        <span *ngIf="todo?.deleteRequest" (click)="$event.stopPropagation(); deleteTodo(todo)" class="text-primary"> <i class="fa fa-info-circle mr-2" aria-hidden="true"></i>
-                          click to confirm</span>
-                        <i *ngIf="!todo?.deleteRequest" class="fa fa-times cursor" aria-hidden="true"></i>
-                      </button>
-                      <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close">
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                      </button>
+                      </span>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between">
+                      <span class="badge border border-warning text-warning"
+                        *ngIf="todoCurrentType !== TODOTYPES?.pending && todoCurrentType !== TODOTYPES?.today && todo?.scheduledDate">
+                        {{todo?.scheduledDate | date: 'MMM d, y'}}
+                      </span>
+                      <span class="badge border border-danger text-danger"
+                        *ngIf="todoCurrentType === TODOTYPES?.pending && todo?.scheduledDate">
+                        {{todo?.scheduledDate | date: 'MMM d, y'}}
+                      </span>
+                    </div>
+                  </label>
+                  <!-- Labels-->
+                  <ng-container
+                    *ngIf="todoCurrentType === TODOTYPES?.pending || todoCurrentType === TODOTYPES?.inbox || todoCurrentType === TODOTYPES?.today">
+                    <div *ngFor="let label of todo?.label"
+                      class="badge badge-pill border border-primary text-primary ml-2">{{label?.name}}
                     </div>
                   </ng-container>
-
                 </div>
-              </div>
-            </div>
-          </ng-container>
-          <!--END-->
+                <ng-container>
+                  <div class=" ml-auto  ml-4">
+                    <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close"
+                      (click)="$event.stopPropagation(); deleteRequest(todo)">
+                      <span *ngIf="todo?.deleteRequest" (click)="$event.stopPropagation(); deleteTodo(todo)"
+                        class="text-primary"> <i class="fa fa-info-circle mr-2" aria-hidden="true"></i>
+                        click to confirm</span>
+                      <i *ngIf="!todo?.deleteRequest" class="fa fa-times cursor" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close">
+                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </ng-container>
 
-          <!-- Section for Completed Todos-->
-          <ng-container *ngIf="todoCurrentType === TODOTYPES?.completed">
-            <app-infinite-scroll (scrolled)="refresh()">
-              <app-todo-completed [todos]="todosC"></app-todo-completed>
-              <div class="col-sm-12 text-center" *ngIf="loader">
-                <img src="{{loaderImage}}" alt="loader" style="height: 100px;">
-              </div>
-            </app-infinite-scroll>
-          </ng-container>
-          <!--END-->
+              </li>
+            </ng-container>
 
+            <!-- Section for Completed Todos-->
+            <ng-container *ngIf="todoCurrentType === TODOTYPES?.completed">
+              <app-infinite-scroll (scrolled)="refresh()">
+                <app-todo-completed [todos]="todosC"></app-todo-completed>
+                <div class="col-sm-12 text-center" *ngIf="loader">
+                  <img src="{{loaderImage}}" alt="loader" style="height: 100px;">
+                </div>
+              </app-infinite-scroll>
+            </ng-container>
+            <!--END-->
+
+          </ul>
         </div>
       </div>
     </div>
