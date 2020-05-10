@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TodoService, SharedService } from '../../../service';
 import { TodoType, TodoLabelType, TodoConditions, OperationEnumType } from '../../../models';
-import {  map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 declare var $: any;
 declare var flatpickr: any;
@@ -109,16 +109,27 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     if (typeof flatpickr !== 'undefined' && $.isFunction(flatpickr)) {
       const config: any = {
-        inline: true
+        inline: true,
+        dateFormat: 'Y-m-d'
       };
       if (!this.todo) {
         config.minDate = new Date();
       }
+      // if (!!this.todo && this.todo.scheduledDate) {
+      //   const todo = this.todo;
+      //   config.defaultDate = new Date(todo.scheduledDate);
+      //   config.enable = [
+      //     // tslint:disable-next-line: only-arrow-functions
+      //     function(date) {
+      //       return date === new Date(todo.scheduledDate) || date >= new Date();
+      //     }
+      //   ];
+      // }
       $('.flatpicker').flatpickr(config);
     }
     const isOpenInstance = this.isOpen;
     // tslint:disable-next-line: only-arrow-functions
-    $(`#${this.modelId}`).on('hidden.bs.modal', function() {
+    $(`#${this.modelId}`).on('hidden.bs.modal', function () {
       isOpenInstance.emit(false);
     });
   }
@@ -218,9 +229,9 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
           this.isOpen.emit(false);
           $(`#${this.modelId}`).modal('hide');
         },
-        () => {
-          this.isSubmit = false;
-        }
+          () => {
+            this.isSubmit = false;
+          }
         );
     }
   }

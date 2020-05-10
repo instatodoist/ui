@@ -27,8 +27,8 @@
             <ng-container *ngIf="todoCurrentType !== TODOTYPES?.completed">
               <ng-container *ngFor="let todo of todos?.data; let i = index">
                 <li class="list-group-item tr-{{ i + 1}} cursor" data-toggle="modal" data-target="#todo-dialog"
-                (click)="openPopUp(todo, 'UPDATE')" cdkDropList [id]="todo._id" [cdkDropListData]="todo" [cdkDropListConnectedTo]="trackIds"
-                  (cdkDropListDropped)="onTodoDrop($event)" cdkDrag>
+                  (click)="openPopUp(todo, 'UPDATE')" cdkDropList [id]="todo._id" [cdkDropListData]="todo"
+                  [cdkDropListConnectedTo]="trackIds" (cdkDropListDropped)="onTodoDrop($event)" cdkDrag>
                   <div class="custom-control custom-checkbox custom-control-inline flota-l mr-4"
                     style="padding-left: 0px; margin-top: 5px;">
                     <i class="fa fa-arrows flota-l" aria-hidden="true" cdkDragHandle></i>
@@ -48,6 +48,12 @@
                             <i class="fa fa-flag" aria-hidden="true"></i>
                           </span>
                         </span>
+                        <ng-container
+                          *ngIf="todoCurrentType === TODOTYPES?.pending || todoCurrentType === TODOTYPES?.inbox || todoCurrentType === TODOTYPES?.today">
+                          <span *ngFor="let label of todo?.label"
+                            class="badge badge-pill border border-primary text-primary ml-2">{{label?.name}}
+                          </span>
+                        </ng-container>
                       </div>
                       <div class="d-flex align-items-center justify-content-between">
                         <span class="badge border border-warning text-warning"
@@ -61,12 +67,7 @@
                       </div>
                     </label>
                     <!-- Labels-->
-                    <ng-container
-                      *ngIf="todoCurrentType === TODOTYPES?.pending || todoCurrentType === TODOTYPES?.inbox || todoCurrentType === TODOTYPES?.today">
-                      <div *ngFor="let label of todo?.label"
-                        class="badge badge-pill border border-primary text-primary ml-2">{{label?.name}}
-                      </div>
-                    </ng-container>
+
                   </div>
                   <ng-container>
                     <div class=" ml-auto  ml-4">
