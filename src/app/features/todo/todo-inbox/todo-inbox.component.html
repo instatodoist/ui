@@ -56,12 +56,13 @@
                         </ng-container>
                       </div>
                       <div class="d-flex align-items-center justify-content-between">
-                        <span 
+                        <span
                           [ngClass]="(checkScheduledDate(todo?.scheduledDate))? 'badge border border-warning text-warning': 'badge border border-danger text-danger'"
                           *ngIf="todoCurrentType !== TODOTYPES?.pending && todoCurrentType !== TODOTYPES?.today && todo?.scheduledDate">
                           {{todo?.scheduledDate | date: 'MMM d, y'}}
                         </span>
-                        <span class="badge border border-danger text-danger"
+                        <span
+                          class="badge border border-danger text-danger"
                           *ngIf="todoCurrentType === TODOTYPES?.pending && todo?.scheduledDate">
                           {{todo?.scheduledDate | date: 'MMM d, y'}}
                         </span>

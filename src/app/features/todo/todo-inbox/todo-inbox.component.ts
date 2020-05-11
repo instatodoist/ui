@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { map } from 'rxjs/operators';
-import { combineLatest, from } from 'rxjs';
+import { combineLatest, from, Subscription } from 'rxjs';
 import { TodoListType, TodoCompletedListType, TodoType, TodoConditions, IExternalModal } from '../../../models';
 import { TodoService, AppService } from '../../../service';
 import * as moment from 'moment';
@@ -13,7 +13,7 @@ declare var $: any;
   templateUrl: './todo-inbox.component.html',
   styleUrls: ['./todo-inbox.component.scss'],
 })
-export class TodoInboxComponent implements OnInit, AfterViewInit {
+export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('dialog') dialog: TemplateRef<any>;
   loader = false;
   extraLoader = false;
@@ -32,12 +32,17 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
   loaderImage = this.appService.loaderImage;
   isDeleting = false;
   extModalConfig: IExternalModal;
+  modalSubscription: Subscription;
 
   constructor(
     private toddService: TodoService,
     private activatedRoute: ActivatedRoute,
     private appService: AppService,
   ) {
+  }
+
+  ngOnDestroy() {
+    this.modalSubscription.unsubscribe();
   }
 
   ngAfterViewInit() {
@@ -205,12 +210,13 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
   }
 
   checkScheduledDate(date: Date): boolean {
-    return moment(new Date(date)).isSameOrAfter(moment(new Date()));
+    const diff = moment(new Date(date)).diff((moment(new Date()).format('YYYY-MM-DD')));
+    return diff === 0 || diff > 1;
   }
 
   // used for open & closing of todo add modal
   private subscribeToExtTodoAddModal() {
-    this.appService.externalModal.subscribe(data => {
+    this.modalSubscription = this.appService.externalModal.subscribe(data => {
       this.extModalConfig = data;
     });
   }
