@@ -77,11 +77,11 @@
                         <span *ngIf="todo?.deleteRequest" (click)="$event.stopPropagation(); deleteTodo(todo)"
                           class="text-primary"> <i class="fa fa-info-circle mr-2" aria-hidden="true"></i>
                           click to confirm</span>
-                        <i *ngIf="!todo?.deleteRequest" class="fa fa-times cursor" aria-hidden="true"></i>
+                          <i *ngIf="!todo?.deleteRequest" class="fa fa-minus-circle cursor" aria-hidden="true"></i>
                       </button>
-                      <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close">
+                      <!-- <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close">
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                      </button>
+                      </button> -->
                     </div>
                   </ng-container>
 
