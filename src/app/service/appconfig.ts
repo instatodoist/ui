@@ -1,39 +1,44 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { IExternalModal } from './../models';
-
+import { Injectable, OnDestroy } from '@angular/core';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { IExternalModal, IAppData } from './../models';
+import { LsService } from '../service/ls.service';
 @Injectable({
     providedIn: 'root',
 })
 
-export class AppConfig {
-  appData: BehaviorSubject<any>;
+export class AppService implements OnDestroy {
+  APP_LEVEL: BehaviorSubject<IAppData>;
   externalModal: BehaviorSubject<IExternalModal>;
   ExternalModelConfig: IExternalModal = {
     TODO_ADD: false,
     TODO_UPDATE: false
   };
+  APP_DATA: IAppData = {
+    config: {
+      theme: localStorage.getItem('defaultTheme') || 'rgb(30, 61, 115)'
+    },
+    isLoggedIn: Boolean(this.lsService.getValue('isLoggedIn')) || false,
+    token: this.lsService.getValue('__token') || null,
+    session: null,
+  };
+  appSubscription: Subscription;
 
-  constructor() {
-    this.appData = new BehaviorSubject({});
+  constructor(
+    private lsService: LsService
+  ) {
+    // initialize app level data
+    this.APP_LEVEL = new BehaviorSubject(this.APP_DATA);
     // initialize the modal config
     this.externalModal = new BehaviorSubject(this.ExternalModelConfig);
+    this.subscribeToAppData();
   }
 
   updateExternalModal(obj: IExternalModal) {
     this.externalModal.next(obj);
   }
 
-  updateAppData(data) {
-    this.appData.next(data);
-  }
-
-  get defaultSettings() {
-    return {
-      app: {
-        theme: localStorage.getItem('defaultTheme') || 'rgb(30, 61, 115)'
-      }
-    };
+  updateCoreAppData(data: IAppData) {
+    this.APP_LEVEL.next(data);
   }
 
   changeTheme(iqColor: any) {
@@ -50,5 +55,16 @@ export class AppConfig {
 
   get loaderImage() {
     return '/assets/facelift/images/page-img/page-load-loader.gif';
+  }
+
+  // subscribe & update any app level data
+  private subscribeToAppData() {
+    this.APP_LEVEL.subscribe((data: IAppData) => {
+      this.APP_DATA = data;
+    });
+  }
+
+  ngOnDestroy() {
+    this.appSubscription.unsubscribe();
   }
 }

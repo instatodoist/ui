@@ -3,6 +3,10 @@ export interface UserProfileType {
     email: string;
 }
 
+export interface IUserProfile {
+    _id: string;
+    email: string;
+}
 export interface UserType {
     email: string;
     password: string;

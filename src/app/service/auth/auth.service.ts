@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { AppConfig as AppService } from './../../service/appconfig';
 import { LsService } from './../../service/ls.service';
 import { environment } from '../../../environments/environment';
 import { UserModel } from '../../models';
@@ -24,8 +23,7 @@ export class AuthService {
 
   constructor(
     private lsService: LsService,
-    private apollo: Apollo,
-    private appService: AppService
+    private apollo: Apollo
   ) { }
 
   login() {

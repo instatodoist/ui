@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterContentInit, AfterViewInit } from '@angular/core';
-import { AppConfig as AppService } from '../../../../service/appconfig';
+import { AppService } from '../../../../service';
 declare var $: any;
 @Component({
   selector: 'app-front',
@@ -15,7 +15,7 @@ export class FrontComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    this.appService.changeTheme(this.appService.defaultSettings.app.theme);
+    this.appService.changeTheme(this.appService.APP_DATA.config.theme);
     $('.owl-carousel').each(function() {
       const jQuerycarousel = $(this);
       jQuerycarousel.owlCarousel({

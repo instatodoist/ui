@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
-import { AppConfig } from '../../../service/appconfig';
-import { AuthService } from '../../../service/auth/auth.service';
-import { LsService } from '../../../service/ls.service';
+import { LsService, AuthService } from '../../../service';
 
 @Component({
   selector: 'app-auth',
@@ -12,7 +9,6 @@ import { LsService } from '../../../service/ls.service';
 })
 export class AuthComponent implements OnInit {
 
-  appData: any;
   loader: boolean;
   isSubmit = false;
   signinForm = this.fb.group({
@@ -21,18 +17,12 @@ export class AuthComponent implements OnInit {
   });
 
   constructor(
-    private appConfig: AppConfig,
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router,
     private lsService: LsService
   ) { }
 
-  ngOnInit(): void {
-    this.appConfig.appData.subscribe(data => {
-      this.appData = data;
-    });
-  }
+  ngOnInit(): void {}
 
   // auth check after submit
   signIn(): void {

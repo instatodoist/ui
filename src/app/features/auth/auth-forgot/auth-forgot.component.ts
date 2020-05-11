@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
-import { AppConfig } from '../../../service/appconfig';
 import { AuthService } from '../../../service/auth/auth.service';
 
 @Component({
@@ -12,24 +11,18 @@ import { AuthService } from '../../../service/auth/auth.service';
 export class AuthForgotComponent implements OnInit {
 
   isSubmit = false;
-  appData: any;
   loader: boolean;
   signinForm = this.fb.group({
     email: ['', Validators.required]
   });
 
   constructor(
-    private appConfig: AppConfig,
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router
   ) { }
 
-  ngOnInit(): void {
-    this.appConfig.appData.subscribe(data => {
-      this.appData = data;
-    });
-  }
+  ngOnInit(): void {}
 
   // auth check after submit
   submit(): void {

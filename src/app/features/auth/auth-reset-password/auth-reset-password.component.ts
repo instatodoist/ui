@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { AppConfig } from '../../../service/appconfig';
-import { AuthService } from '../../../service/auth/auth.service';
-import { UserModel } from '../../../models';
+import { AuthService } from '../../../service';
+
 @Component({
   selector: 'app-auth-reset-password',
   templateUrl: './auth-reset-password.component.html',
@@ -12,12 +11,10 @@ import { UserModel } from '../../../models';
 export class AuthResetPasswordComponent implements OnInit {
 
   isSubmit = false;
-  appData: any;
   loader: boolean;
   formObj: FormGroup;
 
   constructor(
-    private appConfig: AppConfig,
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
@@ -28,9 +25,6 @@ export class AuthResetPasswordComponent implements OnInit {
     this.formObj = this.fb.group({
       password: ['', Validators.required],
       hashToken: ['', Validators.required],
-    });
-    this.appConfig.appData.subscribe(data => {
-      this.appData = data;
     });
     this.activatedRoute.params.subscribe((params) => {
       this.formObj.patchValue({

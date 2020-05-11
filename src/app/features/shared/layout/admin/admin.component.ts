@@ -1,6 +1,6 @@
 declare var $: any;
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { AppConfig as AppService } from '../../../../service/appconfig';
+import { AppService } from '../../../../service';
 
 @Component({
   selector: 'app-admin',
@@ -9,7 +9,7 @@ import { AppConfig as AppService } from '../../../../service/appconfig';
 })
 export class AdminComponent implements OnInit, AfterViewInit {
   snachBar: any;
-  defaultTheme = this.appService.defaultSettings.app.theme;
+  defaultTheme = this.appService.APP_DATA.config.theme;
 
   constructor(
     private appService: AppService
