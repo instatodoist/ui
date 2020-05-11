@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { LsService } from '../../../../service/ls.service';
-import { AuthService } from '../../../../service/auth/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService, AppService } from '../../../../service';
 
 @Component({
   selector: 'app-header',
@@ -17,19 +16,18 @@ export class HeaderComponent implements OnInit {
 
   tabTitle = 'InstaTodo';
   headerTitle: string;
-  isOpen = false;
   session: any;
   formObj: FormGroup;
 
   constructor(
     private router: Router,
-    private lsService: LsService,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
     private translate: TranslateService,
     private userService: AuthService,
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private appService: AppService
   ) {
     this.router
       .events
@@ -83,12 +81,11 @@ export class HeaderComponent implements OnInit {
     this.translate.use(language);
   }
 
-  closePopUp($event: boolean): void {
-    this.isOpen = $event;
-  }
-
   openPopUp(): void {
-    this.isOpen = true;
+    this.appService.updateExternalModal({
+      ...this.appService.ExternalModelConfig,
+      TODO_ADD: true
+    });
   }
 
   getProfile() {
@@ -100,7 +97,7 @@ export class HeaderComponent implements OnInit {
 
   onSearch() {
     const urlTree = this.router.createUrlTree([], {
-      queryParams: { q: this.formObj.value.query ? this.formObj.value.query : null  },
+      queryParams: { q: this.formObj.value.query ? this.formObj.value.query : null },
       queryParamsHandling: 'merge',
       preserveFragment: true
     });

@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { ActivatedRoute } from '@angular/router';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { map } from 'rxjs/operators';
 import { combineLatest, from } from 'rxjs';
-import { TodoListType, TodoCompletedListType, TodoType, TodoConditions } from '../../../models';
+import { TodoListType, TodoCompletedListType, TodoType, TodoConditions, IExternalModal } from '../../../models';
 import { TodoService, AppService } from '../../../service';
-import { Apollo } from 'apollo-angular';
 import * as moment from 'moment';
 
 declare var $: any;
@@ -13,7 +12,6 @@ declare var $: any;
   selector: 'app-todo-inbox',
   templateUrl: './todo-inbox.component.html',
   styleUrls: ['./todo-inbox.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodoInboxComponent implements OnInit, AfterViewInit {
   @ViewChild('dialog') dialog: TemplateRef<any>;
@@ -24,8 +22,6 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
     data: []
   };
   todos: TodoListType;
-  isUpdate = false; // if update popup
-  isDelete = false; // if delete popup
   popupType: string; // popup type - update/delete
   todo: TodoType = null; // single todo object
   conditions: TodoConditions; // aploo refreshfetch conditions
@@ -35,14 +31,12 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
   compltedCount = 0;
   loaderImage = this.appService.loaderImage;
   isDeleting = false;
-  private today = new Date();
+  extModalConfig: IExternalModal;
 
   constructor(
     private toddService: TodoService,
-    private router: Router,
     private activatedRoute: ActivatedRoute,
     private appService: AppService,
-    private apollo: Apollo
   ) {
   }
 
@@ -89,6 +83,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
           this.getTodos(this.conditions);
         }
       });
+    this.subscribeToExtTodoAddModal();
   }
 
   // get priority color
@@ -130,26 +125,14 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
    * @param todo - todo object
    * @param popupType - update/delete
    */
-  openPopUp(todo: TodoType, popupType): void {
+  openPopUp(todo: TodoType, popupType: string): void {
     if (popupType === 'UPDATE') {
-      this.isUpdate = true;
-      this.popupType = 'UPDATE';
-    } else {
-      this.isDelete = true;
-      this.popupType = 'DELETE';
+      this.appService.externalModal.next({
+        ...this.appService.ExternalModelConfig,
+        TODO_UPDATE: true
+      });
     }
     this.todo = todo; // passing todo object to update dialog
-  }
-
-  /**
-   * @param $event - flag after closing the popup
-   */
-  updatePopupFlag($event: boolean): void {
-    if (this.popupType === 'UPDATE') {
-      this.isUpdate = $event;
-    } else {
-      this.isDelete = $event;
-    }
   }
 
   /**
@@ -217,26 +200,19 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
     return this.todos.data.map(track => track._id);
   }
 
-  // onTodoDropToDifferentLocation(event: CdkDragDrop<TodoType[]>) {
-  //   // In case the destination container is different from the previous container, we
-  //   // need to transfer the given task to the target data array. This happens if
-  //   // a task has been dropped on a different track.
-  //   if (event.previousContainer === event.container) {
-  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-  //   } else {
-  //     transferArrayItem(event.previousContainer.data,
-  //       event.container.data,
-  //       event.previousIndex,
-  //       event.currentIndex);
-  //   }
-  // }
-
   onTodoDrop(event: CdkDragDrop<TodoType[]>) {
     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
   }
 
   checkScheduledDate(date: Date): boolean {
     return moment(new Date(date)).isSameOrAfter(moment(new Date()));
+  }
+
+  // used for open & closing of todo add modal
+  private subscribeToExtTodoAddModal() {
+    this.appService.externalModal.subscribe(data => {
+      this.extModalConfig = data;
+    });
   }
 
 }

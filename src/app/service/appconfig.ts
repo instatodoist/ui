@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { IExternalModal } from './../models';
 
 @Injectable({
     providedIn: 'root',
@@ -7,9 +8,22 @@ import { BehaviorSubject } from 'rxjs';
 
 export class AppConfig {
   appData: BehaviorSubject<any>;
+  externalModal: BehaviorSubject<IExternalModal>;
+  ExternalModelConfig: IExternalModal = {
+    TODO_ADD: false,
+    TODO_UPDATE: false
+  };
+
   constructor() {
     this.appData = new BehaviorSubject({});
+    // initialize the modal config
+    this.externalModal = new BehaviorSubject(this.ExternalModelConfig);
   }
+
+  updateExternalModal(obj: IExternalModal) {
+    this.externalModal.next(obj);
+  }
+
   updateAppData(data) {
     this.appData.next(data);
   }
@@ -23,7 +37,6 @@ export class AppConfig {
   }
 
   changeTheme(iqColor: any) {
-    console.log(iqColor);
     localStorage.setItem('defaultTheme', iqColor);
     const str = iqColor;
     const res = str.replace('rgb(', '');

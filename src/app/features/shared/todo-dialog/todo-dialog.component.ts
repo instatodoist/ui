@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { TodoService, SharedService } from '../../../service';
+import { TodoService, SharedService, AppService } from '../../../service';
 import { TodoType, TodoLabelType, TodoConditions, OperationEnumType } from '../../../models';
 import { map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
@@ -42,7 +42,8 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
     private todoService: TodoService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private appService: AppService
   ) { }
 
   ngOnInit(): void {
@@ -103,6 +104,11 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
         if (filterLabel.length) {
           this.currentLabel = filterLabel[0].name;
         }
+        if (this.todoCurrentType === 'today') {
+          this.formObj.patchValue({
+            scheduling: true
+          });
+        }
       });
   }
 
@@ -128,38 +134,19 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
       $('.flatpicker').flatpickr(config);
     }
     const isOpenInstance = this.isOpen;
+    const externalModal = this.appService.externalModal;
+    const modelId = this.modelId;
     // tslint:disable-next-line: only-arrow-functions
-    $(`#${this.modelId}`).on('hidden.bs.modal', function () {
-      isOpenInstance.emit(false);
+    $(`#${this.modelId}`).on('hidden.bs.modal', function() {
+      if (modelId === 'todo-dialog-add') {
+        externalModal.next({
+          TODO_ADD: false
+        });
+      } else {
+        isOpenInstance.emit(false);
+      }
     });
   }
-
-  /**
-   * @description - use to check conditions wrt current route
-   */
-  // checkingRouteTypes() {
-  //   if (this.router.url === '/tasks/today') { // checking route if today
-  //     this.todoCurrentType = this.TODOTYPES.today;
-  //     this.formObj.patchValue({
-  //       scheduling: true
-  //     });
-  //   } else if (this.router.url === '/tasks/completed') { // checking route if completed
-  //     this.todoCurrentType = this.TODOTYPES.completed;
-  //   } else if (this.router.url === '/tasks/inbox') { // checking route if inbox
-  //     this.todoCurrentType = this.TODOTYPES.inbox;
-  //   } else if (this.router.url === '/tasks/pending') { // checking route if inbox
-  //     this.todoCurrentType = this.TODOTYPES.pending;
-  //   } else {
-  //     const routerStrArr = this.router.url.split('/');
-  //     const labelId = routerStrArr[routerStrArr.length - 2];
-  //     this.todoCurrentType = labelId;
-  //     // populating label wrt route label
-  //     this.formObj.value.labelId.push(labelId);
-  //     this.labelIdVal = this.formObj.value.labelId;
-  //   }
-  //   this.getLabels(); // getting labels
-  //   this.conditions = this.todoService.getConditions(this.todoCurrentType); // default case for 
-  // }
 
   // open priority menu
   openPriority() {
@@ -189,25 +176,6 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
     this.currentLabel = label.name;
     const labelId = label._id;
     this.formObj.value.labelId = [labelId];
-    // const index = this.formObj.value.labelId.indexOf(labelId);
-    // if (index === -1) {
-    //   this.formObj.value.labelId.push(labelId);
-    // } else {
-    //   this.formObj.value.labelId.splice(index, 1);
-    // }
-  }
-
-  // fetching labels
-  getLabels() {
-    this.todoService
-      .listTodoLabels()
-      .subscribe(response => {
-        this.labels = response;
-        const filterLabel = this.labels.filter(item => item._id === this.labelIdVal[0]);
-        if (filterLabel.length) {
-          this.currentLabel = filterLabel[0].name;
-        }
-      });
   }
 
   isScheduling() {
