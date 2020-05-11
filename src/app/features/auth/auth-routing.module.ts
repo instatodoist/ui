@@ -43,6 +43,7 @@ const authRoutes: Routes = [
     ]
   },
   {
+    canActivate: [CanActivateAuthenticateGuard],
     path: '',
     component: HomeLayoutComponent,
     children: [
