@@ -20,11 +20,11 @@
         </div>
         <!--END-->
 
-        <div class="iq-card-body" *ngIf="!extraLoader">
+        <div class="iq-card-body" *ngIf="!extraLoader && todoCurrentType !== TODOTYPES?.completed">
 
           <ul class="list-group list-group-flush" cdkDropList [cdkDropListData]="todos?.data"
             (cdkDropListDropped)="onTodoDrop($event)" cdkDropListOrientation="horizontal">
-            <ng-container *ngIf="todoCurrentType !== TODOTYPES?.completed">
+            <ng-container>
               <ng-container *ngFor="let todo of todos?.data; let i = index">
                 <li class="list-group-item tr-{{ i + 1}} cursor" data-toggle="modal" data-target="#todo-dialog"
                   (click)="openPopUp(todo, 'UPDATE')" cdkDropList [id]="todo._id" [cdkDropListData]="todo"
@@ -35,7 +35,8 @@
                   </div>
                   <div class="custom-control custom-checkbox custom-control-inline flota-l"
                     (click)="$event.stopPropagation(); updateTodo(todo)">
-                    <input type="checkbox" class="custom-control-input" id="customCheck-f{{i+1}}" [checked]="todo?.isCompleted">
+                    <input type="checkbox" class="custom-control-input" id="customCheck-f{{i+1}}"
+                      [checked]="todo?.isCompleted">
                     <label class="custom-control-label" for="customCheck-f{{i+1}}"></label>
                   </div>
                   <div class="cursor flota-l">
@@ -61,8 +62,7 @@
                           *ngIf="todoCurrentType !== TODOTYPES?.pending && todoCurrentType !== TODOTYPES?.today && todo?.scheduledDate">
                           {{todo?.scheduledDate | date: 'MMM d, y'}}
                         </span>
-                        <span
-                          class="badge border border-danger text-danger"
+                        <span class="badge border border-danger text-danger"
                           *ngIf="todoCurrentType === TODOTYPES?.pending && todo?.scheduledDate">
                           {{todo?.scheduledDate | date: 'MMM d, y'}}
                         </span>
@@ -78,7 +78,7 @@
                         <span *ngIf="todo?.deleteRequest" (click)="$event.stopPropagation(); deleteTodo(todo)"
                           class="text-primary"> <i class="fa fa-info-circle mr-2" aria-hidden="true"></i>
                           click to confirm</span>
-                          <i *ngIf="!todo?.deleteRequest" class="fa fa-minus-circle cursor" aria-hidden="true"></i>
+                        <i *ngIf="!todo?.deleteRequest" class="fa fa-minus-circle cursor" aria-hidden="true"></i>
                       </button>
                       <!-- <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close">
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -89,19 +89,17 @@
                 </li>
               </ng-container>
             </ng-container>
-
-            <!-- Section for Completed Todos-->
-            <ng-container *ngIf="todoCurrentType === TODOTYPES?.completed">
-              <app-infinite-scroll (scrolled)="refresh()">
-                <app-todo-completed [todos]="todosC"></app-todo-completed>
-                <div class="col-sm-12 text-center" *ngIf="loader">
-                  <img src="{{loaderImage}}" alt="loader" style="height: 100px;">
-                </div>
-              </app-infinite-scroll>
-            </ng-container>
-            <!--END-->
-
           </ul>
+        </div>
+
+        <!-- Section for Completed Todos-->
+        <div class="iq-card-body" *ngIf="!extraLoader && todoCurrentType === TODOTYPES?.completed">
+          <app-infinite-scroll (scrolled)="refresh()">
+            <app-todo-completed [todos]="todosC"></app-todo-completed>
+            <div class="col-sm-12 text-center" *ngIf="loader">
+              <img src="{{loaderImage}}" alt="loader" style="height: 100px;">
+            </div>
+          </app-infinite-scroll>
         </div>
       </div>
     </div>
@@ -109,7 +107,8 @@
 </div>
 
 <!--Popup for Updating todo-->
-<app-todo-dialog [todo]="todo" [origin]="todoCurrentType === TODOTYPES.completed? 'COMPLETED' : null" *ngIf="extModalConfig.TODO_UPDATE">
+<app-todo-dialog [todo]="todo" [origin]="todoCurrentType === TODOTYPES.completed? 'COMPLETED' : null"
+  *ngIf="extModalConfig.TODO_UPDATE">
 </app-todo-dialog>
 
 <app-todo-dialog [modelId]="'todo-dialog-add'" *ngIf="extModalConfig.TODO_ADD"></app-todo-dialog>

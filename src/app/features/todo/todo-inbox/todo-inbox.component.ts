@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, AfterViewInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { map } from 'rxjs/operators';
@@ -15,7 +15,7 @@ declare var $: any;
 })
 export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('dialog') dialog: TemplateRef<any>;
-  loader = false;
+  loader = true;
   extraLoader = false;
   todosC: TodoCompletedListType = {
     totalCount: 0,
@@ -83,7 +83,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         if (this.todoCurrentType === this.TODOTYPES.completed) {
           this.getTotalCount();
-          this.getCompletedTodos(this.conditions);
+          // this.getCompletedTodos(this.conditions);
         } else {
           this.getTodos(this.conditions);
         }
@@ -120,7 +120,9 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((data: any) => {
         const { totalCount, data: newdata } = data;
         this.todosC = { totalCount, data: [...this.todosC.data, ...newdata] };
-        if (!totalCount || totalCount === 0 || !data.length) {
+        console.log(this.todosC);
+        console.log();
+        if (!totalCount || totalCount === 0 || !newdata.length) {
           this.loader = false;
         }
       });
@@ -179,13 +181,16 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  @HostListener('scroll', ['$event'])
   refresh() {
     const { totalCount, data } = this.todosC;
-    if (data.length < totalCount && this.loader) {
+    if (!totalCount) {
+      this.getCompletedTodos(this.conditions);
+    } else if (data.length < totalCount && this.loader) {
       const { offset } = this.conditions;
       this.conditions = { ...this.conditions, offset: offset + 1 };
       this.getCompletedTodos(this.conditions);
-    } else if (data.length) {
+    } else {
       this.loader = false;
     }
   }
