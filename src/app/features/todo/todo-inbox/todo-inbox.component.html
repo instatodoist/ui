@@ -35,7 +35,7 @@
                   </div>
                   <div class="custom-control custom-checkbox custom-control-inline flota-l"
                     (click)="$event.stopPropagation(); updateTodo(todo)">
-                    <input type="checkbox" class="custom-control-input" id="customCheck-f{{i+1}}">
+                    <input type="checkbox" class="custom-control-input" id="customCheck-f{{i+1}}" [checked]="todo?.isCompleted">
                     <label class="custom-control-label" for="customCheck-f{{i+1}}"></label>
                   </div>
                   <div class="cursor flota-l">
