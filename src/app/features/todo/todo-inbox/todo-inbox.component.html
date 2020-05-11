@@ -43,7 +43,8 @@
                     <!--  Title -->
                     <label>
                       <div class="d-flex align-items-center justify-content-between">
-                        <span> {{todo?.title}}
+                        <span> 
+                          <span [ngStyle]="todo?.isCompleted && {'text-decoration': 'line-through'}">{{todo?.title}}</span>
                           <span class="ml-2" *ngIf="todo?.priority !== 'P4'"
                             [ngStyle]="{color: getPriorityColor(todo?.priority)}">
                             <i class="fa fa-flag" aria-hidden="true"></i>
