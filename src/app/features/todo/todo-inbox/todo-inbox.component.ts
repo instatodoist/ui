@@ -6,6 +6,7 @@ import { combineLatest, from } from 'rxjs';
 import { TodoListType, TodoCompletedListType, TodoType, TodoConditions } from '../../../models';
 import { TodoService, AppService } from '../../../service';
 import { Apollo } from 'apollo-angular';
+import * as moment from 'moment';
 
 declare var $: any;
 @Component({
@@ -34,6 +35,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
   compltedCount = 0;
   loaderImage = this.appService.loaderImage;
   isDeleting = false;
+  private today = new Date();
 
   constructor(
     private toddService: TodoService,
@@ -230,9 +232,11 @@ export class TodoInboxComponent implements OnInit, AfterViewInit {
   // }
 
   onTodoDrop(event: CdkDragDrop<TodoType[]>) {
-    console.log(event.previousIndex, event.currentIndex)
-    console.log(event.container.data)
     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  }
+
+  checkScheduledDate(date: Date): boolean {
+    return moment(new Date(date)).isSameOrAfter(moment(new Date()));
   }
 
 }
