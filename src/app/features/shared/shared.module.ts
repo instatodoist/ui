@@ -1,6 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RouterModule} from '@angular/router';
+import { ToastrModule } from 'ngx-toastr';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppService } from '../../service';
 import { TodoDialogComponent } from './todo-dialog/todo-dialog.component';
@@ -18,7 +19,8 @@ import { InfiniteScrollComponent } from './infinite-scroll/infinite-scroll.compo
   imports: [
     CommonModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToastrModule.forRoot(),
   ],
   exports: [
     TodoDialogComponent,

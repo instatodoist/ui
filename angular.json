@@ -38,7 +38,7 @@
               "src/assets/facelift/fullcalendar/timegrid/main.css",
               "src/assets/facelift/fullcalendar/list/main.css",
               "src/assets/facelift/css/flatpickr.min.css",
-              "node_modules/izitoast/dist/css/iziToast.min.css",
+              "node_modules/ngx-toastr/toastr.css",
               "src/styles.scss"
             ],
             "scripts": [
@@ -69,9 +69,8 @@
               "src/assets/facelift/js/flatpickr.js",
               "src/assets/facelift/js/style-customizer.js",
               "src/assets/facelift/js/chart-custom.js",
-              "src/assets/facelift/js/custom.js",
+              "src/assets/facelift/js/custom.js"
 
-              "node_modules/izitoast/dist/js/iziToast.min.js"
             ]
           },
           "configurations": {
