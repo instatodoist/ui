@@ -42,14 +42,24 @@ export class GraphqlModule {
     const errorLink = onError(({ graphQLErrors, networkError, response, operation }) => {
       if (typeof (networkError) !== 'undefined') {
         const { error }: any = networkError;
-        const errors = error.errors[0];
-        const { status, code, message } = errors;
+        let finalObj = null;
+        try {
+          if (!Array.isArray(error.errors)) {
+            finalObj = error;
+          } else {
+            const errors = error.errors[0];
+            finalObj = errors;
+          }
+        } catch (error) {
+          console.log(error, '@@Graphql Error@@');
+        }
+        const { status, code, message } = finalObj;
         // Checking Error codes
         if (status && code !== 'ValidationError') {
           switch (status) {
             case 401:
               localStorage.clear();
-              window.location.href = '/';
+              window.location.href = '/auth/login';
               break;
             default:
           }
