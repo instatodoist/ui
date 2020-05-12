@@ -60,7 +60,8 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
       scheduledDate: [this.todo && this.todo.scheduledDate ? this.todo.scheduledDate : this.sharedService.todayDate()],
       labelId: [this.labelIdVal],
       priority: ['P4'],
-      operationType: [this.operationType]
+      operationType: [this.operationType],
+      isCompleted: [this.todo && this.todo.isCompleted ? true : false]
     }
     );
     // setting title
