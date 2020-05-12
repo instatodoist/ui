@@ -116,7 +116,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     if (typeof flatpickr !== 'undefined' && $.isFunction(flatpickr)) {
       const config: any = {
-        inline: true,
+        // inline: true,
         dateFormat: 'Y-m-d'
       };
       if (!this.todo) {
