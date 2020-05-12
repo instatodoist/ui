@@ -133,17 +133,21 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
       // }
       $('.flatpicker').flatpickr(config);
     }
-    const isOpenInstance = this.isOpen;
     const externalModal = this.appService.externalModal;
+    const defaultConfig = this.appService.ExternalModelConfig;
     const modelId = this.modelId;
     // tslint:disable-next-line: only-arrow-functions
     $(`#${this.modelId}`).on('hidden.bs.modal', function() {
       if (modelId === 'todo-dialog-add') {
         externalModal.next({
+          ...defaultConfig,
           TODO_ADD: false
         });
       } else {
-        isOpenInstance.emit(false);
+        externalModal.next({
+          ...defaultConfig,
+          TODO_UPDATE: false
+        });
       }
     });
   }
