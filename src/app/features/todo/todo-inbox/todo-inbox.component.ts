@@ -68,7 +68,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(data => {
         const { params = null, query = null, labels } = data;
         const { label = null } = params;
-        const { q = null } = query;
+        const { q = '' } = query;
         if (!label) {
           this.todoCurrentType = this.toddService.getCurentRoute();
           this.conditions = this.toddService.getConditions(this.todoCurrentType);
@@ -77,13 +77,13 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
           const labelId = labels.filter(obj => obj.name === label)[0]._id;
           this.conditions = this.toddService.getConditions(labelId);
         }
-        if (q) {
-          this.queryStr = q;
-          this.conditions = { ...this.conditions, filter: { ...this.conditions.filter, title_contains: this.queryStr } };
-        }
+        // if (q) {
+        this.queryStr = q;
+        this.conditions = { ...this.conditions, filter: { ...this.conditions.filter, title_contains: this.queryStr } };
+        // }
         if (this.todoCurrentType === this.TODOTYPES.completed) {
           this.getTotalCount();
-          // this.getCompletedTodos(this.conditions);
+          this.getCompletedTodos(this.conditions, true);
         } else {
           this.getTodos(this.conditions);
         }
@@ -114,16 +114,24 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * @param conditions - based on route
    */
-  getCompletedTodos(conditions: TodoConditions) {
+  getCompletedTodos(conditions: TodoConditions, isDirectCall = false) {
+    this.loader = true;
+    if (isDirectCall) {
+      conditions.offset = 1;
+    }
     this.extraLoader = false;
     this.toddService.listCompletedTodos(conditions)
       .subscribe((data: any) => {
         const { totalCount, data: newdata } = data;
-        this.todosC = { totalCount, data: [...this.todosC.data, ...newdata] };
-        console.log(this.todosC);
-        console.log();
-        if (!totalCount || totalCount === 0 || !newdata.length) {
+        if (isDirectCall) {
+          this.todosC = { totalCount, data: newdata };
+        } else {
+          this.todosC = { totalCount, data: [...this.todosC.data, ...newdata] };
+        }
+        if ((totalCount === null) || (newdata === null) || (newdata.length === totalCount)) {
           this.loader = false;
+        } else {
+          this.loader = true;
         }
       });
   }
@@ -184,21 +192,21 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   @HostListener('scroll', ['$event'])
   refresh() {
     const { totalCount, data } = this.todosC;
-    if (!totalCount) {
-      this.getCompletedTodos(this.conditions);
-    } else if (data.length < totalCount && this.loader) {
+    // if (this.conditions.offset === ) {
+    //   this.getCompletedTodos(this.conditions);
+    // } else
+    if (data.length < totalCount && this.loader) {
       const { offset } = this.conditions;
       this.conditions = { ...this.conditions, offset: offset + 1 };
       this.getCompletedTodos(this.conditions);
-    } else {
-      this.loader = false;
     }
   }
 
   getTotalCount() {
     const query: TodoConditions = {
       filter: {
-        isCompleted: true
+        isCompleted: true,
+        title_contains: this.queryStr
       }
     };
     this.toddService.listTodosCount(query).subscribe(response => {

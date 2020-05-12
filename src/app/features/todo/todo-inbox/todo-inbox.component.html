@@ -7,7 +7,7 @@
           <div class="iq-header-title">
             <h4 class="card-title">[ <span class="text-primary">{{todoCurrentType | titlecase}}</span> ] Tasks: <span
                 class="text-primary">
-                {{todoCurrentType === TODOTYPES.completed ? (compltedCount) : (todos?.totalCount ||  0)}}
+                {{todoCurrentType === TODOTYPES.completed ? (compltedCount || 0) : (todos?.totalCount ||  0)}}
               </span>
             </h4>
           </div>

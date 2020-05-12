@@ -70,8 +70,8 @@ export const TODO_LIST_COUNT_QUERY = gql`
 
 
 export const TODO_COMPLETED_QUERY = gql`
-    query todoCompleted ($first: Int = 100, $offset: Int = 1, $sort: TodoCompletedSortInputType){
-      todoCompleted (first: $first, offset: $offset, sort: $sort ){
+    query todoCompleted ($first: Int = 100, $offset: Int = 1, $filter: TodoCompletedFilterInputType, $sort: TodoCompletedSortInputType){
+      todoCompleted (first: $first, offset: $offset, filter: $filter, sort: $sort ){
         totalCount
         data {
             _id
