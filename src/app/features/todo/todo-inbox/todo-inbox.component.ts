@@ -36,7 +36,8 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   count: any = {
     today: 0,
     pending: 0,
-    completed: 0
+    completed: 0,
+    inbox: 0
   };
 
   constructor(
@@ -90,9 +91,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
           this.getTotalCount();
           this.getCompletedTodos(this.conditions, true);
         } else {
-          if ( this.todoCurrentType === this.TODOTYPES.today || this.todoCurrentType === this.TODOTYPES.pending) {
-            this.getTodosCount();
-          }
+          this.getTodosCount();
           this.getTodos(this.conditions);
         }
       });
@@ -219,14 +218,14 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
     };
     this.toddService.listTodosCount(query).subscribe((response: any) => {
       const { completed } = response;
-      this.count = {...this.count, completed: completed.totalCount };
+      this.count = { ...this.count, completed: completed.totalCount };
     });
   }
 
   getTodosCount(query = null) {
     this.toddService.listTodosCount(query).subscribe((response: any) => {
-      const { today = 0, pending = 0 } = response;
-      this.count = {...this.count, pending: pending.totalCount, today: today.totalCount };
+      const { today = 0, pending = 0, inbox = 0 } = response;
+      this.count = { ...this.count, pending: pending.totalCount, today: today.totalCount, inbox: inbox.totalCount };
     });
   }
 

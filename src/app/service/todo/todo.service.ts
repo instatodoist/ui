@@ -169,7 +169,7 @@ export class TodoService {
       .watchQuery({
         query: TODO_LIST_COUNT_QUERY,
         variables: conditions,
-        fetchPolicy: 'network-only'
+       // fetchPolicy: 'network-only'
       })
       .valueChanges.pipe(map(({ data }: any) => {
         return data;
