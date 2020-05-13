@@ -53,7 +53,8 @@
                         <ng-container
                           *ngIf="todoCurrentType === TODOTYPES?.pending || todoCurrentType === TODOTYPES?.inbox || todoCurrentType === TODOTYPES?.today">
                           <span *ngFor="let label of todo?.label"
-                            class="badge badge-pill border border-primary text-primary ml-2">{{label?.name}}
+                            [routerLink]="['/tasks/labels', label?.name]"
+                            class="badge badge-pill border border-primary text-primary ml-2 cursor">{{label?.name}}
                           </span>
                         </ng-container>
                       </div>
