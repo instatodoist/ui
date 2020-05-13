@@ -36,7 +36,7 @@
               data-toggle="tab" routerLink="/tasks/today" role="tab" aria-controls="home" aria-selected="true">Today (
               {{this.count?.today}} )</a>
           </li>
-          <li class="nav-item" *ngIf="todoCurrentType === TODOTYPES.today || todoCurrentType === TODOTYPES.pending">
+          <li class="nav-item" *ngIf="this.count?.pending && (todoCurrentType === TODOTYPES.today || todoCurrentType === TODOTYPES.pending)">
             <a [ngClass]="{'active': todoCurrentType === TODOTYPES.pending}" class="nav-link" id="profile-tab"
               data-toggle="tab" routerLink="/tasks/pending" role="tab" aria-controls="profile"
               aria-selected="false">Pending ( {{this.count?.pending}} )</a>
