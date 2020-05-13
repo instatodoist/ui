@@ -290,7 +290,12 @@ export class TodoService {
       refetchQueries: [
         ...refetch,
         {
-          query: TODO_LIST_COUNT_QUERY
+          query: TODO_LIST_COUNT_QUERY,
+          variables: {
+            filter: {
+              isCompleted: true
+            }
+          }
         }
       ]
     })
