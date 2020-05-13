@@ -14,21 +14,24 @@
   <div id="sidebar-scrollbar">
     <nav class="iq-sidebar-menu">
       <ul id="iq-sidebar-toggle" class="iq-menu">
-        <li [ngClass]="{'active': this.nav.todos}">
+        <li [ngClass]="{'active': this.nav.todos, 'active-menu': this.nav.todos}">
           <a href="#dashboard" class="iq-waves-effect" data-toggle="collapse"><span
               class="ripple rippleEffect"></span><i class="las la-home iq-arrow-left"></i><span>Todos</span><i
               class="ri-arrow-right-s-line iq-arrow-right"></i>
           </a>
           <ul id="dashboard" class="iq-submenu" data-parent="#iq-sidebar-toggle"
             [ngClass]="{'collapse': !this.nav.todos, 'show': this.nav.todos}">
-            <li routerLinkActive="active"><a routerLink="/tasks/today"><i class="lab la-bandcamp"></i>Today ( {{count?.today}} )</a></li>
-            <li  routerLinkActive="active"><a routerLink="/tasks/inbox"><i class="las la-ad"></i>Inbox ( {{count?.inbox}} )</a></li>
+            <li routerLinkActive="active"><a routerLink="/tasks/today"><i class="lab la-bandcamp"></i>Today (
+                {{count?.today}} )</a></li>
+            <li routerLinkActive="active"><a routerLink="/tasks/inbox"><i class="las la-ad"></i>Inbox ( {{count?.inbox}}
+                )</a></li>
             <!-- <li><a routerLink="/tasks/pending"><i class="las la-atom"></i>Pending</a></li> -->
-            <li  routerLinkActive="active"><a routerLink="/tasks/completed"><i class="las la-crosshairs"></i>Completed ( {{count?.completed}} )</a>
+            <li routerLinkActive="active"><a routerLink="/tasks/completed"><i class="las la-crosshairs"></i>Completed (
+                {{count?.completed}} )</a>
             </li>
           </ul>
         </li>
-        <li [ngClass]="{'active': this.nav.labels}">
+        <li [ngClass]="{'active': this.nav.labels, 'active-menu': this.nav.labels}">
           <a href="#userinfo" class="iq-waves-effect" data-toggle="collapse"><span class="ripple rippleEffect"></span><i
               class="fa fa-tasks iq-arrow-left"></i><span>Lists</span><i
               class="ri-arrow-right-s-line iq-arrow-right"></i>
