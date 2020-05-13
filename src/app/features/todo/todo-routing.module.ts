@@ -15,6 +15,13 @@ const routes: Routes = [
         }
       },
       {
+        path: 'upcoming',
+        component: TodoInboxComponent,
+        data: {
+          header_title: 'upcoming'
+        }
+      },
+      {
         path: 'today',
         component: TodoInboxComponent,
         data: {

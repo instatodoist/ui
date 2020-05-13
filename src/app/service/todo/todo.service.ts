@@ -77,6 +77,7 @@ export class TodoService {
    */
   todoTypes() {
     return {
+      upcoming: 'upcoming',
       inbox: 'inbox',
       today: 'today',
       pending: 'pending',
@@ -99,6 +100,17 @@ export class TodoService {
         },
         filter: {
           type: 'today'
+        }
+      };
+    } else if (type === this.TODOTYPES.upcoming) {
+      return {
+        offset: 1,
+        first: 50,
+        sort: {
+          updatedAt: 'DESC'
+        },
+        filter: {
+          type: 'upcoming'
         }
       };
     } else if (type === this.TODOTYPES.completed) {
@@ -381,6 +393,8 @@ export class TodoService {
     let todoCurrentType = '';
     if (this.router.url.match('/tasks/today')) { // checking route if today
       todoCurrentType = this.TODOTYPES.today;
+    } else if (this.router.url.match('/tasks/upcoming')) { // checking route if today
+      todoCurrentType = this.TODOTYPES.upcoming;
     } else if (this.router.url.match('/tasks/completed')) { // checking route if completed
       todoCurrentType = this.TODOTYPES.completed;
     } else if (this.router.url.match('/tasks/inbox')) { // checking route if inbox

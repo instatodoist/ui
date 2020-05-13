@@ -14,7 +14,8 @@ export class SidebarComponent implements OnInit {
     inbox: 0,
     today: 0,
     pending: 0,
-    completed: 0
+    completed: 0,
+    upcoming: 0
   };
   nav: any = {
     todos: false,
@@ -42,7 +43,7 @@ export class SidebarComponent implements OnInit {
   updateNav(url: string): void {
     if (url.match(/labels/g)) {
       this.nav = {...this.nav, todos: false, labels: true };
-    } else if (url.match('/today') || url.match('/inbox') || url.match('/completed')) {
+    } else if (url.match('/today') || url.match('/inbox') || url.match('/completed') || url.match('/upcoming') ) {
       this.nav = {...this.nav, todos: true, labels: false};
     }
   }
@@ -53,13 +54,14 @@ export class SidebarComponent implements OnInit {
     }
   }) {
     this.todoService.listTodosCount(query).subscribe((response: any) => {
-      const { today = 0, pending = 0, inbox = 0, completed = 0 } = response;
+      const { today = null, pending = null, inbox = null, completed = null, upcoming = null } = response;
       this.count = {
         ...this.count,
         pending: pending.totalCount,
         today: today.totalCount,
         inbox: inbox.totalCount,
         completed: completed.totalCount,
+        upcoming: upcoming.totalCount,
       };
     });
   }

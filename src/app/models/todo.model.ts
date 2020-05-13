@@ -7,7 +7,7 @@ enum TodoPriorityEnumType {
   'p4'
 }
 
-type TodoEnumType = 'today' | 'backlog' | 'pending';
+type TodoEnumType = 'today' | 'backlog' | 'pending' | 'upcoming';
 export type OperationEnumType = 'ADD' | 'UPDATE' | 'DELETE';
 export type PriorityEnumType = 'P1' | 'P2' | 'P3' | 'P4';
 

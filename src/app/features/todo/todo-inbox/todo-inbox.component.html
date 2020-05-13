@@ -16,7 +16,7 @@
 
         <ul class="nav nav-tabs" id="myTab-1" role="tablist">
           <li class="nav-item"
-            *ngIf="todoCurrentType !== TODOTYPES.today && todoCurrentType !== TODOTYPES.pending && todoCurrentType !== TODOTYPES.completed && todoCurrentType !== TODOTYPES.inbox">
+            *ngIf="todoCurrentType !== TODOTYPES.today && todoCurrentType !== TODOTYPES.pending && todoCurrentType !== TODOTYPES.completed && todoCurrentType !== TODOTYPES.inbox && todoCurrentType !== TODOTYPES.upcoming">
             <a class="nav-link active" id="home-tab" data-toggle="tab" routerLink="/tasks/inbox" role="tab"
               aria-controls="home" aria-selected="true">{{todoCurrentType | titlecase}} ( {{todos?.totalCount || 0}}
               )</a>
@@ -25,6 +25,10 @@
             <a class="nav-link active" id="home-tab" data-toggle="tab" routerLink="/tasks/completed" role="tab"
               aria-controls="home" aria-selected="true">{{todoCurrentType | titlecase}} ( {{this.count?.completed}}
               )</a>
+          </li>
+          <li class="nav-item" *ngIf="todoCurrentType === TODOTYPES.upcoming">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" routerLink="/tasks/upcoming" role="tab"
+              aria-controls="home" aria-selected="true">{{todoCurrentType | titlecase}} ( {{this.count?.upcoming}} )</a>
           </li>
           <li class="nav-item" *ngIf="todoCurrentType === TODOTYPES.inbox">
             <a class="nav-link active" id="home-tab" data-toggle="tab" routerLink="/tasks/inbox" role="tab"

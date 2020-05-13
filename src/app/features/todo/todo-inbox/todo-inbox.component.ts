@@ -224,8 +224,15 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getTodosCount(query = null) {
     this.toddService.listTodosCount(query).subscribe((response: any) => {
-      const { today = 0, pending = 0, inbox = 0 } = response;
-      this.count = { ...this.count, pending: pending.totalCount, today: today.totalCount, inbox: inbox.totalCount };
+      const { today = null, pending = null, inbox = null, completed = null, upcoming = null } = response;
+      this.count = {
+        ...this.count,
+        pending: pending.totalCount,
+        today: today.totalCount,
+        inbox: inbox.totalCount,
+        completed: completed.totalCount,
+        upcoming: upcoming.totalCount,
+      };
     });
   }
 

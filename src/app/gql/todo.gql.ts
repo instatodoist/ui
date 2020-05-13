@@ -108,6 +108,9 @@ export const TODO_LIST_COUNT_QUERY = gql`
     today: todoList (filter: { type: today} ){
       ...TodoCount
     }
+    upcoming: todoList (filter: { type: upcoming} ){
+      ...TodoCount
+    }
     pending: todoList (filter: { type: pending} ){
       ...TodoCount
     }
