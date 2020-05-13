@@ -3,16 +3,27 @@
     <div class="col-lg-12">
       <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
         <!-- Page haeder -->
-        <div class="iq-card-header d-flex justify-content-between">
+        <div class="iq-card-header d-flex justify-content-between" *ngIf="todoCurrentType !== TODOTYPES.today && todoCurrentType !== TODOTYPES.pending">
           <div class="iq-header-title">
             <h4 class="card-title">[ <span class="text-primary">{{todoCurrentType | titlecase}}</span> ] Tasks: <span
                 class="text-primary">
-                {{todoCurrentType === TODOTYPES.completed ? (compltedCount || 0) : (todos?.totalCount ||  0)}}
+                {{todoCurrentType === TODOTYPES.completed ? this.count?.completed : (todos?.totalCount ||  0)}}
               </span>
             </h4>
           </div>
         </div>
         <!--END-->
+
+        <ul class="nav nav-tabs" id="myTab-1" role="tablist" *ngIf="todoCurrentType === TODOTYPES.today || todoCurrentType === TODOTYPES.pending">
+          <li class="nav-item">
+            <a [ngClass]= "{'active': todoCurrentType === TODOTYPES.today}" class="nav-link" id="home-tab" data-toggle="tab" routerLink="/tasks/today" role="tab"
+              aria-controls="home" aria-selected="true">Today ( {{this.count?.today}} )</a>
+          </li>
+          <li class="nav-item">
+            <a [ngClass]= "{'active': todoCurrentType === TODOTYPES.pending}" class="nav-link" id="profile-tab" data-toggle="tab" routerLink="/tasks/pending" role="tab"
+              aria-controls="profile" aria-selected="false">Pending ( {{this.count?.pending}} )</a>
+          </li>
+        </ul>
 
         <!-- Loader on fetching data-->
         <div class="col-sm-12 text-center" *ngIf="todoCurrentType !== TODOTYPES?.completed && extraLoader">

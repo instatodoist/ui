@@ -172,7 +172,7 @@ export class TodoService {
         fetchPolicy: 'network-only'
       })
       .valueChanges.pipe(map(({ data }: any) => {
-        return data.todoList;
+        return data;
       }));
   }
 
@@ -283,11 +283,15 @@ export class TodoService {
         };
         break;
     }
+    const refetch = [refetchQuery];
     return this.apollo.mutate({
       mutation: gqlOperation,
       variables,
       refetchQueries: [
-        refetchQuery
+        ...refetch,
+        {
+          query: TODO_LIST_COUNT_QUERY
+        }
       ]
     })
       .pipe(map(({ data }: any) => {

@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { forkJoin, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { TodoService } from '../../../../service/todo/todo.service';
-
+import { TodoService } from '../../../../service';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -22,18 +19,23 @@ export class SidebarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.callTodoCountService();
+    this.getTodosCount();
   }
 
-  callTodoCountService() {
-    this.todoService.callTodoCountService()
-      .subscribe(response => {
-        this.count = {
-          inbox: response[0].totalCount,
-          today: response[1].totalCount,
-          pending: response[2].totalCount,
-          completed: response[3].totalCount
-        };
+  getTodosCount(query = {
+    filter: {
+      isCompleted: true
+    }
+  }) {
+    this.todoService.listTodosCount(query).subscribe((response: any) => {
+      const { today = 0, pending = 0, inbox = 0, completed = 0 } = response;
+      this.count = {
+        ...this.count,
+        pending: pending.totalCount,
+        today: today.totalCount,
+        inbox: inbox.totalCount,
+        completed: completed.totalCount,
+      };
     });
   }
 

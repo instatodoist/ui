@@ -33,6 +33,11 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   isDeleting = false;
   extModalConfig: IExternalModal;
   modalSubscription: Subscription;
+  count: any = {
+    today: 0,
+    pending: 0,
+    completed: 0
+  };
 
   constructor(
     private toddService: TodoService,
@@ -85,6 +90,9 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
           this.getTotalCount();
           this.getCompletedTodos(this.conditions, true);
         } else {
+          if ( this.todoCurrentType === this.TODOTYPES.today || this.todoCurrentType === this.TODOTYPES.pending) {
+            this.getTodosCount();
+          }
           this.getTodos(this.conditions);
         }
       });
@@ -209,8 +217,16 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
         title_contains: this.queryStr
       }
     };
-    this.toddService.listTodosCount(query).subscribe(response => {
-      this.compltedCount = response.totalCount;
+    this.toddService.listTodosCount(query).subscribe((response: any) => {
+      const { completed } = response;
+      this.count = {...this.count, completed: completed.totalCount };
+    });
+  }
+
+  getTodosCount(query = null) {
+    this.toddService.listTodosCount(query).subscribe((response: any) => {
+      const { today = 0, pending = 0 } = response;
+      this.count = {...this.count, pending: pending.totalCount, today: today.totalCount };
     });
   }
 

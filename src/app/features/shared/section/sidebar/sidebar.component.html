@@ -20,10 +20,10 @@
               class="ri-arrow-right-s-line iq-arrow-right"></i>
           </a>
           <ul id="dashboard" class="iq-submenu collapse show" data-parent="#iq-sidebar-toggle">
-            <li><a routerLink="/tasks/today"><i class="lab la-bandcamp"></i>Today</a></li>
-            <li><a routerLink="/tasks/inbox"><i class="las la-ad"></i>Inbox</a></li>
-            <li><a routerLink="/tasks/pending"><i class="las la-atom"></i>Pending</a></li>
-            <li><a routerLink="/tasks/completed"><i class="las la-crosshairs"></i>Completed</a></li>
+            <li><a routerLink="/tasks/today"><i class="lab la-bandcamp"></i>Today ( {{count?.today}} )</a></li>
+            <li><a routerLink="/tasks/inbox"><i class="las la-ad"></i>Inbox  ( {{count?.inbox}} )</a></li>
+            <!-- <li><a routerLink="/tasks/pending"><i class="las la-atom"></i>Pending</a></li> -->
+            <li><a routerLink="/tasks/completed"><i class="las la-crosshairs"></i>Completed ( {{count?.completed}} )</a></li>
           </ul>
         </li>
         <li>
