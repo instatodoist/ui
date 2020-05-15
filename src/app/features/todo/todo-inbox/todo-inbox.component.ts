@@ -251,4 +251,12 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  // check if today || yesterday || tomorrow
+  displayDate(date: Date) {
+    if (!date) {
+      return '';
+    }
+    return moment(date).endOf('day').fromNow();
+  }
+
 }

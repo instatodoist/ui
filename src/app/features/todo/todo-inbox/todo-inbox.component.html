@@ -111,11 +111,11 @@
                         <span
                           [ngClass]="(checkScheduledDate(todo?.scheduledDate))? 'badge border border-warning text-warning': 'badge border border-danger text-danger'"
                           *ngIf="todoCurrentType !== TODOTYPES?.pending && todoCurrentType !== TODOTYPES?.today && todo?.scheduledDate">
-                          {{todo?.scheduledDate | date: 'MMM d, y'}}
+                          {{displayDate(todo?.scheduledDate)}}
                         </span>
                         <span class="badge border border-danger text-danger"
                           *ngIf="todoCurrentType === TODOTYPES?.pending && todo?.scheduledDate">
-                          {{todo?.scheduledDate | date: 'MMM d, y'}}
+                          {{displayDate(todo?.scheduledDate)}}
                         </span>
                       </div>
                     </label>
