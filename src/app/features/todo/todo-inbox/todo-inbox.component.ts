@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { map } from 'rxjs/operators';
 import { combineLatest, from, Subscription } from 'rxjs';
-import { TodoListType, TodoCompletedListType, TodoType, TodoConditions, IExternalModal } from '../../../models';
+import { TodoListType, TodoCompletedListType, TodoType, TodoConditions, IExternalModal, ITodoTypeCount } from '../../../models';
 import { TodoService, AppService } from '../../../service';
 import * as moment from 'moment';
 
@@ -33,12 +33,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   isDeleting = false;
   extModalConfig: IExternalModal;
   modalSubscription: Subscription;
-  count: any = {
-    today: 0,
-    pending: 0,
-    completed: 0,
-    inbox: 0
-  };
+  count: ITodoTypeCount;
 
   constructor(
     private toddService: TodoService,
@@ -223,15 +218,15 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getTodosCount(query = null) {
-    this.toddService.listTodosCount(query).subscribe((response: any) => {
-      const { today = null, pending = null, inbox = null, completed = null, upcoming = null } = response;
+    this.toddService.listTodosCount(query).subscribe((response: ITodoTypeCount) => {
+      const { today = 0, pending = 0, inbox = 0, completed = 0, upcoming = 0 } = response;
       this.count = {
         ...this.count,
-        pending: pending.totalCount,
-        today: today.totalCount,
-        inbox: inbox.totalCount,
-        completed: completed.totalCount,
-        upcoming: upcoming.totalCount,
+        pending,
+        today,
+        inbox,
+        completed,
+        upcoming,
       };
     });
   }

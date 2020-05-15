@@ -24,6 +24,7 @@ import {
   TodoLabelType,
   TodoType,
   SuccessType,
+  ITodoTypeCount
 } from '../../models/todo.model';
 @Injectable({
   providedIn: 'root',
@@ -176,7 +177,7 @@ export class TodoService {
   /**
    * @param conditions - filter params while fetching todos
    */
-  listTodosCount(conditions: TodoConditions): Observable<TodoListType> {
+  listTodosCount(conditions: TodoConditions): Observable<ITodoTypeCount> {
     return this.apollo
       .watchQuery({
         query: TODO_LIST_COUNT_QUERY,
@@ -184,7 +185,13 @@ export class TodoService {
        // fetchPolicy: 'network-only'
       })
       .valueChanges.pipe(map(({ data }: any) => {
-        return data;
+        return {
+          pending: data.pending.totalCount || 0,
+          today: data.today.totalCount || 0,
+          inbox: data.inbox.totalCount || 0,
+          completed: data.completed.totalCount || 0,
+          upcoming: data.upcoming.totalCount || 0,
+        };
       }));
   }
 

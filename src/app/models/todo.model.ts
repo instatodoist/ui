@@ -11,6 +11,14 @@ type TodoEnumType = 'today' | 'backlog' | 'pending' | 'upcoming';
 export type OperationEnumType = 'ADD' | 'UPDATE' | 'DELETE';
 export type PriorityEnumType = 'P1' | 'P2' | 'P3' | 'P4';
 
+export interface ITodoTypeCount {
+  inbox?: number;
+  today?: number;
+  pending?: number;
+  upcoming?: number;
+  completed?: number;
+}
+
 export interface SuccessType {
   message?: string;
   ok?: boolean;
