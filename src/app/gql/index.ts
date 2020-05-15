@@ -4,8 +4,8 @@ export * from './goal.gql';
 export * from './todo.gql';
 
 /** TODO: Need to remove */
-import * as authGql from './auth.gql';
+// import * as authGql from './auth.gql';
 
-export default {
-  ...authGql,
-};
+// export default {
+//   ...authGql,
+// };
