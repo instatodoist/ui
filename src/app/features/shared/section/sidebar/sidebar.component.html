@@ -21,16 +21,25 @@
           </a>
           <ul id="dashboard" class="iq-submenu" data-parent="#iq-sidebar-toggle"
             [ngClass]="{'collapse': !this.nav.todos, 'show': this.nav.todos}">
-            <li routerLinkActive="active"><a routerLink="/tasks/today"><i class="lab la-bandcamp"></i>Today (
-                {{count?.today}} )</a></li>
-            <li routerLinkActive="active"><a routerLink="/tasks/inbox"><i class="las la-ad"></i>Inbox ( {{count?.inbox}}
-                )</a></li>
-            <li routerLinkActive="active"><a routerLink="/tasks/upcoming"><i class="las la-ad"></i>Upcoming (
-                {{count?.upcoming}}
-                )</a></li>
-            <!-- <li><a routerLink="/tasks/pending"><i class="las la-atom"></i>Pending</a></li> -->
-            <li routerLinkActive="active"><a routerLink="/tasks/completed"><i class="las la-crosshairs"></i>Completed (
-                {{count?.completed}} )</a>
+            <li routerLinkActive="active">
+              <a routerLink="/tasks/today">
+                <i class="lab la-bandcamp"></i>Today {{count?.today ? count.today : ''}}
+              </a>
+            </li>
+            <li routerLinkActive="active">
+              <a routerLink="/tasks/inbox"><i class="las la-ad"></i>
+                Inbox {{count?.inbox ? count.inbox: ''}}
+              </a>
+            </li>
+            <li routerLinkActive="active">
+              <a routerLink="/tasks/upcoming">
+                <i class="las la-ad"></i>Upcoming {{count?.upcoming? count.upcoming: ''}}
+              </a>
+            </li>
+            <li routerLinkActive="active">
+              <a routerLink="/tasks/completed">
+                <i class="las la-crosshairs"></i>Completed {{count?.completed? count.completed: ''}}
+              </a>
             </li>
           </ul>
         </li>

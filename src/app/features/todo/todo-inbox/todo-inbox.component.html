@@ -24,17 +24,21 @@
           <li class="nav-item" *ngIf="todoCurrentType === TODOTYPES.completed">
             <a class="nav-link active" id="home-tab" data-toggle="tab" routerLink="/tasks/completed" role="tab"
               aria-controls="home" aria-selected="true">
-              {{todoCurrentType | titlecase}} 
+              {{todoCurrentType | titlecase}}
               <span>({{this.count?.completed}})</span>
             </a>
           </li>
           <li class="nav-item" *ngIf="todoCurrentType === TODOTYPES.upcoming">
             <a class="nav-link active" id="home-tab" data-toggle="tab" routerLink="/tasks/upcoming" role="tab"
-              aria-controls="home" aria-selected="true">{{todoCurrentType | titlecase}} ( {{ todos?.totalCount || this.count?.upcoming}} )</a>
+              aria-controls="home" aria-selected="true">
+              {{todoCurrentType | titlecase}}
+              ( {{ todos?.totalCount || this.count?.upcoming}} )
+            </a>
           </li>
           <li class="nav-item" *ngIf="todoCurrentType === TODOTYPES.inbox">
             <a class="nav-link active" id="home-tab" data-toggle="tab" routerLink="/tasks/inbox" role="tab"
-              aria-controls="home" aria-selected="true">{{todoCurrentType | titlecase}} ( {{ todos?.totalCount || this.count?.inbox}} )</a>
+              aria-controls="home" aria-selected="true">{{todoCurrentType | titlecase}} (
+              {{ todos?.totalCount || this.count?.inbox}} )</a>
           </li>
           <li class="nav-item" *ngIf="todoCurrentType === TODOTYPES.today || todoCurrentType === TODOTYPES.pending">
             <a [ngClass]="{'active': todoCurrentType === TODOTYPES.today}" class="nav-link" id="home-tab"
@@ -49,8 +53,7 @@
           <li class="nav-item"
             *ngIf="this.count?.pending && (todoCurrentType === TODOTYPES.today || todoCurrentType === TODOTYPES.pending)">
             <a [ngClass]="{'active': todoCurrentType === TODOTYPES.pending}" class="nav-link" id="profile-tab"
-              data-toggle="tab" routerLink="/tasks/pending" role="tab" aria-controls="profile"
-              aria-selected="false">
+              data-toggle="tab" routerLink="/tasks/pending" role="tab" aria-controls="profile" aria-selected="false">
               {{TODOTYPES.pending | titlecase}}
               <span [ngSwitch]="todoCurrentType">
                 <span *ngSwitchCase="TODOTYPES.pending">({{todos?.totalCount || this.count?.pending}})</span>
