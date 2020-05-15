@@ -83,7 +83,8 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
           this.conditions = { ...this.conditions, filter: { ...this.conditions.filter, title_contains: this.queryStr } };
         }
         if (this.todoCurrentType === this.TODOTYPES.completed) {
-          this.getTotalCount();
+          const newQuery = { ...this.conditions, filter: { ...this.conditions.filter, isCompleted: true } };
+          this.getTodosCount(newQuery);
           this.getCompletedTodos(this.conditions, true);
         } else {
           this.getTodosCount();
@@ -221,7 +222,6 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
     this.toddService.listTodosCount(query).subscribe((response: ITodoTypeCount) => {
       const { today = 0, pending = 0, inbox = 0, completed = 0, upcoming = 0 } = response;
       this.count = {
-        ...this.count,
         pending,
         today,
         inbox,

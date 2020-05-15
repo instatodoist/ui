@@ -25,7 +25,7 @@
             <a class="nav-link active" id="home-tab" data-toggle="tab" routerLink="/tasks/completed" role="tab"
               aria-controls="home" aria-selected="true">
               {{todoCurrentType | titlecase}} 
-              ( {{this.count?.completed}})
+              <span>({{this.count?.completed}})</span>
             </a>
           </li>
           <li class="nav-item" *ngIf="todoCurrentType === TODOTYPES.upcoming">
