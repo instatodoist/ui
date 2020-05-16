@@ -1,9 +1,9 @@
 <div class="container-fluid">
-  <div class="row">
+  <div class="card-columns">
     <!-- <div class="col-sm-12">
      <h3 class="mt-4 mb-3">Card Colored Styles</h3>
   </div> -->
-    <div class="col-lg-4" *ngFor="let goal of goals?.data;">
+    <div class="card" *ngFor="let goal of goals?.data;">
       <div class="card iq-mb-3" [ngClass]="{ 'bg-secondary': goal?.isPinned }">
         <div class="card-body">
           <h4 class="card-title" [ngClass]="{ 'text-white': goal?.isPinned }">{{goal?.title}}</h4>
