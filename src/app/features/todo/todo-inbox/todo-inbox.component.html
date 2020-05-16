@@ -76,7 +76,7 @@
             <ng-container>
               <ng-container *ngFor="let todo of todos?.data; let i = index">
                 <li class="list-group-item tr-{{ i + 1}} cursor" data-toggle="modal" data-target="#todo-dialog"
-                  (click)="openPopUp(todo, 'UPDATE')" cdkDropList [id]="todo._id" [cdkDropListData]="todo"
+                  (click)="openPopUp(todo)" cdkDropList [id]="todo._id" [cdkDropListData]="todo"
                   [cdkDropListConnectedTo]="trackIds" (cdkDropListDropped)="onTodoDrop($event)" cdkDrag>
                   <div class="custom-control custom-checkbox custom-control-inline flota-l mr-4"
                     style="padding-left: 0px; margin-top: 5px;">
@@ -156,10 +156,3 @@
     </div>
   </div>
 </div>
-
-<!--Popup for Updating todo-->
-<!-- <app-todo-dialog [todo]="todo" [origin]="todoCurrentType === TODOTYPES.completed? 'COMPLETED' : null"
-  *ngIf="extModalConfig.TODO_UPDATE">
-</app-todo-dialog>
-
-<app-todo-dialog [modelId]="'todo-dialog-add'" *ngIf="extModalConfig.TODO_ADD"></app-todo-dialog> -->

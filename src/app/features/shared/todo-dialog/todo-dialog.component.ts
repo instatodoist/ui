@@ -1,10 +1,10 @@
-import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TodoService, SharedService, AppService } from '../../../service';
 import { TodoType, TodoLabelType, TodoConditions, OperationEnumType } from '../../../models';
 import { map } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 declare var $: any;
 declare var flatpickr: any;
 
@@ -13,7 +13,7 @@ declare var flatpickr: any;
   templateUrl: './todo-dialog.component.html',
   styleUrls: ['./todo-dialog.component.scss']
 })
-export class TodoDialogComponent implements OnInit, AfterViewInit {
+export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input()
   modelId = 'todo-dialog';
@@ -36,6 +36,9 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
   currentLabel = '';
   labelIdVal: string[] = [];
   isSubmit = false;
+  popUpType = 'TODO_ADD';
+  private modalSubscription: Subscription;
+  private routeSubscription: Subscription;
 
   constructor(
     private router: Router,
@@ -48,34 +51,20 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.priorities = this.todoService.getPriorities;
-    // checking labels if update
-    this.labelIdVal = this.todo ? (this.todo.label.map(label => {
-      return label._id;
-    })) : [];
-    // creating form
     this.formObj = this.fb.group({
-      _id: [this.todo && this.todo._id || ''],
-      title: [this.todo && this.todo.title, [Validators.required]],
-      scheduling: [this.todo && this.todo.scheduledDate ? true : false],
-      scheduledDate: [this.todo && this.todo.scheduledDate ? this.todo.scheduledDate : this.sharedService.todayDate()],
-      labelId: [this.labelIdVal],
+      _id: [''],
+      title: ['', [Validators.required]],
+      scheduling: [false],
+      scheduledDate: [this.sharedService.todayDate()],
+      labelId: [],
       priority: ['P4'],
       operationType: [this.operationType],
-      isCompleted: [this.todo && this.todo.isCompleted ? true : false]
+      isCompleted: [false]
     });
-    // setting title
-    if (this.todo) {
-      this.title = 'Update Task';
-      this.formObj.patchValue({
-        _id: this.todo._id,
-        priority: this.todo.priority,
-        operationType: 'UPDATE'
-      });
-      this.priorityColor = this.todoService.getColor(this.formObj.value.priority);
-    }
+    this.subscribeToModal();
     this.TODOTYPES = this.todoService.todoTypes(); // getting route types
 
-    combineLatest([
+    this.routeSubscription = combineLatest([
       this.activatedRoute.params,
       this.todoService.listTodoLabels()
     ])
@@ -121,40 +110,23 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
       if (!this.todo) {
         config.minDate = new Date();
       }
-      // if (!!this.todo && this.todo.scheduledDate) {
-      //   const todo = this.todo;
-      //   config.defaultDate = new Date(todo.scheduledDate);
-      //   config.enable = [
-      //     // tslint:disable-next-line: only-arrow-functions
-      //     function(date) {
-      //       return date === new Date(todo.scheduledDate) || date >= new Date();
-      //     }
-      //   ];
-      // }
       $('.flatpicker').flatpickr(config);
     }
+    $('#' + this.modelId).modal('toggle');
     const externalModal = this.appService.externalModal;
     const defaultConfig = this.appService.ExternalModelConfig;
-    const modelId = this.modelId;
     // tslint:disable-next-line: only-arrow-functions
-    $(`#${this.modelId}`).on('hidden.bs.modal', function() {
-      if (modelId === 'todo-dialog-add') {
-        externalModal.next({
-          ...defaultConfig,
-          TODO_ADD: false
-        });
-      } else {
-        externalModal.next({
-          ...defaultConfig,
-          TODO_UPDATE: false
-        });
-      }
+    $(`#${this.modelId}`).on('hidden.bs.modal', function () {
+      externalModal.next({
+        ...defaultConfig,
+        [this.popUpType]: false
+      });
     });
   }
 
-  // open priority menu
-  openPriority() {
-    // this.menuPriority.open = true;
+  ngOnDestroy() {
+    this.modalSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
   }
 
   // set priority
@@ -163,11 +135,6 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
       priority: priority.name
     });
     this.priorityColor = priority.color;
-  }
-
-  // open labels menu
-  openLabels() {
-    // this.menu.open = true;
   }
 
   // auto checked the labels if exist
@@ -206,5 +173,29 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
           }
         );
     }
+  }
+
+  private subscribeToModal() {
+    this.modalSubscription = this.appService.externalModal.subscribe(data => {
+      if (data.data.todo) {
+        this.title = 'Update Task';
+        this.labelIdVal = this.todo ? (this.todo.label.map(label => {
+          return label._id;
+        })) : [];
+        this.popUpType = 'GOAL_UPDATE';
+        this.todo = data.data.todo;
+        this.formObj.patchValue({
+          _id: this.todo && this.todo._id || '',
+          title: this.todo && this.todo.title,
+          scheduling: this.todo && this.todo.scheduledDate ? true : false,
+          scheduledDate: this.todo && this.todo.scheduledDate ? this.todo.scheduledDate : this.sharedService.todayDate(),
+          labelId: this.labelIdVal,
+          operationType: 'UPDATE',
+          priority: this.todo.priority || 'P4',
+          isCompleted: this.todo && this.todo.isCompleted ? true : false
+        });
+        this.priorityColor = this.todoService.getColor(this.formObj.value.priority);
+      }
+    });
   }
 }

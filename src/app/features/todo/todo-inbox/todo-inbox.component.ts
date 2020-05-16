@@ -43,7 +43,6 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // this.modalSubscription.unsubscribe();
   }
 
   ngAfterViewInit() {
@@ -91,7 +90,6 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
           this.getTodos(this.conditions);
         }
       });
-    // this.subscribeToExtTodoAddModal();
   }
 
   // get priority color
@@ -143,14 +141,9 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param todo - todo object
    * @param popupType - update/delete
    */
-  openPopUp(todo: TodoType, popupType: string): void {
-    if (popupType === 'UPDATE') {
-      this.appService.externalModal.next({
-        ...this.appService.ExternalModelConfig,
-        TODO_UPDATE: true
-      });
-    }
-    this.todo = todo; // passing todo object to update dialog
+  openPopUp(todo: TodoType): void {
+    this.extModalConfig = { ...this.extModalConfig, TODO_UPDATE: true, data: { ...this.extModalConfig.data, todo } };
+    this.appService.externalModal.next(this.extModalConfig);
   }
 
   /**
@@ -243,13 +236,6 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
     const diff = moment(new Date(date)).diff((moment(new Date()).format('YYYY-MM-DD')));
     return diff === 0 || diff > 1;
   }
-
-  // used for open & closing of todo add modal
-  // private subscribeToExtTodoAddModal() {
-  //   this.modalSubscription = this.appService.externalModal.subscribe(data => {
-  //     this.extModalConfig = data;
-  //   });
-  // }
 
   // check if today || yesterday || tomorrow
   displayDate(date: Date) {
