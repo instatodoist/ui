@@ -1,4 +1,4 @@
-declare var mdc: any;
+declare var $: any;
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Title } from '@angular/platform-browser';
@@ -10,10 +10,10 @@ import {
   NavigationError,
   NavigationStart
 } from '@angular/router';
-import { Observable, Observer, fromEvent, merge } from 'rxjs';
+import { Observable, Observer, fromEvent, merge, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { UtilityService } from './service/utility.service';
-import { VersionCheckService } from './service/version-check/version-check.service';
+import { UtilityService, VersionCheckService, AppService } from './service';
+import { IExternalModal } from './models';
 import { environment } from '../environments/environment';
 
 @Component({
@@ -25,12 +25,16 @@ export class AppComponent implements OnInit {
 
   title = 'InstaTodo';
   loading = false;
+  extModalConfig: IExternalModal;
+  modalSubscription: Subscription;
+
   constructor(
     translate: TranslateService,
     private router: Router,
     private titleService: Title,
     private utilityService: UtilityService,
-    private versionCheckService: VersionCheckService
+    private versionCheckService: VersionCheckService,
+    private appService: AppService
   ) {
     // set default lang as english
     translate.setDefaultLang('en');
@@ -55,6 +59,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.subscribeToExtTodoAddModal();
     if (environment.production) {
       this.versionCheckService.initVersionCheck(environment.versionUrl);
     }
@@ -62,7 +67,7 @@ export class AppComponent implements OnInit {
     // network checking
     this.createOnline$().subscribe(isOnline => {
       !isOnline ?
-      this.utilityService.toastrWarning('Network is down', { close: false, timeout: false, overlay: true }) : null;
+        this.utilityService.toastrWarning('Network is down', { close: false, timeout: false, overlay: true }) : null;
       // this.utilityService.toastrSuccess('Network is up');
     });
   }
@@ -75,4 +80,12 @@ export class AppComponent implements OnInit {
         sub.complete();
       }));
   }
+
+  // used for open & closing of todo add modal
+  private subscribeToExtTodoAddModal() {
+    this.modalSubscription = this.appService.externalModal.subscribe(data => {
+      this.extModalConfig = data;
+    });
+  }
+
 }

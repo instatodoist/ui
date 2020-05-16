@@ -1,43 +1,47 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { GoalListType, GoalConditions, GoalType } from '../../../models/goal.model';
-import { SharedService} from '../../../service/shared/shared.service';
-import { GoalService } from '../../../service/goal/goal.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { IGoalListType, IGoalConditions, IGoalType, IExternalModal } from '../../../models';
+import { SharedService, GoalService, AppService } from '../../../service';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-goal-list',
   templateUrl: './goal-list.component.html',
   styleUrls: ['./goal-list.component.scss']
 })
-export class GoalListComponent implements OnInit {
+export class GoalListComponent implements OnInit, OnDestroy {
 
   loader = false;
-  goals: GoalListType;
+  goals$: Subscription;
+  goals: IGoalListType;
   isUpdate = false;
-  goal: GoalType;
+  goal: IGoalType = null;
+  extModalConfig: IExternalModal = this.appService.ExternalModelConfig;
 
-  constructor(private goalService: GoalService, private sharedService: SharedService) { }
+  constructor(
+    private goalService: GoalService,
+    private sharedService: SharedService,
+    private appService: AppService
+  ) { }
 
   ngOnInit(): void {
     this.loader = true;
-    const conditions: GoalConditions = {
+    const conditions: IGoalConditions = {
       sort: {
         updatedAt: 'DESC',
         isPinned: 'DESC'
       }
     };
-    this.goalService.listGoals(conditions)
-      .subscribe((data) => {
-        this.goals = data;
-        this.loader = false;
+    this.goals$ = this.goalService.listGoals(conditions).subscribe((data) => {
+      this.goals = data;
     });
   }
 
-  openUpdatePopUp(todo: GoalType): void {
-    this.isUpdate = true;
-    this.goal = todo; // passing todo object to update dialog
+  ngOnDestroy() {
+    this.goals$.unsubscribe();
   }
 
-  updatePopupFlag($event : boolean): void {
-    this.isUpdate = $event;
+  openUpdatePopUp(todo: IGoalType): void {
+    this.extModalConfig = { ...this.extModalConfig, GOAL_UPDATE: true, data: { ...this.extModalConfig.data, goal: todo } };
+    this.appService.externalModal.next(this.extModalConfig);
   }
 
 }

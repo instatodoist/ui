@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { TodoInboxComponent } from './todo-inbox/todo-inbox.component';
-import { TodoLabelFilterComponent } from './todo-label-filter/todo-label-filter.component';
+// import { TodoLabelFilterComponent } from './todo-label-filter/todo-label-filter.component';
 
 const routes: Routes = [
   {

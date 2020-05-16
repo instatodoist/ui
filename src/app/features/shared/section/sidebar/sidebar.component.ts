@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TodoService } from '../../../../service';
+import { TodoService, AppService } from '../../../../service';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { ITodoTypeCount } from '../../../../models';
@@ -19,7 +19,8 @@ export class SidebarComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private todoService: TodoService
+    private todoService: TodoService,
+    private appService: AppService
   ) { }
 
   ngOnInit(): void {
@@ -73,6 +74,14 @@ export class SidebarComponent implements OnInit {
 
   openPopUp(): void {
     this.isOpen = true;
+  }
+
+  openPopUpGeneric(): void {
+    // debugger
+    this.appService.updateExternalModal({
+      ...this.appService.ExternalModelConfig,
+      GOAL_ADD: true
+    });
   }
 
 }

@@ -1,40 +1,44 @@
-<div *ngIf="loader" class="lds-dual-ring small"></div>
-<div *ngIf="!loader">
-    <div class="mdc-layout-grid">
-        <div class="mdc-layout-grid__inner">
-            <div class="mdc-layout-grid__cell" *ngFor="let goal of goals?.data;">
-                <div class="mdc-card my-card">
-                    <div class="mdc-card__primary-action">
-                        <!-- <div class="mdc-card__media mdc-card__media--square">
-                            <div class="mdc-card__media-content">{{goal?.title}}</div>
-                        </div> -->
-                        <div class="mdc-card__content my-card-content">
-
-                            {{goal?.title}}
-                        </div>
-                        <!-- ... additional primary action content ... -->
-                    </div>
-                    <div class="mdc-card__actions">
-                        <div class="mdc-card__action-buttons">
-                            <button class="mdc-button mdc-card__action mdc-card__action--button" (click) = "openUpdatePopUp(goal)">
-                                <div class="mdc-button__ripple"></div>
-                                <span class="mdc-button__label">Action 1</span>
-                            </button>
-                            <button class="mdc-button mdc-card__action mdc-card__action--button">
-                                <div class="mdc-button__ripple"></div>
-                                <span class="mdc-button__label">Action 2</span>
-                            </button>
-                        </div>
-                        <div class="mdc-card__action-icons">
-                            <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
-                                title="Share">share</button>
-                            <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
-                                title="More options">more_vert</button>
-                        </div>
-                    </div>
+<div class="container-fluid">
+  <div class="row">
+    <!-- <div class="col-sm-12">
+     <h3 class="mt-4 mb-3">Card Colored Styles</h3>
+  </div> -->
+    <div class="col-lg-4" *ngFor="let goal of goals?.data;">
+      <div class="card iq-mb-3">
+        <div class="card-body">
+          <h4 class="card-title">{{goal?.title}}</h4>
+          <blockquote class="blockquote mb-0">
+            <p class="font-size-14">{{goal?.description}}</p>
+            <footer class="blockquote-footer text-white font-size-12">
+              <div class="form-group row align-items-center">
+                <div class="d-flex flex-grow-1 align-items-center">
+                  <!-- <div class="send-panel">
+                      <label class="ml-2 mb-0 iq-bg-primary rounded" for="file"> <input type="file" id="file" style="display: none"> <a><i class="ri-attachment-line"></i> </a> </label>
+                      <label class="ml-2 mb-0 iq-bg-primary rounded"> <a href="javascript:void();"> <i class="ri-map-pin-user-line text-primary"></i></a>  </label>
+                      <label class="ml-2 mb-0 iq-bg-primary rounded"> <a href="javascript:void();"> <i class="ri-drive-line text-primary"></i></a>  </label>
+                      <label class="ml-2 mb-0 iq-bg-primary rounded"> <a href="javascript:void();"> <i class="ri-camera-line text-primary"></i></a>  </label>
+                      <label class="ml-2 mb-0 iq-bg-primary rounded"> <a href="javascript:void();"> <i class="ri-user-smile-line text-primary"></i></a>  </label>
+                   </div> -->
                 </div>
-            </div>
+                <div class="d-flex mr-3 align-items-center">
+                  <div class="send-panel float-right">
+                    <label class="ml-2 mb-0 iq-bg-primary rounded" (click)="openUpdatePopUp(goal)">
+                      <a href="javascript:void();"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    </label>
+                    <label class="ml-2 mb-0 iq-bg-primary rounded">
+                      <a href="javascript:void();"><i class="ri-delete-bin-line text-primary"></i></a>
+                    </label>
+                    <label class="ml-2 mb-0 iq-bg-primary rounded">
+                      <a href="javascript:void();"><i class="fa fa-thumb-tack" aria-hidden="true"></i>
+                      </a>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </footer>
+          </blockquote>
         </div>
+      </div>
     </div>
+  </div>
 </div>
-<app-goal-dialog [goal] = "goal" (isOpen)="updatePopupFlag($event)" *ngIf="isUpdate"></app-goal-dialog>

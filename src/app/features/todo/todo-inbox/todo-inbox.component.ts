@@ -31,8 +31,8 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   compltedCount = 0;
   loaderImage = this.appService.loaderImage;
   isDeleting = false;
-  extModalConfig: IExternalModal;
-  modalSubscription: Subscription;
+  extModalConfig: IExternalModal = this.appService.ExternalModelConfig;
+  // modalSubscription: Subscription;
   count: ITodoTypeCount;
 
   constructor(
@@ -43,7 +43,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.modalSubscription.unsubscribe();
+    // this.modalSubscription.unsubscribe();
   }
 
   ngAfterViewInit() {
@@ -91,7 +91,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
           this.getTodos(this.conditions);
         }
       });
-    this.subscribeToExtTodoAddModal();
+    // this.subscribeToExtTodoAddModal();
   }
 
   // get priority color
@@ -245,11 +245,11 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // used for open & closing of todo add modal
-  private subscribeToExtTodoAddModal() {
-    this.modalSubscription = this.appService.externalModal.subscribe(data => {
-      this.extModalConfig = data;
-    });
-  }
+  // private subscribeToExtTodoAddModal() {
+  //   this.modalSubscription = this.appService.externalModal.subscribe(data => {
+  //     this.extModalConfig = data;
+  //   });
+  // }
 
   // check if today || yesterday || tomorrow
   displayDate(date: Date) {

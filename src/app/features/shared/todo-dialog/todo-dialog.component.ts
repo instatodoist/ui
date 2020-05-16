@@ -62,8 +62,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit {
       priority: ['P4'],
       operationType: [this.operationType],
       isCompleted: [this.todo && this.todo.isCompleted ? true : false]
-    }
-    );
+    });
     // setting title
     if (this.todo) {
       this.title = 'Update Task';

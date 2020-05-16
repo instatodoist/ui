@@ -1,7 +1,8 @@
-import { SortEnumType } from './shared.model';
+import { SortEnumType as ISortEnumType } from './shared.model';
+import { OperationEnumType as IOperationEnumType } from '../models/todo.model';
 
-export interface GoalType {
-    _id: string;
+export interface IGoalType {
+    _id?: string;
     title?: string;
     description?: string;
     accomplishTenure?: Date;
@@ -9,27 +10,28 @@ export interface GoalType {
     isAchieved?: boolean;
     createdAt?: Date;
     updatedAt?: Date;
+    operationType?: IOperationEnumType;
 }
 
-export interface GoalFilterType {
+export interface IGoalFilterType {
     isPinned?: boolean;
     isAchieved?: boolean;
     q?: string;
 }
-export interface GoalSortType {
-    createdAt?: SortEnumType;
-    updatedAt?: SortEnumType;
-    isPinned?: SortEnumType;
-    isAchieved?: SortEnumType;
-    accomplishTenure?: SortEnumType;
+export interface IGoalSortType {
+    createdAt?: ISortEnumType;
+    updatedAt?: ISortEnumType;
+    isPinned?: ISortEnumType;
+    isAchieved?: ISortEnumType;
+    accomplishTenure?: ISortEnumType;
 }
 
-export interface GoalConditions {
-  sort?: GoalSortType;
-  filter?: GoalFilterType;
+export interface IGoalConditions {
+  sort?: IGoalSortType;
+  filter?: IGoalFilterType;
 }
 
-export interface GoalListType {
-    data: GoalType[];
+export interface IGoalListType {
+    data: IGoalType[];
     totalCount: number;
 }

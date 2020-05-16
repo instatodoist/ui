@@ -11,7 +11,13 @@ export class AppService implements OnDestroy {
   externalModal: BehaviorSubject<IExternalModal>;
   ExternalModelConfig: IExternalModal = {
     TODO_ADD: false,
-    TODO_UPDATE: false
+    TODO_UPDATE: false,
+    GOAL_UPDATE: false,
+    GOAL_ADD: false,
+    data: {
+      todo: null,
+      goal: null
+    }
   };
   APP_DATA: IAppData = {
     config: {

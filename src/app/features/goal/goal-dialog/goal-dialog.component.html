@@ -1,45 +1,45 @@
-<div class="mdc-dialog">
-    <div class="mdc-dialog__container">
-        <div class="mdc-dialog__surface" role="alertdialog" aria-modal="true" aria-labelledby="my-dialog-title"
-            aria-describedby="my-dialog-content">
-            <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
-            <h2 class="mdc-dialog__title" id="my-dialog-title">
-                <!--
-       -->Choose a Ringtone
-                <!--
-     -->
-            </h2>
-            <div class="mdc-dialog__content" id="my-dialog-content">
-                <ul class="mdc-list">
-                    <li class="mdc-list-item" tabindex="0">
-                        <span class="mdc-list-item__graphic">
-                            <div class="mdc-radio">
-                                <input class="mdc-radio__native-control" type="radio"
-                                    id="test-dialog-baseline-confirmation-radio-1"
-                                    name="test-dialog-baseline-confirmation-radio-group" checked>
-                                <div class="mdc-radio__background">
-                                    <div class="mdc-radio__outer-circle"></div>
-                                    <div class="mdc-radio__inner-circle"></div>
-                                </div>
-                            </div>
-                        </span>
-                        <label id="test-dialog-baseline-confirmation-radio-1-label"
-                            for="test-dialog-baseline-confirmation-radio-1" class="mdc-list-item__text">None</label>
-                    </li>
-                    <!-- ... -->
-                </ul>
+<div class="modal fade" id="{{modelId}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle"
+  aria-hidden="true" style="display: none;">
+  <form class="form-horizontal" role="form" name="form" id="form" [formGroup]="formObj" (ngSubmit)="submit()"
+    novalidate>
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+
+        <div class="iq-card">
+          <div class="iq-card-body">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">{{this.formObj.value?._id ? 'Update Goal': 'Add Goal'}}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
             </div>
-            <footer class="mdc-dialog__actions">
-                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
-                    <div class="mdc-button__ripple"></div>
-                    <span class="mdc-button__label">Cancel</span>
-                </button>
-                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">
-                    <div class="mdc-button__ripple"></div>
-                    <span class="mdc-button__label">OK</span>
-                </button>
-            </footer>
+            <div class="modal-body">
+
+              <!-- Title input-->
+              <div class="form-group">
+                <!-- <div class="col-sm-12"> -->
+                <input formControlName="title" type="text" class="form-control"
+                  placeholder="What is on your mind today?" autofocus>
+                <!-- </div> -->
+              </div>
+              <!-- Description -->
+              <div class="form-group">
+                <!-- <div class="col-sm-9"> -->
+                <textarea class="form-control" id="exampleFormControlTextarea1" formControlName="description"
+                  rows="5"></textarea>
+                <!-- </div> -->
+              </div>
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <button type="button" class="btn btn-primary mr-2" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary" [disabled]="!formObj.valid || isSubmit">
+                    Save changes <i *ngIf="isSubmit" class="fa fa-spinner fa-spin ml-2"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="mdc-dialog__scrim"></div>
+  </form>
 </div>
