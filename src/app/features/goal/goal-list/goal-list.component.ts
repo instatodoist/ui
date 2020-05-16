@@ -39,9 +39,24 @@ export class GoalListComponent implements OnInit, OnDestroy {
     this.goals$.unsubscribe();
   }
 
-  openUpdatePopUp(todo: IGoalType): void {
-    this.extModalConfig = { ...this.extModalConfig, GOAL_UPDATE: true, data: { ...this.extModalConfig.data, goal: todo } };
-    this.appService.externalModal.next(this.extModalConfig);
+  openUpdatePopUp(goal: IGoalType, isModal = true): void {
+    if (isModal) {
+      this.extModalConfig = { ...this.extModalConfig, GOAL_UPDATE: true, data: { ...this.extModalConfig.data, goal } };
+      this.appService.externalModal.next(this.extModalConfig);
+    } else {
+      goal.isPinned = !goal.isPinned;
+      this.submit({
+        isPinned: goal.isPinned,
+        _id: goal._id,
+        title: goal.title,
+        description: goal.description
+      });
+    }
+  }
+
+  submit(goal: IGoalType = null) {
+    goal.operationType = 'UPDATE';
+    this.goalService.goalOperation(goal).subscribe();
   }
 
 }

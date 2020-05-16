@@ -44,33 +44,35 @@
           </ul>
         </li>
         <li [ngClass]="{'active': this.nav.labels, 'active-menu': this.nav.labels}">
-          <a href="#userinfo" class="iq-waves-effect" data-toggle="collapse"><span class="ripple rippleEffect"></span><i
-              class="fa fa-tasks iq-arrow-left"></i><span>Lists</span><i
-              class="ri-arrow-right-s-line iq-arrow-right"></i>
+          <a href="#userinfo" class="iq-waves-effect" data-toggle="collapse">
+            <span class="ripple rippleEffect"></span>
+            <i class="fa fa-tasks iq-arrow-left"></i>
+            <span>Lists</span>
+            <i class="ri-arrow-right-s-line iq-arrow-right"></i>
           </a>
-          <ul id="userinfo" class="iq-submenu" data-parent="#iq-sidebar-toggle" style="margin-bottom: 50px !important;"
+          <ul id="userinfo" class="iq-submenu" data-parent="#iq-sidebar-toggle"
             [ngClass]="{'collapse': !this.nav.labels, 'show': this.nav.labels}">
             <ng-container>
               <app-todo-label-list></app-todo-label-list>
             </ng-container>
           </ul>
         </li>
-        <li [ngClass]="{'active': this.nav.labels, 'active-menu': this.nav.labels}">
+        <li [ngClass]="{'active': this.nav.goals, 'active-menu': this.nav.goals}">
           <a href="#goals" class="iq-waves-effect" data-toggle="collapse"><span class="ripple rippleEffect"></span><i
-              class="fa fa-tasks iq-arrow-left"></i><span>Goals</span><i
+              class="las la-user-tie iq-arrow-left"></i><span>Goals</span><i
               class="ri-arrow-right-s-line iq-arrow-right"></i>
           </a>
           <ul id="goals" class="iq-submenu" data-parent="#iq-sidebar-toggle"
-            [ngClass]="{'collapse': !this.nav.labels, 'show': this.nav.labels}">
+            [ngClass]="{'collapse': !this.nav.goals, 'show': this.nav.goals}">
             <li>
-              <a routerLink="/goals/list" routerLinkAtive="active" class="iq-waves-effect">
-                <i class="las la-calendar iq-arrow-left"></i>
+              <a routerLink="/goals/list" routerLinkAtive="active">
+                <i class="las la-bars"></i>
                 <span>List</span>
               </a>
             </li>
             <li>
-              <a (click)="openPopUpGeneric()" class="iq-waves-effect">
-                <i class="las la-calendar iq-arrow-left"></i>
+              <a href="javascript:void(0)" (click)="openPopUpGeneric()">
+                <i class="las la-eraser"></i>
                 <span>Add</span>
               </a>
             </li>

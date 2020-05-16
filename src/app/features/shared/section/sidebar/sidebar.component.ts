@@ -14,7 +14,8 @@ export class SidebarComponent implements OnInit {
   count: ITodoTypeCount;
   nav: any = {
     todos: false,
-    labels: false
+    labels: false,
+    goals: false
   };
 
   constructor(
@@ -38,7 +39,7 @@ export class SidebarComponent implements OnInit {
 
   updateNav(url: string): void {
     if (url.match(/labels/g)) {
-      this.nav = { ...this.nav, todos: false, labels: true };
+      this.nav = { ...this.nav, todos: false, goals: false, labels: true };
     } else if (
       url.match('/today') ||
       url.match('/pending') ||
@@ -46,7 +47,9 @@ export class SidebarComponent implements OnInit {
       url.match('/completed') ||
       url.match('/upcoming')
     ) {
-      this.nav = { ...this.nav, todos: true, labels: false };
+      this.nav = { ...this.nav, todos: true, goals: false, labels: false };
+    } else {
+      this.nav = { ...this.nav, todos: false, labels: false, goals: true, };
     }
   }
 
