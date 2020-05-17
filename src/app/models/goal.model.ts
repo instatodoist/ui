@@ -8,6 +8,7 @@ export interface IGoalType {
     accomplishTenure?: Date;
     isPinned?: boolean;
     isAchieved?: boolean;
+    isDelete?: boolean;
     createdAt?: Date;
     updatedAt?: Date;
     operationType?: IOperationEnumType;

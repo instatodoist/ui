@@ -39,7 +39,7 @@ export class GoalService {
     const { operationType, _id, ...postBody } = body;
     // refetch query after add or update
     const refetchQuery: any = {
-      query: GOAL_QUERY
+      query: GOAL_QUERY,
     };
     // if passing conditions
     if (conditions) {

@@ -15,6 +15,15 @@ export class GoalListComponent implements OnInit, OnDestroy {
   isUpdate = false;
   goal: IGoalType = null;
   extModalConfig: IExternalModal = this.appService.ExternalModelConfig;
+  conditions: IGoalConditions = {
+    filter: {
+      isAchieved: false
+    },
+    sort: {
+      updatedAt: 'DESC',
+      isPinned: 'DESC'
+    }
+  };
 
   constructor(
     private goalService: GoalService,
@@ -24,13 +33,7 @@ export class GoalListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loader = true;
-    const conditions: IGoalConditions = {
-      sort: {
-        updatedAt: 'DESC',
-        isPinned: 'DESC'
-      }
-    };
-    this.goals$ = this.goalService.listGoals(conditions).subscribe((data) => {
+    this.goals$ = this.goalService.listGoals(this.conditions).subscribe((data) => {
       this.goals = data;
     });
   }
@@ -39,43 +42,57 @@ export class GoalListComponent implements OnInit, OnDestroy {
     this.goals$.unsubscribe();
   }
 
-  openUpdatePopUp(goal: IGoalType = null, isModal = true, type = 'GOAL_UPDATE'): void {
-    if (isModal) {
-      if (type === 'GOAL_UPDATE') {
-        this.extModalConfig = {
-          ...this.extModalConfig,
-          GOAL_ADD: false,
-          GOAL_UPDATE: true,
-          data: {
-            ...this.extModalConfig.data,
-            goal
-          }
-        };
-      } else {
-        this.extModalConfig = {
-          ...this.extModalConfig,
-          GOAL_ADD: true,
-          GOAL_UPDATE: false,
-          data: {
-            ...this.extModalConfig.data, goal: null
-          }
-        };
-      }
-      this.appService.externalModal.next(this.extModalConfig);
-    } else {
-      goal.isPinned = !goal.isPinned;
+  updateGoal(goal: IGoalType = null, type = 'IS_PINNED') {
+    const goalObj = {
+      _id: goal._id,
+      title: goal.title,
+      description: goal.description
+    };
+    if (type === 'IS_PINNED') {
       this.submit({
-        isPinned: goal.isPinned,
-        _id: goal._id,
-        title: goal.title,
-        description: goal.description
+        ...goalObj,
+        isPinned: !goal.isPinned,
+      });
+    } else if (type === 'IS_ARCHIEVED') {
+      this.submit({
+        ...goalObj,
+        isAchieved: !goal.isAchieved
+      });
+    } else if (type === 'IS_DELETE') {
+      this.submit({
+        ...goalObj,
+        isDelete: !goal.isDelete
       });
     }
   }
 
+  openUpdatePopUp(goal: IGoalType = null, type = 'GOAL_UPDATE'): void {
+    if (type === 'GOAL_UPDATE') {
+      this.extModalConfig = {
+        ...this.extModalConfig,
+        GOAL_ADD: false,
+        GOAL_UPDATE: true,
+        data: {
+          ...this.extModalConfig.data,
+          goal
+        }
+      };
+    } else {
+      this.extModalConfig = {
+        ...this.extModalConfig,
+        GOAL_ADD: true,
+        GOAL_UPDATE: false,
+        data: {
+          ...this.extModalConfig.data, goal: null
+        }
+      };
+    }
+    this.appService.externalModal.next(this.extModalConfig);
+  }
+
   submit(goal: IGoalType = null) {
     goal.operationType = 'UPDATE';
-    this.goalService.goalOperation(goal).subscribe();
+    this.goalService.goalOperation(goal, this.conditions).subscribe();
   }
 
 }
