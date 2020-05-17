@@ -1,13 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { IGoalListType, IGoalConditions, IGoalType, IExternalModal } from '../../../models';
 import { SharedService, GoalService, AppService } from '../../../service';
 import { Subscription } from 'rxjs';
+declare var $: any;
 @Component({
   selector: 'app-goal-list',
   templateUrl: './goal-list.component.html',
   styleUrls: ['./goal-list.component.scss']
 })
-export class GoalListComponent implements OnInit, OnDestroy {
+export class GoalListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   loader = false;
   goals$: Subscription;
@@ -36,6 +37,10 @@ export class GoalListComponent implements OnInit, OnDestroy {
     this.goals$ = this.goalService.listGoals(this.conditions).subscribe((data) => {
       this.goals = data;
     });
+  }
+
+  ngAfterViewInit() {
+    $('[data-toggle="tooltip"]').tooltip();
   }
 
   ngOnDestroy() {
