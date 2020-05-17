@@ -4,11 +4,13 @@
      <h3 class="mt-4 mb-3">Card Colored Styles</h3>
   </div> -->
     <div class="card" *ngFor="let goal of goals?.data;">
-      <div class="card iq-mb-3" [ngClass]="{ 'bg-secondary': goal?.isPinned }">
+      <!-- <div class="card iq-mb-3" [ngClass]="{ 'bg-secondary': goal?.isPinned }"> -->
+      <div class="card iq-mb-3">
         <div class="card-body">
-          <h4 class="card-title" [ngClass]="{ 'text-white': goal?.isPinned }">{{goal?.title}}</h4>
+          <!-- <h4 class="card-title" [ngClass]="{ 'text-white': goal?.isPinned }">{{goal?.title}}</h4> -->
+          <h4 class="card-title">{{goal?.title}}</h4>
           <blockquote class="blockquote mb-0">
-            <p class="font-size-14">{{goal?.description}}</p>
+            <p class="font-size-14" [innerHTML]="goal?.description"></p>
             <footer class="blockquote-footer text-white font-size-12">
               <div class="form-group row align-items-center">
                 <div class="d-flex flex-grow-1 align-items-center"></div>

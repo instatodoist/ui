@@ -6,6 +6,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ReactiveFormsModule } from '@angular/forms';
+import { QuilljsModule } from 'ngx-quilljs';
 import { AppService } from '../../service';
 import { TodoDialogComponent } from './todo-dialog/todo-dialog.component';
 import {TodoLabelComponent} from './todo-label/todo-label.component';
@@ -32,6 +33,7 @@ import { GoalDialogComponent } from '../goal/goal-dialog/goal-dialog.component';
       }
     }),
     ToastrModule.forRoot(),
+    QuilljsModule
   ],
   exports: [
     TodoDialogComponent,

@@ -21,6 +21,13 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   popUpType = 'GOAL_ADD';
   private modalSubscription: Subscription;
   defaultConfig: IExternalModal;
+  QUILL_OPTIONS = {
+    theme: 'bubble',
+    placeholder: '',
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike', 'image']
+    ]
+  };
 
   constructor(
     private goalService: GoalService,
