@@ -1,7 +1,12 @@
 .my-card {
-    height: 350px;
-    width: 350px;
+  height: 350px;
+  width: 350px;
 }
 .my-card-content {
-    padding: 16px;
-  }
+  padding: 16px;
+}
+.bottom-right{
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}

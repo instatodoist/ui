@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { GoalService, AppService } from '../../../service';
-import { IGoalType } from '../../../models';
+import { IGoalType, IExternalModal } from '../../../models';
 import { Subscription } from 'rxjs';
 declare var $: any;
 
@@ -20,6 +20,7 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   isSubmit = false;
   popUpType = 'GOAL_ADD';
   private modalSubscription: Subscription;
+  defaultConfig: IExternalModal;
 
   constructor(
     private goalService: GoalService,
@@ -43,13 +44,14 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     $('#' + this.modelId).modal('toggle');
     const externalModal = this.appService.externalModal;
-    const defaultConfig = this.appService.ExternalModelConfig;
+    const defaultConfig = this.defaultConfig;
     const modelId = this.modelId;
+    const popupType = this.popUpType;
     // tslint:disable-next-line: only-arrow-functions
     $('#' + modelId).on('hidden.bs.modal', function() {
       externalModal.next({
         ...defaultConfig,
-        [this.popUpType]: false
+        [popupType]: false
       });
     });
   }
@@ -60,6 +62,7 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subscribeToModal() {
     this.modalSubscription = this.appService.externalModal.subscribe(data => {
+      this.defaultConfig = {...data };
       if (data.data.goal) {
         this.popUpType = 'GOAL_UPDATE';
         this.goal = data.data.goal;

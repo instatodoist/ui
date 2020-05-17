@@ -57,7 +57,14 @@
             </ng-container>
           </ul>
         </li>
-        <li [ngClass]="{'active': this.nav.goals, 'active-menu': this.nav.goals}">
+
+        <li [ngClass]="{'active active-menu': this.nav.goals}">
+          <a routerLink="/goals/list" class="iq-waves-effect">
+            <i class="las la-calendar iq-arrow-left"></i><span>Notes</span>
+          </a>
+        </li>
+
+        <!-- <li [ngClass]="{'active': this.nav.goals, 'active-menu': this.nav.goals}">
           <a href="#goals" class="iq-waves-effect" data-toggle="collapse"><span class="ripple rippleEffect"></span><i
               class="las la-user-tie iq-arrow-left"></i><span>Goals</span><i
               class="ri-arrow-right-s-line iq-arrow-right"></i>
@@ -77,7 +84,7 @@
               </a>
             </li>
           </ul>
-        </li>
+        </li> -->
       </ul>
     </nav>
     <div class="p-3"></div>

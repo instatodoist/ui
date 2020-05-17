@@ -79,12 +79,12 @@ export class SidebarComponent implements OnInit {
     this.isOpen = true;
   }
 
-  openPopUpGeneric(): void {
-    // debugger
-    this.appService.updateExternalModal({
-      ...this.appService.ExternalModelConfig,
-      GOAL_ADD: true
-    });
-  }
+  // openPopUpGeneric(): void {
+  //   // debugger
+  //   this.appService.updateExternalModal({
+  //     ...this.appService.ExternalModelConfig,
+  //     GOAL_ADD: true
+  //   });
+  // }
 
 }
