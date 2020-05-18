@@ -5,6 +5,8 @@ import { TodoService, SharedService, AppService } from '../../../service';
 import { TodoType, TodoLabelType, TodoConditions, OperationEnumType } from '../../../models';
 import { map } from 'rxjs/operators';
 import { combineLatest, Subscription } from 'rxjs';
+import {  } from '../../../gql';
+import * as moment from 'moment';
 declare var $: any;
 declare var flatpickr: any;
 
@@ -30,15 +32,17 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   labels: TodoLabelType[]; // labels array
   priorityColor = this.todoService.getPriorities[3].color; // default color for priority
   priorities = [];
-  TODOTYPES: any; // todo types wrt routes
+  // TODOTYPES: any; // todo types wrt routes
   todoCurrentType: string; // current route
   operationType: OperationEnumType = 'ADD';
   currentLabel = '';
   labelIdVal: string[] = [];
   isSubmit = false;
   popUpType = 'TODO_ADD';
+  TODOTYPES = this.todoService.todoTypes();
   private modalSubscription: Subscription;
   private routeSubscription: Subscription;
+  today = moment(new Date()).startOf('day');
 
   constructor(
     private router: Router,
@@ -116,7 +120,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     const externalModal = this.appService.externalModal;
     const defaultConfig = this.appService.ExternalModelConfig;
     // tslint:disable-next-line: only-arrow-functions
-    $(`#${this.modelId}`).on('hidden.bs.modal', function () {
+    $(`#${this.modelId}`).on('hidden.bs.modal', function() {
       externalModal.next({
         ...defaultConfig,
         [this.popUpType]: false
@@ -158,13 +162,38 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   // add/update the task
   submit() {
     if (this.formObj.valid) {
-      this.isSubmit = true;
       const postBody = this.formObj.value;
+      let refetch: TodoConditions;
+      if (
+        postBody.scheduling &&
+        postBody.scheduledDate
+      ) {
+        const scheduledDate = moment(postBody.scheduledDate).startOf('day');
+        if (
+          this.todoCurrentType !== this.TODOTYPES.upcoming &&
+          (scheduledDate.isAfter(this.today))
+        ) {
+          refetch = this.todoService.getConditions(this.TODOTYPES.upcoming);
+        }
+        if (
+          this.todoCurrentType !== this.TODOTYPES.today &&
+          (scheduledDate.isSame(this.today))
+        ) {
+          refetch = this.todoService.getConditions(this.TODOTYPES.today);
+        }
+      } else {
+        refetch = this.todoService.getConditions(this.TODOTYPES.inbox);
+      }
+      if (
+        this.todoCurrentType !== this.TODOTYPES.completed && postBody.isCompleted
+      ) {
+        refetch = this.todoService.getConditions(this.TODOTYPES.completed);
+      }
+      this.isSubmit = true;
       this.todoService
-        .todoOperation(postBody, this.conditions)
+        .todoOperation(postBody, this.conditions, refetch)
         .subscribe(() => {
           this.isSubmit = false;
-          // this.dialog.close();
           this.isOpen.emit(false);
           $(`#${this.modelId}`).modal('hide');
         },
@@ -182,7 +211,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         this.labelIdVal = this.todo ? (this.todo.label.map(label => {
           return label._id;
         })) : [];
-        this.popUpType = 'GOAL_UPDATE';
+        this.popUpType = 'TODO_UPDATE';
         this.todo = data.data.todo;
         this.formObj.patchValue({
           _id: this.todo && this.todo._id || '',

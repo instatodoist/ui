@@ -245,7 +245,7 @@ export class TodoService {
    * @param body - postbody for add/update/delete task
    * @param conditions - refetch conditions for todos-task wrt apolo
    */
-  todoOperation(body: TodoType, conditions: any = null): Observable<SuccessType> {
+  todoOperation(body: TodoType, conditions: any = null, extraRefetch: TodoConditions = null): Observable<SuccessType> {
     let gqlOperation = TODO_ADD_MUTATION;
     let defaultDataKey = 'addTodo';
     const operationType = body.operationType;
@@ -256,6 +256,13 @@ export class TodoService {
     // if passing conditions
     if (conditions) {
       refetchQuery.variables = { ...conditions };
+    }
+    let refetch = [refetchQuery];
+    if (extraRefetch) {
+      refetch = [...refetch, {
+        query: TODO_LIST_QUERY,
+        variables: extraRefetch
+      }];
     }
     // initialising gql variables
     let variables: any = {};
@@ -302,7 +309,7 @@ export class TodoService {
         };
         break;
     }
-    const refetch = [refetchQuery];
+    // const refetch = [refetchQuery];
     return this.apollo.mutate({
       mutation: gqlOperation,
       variables,
