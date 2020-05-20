@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService, AppService } from '../../../../service';
@@ -67,6 +67,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.getProfile();
+    this.onSearch();
   }
 
   // do singout
@@ -96,11 +97,16 @@ export class HeaderComponent implements OnInit {
   }
 
   onSearch() {
-    const urlTree = this.router.createUrlTree([], {
-      queryParams: { q: this.formObj.value.query ? this.formObj.value.query : null },
-      queryParamsHandling: 'merge',
-      preserveFragment: true
+    this.formObj.get('query').valueChanges.pipe(
+      debounceTime(500),
+      distinctUntilChanged()
+    ).subscribe((query) => {
+      const urlTree = this.router.createUrlTree([], {
+        queryParams: { q: query ? query : null },
+        queryParamsHandling: 'merge',
+        preserveFragment: true
+      });
+      return this.router.navigateByUrl(urlTree);
     });
-    this.router.navigateByUrl(urlTree);
   }
 }
