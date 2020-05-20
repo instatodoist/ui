@@ -20,7 +20,7 @@
               <div class="row mt-3">
                 <div class="col-sm-9">
                   <input formControlName="title" type="text" class="form-control"
-                    placeholder="What is on your mind today?" autofocus>
+                    placeholder="{{ 'what_todo' | translate }}" autofocus>
                 </div>
               </div>
               <div class="row mt-3" [hidden]="!formObj.value.scheduling">
@@ -94,10 +94,12 @@
                 <div class="col-sm-12">
                   <!-- <button type="button" class="btn btn-primary mr-2" data-dismiss="modal">Close</button> -->
                   <button type="submit" class="btn btn-primary" [disabled]="!formObj.valid || isSubmit">
-                    Save changes <i *ngIf="isSubmit" class="fa fa-spinner fa-spin ml-2"></i></button>
+                    {{'save_changes' | translate}}
+                    <i *ngIf="isSubmit" class="fa fa-spinner fa-spin ml-2"></i>
+                  </button>
                 </div>
               </div>
-              <div class="row mt-3">
+              <!-- <div class="row mt-3">
                 <div class="col-sm-12">
                   <ul class="nav nav-tabs" id="myTab-1" role="tablist">
                     <li class="nav-item">
@@ -110,7 +112,7 @@
                     </li>
                   </ul>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
