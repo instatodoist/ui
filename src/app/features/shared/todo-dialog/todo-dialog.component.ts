@@ -5,7 +5,7 @@ import { TodoService, SharedService, AppService } from '../../../service';
 import { TodoType, TodoLabelType, TodoConditions, OperationEnumType } from '../../../models';
 import { map } from 'rxjs/operators';
 import { combineLatest, Subscription } from 'rxjs';
-import {  } from '../../../gql';
+import { } from '../../../gql';
 import * as moment from 'moment';
 declare var $: any;
 declare var flatpickr: any;
@@ -60,27 +60,30 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       title: ['', [Validators.required]],
       scheduling: [false],
       scheduledDate: [this.sharedService.todayDate()],
-      labelId: [],
+      labelId: [[]],
       priority: ['P4'],
       operationType: [this.operationType],
       isCompleted: [false]
     });
     this.subscribeToModal();
     this.TODOTYPES = this.todoService.todoTypes(); // getting route types
-
     this.routeSubscription = combineLatest([
-      this.activatedRoute.params,
       this.todoService.listTodoLabels()
     ])
       .pipe(
         map(data => ({
-          params: data[0],
-          labels: data[1]
+          // params: data[0],
+          labels: data[0]
         }))
       )
       .subscribe(data => {
-        const { params = null, labels = [] } = data;
-        const { label = null } = params;
+        const url = this.router.url;
+        let label = null;
+        if (url.match('lists')) {
+          const splitArr = url.split('/');
+          label = splitArr[splitArr.length - 1] || null;
+        }
+        const { labels = [] } = data;
         this.labels = labels;
         if (!label) {
           this.todoCurrentType = this.todoService.getCurentRoute();
@@ -120,7 +123,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     const externalModal = this.appService.externalModal;
     const defaultConfig = this.appService.ExternalModelConfig;
     // tslint:disable-next-line: only-arrow-functions
-    $(`#${this.modelId}`).on('hidden.bs.modal', function() {
+    $(`#${this.modelId}`).on('hidden.bs.modal', function () {
       externalModal.next({
         ...defaultConfig,
         [this.popUpType]: false

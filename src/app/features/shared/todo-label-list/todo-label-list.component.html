@@ -3,7 +3,7 @@
       class="fa fa-pencil-square-o mr-2" aria-hidden="true"></i></a>
 </li>
 <li *ngFor="let data of labels" routerLinkActive="active">
-  <a [routerLink]="['/tasks/labels', data?.name]">
+  <a [routerLink]="['/tasks/lists', data?.name]">
     <i class="fa fa-empire" aria-hidden="true"></i>
     {{data?.name}}
   </a>
