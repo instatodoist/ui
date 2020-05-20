@@ -26,6 +26,7 @@ import { GoalDialogComponent } from '../goal/goal-dialog/goal-dialog.component';
     RouterModule,
     ReactiveFormsModule,
     TranslateModule.forRoot({
+      // defaultLanguage: 'en',
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
