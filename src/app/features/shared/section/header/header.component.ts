@@ -120,19 +120,22 @@ export class HeaderComponent implements OnInit {
     this.translate.use(lang.value);
     this.defaultLang = lang;
     localStorage.setItem('lang', JSON.stringify(lang));
-    this.appService.updateCoreAppData({...this.appService.APP_DATA, lang});
+    this.appService.updateCoreAppData({ ...this.appService.APP_DATA, lang });
+    // this.languages = this.languages.filter(item => item.value !== lang.value);
   }
 
   getLanguages() {
     this.languages$ = this.appService.languages().subscribe((response) => {
-      this.languages = response;
+      const languages = response;
       if (localStorage.getItem('lang')) {
         const language: ILanguage = JSON.parse(localStorage.getItem('lang'));
-        this.defaultLang = this.languages.filter(item => item.value === language.value)[0];
+        this.defaultLang = languages.filter(item => item.value === language.value)[0];
       } else {
-        this.defaultLang = this.languages.filter(item => item.value === 'en')[0];
+        this.defaultLang = languages.filter(item => item.value === 'en')[0];
       }
       this.translate.use(this.defaultLang.value);
+      this.languages = languages;
+      // this.languages = languages.filter(item => item.value !== this.defaultLang.value);
     });
   }
 }
