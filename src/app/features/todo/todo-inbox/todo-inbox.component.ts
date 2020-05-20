@@ -75,7 +75,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
           this.todoCurrentType = label;
           const labelId = labels.filter(obj => obj.name === label)[0]._id;
-          this.conditions = this.toddService.getConditions(labelId);
+          this.conditions = this.toddService.getConditions(labelId, 'labels');
         }
         if (q) {
           this.queryStr = q;

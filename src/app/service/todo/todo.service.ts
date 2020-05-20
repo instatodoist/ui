@@ -91,7 +91,7 @@ export class TodoService {
    * @param type - current route type
    * @description - used to get the refetch condition for current route for aplolo
    */
-  getConditions(type: string): TodoConditions {
+  getConditions(type: string, extraParams = null): TodoConditions {
     if (type === this.TODOTYPES.today) {
       return {
         offset: 1,
@@ -144,7 +144,7 @@ export class TodoService {
           type: 'backlog'
         }
       };
-    } else {
+    } else if (extraParams && extraParams === 'labels') {
       return {
         offset: 1,
         first: 50,
@@ -153,6 +153,17 @@ export class TodoService {
         },
         filter: {
           labelId: type,
+          isCompleted: false
+        }
+      };
+    } else {
+      return {
+        offset: 1,
+        first: 50,
+        sort: {
+          createdAt: 'DESC'
+        },
+        filter: {
           isCompleted: false
         }
       };
@@ -167,7 +178,7 @@ export class TodoService {
       .watchQuery({
         query: TODO_LIST_QUERY,
         variables: conditions,
-       // fetchPolicy: 'network-only'
+        // fetchPolicy: 'network-only'
       })
       .valueChanges.pipe(map(({ data }: any) => {
         return data.todoList;
@@ -182,7 +193,7 @@ export class TodoService {
       .watchQuery({
         query: TODO_LIST_COUNT_QUERY,
         variables: conditions,
-       // fetchPolicy: 'network-only'
+        // fetchPolicy: 'network-only'
       })
       .valueChanges.pipe(map(({ data }: any) => {
         return {
@@ -203,7 +214,7 @@ export class TodoService {
       .watchQuery({
         query: TODO_COMPLETED_QUERY,
         variables: conditions,
-       // fetchPolicy: 'network-only'
+        // fetchPolicy: 'network-only'
       })
       .valueChanges.pipe(map(({ data }: any) => {
         return data.todoCompleted;
