@@ -2,13 +2,10 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-// import { HttpClient } from '@angular/common/http';
-// import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-// import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { RouterModule } from '@angular/router';
 import { AuthModule } from './features/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
-import { SharedModule} from './features/shared/shared.module';
+import { SharedModule } from './features/shared/shared.module';
 import { GraphqlModule } from './features/graphql/graphql.module';
 
 import { CanActivateAuthenticateGuard } from './guards/can-activate-authenticate.guard';
@@ -44,21 +41,14 @@ import { environment } from '../environments/environment';
     GraphqlModule,
     FormsModule,
     ReactiveFormsModule,
-    // TranslateModule.forRoot({
-    //   loader: {
-    //     provide: TranslateLoader,
-    //     useFactory: HttpLoaderFactory,
-    //     deps: [HttpClient]
-    //   }
-    // }),
     AuthModule,
     AppRoutingModule,
     SharedModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-    // HomeModule
   ],
   exports: [
-    RouterModule
+    RouterModule,
+    SharedModule
   ],
   providers: [
     CanActivateAuthenticateGuard
@@ -66,9 +56,4 @@ import { environment } from '../environments/environment';
   entryComponents: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
-
-// required for AOT compilation
-// export function HttpLoaderFactory(http: HttpClient) {
-//   return new TranslateHttpLoader(http);
-// }
+export class AppModule { }

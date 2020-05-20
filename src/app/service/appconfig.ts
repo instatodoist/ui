@@ -1,9 +1,10 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { IExternalModal, IAppData } from './../models';
+import { BehaviorSubject, Subscription, of, Observable } from 'rxjs';
+import { IExternalModal, IAppData, ILanguage } from './../models';
 import { LsService } from '../service/ls.service';
+
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 
 export class AppService implements OnDestroy {
@@ -26,6 +27,7 @@ export class AppService implements OnDestroy {
     isLoggedIn: Boolean(this.lsService.getValue('isLoggedIn')) || false,
     token: this.lsService.getValue('__token') || null,
     session: null,
+    lang: null
   };
   appSubscription: Subscription;
 
@@ -72,5 +74,21 @@ export class AppService implements OnDestroy {
 
   ngOnDestroy() {
     this.appSubscription.unsubscribe();
+  }
+
+  languages(): Observable<ILanguage[]> {
+    const lang = [
+      {
+        name: 'English',
+        value: 'en',
+        logo: '/assets/facelift/images/small/flag-01.png'
+      },
+      {
+        name: 'Telugu',
+        value: 'te',
+        logo: '/assets/facelift/images/small/flag-02.png'
+      }
+    ];
+    return of(lang);
   }
 }

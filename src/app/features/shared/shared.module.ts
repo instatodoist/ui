@@ -40,7 +40,8 @@ import { GoalDialogComponent } from '../goal/goal-dialog/goal-dialog.component';
     TodoLabelComponent,
     TodoLabelListComponent,
     InfiniteScrollComponent,
-    GoalDialogComponent
+    GoalDialogComponent,
+    TranslateModule
   ]
 })
 export class SharedModule {

@@ -16,7 +16,7 @@
       </div>
       <div class="iq-search-bar">
         <form class="searchbox" [formGroup]="formObj">
-          <input type="text" class="text search-input" placeholder="Type here to search..." formControlName="query">
+          <input type="text" class="text search-input" placeholder="{{'type_here_to_search' | translate}}" formControlName="query">
           <a class="search-link" href="#"><i class="ri-search-line"></i></a>
         </form>
       </div>
@@ -37,21 +37,25 @@
 
           </li>
           <li class="nav-item">
-            <a class="search-toggle iq-waves-effect language-title" href="#"><span class="ripple rippleEffect"
-                style="width: 98px; height: 98px; top: -15px; left: 56.2969px;"></span><img
-                src="/assets/facelift/images/small/flag-01.png" alt="img-flaf" class="img-fluid mr-1"
-                style="height: 16px; width: 16px;"> EN <i class="ri-arrow-down-s-line"></i></a>
+            <a class="search-toggle iq-waves-effect language-title" href="#">
+              <span class="ripple rippleEffect" style="width: 98px; height: 98px; top: -15px; left: 56.2969px;">
+              </span>
+              <img src="{{defaultLang?.logo}}" alt="img-flaf" class="img-fluid mr-1" style="height: 16px; width: 16px;">
+              {{defaultLang?.value | uppercase}}
+              <i class="ri-arrow-down-s-line"></i>
+            </a>
             <div class="iq-sub-dropdown">
-              <a class="iq-sub-card" href="#"><img src="/assets/facelift/images/small/flag-02.png" alt="img-flaf"
-                  class="img-fluid mr-2">French</a>
-              <a class="iq-sub-card" href="#"><img src="/assets/facelift/images/small/flag-03.png" alt="img-flaf"
+              <a class="iq-sub-card cursor" *ngFor="let lang of languages" (click)="onChangeLanguage(lang)">
+                <img src="{{lang?.logo}}" alt="img-flaf" class="img-fluid mr-2">{{lang?.name}}
+              </a>
+              <!-- <a class="iq-sub-card" href="#"><img src="/assets/facelift/images/small/flag-03.png" alt="img-flaf"
                   class="img-fluid mr-2">Spanish</a>
               <a class="iq-sub-card" href="#"><img src="/assets/facelift/images/small/flag-04.png" alt="img-flaf"
                   class="img-fluid mr-2">Italian</a>
               <a class="iq-sub-card" href="#"><img src="/assets/facelift/images/small/flag-05.png" alt="img-flaf"
                   class="img-fluid mr-2">German</a>
               <a class="iq-sub-card" href="#"><img src="/assets/facelift/images/small/flag-06.png" alt="img-flaf"
-                  class="img-fluid mr-2">Japanese</a>
+                  class="img-fluid mr-2">Japanese</a> -->
             </div>
           </li>
           <!-- <li class="nav-item nav-icon">

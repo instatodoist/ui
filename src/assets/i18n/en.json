@@ -1,7 +1,7 @@
 {
   "auth": {
-    "signin": "Sign-In",
-    "signup": "SignUp",
+    "signin": "Sign In",
+    "signup": "Sign Up",
     "username": "Uesrname",
     "password": "Password",
     "email": "Email",
@@ -19,5 +19,6 @@
   "upcoming": "Upcoming Next week",
   "my_goals": "My Goals",
   "completed_todos": "Completed Tasks",
-  "label_filter": "Filtered tasks"
+  "label_filter": "Filtered tasks",
+  "type_here_to_search": "Type here to search..."
 }

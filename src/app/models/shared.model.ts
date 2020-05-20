@@ -12,6 +12,11 @@ export interface IExternalModal {
   };
 }
 
+export interface ILanguage {
+  name: string;
+  value: string;
+  logo: string;
+}
 export interface IAppData {
   config: {
     theme: string;
@@ -19,4 +24,5 @@ export interface IAppData {
   isLoggedIn: boolean;
   token: string;
   session: IUserProfile;
+  lang: ILanguage;
 }

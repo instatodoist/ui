@@ -6,6 +6,8 @@ import { filter, map, debounceTime, distinctUntilChanged } from 'rxjs/operators'
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService, AppService } from '../../../../service';
+import { Subscription } from 'rxjs';
+import { ILanguage } from '../../../../models';
 
 @Component({
   selector: 'app-header',
@@ -18,6 +20,9 @@ export class HeaderComponent implements OnInit {
   headerTitle: string;
   session: any;
   formObj: FormGroup;
+  languages$: Subscription;
+  languages: ILanguage[] = [];
+  defaultLang: ILanguage = null;
 
   constructor(
     private router: Router,
@@ -68,6 +73,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.getProfile();
     this.onSearch();
+    this.getLanguages();
   }
 
   // do singout
@@ -107,6 +113,26 @@ export class HeaderComponent implements OnInit {
         preserveFragment: true
       });
       return this.router.navigateByUrl(urlTree);
+    });
+  }
+
+  onChangeLanguage(lang: ILanguage) {
+    this.translate.use(lang.value);
+    this.defaultLang = lang;
+    localStorage.setItem('lang', JSON.stringify(lang));
+    this.appService.updateCoreAppData({...this.appService.APP_DATA, lang});
+  }
+
+  getLanguages() {
+    this.languages$ = this.appService.languages().subscribe((response) => {
+      this.languages = response;
+      if (localStorage.getItem('lang')) {
+        const language: ILanguage = JSON.parse(localStorage.getItem('lang'));
+        this.defaultLang = this.languages.filter(item => item.value === language.value)[0];
+      } else {
+        this.defaultLang = this.languages.filter(item => item.value === 'en')[0];
+      }
+      this.translate.use(this.defaultLang.value);
     });
   }
 }
