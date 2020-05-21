@@ -11,6 +11,10 @@ const routes: Routes = [
     canActivate: [CanActivateAuthenticateGuard],
     children: [
       {
+        path: 'profile',
+        loadChildren: () => import('./features/profile/profile.module').then(m => m.ProfileModule),
+      },
+      {
         path: 'tasks',
         loadChildren: () => import('./features/todo/todo.module').then(m => m.TodoModule),
       },
