@@ -14,77 +14,34 @@
   <div id="sidebar-scrollbar">
     <nav class="iq-sidebar-menu">
       <ul id="iq-sidebar-toggle" class="iq-menu">
-        <li [ngClass]="{'active': this.nav.todos, 'active-menu': this.nav.todos}">
-          <a href="#dashboard" class="iq-waves-effect" data-toggle="collapse"><span
-              class="ripple rippleEffect"></span><i class="las la-home iq-arrow-left"></i><span>{{ 'tasks' | translate }}</span><i
-              class="ri-arrow-right-s-line iq-arrow-right"></i>
-          </a>
-          <ul id="dashboard" class="iq-submenu" data-parent="#iq-sidebar-toggle"
-            [ngClass]="{'collapse': !this.nav.todos, 'show': this.nav.todos}">
-            <li routerLinkActive="active">
-              <a routerLink="/tasks/today">
-                <i class="lab la-bandcamp"></i>{{ 'today' | translate }} {{count?.today ? count.today : ''}}
-              </a>
-            </li>
-            <li routerLinkActive="active">
-              <a routerLink="/tasks/inbox"><i class="las la-ad"></i>
-                {{ 'inbox' | translate }} {{count?.inbox ? count.inbox: ''}}
-              </a>
-            </li>
-            <li routerLinkActive="active">
-              <a routerLink="/tasks/upcoming">
-                <i class="las la-ad"></i>{{ 'upcoming' | translate }} {{count?.upcoming? count.upcoming: ''}}
-              </a>
-            </li>
-            <li routerLinkActive="active">
-              <a routerLink="/tasks/completed">
-                <i class="las la-crosshairs"></i>{{ 'completed' | translate }} {{count?.completed? count.completed: ''}}
-              </a>
-            </li>
-          </ul>
+        <li *ngFor="let link of navLinks" [ngClass]="{'active active-menu': link?.active }">
+          <ng-container *ngIf="!link?.children">
+            <a [routerLink]="link?.link" class="iq-waves-effect" routerLinkActive>
+              <i class="las la-home iq-arrow-left"></i><span>{{link?.name}}</span>
+            </a>
+          </ng-container>
+          <ng-container *ngIf="link?.children && link?.children.length">
+            <a href="#{{link?.name}}" class="iq-waves-effect" data-toggle="collapse">
+              <span class="ripple rippleEffect"></span>
+              <i class="las la-crosshairs iq-arrow-left"></i>
+              <span>{{link?.name}}</span>
+              <i class="ri-arrow-right-s-line iq-arrow-right"></i>
+            </a>
+            <ul id="{{link?.name}}" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle"
+              [ngClass]="{'collapse': !link?.active, 'show': link?.active }">
+              <ng-container *ngIf="link?.name !== 'Lists'">
+                <li routerLinkActive="active" *ngFor="let data of link?.children">
+                  <a class="nav-link" [routerLink]="data?.link">
+                    <i class="las la-atom"></i>{{data?.name}}
+                  </a>
+                </li>
+              </ng-container>
+              <ng-container *ngIf="link?.name === 'Lists'">
+                <app-todo-label-list></app-todo-label-list>
+              </ng-container>
+            </ul>
+          </ng-container>
         </li>
-        <li [ngClass]="{'active': this.nav.labels, 'active-menu': this.nav.labels}">
-          <a href="#userinfo" class="iq-waves-effect" data-toggle="collapse">
-            <span class="ripple rippleEffect"></span>
-            <i class="fa fa-tasks iq-arrow-left"></i>
-            <span>{{ 'lists' | translate }}</span>
-            <i class="ri-arrow-right-s-line iq-arrow-right"></i>
-          </a>
-          <ul id="userinfo" class="iq-submenu" data-parent="#iq-sidebar-toggle"
-            [ngClass]="{'collapse': !this.nav.labels, 'show': this.nav.labels}">
-            <ng-container>
-              <app-todo-label-list></app-todo-label-list>
-            </ng-container>
-          </ul>
-        </li>
-
-        <li [ngClass]="{'active active-menu': this.nav.goals}">
-          <a routerLink="/goals/list" class="iq-waves-effect">
-            <i class="las la-calendar iq-arrow-left"></i><span>{{ 'notes' | translate }}</span>
-          </a>
-        </li>
-
-        <!-- <li [ngClass]="{'active': this.nav.goals, 'active-menu': this.nav.goals}">
-          <a href="#goals" class="iq-waves-effect" data-toggle="collapse"><span class="ripple rippleEffect"></span><i
-              class="las la-user-tie iq-arrow-left"></i><span>Goals</span><i
-              class="ri-arrow-right-s-line iq-arrow-right"></i>
-          </a>
-          <ul id="goals" class="iq-submenu" data-parent="#iq-sidebar-toggle"
-            [ngClass]="{'collapse': !this.nav.goals, 'show': this.nav.goals}">
-            <li>
-              <a routerLink="/goals/list" routerLinkAtive="active">
-                <i class="las la-bars"></i>
-                <span>List</span>
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0)" (click)="openPopUpGeneric()">
-                <i class="las la-eraser"></i>
-                <span>Add</span>
-              </a>
-            </li>
-          </ul>
-        </li> -->
       </ul>
     </nav>
     <div class="p-3"></div>

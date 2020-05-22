@@ -46,6 +46,8 @@ export class AppComponent implements OnInit {
           break;
         }
         case event instanceof NavigationEnd:
+          this.appService.updateCurentUrl(this.router.url);
+          break;
         case event instanceof NavigationCancel:
         case event instanceof NavigationError: {
           this.loading = false;

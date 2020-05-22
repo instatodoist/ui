@@ -19,7 +19,7 @@ const routes: Routes = [
         loadChildren: () => import('./features/todo/todo.module').then(m => m.TodoModule),
       },
       {
-        path: 'goals',
+        path: 'notes',
         loadChildren: () => import('./features/goal/goal.module').then(m => m.GoalModule),
       }
     ]

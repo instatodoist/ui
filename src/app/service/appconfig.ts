@@ -31,6 +31,14 @@ export class AppService implements OnDestroy {
   };
   appSubscription: Subscription;
 
+  private currentUrlDataSource = new BehaviorSubject<string>('');
+
+  currentUrlObservable = this.currentUrlDataSource.asObservable();
+
+  updateCurentUrl(data: string) {
+    this.currentUrlDataSource.next(data);
+  }
+
   constructor(
     private lsService: LsService
   ) {

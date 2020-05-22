@@ -9,7 +9,7 @@ const routes: Routes = [
     path: '',
     children: [
       {
-        path: 'list',
+        path: '',
         component: GoalListComponent,
         data: {
           header_title: 'my_goals'

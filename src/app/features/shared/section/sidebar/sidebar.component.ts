@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TodoService, AppService } from '../../../../service';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { ITodoTypeCount } from '../../../../models';
+import { ITodoTypeCount, INavLink } from '../../../../models';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -12,11 +12,8 @@ export class SidebarComponent implements OnInit {
 
   isOpen = false;
   count: ITodoTypeCount;
-  nav: any = {
-    todos: false,
-    labels: false,
-    goals: false
-  };
+  navLinks: INavLink[];
+  currentUrl = '';
 
   constructor(
     private router: Router,
@@ -26,31 +23,43 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.getTodosCount();
-    this.router.events
-      .pipe(filter(e => e instanceof NavigationEnd))
-      .subscribe((e: NavigationEnd) => {
-        this.updateNav(e.url);
-      });
-
-    if (this.router.url) {
-      this.updateNav(this.router.url);
-    }
+    this.subscribeToCurrentUrl();
   }
 
-  updateNav(url: string): void {
-    if (url.match(/labels/g)) {
-      this.nav = { ...this.nav, todos: false, goals: false, labels: true };
-    } else if (
-      url.match('/today') ||
-      url.match('/pending') ||
-      url.match('/inbox') ||
-      url.match('/completed') ||
-      url.match('/upcoming')
-    ) {
-      this.nav = { ...this.nav, todos: true, goals: false, labels: false };
-    } else {
-      this.nav = { ...this.nav, todos: false, labels: false, goals: true, };
-    }
+  subscribeToCurrentUrl() {
+    this.appService.currentUrlObservable.subscribe(currentUrl => {
+      this.currentUrl = currentUrl;
+      const navLinks = this.nav().filter(item => {
+        if (item.link && this.currentUrl.match(new RegExp(item.link, 'g'))) {
+          return true;
+        } else if (!item.link) {
+          const childrenMatch = item.children.filter(chileItem => {
+            return this.currentUrl.match(new RegExp(chileItem.link, 'g')) || chileItem.link.match(new RegExp('lists', 'g'));
+          });
+          if (childrenMatch.length) {
+            return true;
+          }
+          if (
+            item.name === 'Lists' &&
+            (this.currentUrl.match(new RegExp('lists', 'g')))) {
+            return true;
+          }
+        }
+        return false;
+      });
+      if (navLinks.length) {
+        this.navLinks = this.nav().map(item => {
+          if (navLinks[0].name === item.name) {
+            item.active = true;
+          } else {
+            item.active = false;
+          }
+          return item;
+        });
+      } else {
+        this.navLinks = this.nav();
+      }
+    });
   }
 
   getTodosCount(query = {
@@ -79,12 +88,54 @@ export class SidebarComponent implements OnInit {
     this.isOpen = true;
   }
 
-  // openPopUpGeneric(): void {
-  //   // debugger
-  //   this.appService.updateExternalModal({
-  //     ...this.appService.ExternalModelConfig,
-  //     GOAL_ADD: true
-  //   });
-  // }
+  private nav(): INavLink[] {
+    return [
+      {
+        active: true,
+        name: 'Tasks',
+        icon: '',
+        children: [
+          {
+            name: 'Today',
+            icon: '',
+            link: '/tasks/today'
+          },
+          {
+            name: 'Inbox',
+            icon: '',
+            link: '/tasks/inbox'
+          },
+          {
+            name: 'Upcoming',
+            icon: '',
+            link: '/tasks/upcoming'
+          },
+          {
+            name: 'Completed',
+            icon: '',
+            link: '/tasks/completed'
+          },
+        ]
+      },
+      {
+        active: false,
+        name: 'Lists',
+        icon: '',
+        children: [
+          {
+            name: '',
+            icon: '',
+            link: '/lsits'
+          }
+        ]
+      },
+      {
+        active: false,
+        name: 'Notes',
+        icon: '',
+        link: '/notes'
+      }
+    ];
+  }
 
 }
