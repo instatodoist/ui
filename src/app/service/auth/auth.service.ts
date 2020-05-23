@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
 import { LsService } from './../../service/ls.service';
 import { environment } from '../../../environments/environment';
-import { UserModel } from '../../models';
+import { Apollo } from 'apollo-angular';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { UserModel, IUserProfile, IUserPassword, SuccessType as ISuccessType } from '../../models';
 import {
   LOGIN_QUERY,
   REGISTER_MUTATION,
   FORGOT_PASSWORD,
   EMAIL_VERIFICATION,
   PROFILE_QUERY,
-  RESET_PASSWORD
+  RESET_PASSWORD,
+  PROFILE_UPDATE_GQL,
+  UPDATE_PASSWORD_GQL
 } from '../../gql/auth.gql';
-import {Apollo} from 'apollo-angular';
-import {map} from 'rxjs/operators';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -39,14 +41,14 @@ export class AuthService {
   signIn(postData: UserModel.UserType) {
     return this.apollo
       .watchQuery({
-          query: LOGIN_QUERY,
-          variables: {
-            input: postData,
-          },
-        })
-        .valueChanges.pipe(map(({data}) => {
-            return data;
-        }));
+        query: LOGIN_QUERY,
+        variables: {
+          input: postData,
+        },
+      })
+      .valueChanges.pipe(map(({ data }) => {
+        return data;
+      }));
   }
 
   register(postData: UserModel.UserType): Observable<UserModel.RegisterResponse> {
@@ -57,7 +59,7 @@ export class AuthService {
           input: postData
         }
       })
-      .pipe(map(({data}: any ) => {
+      .pipe(map(({ data }: any) => {
         return data.register;
       })
       );
@@ -71,7 +73,7 @@ export class AuthService {
           input: postData
         }
       })
-      .pipe(map(({data}: any ) => {
+      .pipe(map(({ data }: any) => {
         return data.emailVerificationByOtp;
       })
       );
@@ -101,13 +103,37 @@ export class AuthService {
       }));
   }
 
-  profile(): Observable<UserModel.UserProfileType> {
+  updatePassword(postBody: IUserPassword): Observable<ISuccessType> {
+    return this.apollo.mutate({
+      mutation: UPDATE_PASSWORD_GQL,
+      variables: {
+        input: postBody
+      }
+    })
+      .pipe(map(({ data }: any) => {
+        return data.updatePassword;
+      }));
+  }
+
+  profile(): Observable<UserModel.IUserProfile> {
     return this.apollo
       .watchQuery({
         query: PROFILE_QUERY
       })
       .valueChanges.pipe(map(({ data }: any) => {
         return data.profile;
+      }));
+  }
+
+  updateProfile(postBody: IUserProfile): Observable<IUserProfile> {
+    return this.apollo.mutate({
+      mutation: PROFILE_UPDATE_GQL,
+      variables: {
+        input: postBody
+      }
+    })
+      .pipe(map(({ data }: any) => {
+        return data.updateProfile;
       }));
   }
 }

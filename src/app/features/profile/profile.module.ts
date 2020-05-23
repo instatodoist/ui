@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../features/shared/shared.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { ProfileRoutingModule } from './profile-routing.module';
 import { ProfileUpdateComponent } from './profile-update/profile-update.component';
 import { PasswordUpdateComponent } from './password-update/password-update.component';
 import { AccountUpdateComponent } from './account-update/account-update.component';
-
 
 @NgModule({
   declarations: [
@@ -17,7 +17,8 @@ import { AccountUpdateComponent } from './account-update/account-update.componen
   imports: [
     CommonModule,
     ProfileRoutingModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule
   ]
 })
 export class ProfileModule { }

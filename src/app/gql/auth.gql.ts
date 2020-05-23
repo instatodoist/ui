@@ -11,6 +11,15 @@ export const PROFILE_QUERY = gql`
   }
 `;
 
+export const PROFILE_UPDATE_GQL = gql`
+  mutation updateProfile( $input: ProfileInputType) {
+    updateProfile(input: $input){
+      lastname
+      firstname
+    }
+  }
+`;
+
 export const REGISTER_MUTATION = gql`
     mutation register( $input: UserRegisterInputType!) {
       register(input: $input){
@@ -48,6 +57,14 @@ export const RESET_PASSWORD = gql`
   }
 `;
 
+export const UPDATE_PASSWORD_GQL = gql`
+    mutation updatePassword( $input: PasswordInputType!) {
+      updatePassword(input: $input){
+        message
+        ok
+    }
+  }
+`;
 
 export const LOGIN_QUERY = gql`
     query login( $input: UserLoginInputType!) {
