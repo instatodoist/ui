@@ -13,13 +13,15 @@ import {TodoLabelComponent} from './todo-label/todo-label.component';
 import {TodoLabelListComponent} from './todo-label-list/todo-label-list.component';
 import { InfiniteScrollComponent } from './infinite-scroll/infinite-scroll.component';
 import { GoalDialogComponent } from '../goal/goal-dialog/goal-dialog.component';
+import { FileUploadComponent } from '../shared/file-upload/file-upload.component';
 @NgModule({
   declarations: [
     TodoDialogComponent,
     TodoLabelComponent,
     TodoLabelListComponent,
     InfiniteScrollComponent,
-    GoalDialogComponent
+    GoalDialogComponent,
+    FileUploadComponent
   ],
   imports: [
     CommonModule,
@@ -42,7 +44,8 @@ import { GoalDialogComponent } from '../goal/goal-dialog/goal-dialog.component';
     TodoLabelListComponent,
     InfiniteScrollComponent,
     GoalDialogComponent,
-    TranslateModule
+    TranslateModule,
+    FileUploadComponent
   ]
 })
 export class SharedModule {

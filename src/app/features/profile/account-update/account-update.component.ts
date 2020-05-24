@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { AuthService, UtilityService } from '../../../service';
 
@@ -7,9 +7,10 @@ import { AuthService, UtilityService } from '../../../service';
   templateUrl: './account-update.component.html',
   styleUrls: ['./account-update.component.scss']
 })
-export class AccountUpdateComponent implements OnInit {
+export class AccountUpdateComponent implements OnInit, AfterViewInit {
 
   formObj: FormGroup;
+  src = '/assets/facelift/images/user/11.png';
 
   constructor(
     private fb: FormBuilder,
@@ -20,9 +21,17 @@ export class AccountUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.formObj = this.fb.group({
       firstname: [''],
-      lastname: ['']
+      lastname: [''],
+      profileImg: [null]
     });
     this.getProfile();
+    this.formObj.get('profileImg').valueChanges.subscribe((item) => {
+      console.log(item);
+    });
+  }
+
+  ngAfterViewInit() {
+
   }
 
   getProfile() {
@@ -36,10 +45,14 @@ export class AccountUpdateComponent implements OnInit {
 
   submit() {
     if (this.formObj.valid && this.formObj.dirty) {
-      this.authService.updateProfile(this.formObj.value).subscribe(() => {
+      const { profileImg, ...postBody } = this.formObj.value;
+      if (profileImg) {
+        postBody.profileImg = profileImg;
+      }
+      console.log(postBody);
+      this.authService.updateProfile(postBody).subscribe(() => {
         this.utilityService.toastrSuccess('Profile Info updated succesfully');
       });
     }
   }
-
 }
