@@ -12,6 +12,11 @@
     "postbuild": "node build/post-build.js",
     "prepush": "npm run build"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run build"
+    }
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~9.0.6",
