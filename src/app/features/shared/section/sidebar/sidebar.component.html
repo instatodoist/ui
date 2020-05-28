@@ -17,13 +17,13 @@
         <li *ngFor="let link of navLinks" [ngClass]="{'active active-menu': link?.active }">
           <ng-container *ngIf="!link?.children">
             <a [routerLink]="link?.link" class="iq-waves-effect" routerLinkActive>
-              <i class="las la-home iq-arrow-left"></i><span>{{link?.name}}</span>
+              <i class="iq-arrow-left" [ngClass]="link?.icon"></i><span>{{link?.name}}</span>
             </a>
           </ng-container>
           <ng-container *ngIf="link?.children && link?.children.length">
             <a href="#{{link?.name}}" class="iq-waves-effect" data-toggle="collapse">
               <span class="ripple rippleEffect"></span>
-              <i class="las la-crosshairs iq-arrow-left"></i>
+              <i class=" iq-arrow-left" [ngClass]="link?.icon"></i>
               <span>{{link?.name}}</span>
               <i class="ri-arrow-right-s-line iq-arrow-right"></i>
             </a>
@@ -32,7 +32,7 @@
               <ng-container *ngIf="link?.name !== 'Lists'">
                 <li routerLinkActive="active" *ngFor="let data of link?.children">
                   <a class="nav-link" [routerLink]="data?.link">
-                    <i class="las la-atom"></i>{{data?.name}}
+                    <i [ngClass]="data?.icon"></i>{{data?.name}}
                   </a>
                 </li>
               </ng-container>

@@ -93,26 +93,26 @@ export class SidebarComponent implements OnInit {
       {
         active: true,
         name: 'Tasks',
-        icon: '',
+        icon: 'las la-home',
         children: [
           {
             name: 'Today',
-            icon: '',
+            icon: 'las la-atom',
             link: '/tasks/today'
           },
           {
             name: 'Inbox',
-            icon: '',
+            icon: 'las la-atom',
             link: '/tasks/inbox'
           },
           {
             name: 'Upcoming',
-            icon: '',
+            icon: 'las la-atom',
             link: '/tasks/upcoming'
           },
           {
             name: 'Completed',
-            icon: '',
+            icon: 'las la-atom',
             link: '/tasks/completed'
           },
         ]
@@ -120,11 +120,11 @@ export class SidebarComponent implements OnInit {
       {
         active: false,
         name: 'Lists',
-        icon: '',
+        icon: 'las la-home',
         children: [
           {
             name: '',
-            icon: '',
+            icon: 'las la-atom',
             link: '/lsits'
           }
         ]
@@ -132,7 +132,7 @@ export class SidebarComponent implements OnInit {
       {
         active: false,
         name: 'Notes',
-        icon: '',
+        icon: 'las la-home',
         link: '/notes'
       }
     ];
