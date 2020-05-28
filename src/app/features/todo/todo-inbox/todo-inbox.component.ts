@@ -4,7 +4,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { map } from 'rxjs/operators';
 import { combineLatest, from, Subscription } from 'rxjs';
 import { TodoListType, TodoCompletedListType, TodoType, TodoConditions, IExternalModal, ITodoTypeCount } from '../../../models';
-import { TodoService, AppService } from '../../../service';
+import { TodoService, AppService, UtilityService } from '../../../service';
 import * as moment from 'moment';
 
 declare var $: any;
@@ -39,6 +39,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
     private toddService: TodoService,
     private activatedRoute: ActivatedRoute,
     private appService: AppService,
+    private toastr: UtilityService
   ) {
   }
 
@@ -181,6 +182,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
         .todoOperation(postBody, this.conditions)
         .subscribe(() => {
           this.isDeleting = false;
+          this.toastr.toastrSuccess('Task Deleted');
         });
     }
   }

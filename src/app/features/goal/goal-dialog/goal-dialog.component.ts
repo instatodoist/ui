@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { GoalService, AppService } from '../../../service';
+import { GoalService, AppService, UtilityService } from '../../../service';
 import { IGoalType, IExternalModal } from '../../../models';
 import { Subscription } from 'rxjs';
 declare var $: any;
@@ -32,7 +32,8 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private goalService: GoalService,
     private appService: AppService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastr: UtilityService
   ) { }
 
   ngOnInit(): void {
@@ -93,6 +94,11 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         .subscribe(() => {
           this.isSubmit = false;
           $(`#${this.modelId}`).modal('hide');
+          let message = 'Goal created';
+          if (this.formObj.value._id) {
+            message = 'Goal updated';
+          }
+          this.toastr.toastrSuccess(message);
         });
     }
   }

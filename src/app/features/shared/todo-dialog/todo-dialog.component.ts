@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { TodoService, SharedService, AppService } from '../../../service';
+import { TodoService, SharedService, AppService, UtilityService } from '../../../service';
 import { TodoType, TodoLabelType, TodoConditions, OperationEnumType } from '../../../models';
 import { map } from 'rxjs/operators';
 import { combineLatest, Subscription } from 'rxjs';
@@ -50,7 +50,8 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     private fb: FormBuilder,
     private todoService: TodoService,
     private sharedService: SharedService,
-    private appService: AppService
+    private appService: AppService,
+    private toastr: UtilityService
   ) { }
 
   ngOnInit(): void {
@@ -199,6 +200,11 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           this.isSubmit = false;
           this.isOpen.emit(false);
           $(`#${this.modelId}`).modal('hide');
+          let message = 'Task created';
+          if (this.formObj.value._id) {
+            message = 'Task updated';
+          }
+          this.toastr.toastrSuccess(message);
         },
           () => {
             this.isSubmit = false;
