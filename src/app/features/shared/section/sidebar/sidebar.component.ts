@@ -104,7 +104,7 @@ export class SidebarComponent implements OnInit {
       {
         active: true,
         name: 'Tasks',
-        icon: 'las la-home',
+        icon: 'fa fa-tasks',
         children: [
           {
             name: 'Today',
@@ -139,7 +139,7 @@ export class SidebarComponent implements OnInit {
       {
         active: false,
         name: 'Lists',
-        icon: 'las la-home',
+        icon: 'fa fa-list-alt',
         children: [
           {
             name: '',
@@ -151,7 +151,7 @@ export class SidebarComponent implements OnInit {
       {
         active: false,
         name: 'Notes',
-        icon: 'las la-home',
+        icon: 'fa fa-sticky-note-o',
         link: '/notes'
       }
     ];
