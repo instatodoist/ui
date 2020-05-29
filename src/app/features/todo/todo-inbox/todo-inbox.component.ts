@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, TemplateRef, AfterViewInit, OnDestroy, HostListener } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { map } from 'rxjs/operators';
 import { combineLatest, from, Subscription } from 'rxjs';
@@ -39,7 +39,8 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
     private toddService: TodoService,
     private activatedRoute: ActivatedRoute,
     private appService: AppService,
-    private toastr: UtilityService
+    private toastr: UtilityService,
+    private router: Router
   ) {
   }
 
@@ -158,7 +159,12 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
     };
     this.toddService
       .todoOperation(postBody, this.conditions)
-      .subscribe();
+      .subscribe(() => {
+        // navigate to today route if no pending task
+        if (this.todoCurrentType === this.TODOTYPES.pending && !this.count.pending) {
+          this.router.navigate(['/tasks/today']);
+        }
+      });
   }
 
   deleteRequest(todo: TodoType) {
