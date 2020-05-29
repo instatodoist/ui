@@ -22,7 +22,8 @@ export class AppService implements OnDestroy {
   };
   APP_DATA: IAppData = {
     config: {
-      theme: localStorage.getItem('defaultTheme') || 'rgb(30, 61, 115)'
+      theme: localStorage.getItem('defaultTheme') || 'rgb(30, 61, 115)',
+      tClass: localStorage.getItem('defaultThemeClass') || 'color-1'
     },
     isLoggedIn: Boolean(this.lsService.getValue('isLoggedIn')) || false,
     token: this.lsService.getValue('__token') || null,

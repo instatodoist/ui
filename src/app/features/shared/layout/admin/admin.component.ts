@@ -35,7 +35,7 @@ export class AdminComponent implements OnInit, AfterViewInit {
 
   headerJs() {
     // tslint:disable-next-line: only-arrow-functions
-    $(document).on('click', function(e) {
+    $(document).on('click', function (e) {
       const myTargetElement = e.target;
       let selector;
       let mainElement;
@@ -44,26 +44,26 @@ export class AdminComponent implements OnInit, AfterViewInit {
         $(myTargetElement).parent().hasClass('search-toggle') ||
         $(myTargetElement).parent().parent().hasClass('search-toggle')
       ) {
-          if ($(myTargetElement).hasClass('search-toggle')) {
-              selector = $(myTargetElement).parent();
-              mainElement = $(myTargetElement);
-          } else if ($(myTargetElement).parent().hasClass('search-toggle')) {
-              selector = $(myTargetElement).parent().parent();
-              mainElement = $(myTargetElement).parent();
-          } else if ($(myTargetElement).parent().parent().hasClass('search-toggle')) {
-              selector = $(myTargetElement).parent().parent().parent();
-              mainElement = $(myTargetElement).parent().parent();
-          }
-          if (!mainElement.hasClass('active') && $('.navbar-list li').find('.active')) {
-              $('.navbar-list li').removeClass('iq-show');
-              $('.navbar-list li .search-toggle').removeClass('active');
-          }
-          selector.toggleClass('iq-show');
-          mainElement.toggleClass('active');
-          e.preventDefault();
-      } else if ($(myTargetElement).is('.search-input')) {} else {
+        if ($(myTargetElement).hasClass('search-toggle')) {
+          selector = $(myTargetElement).parent();
+          mainElement = $(myTargetElement);
+        } else if ($(myTargetElement).parent().hasClass('search-toggle')) {
+          selector = $(myTargetElement).parent().parent();
+          mainElement = $(myTargetElement).parent();
+        } else if ($(myTargetElement).parent().parent().hasClass('search-toggle')) {
+          selector = $(myTargetElement).parent().parent().parent();
+          mainElement = $(myTargetElement).parent().parent();
+        }
+        if (!mainElement.hasClass('active') && $('.navbar-list li').find('.active')) {
           $('.navbar-list li').removeClass('iq-show');
           $('.navbar-list li .search-toggle').removeClass('active');
+        }
+        selector.toggleClass('iq-show');
+        mainElement.toggleClass('active');
+        e.preventDefault();
+      } else if ($(myTargetElement).is('.search-input')) { } else {
+        $('.navbar-list li').removeClass('iq-show');
+        $('.navbar-list li .search-toggle').removeClass('active');
       }
     });
   }
@@ -72,16 +72,16 @@ export class AdminComponent implements OnInit, AfterViewInit {
     /*---------------------------------------------------------------------
     Sidebar Widget
     -----------------------------------------------------------------------*/
-    $('.iq-sidebar-menu .active').each(function(ele, index) {
+    $('.iq-sidebar-menu .active').each(function (ele, index) {
       $(this).find('.iq-submenu').addClass('show');
       $(this).addClass('active-menu');
       $(this).next().attr('aria-expanded', 'true');
     });
-    $(document).on('click', '.iq-menu > li > a', function() {
+    $(document).on('click', '.iq-menu > li > a', function () {
       $('.iq-menu > li > a').parent().removeClass('active');
       $(this).parent().addClass('active');
     });
-    $('.wrapper-menu').click(function() {
+    $('.wrapper-menu').click(function () {
       console.log($(this));
       $(this).toggleClass('open');
       $('body').toggleClass('sidebar-main');
@@ -89,6 +89,11 @@ export class AdminComponent implements OnInit, AfterViewInit {
   }
 
   changeThemeJs() {
+    console.log(this.appService.APP_DATA.config.tClass);
+    if (this.appService.APP_DATA.config.tClass) {
+      $('.iq-colorbox .iq-colorselect .iq-colormark').removeClass('iq-colormark');
+      $('.iq-colorselect').find('li.' + this.appService.APP_DATA.config.tClass).addClass('iq-colormark');
+    }
     const updateThemFunc = this.appService.changeTheme;
     updateThemFunc(this.defaultTheme);
     const styleSwitcher = $('.iq-colorbox');
@@ -109,6 +114,9 @@ export class AdminComponent implements OnInit, AfterViewInit {
 
     $('.iq-colorbox .iq-colorselect li').on('click', function () {
       const $this = $(this);
+      const className = $this.attr('class');
+      console.log(className);
+      localStorage.setItem('defaultThemeClass', className);
       const iqColor = $this.css('background-color');
       $('.iq-colorbox .iq-colorselect .iq-colormark').removeClass('iq-colormark');
       $this.addClass('iq-colormark');

@@ -20,6 +20,7 @@ export interface ILanguage {
 export interface IAppData {
   config: {
     theme: string;
+    tClass: string;
   };
   isLoggedIn: boolean;
   token: string;
