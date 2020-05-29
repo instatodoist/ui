@@ -46,6 +46,7 @@ export class AppComponent implements OnInit {
           break;
         }
         case event instanceof NavigationEnd:
+          window.scroll(0, 0); // scroll to top on route change
           this.appService.updateCurentUrl(this.router.url);
           break;
         case event instanceof NavigationCancel:
