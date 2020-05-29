@@ -48,16 +48,16 @@ export class SidebarComponent implements OnInit {
           if (item.children && item.children.length) {
             item.children = item.children.map(child => {
               if (child.slug === 'today') {
-                child = {...child, count: this.count.today };
+                child = { ...child, count: this.count.today };
               }
               if (child.slug === 'inbox') {
-                child = {...child, count: this.count.inbox };
+                child = { ...child, count: this.count.inbox };
               }
               if (child.slug === 'upcoming') {
-                child = {...child, count: this.count.upcoming };
+                child = { ...child, count: this.count.upcoming };
               }
               if (child.slug === 'completed') {
-                child = {...child, count: this.count.completed };
+                child = { ...child, count: this.count.completed };
               }
               return child;
             });
@@ -109,28 +109,28 @@ export class SidebarComponent implements OnInit {
           {
             name: 'Today',
             slug: 'today',
-            icon: 'las la-atom',
+            icon: 'fa fa-calendar',
             link: '/tasks/today',
             count: 0
           },
           {
             name: 'Inbox',
             slug: 'inbox',
-            icon: 'las la-atom',
+            icon: 'fa fa-inbox',
             link: '/tasks/inbox',
             count: 0
           },
           {
             name: 'Upcoming',
             slug: 'upcoming',
-            icon: 'las la-atom',
+            icon: 'fa fa-calendar-plus-o',
             link: '/tasks/upcoming',
             count: 0
           },
           {
             name: 'Completed',
             slug: 'completed',
-            icon: 'las la-atom',
+            icon: 'fa fa-check',
             link: '/tasks/completed',
             count: 0
           },

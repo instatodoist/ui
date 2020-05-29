@@ -89,7 +89,6 @@ export class AdminComponent implements OnInit, AfterViewInit {
   }
 
   changeThemeJs() {
-    console.log(this.appService.APP_DATA.config.tClass);
     if (this.appService.APP_DATA.config.tClass) {
       $('.iq-colorbox .iq-colorselect .iq-colormark').removeClass('iq-colormark');
       $('.iq-colorselect').find('li.' + this.appService.APP_DATA.config.tClass).addClass('iq-colormark');
