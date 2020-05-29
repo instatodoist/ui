@@ -143,7 +143,7 @@ export class SidebarComponent implements OnInit {
         children: [
           {
             name: '',
-            icon: 'las la-atom',
+            icon: 'fa fa-tag',
             link: '/lsits'
           }
         ]

@@ -4,7 +4,7 @@
 </li>
 <li *ngFor="let data of labels" routerLinkActive="active">
   <a [routerLink]="['/tasks/lists', data?.name]">
-    <i class="fa fa-empire" aria-hidden="true"></i>
+    <i class="fa fa-tag" aria-hidden="true"></i>
     {{data?.name}}
   </a>
 </li>
