@@ -104,6 +104,7 @@ export class SidebarComponent implements OnInit {
       {
         active: true,
         name: 'Tasks',
+        slug: 'tasks',
         icon: 'fa fa-tasks',
         children: [
           {
@@ -139,6 +140,7 @@ export class SidebarComponent implements OnInit {
       {
         active: false,
         name: 'Lists',
+        slug: 'lists',
         icon: 'fa fa-list-alt',
         children: [
           {
@@ -151,6 +153,7 @@ export class SidebarComponent implements OnInit {
       {
         active: false,
         name: 'Notes',
+        slug: 'notes',
         icon: 'fa fa-sticky-note-o',
         link: '/notes'
       }
