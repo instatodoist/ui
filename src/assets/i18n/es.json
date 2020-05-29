@@ -1,0 +1,30 @@
+{
+    "auth": {
+      "signin": "Sign In",
+      "signup": "Sign Up",
+      "username": "Uesrname",
+      "password": "Password",
+      "email": "Email",
+      "reset": "Reset Password"
+    },
+    "app_dir": "Application Directory",
+    "blacklist_portals": "Blacklist Portals",
+    "blacklist_emails": "Blacklist Emails",
+    "docs": "Docs",
+    "domain_status": "Domain Mapping Status",
+    "subscription_request": "Subscription Request",
+    "tasks": "Tasks",
+    "inbox": "Inbox",
+    "today": "Today",
+    "pending": "Pending",
+    "upcoming": "Upcoming",
+    "completed": "Completed",
+    "lists": "Lists",
+    "notes": "Notes",
+    "completed_todos": "Completed Tasks",
+    "label_filter": "Filtered tasks",
+    "type_here_to_search": "¿Qué tienes en mente hoy?",
+    "what_todo": "what is on your mind today?",
+    "save_changes": "Salvar"
+  }
+  

@@ -93,10 +93,20 @@ export class AppService implements OnDestroy {
         logo: '/assets/facelift/images/small/flag-01.png'
       },
       {
-        name: 'Telugu',
-        value: 'te',
+        name: 'French',
+        value: 'fr',
         logo: '/assets/facelift/images/small/flag-02.png'
-      }
+      },
+      {
+        name: 'Spanish',
+        value: 'es',
+        logo: '/assets/facelift/images/small/flag-03.png'
+      },
+      {
+        name: 'Hindi',
+        value: 'hi',
+        logo: '/assets/facelift/images/small/flag-04.png'
+      },
     ];
     return of(lang);
   }
