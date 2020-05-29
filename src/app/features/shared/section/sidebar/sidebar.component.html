@@ -32,7 +32,7 @@
               <ng-container *ngIf="link?.name !== 'Lists'">
                 <li routerLinkActive="active" *ngFor="let data of link?.children">
                   <a class="nav-link" [routerLink]="data?.link">
-                    <i [ngClass]="data?.icon"></i>{{data?.name}}
+                    <i [ngClass]="data?.icon"></i>{{data?.name}} {{data?.count ? data?.count : ''}}
                   </a>
                 </li>
               </ng-container>

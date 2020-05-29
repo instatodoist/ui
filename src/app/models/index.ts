@@ -9,13 +9,17 @@ export { UserModel };
 
 export interface ILink {
   name: string;
+  slug?: string;
   icon: string;
   link: string;
+  count?: number;
 }
 export interface INavLink {
   name: string;
+  slug?: string;
   icon: string;
   link?: string;
   children?: ILink[];
   active?: boolean;
+  count?: number;
 }
