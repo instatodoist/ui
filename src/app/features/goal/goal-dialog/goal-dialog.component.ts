@@ -22,10 +22,17 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   private modalSubscription: Subscription;
   defaultConfig: IExternalModal;
   QUILL_OPTIONS = {
-    theme: 'bubble',
-    placeholder: '',
+    theme: 'snow',
+    placeholder: 'Write your note here ...',
     toolbar: [
-      ['bold', 'italic', 'underline', 'strike', 'image']
+      [
+        'bold',
+        'italic',
+        'underline',
+        'strike',
+        'code',
+        'image'
+      ]
     ]
   };
 
@@ -56,7 +63,7 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     const modelId = this.modelId;
     const popupType = this.popUpType;
     // tslint:disable-next-line: only-arrow-functions
-    $('#' + modelId).on('hidden.bs.modal', function() {
+    $('#' + modelId).on('hidden.bs.modal', function () {
       externalModal.next({
         ...defaultConfig,
         [popupType]: false
@@ -70,7 +77,7 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subscribeToModal() {
     this.modalSubscription = this.appService.externalModal.subscribe(data => {
-      this.defaultConfig = {...data };
+      this.defaultConfig = { ...data };
       if (data.data.goal) {
         this.popUpType = 'GOAL_UPDATE';
         this.goal = data.data.goal;
