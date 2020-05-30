@@ -185,6 +185,18 @@ export class TodoService {
       }));
   }
 
+  listTodosQuery(conditions: TodoConditions): Observable<TodoListType> {
+    return this.apollo
+      .query({
+        query: TODO_LIST_QUERY,
+        variables: conditions,
+        // fetchPolicy: 'network-only'
+      })
+      .pipe(map(({ data }: any) => {
+        return data.todoList;
+      }));
+  }
+
   /**
    * @param conditions - filter params while fetching todos
    */
