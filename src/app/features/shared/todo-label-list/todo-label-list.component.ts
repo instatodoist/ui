@@ -48,7 +48,6 @@ export class TodoLabelListComponent implements OnInit {
             element.count = response[index];
             return element;
           });
-          console.log(this.labels)
         },
         err => {
           console.log(err);

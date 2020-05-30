@@ -60,6 +60,15 @@ export const TODO_LIST_QUERY = gql`
   ${ToDo.fragments.filelds}
 `;
 
+export const TODO_LISTCOUNT_QUERY = gql`
+  query todoList ($first: Int = 100, $offset: Int = 1, $filter: TodoFilterInputType, $sort: TodoSortInputType){
+    todoList (first: $first, offset: $offset, filter: $filter, sort: $sort ){
+      ...TodoCount
+    }
+  }
+  ${ToDo.fragments.count}
+`;
+
 export const TODO_COMPLETED_QUERY = gql`
   query todoCompleted ($first: Int = 100, $offset: Int = 1, $filter: TodoCompletedFilterInputType, $sort: TodoCompletedSortInputType){
     todoCompleted (first: $first, offset: $offset, filter: $filter, sort: $sort ){

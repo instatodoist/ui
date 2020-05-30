@@ -12,7 +12,8 @@ import {
   TODO_ADD_MUTATION,
   TODO_LABEL_ADD_MUTATION,
   TODO_LABEL_UPDATE_MUTATION,
-  TODO_LABEL_DELETE_MUTATION
+  TODO_LABEL_DELETE_MUTATION,
+  TODO_LISTCOUNT_QUERY
 } from '../../gql/todo.gql';
 import { Apollo, Query } from 'apollo-angular';
 import { Observable, forkJoin } from 'rxjs';
@@ -188,7 +189,7 @@ export class TodoService {
   listTodosQuery(conditions: TodoConditions): Observable<TodoListType> {
     return this.apollo
       .query({
-        query: TODO_LIST_QUERY,
+        query: TODO_LISTCOUNT_QUERY,
         variables: conditions,
         // fetchPolicy: 'network-only'
       })
