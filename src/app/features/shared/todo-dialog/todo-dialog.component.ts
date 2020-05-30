@@ -90,7 +90,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           this.todoCurrentType = this.todoService.getCurentRoute();
           this.conditions = this.todoService.getConditions(this.todoCurrentType);
         } else {
-          const labelId = labels.filter(obj => obj.name === label)[0]._id;
+          const labelId = labels.filter(obj => (obj.name).toLowerCase() === label.toLowerCase())[0]._id;
           this.formObj.value.labelId.push(labelId);
           this.labelIdVal = this.formObj.value.labelId;
           this.todoCurrentType = label;

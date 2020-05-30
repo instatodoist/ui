@@ -186,18 +186,6 @@ export class TodoService {
       }));
   }
 
-  listTodosQuery(conditions: TodoConditions): Observable<TodoListType> {
-    return this.apollo
-      .query({
-        query: TODO_LISTCOUNT_QUERY,
-        variables: conditions,
-        // fetchPolicy: 'network-only'
-      })
-      .pipe(map(({ data }: any) => {
-        return data.todoList;
-      }));
-  }
-
   /**
    * @param conditions - filter params while fetching todos
    */
@@ -303,6 +291,15 @@ export class TodoService {
     // checking labels
     if (body.labelId && body.labelId.length) {
       postTodo.label = body.labelId;
+      refetch = [...refetch, {
+        query: TODO_LABEL_QUERY
+      }];
+      // refetch = [...refetch, {
+      //   query: TODO_LIST_QUERY,
+      //   variables: {
+      //     ...this.getConditions(body.labelId[0], 'labels')
+      //   }
+      // }];
     }
     // checking scheduling
     if (body.scheduledDate && body.scheduling) {

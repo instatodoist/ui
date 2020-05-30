@@ -173,6 +173,8 @@ export const TODO_LABEL_QUERY = gql`
     todoLabelList {
       name
       _id
+      count
+      slug
     }
   }
 `;

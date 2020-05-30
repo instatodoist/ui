@@ -132,7 +132,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
               }
             ]
           };
-          const labelId = labels.filter(obj => obj.name === label)[0]._id;
+          const labelId = labels.filter(obj => (obj.name).toLowerCase() === label.toLowerCase())[0]._id;
           this.conditions = this.toddService.getConditions(labelId, 'labels');
         }
         if (q) {
