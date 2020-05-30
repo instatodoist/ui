@@ -2,70 +2,28 @@
   <div class="row">
     <div class="col-lg-12">
       <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-        <!-- Page haeder -->
-        <!-- <div class="iq-card-header d-flex justify-content-between" *ngIf="todoCurrentType !== TODOTYPES.today && todoCurrentType !== TODOTYPES.pending">
-          <div class="iq-header-title">
-            <h4 class="card-title">[ <span class="text-primary">{{todoCurrentType | titlecase}}</span> ] Tasks: <span
-                class="text-primary">
-                {{todoCurrentType === TODOTYPES.completed ? this.count?.completed : (todos?.totalCount ||  0)}}
-              </span>
-            </h4>
-          </div>
-        </div> -->
-        <!--END-->
 
         <ul class="nav nav-tabs" id="myTab-1" role="tablist">
-          <li class="nav-item"
-            *ngIf="todoCurrentType !== TODOTYPES.today && todoCurrentType !== TODOTYPES.pending && todoCurrentType !== TODOTYPES.completed && todoCurrentType !== TODOTYPES.inbox && todoCurrentType !== TODOTYPES.upcoming">
-            <a class="nav-link active" id="home-tab" data-toggle="tab" routerLink="/tasks/inbox" role="tab"
-              aria-controls="home" aria-selected="true">{{todoCurrentType | titlecase}} ( {{todos?.totalCount || 0}}
-              )</a>
-          </li>
-          <li class="nav-item" *ngIf="todoCurrentType === TODOTYPES.completed">
-            <a class="nav-link active" id="home-tab" data-toggle="tab" routerLink="/tasks/completed" role="tab"
-              aria-controls="home" aria-selected="true">
-              {{todoCurrentType | titlecase}}
-              <span>({{this.count?.completed}})</span>
-            </a>
-          </li>
-          <li class="nav-item" *ngIf="todoCurrentType === TODOTYPES.upcoming">
-            <a class="nav-link active" id="home-tab" data-toggle="tab" routerLink="/tasks/upcoming" role="tab"
-              aria-controls="home" aria-selected="true">
-              {{todoCurrentType | titlecase}}
-              ( {{ todos?.totalCount || this.count?.upcoming}} )
-            </a>
-          </li>
-          <li class="nav-item" *ngIf="todoCurrentType === TODOTYPES.inbox">
-            <a class="nav-link active" id="home-tab" data-toggle="tab" routerLink="/tasks/inbox" role="tab"
-              aria-controls="home" aria-selected="true">{{todoCurrentType | titlecase}} (
-              {{ todos?.totalCount || this.count?.inbox}} )</a>
-          </li>
-          <li class="nav-item" *ngIf="todoCurrentType === TODOTYPES.today || todoCurrentType === TODOTYPES.pending">
-            <a [ngClass]="{'active': todoCurrentType === TODOTYPES.today}" class="nav-link" id="home-tab"
-              data-toggle="tab" routerLink="/tasks/today" role="tab" aria-controls="home" aria-selected="true">
-              {{TODOTYPES.today | titlecase}}
-              <span [ngSwitch]="todoCurrentType">
-                <span *ngSwitchCase="TODOTYPES.today">({{todos?.totalCount || this.count?.today}})</span>
-                <span *ngSwitchDefault>({{this.count?.today}})</span>
-              </span>
-            </a>
-          </li>
-          <li class="nav-item"
-            *ngIf="this.count?.pending && (todoCurrentType === TODOTYPES.today || todoCurrentType === TODOTYPES.pending)">
-            <a [ngClass]="{'active': todoCurrentType === TODOTYPES.pending}" class="nav-link" id="profile-tab"
-              data-toggle="tab" routerLink="/tasks/pending" role="tab" aria-controls="profile" aria-selected="false">
-              {{TODOTYPES.pending | titlecase}}
-              <span [ngSwitch]="todoCurrentType">
-                <span *ngSwitchCase="TODOTYPES.pending">({{todos?.totalCount || this.count?.pending}})</span>
-                <span *ngSwitchDefault>({{this.count?.pending}})</span>
-              </span>
+          <li class="nav-item" *ngFor="let item of tabs[todoCurrentType]">
+            <a class="nav-link" id="home-tab" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true"
+              [routerLink]="item?.link" routerLinkActive="active">
+              {{('' + item.name ) | translate | titlecase}}
+              {{(this.count) && this.count[item.name] || todos?.totalCount || ''}}
+              <!-- <ngContainer [ngSwitch]="todoCurrentType">
+                <span *ngSwitchCase="TODOTYPES.today || TODOTYPES.pending || TODOTYPES.completed">
+                  {{(this.count) && this.count[item.name] || todos?.totalCount || ''}}
+                </span>
+                <span *ngSwitchDefault>
+                  {{ todos?.totalCount || ''}}
+                </span>
+              </ngContainer> -->
             </a>
           </li>
         </ul>
 
         <!-- Loader on fetching data-->
         <div class="col-sm-12 text-center" *ngIf="todoCurrentType !== TODOTYPES?.completed && extraLoader">
-          <img src="{{loaderImage}}" alt="loader" style="height: 100px;">
+          <img [src]="loaderImage" alt="loader" style="height: 100px;">
         </div>
         <!--END-->
 

@@ -25,7 +25,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   popupType: string; // popup type - update/delete
   todo: TodoType = null; // single todo object
   conditions: TodoConditions; // aploo refreshfetch conditions
-  TODOTYPES: any; // todo types wrt routes
+  TODOTYPES = this.toddService.todoTypes(); // todo types wrt routes
   todoCurrentType: string; // current route
   queryStr = '';
   compltedCount = 0;
@@ -34,6 +34,53 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   extModalConfig: IExternalModal = this.appService.ExternalModelConfig;
   // modalSubscription: Subscription;
   count: ITodoTypeCount;
+  tabs = {
+    [this.TODOTYPES.today]: [
+      {
+        name: this.TODOTYPES.today,
+        isShown: true,
+        link: '/tasks/today'
+      },
+      {
+        name: this.TODOTYPES.pending,
+        isShown: true,
+        link: '/tasks/pending'
+      }
+    ],
+    [this.TODOTYPES.pending]: [
+      {
+        name: this.TODOTYPES.today,
+        isShown: true,
+        link: '/tasks/today'
+      },
+      {
+        name: this.TODOTYPES.pending,
+        isShown: true,
+        link: '/tasks/pending'
+      }
+    ],
+    [this.TODOTYPES.inbox]: [
+      {
+        name: this.TODOTYPES.inbox,
+        isShown: true,
+        link: '/tasks/inbox'
+      }
+    ],
+    [this.TODOTYPES.upcoming]: [
+      {
+        name: this.TODOTYPES.upcoming,
+        isShown: true,
+        link: '/tasks/upcoming'
+      }
+    ],
+    [this.TODOTYPES.completed]: [
+      {
+        name: this.TODOTYPES.completed,
+        isShown: true,
+        link: '/tasks/completed'
+      }
+    ]
+  };
 
   constructor(
     private toddService: TodoService,
@@ -52,8 +99,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.TODOTYPES = this.toddService.todoTypes(); // todo types
-    this.todoCurrentType = this.TODOTYPES.inbox; // default to inbox
+    this.todoCurrentType = ''; // default to inbox
     this.loader = true;
     combineLatest([
       this.activatedRoute.params,
@@ -76,6 +122,16 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
           this.conditions = this.toddService.getConditions(this.todoCurrentType);
         } else {
           this.todoCurrentType = label;
+          this.tabs = {
+            ...this.tabs,
+            [label]: [
+              {
+                name: label,
+                isShown: true,
+                link: `/tasks/lists/${label}`
+              }
+            ]
+          };
           const labelId = labels.filter(obj => obj.name === label)[0]._id;
           this.conditions = this.toddService.getConditions(labelId, 'labels');
         }
