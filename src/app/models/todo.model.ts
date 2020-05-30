@@ -41,6 +41,7 @@ export interface TodoLabelType {
   _id?: string;
   name?: string;
   operationType?: string;
+  count?: number;
 }
 
 export interface TodoFilterType {
