@@ -49,7 +49,7 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       title: ['', [Validators.required]],
       isAchieved: [false],
       isPinned: [false],
-      description: ['', [Validators.required]],
+      description: [''],
       accomplishTenure: [null],
       operationType: ['ADD']
     });

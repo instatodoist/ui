@@ -68,4 +68,43 @@ export class UtilityService {
     // this.iziToast.destroy();
   }
 
+  // parse network Errors
+  parseNetworkError(networkError): string {
+    const { error }: any = networkError;
+    let finalObj = null;
+    try {
+      if (!Array.isArray(error.errors)) {
+        finalObj = error;
+      } else {
+        const errors = error.errors[0];
+        finalObj = errors;
+      }
+    } catch (error) {
+        return 'Something Went Wrong';
+    }
+    const { status, code, message } = finalObj;
+    // Checking Error codes
+    if (status && code !== 'ValidationError') {
+      switch (status) {
+        case 401:
+          return 'LOGOUT';
+        default:
+      }
+    }
+    // parsing error message
+    let msg = message;
+    if (message.match(/\[(.*?)\]/)) {
+      msg = message.match(/\[(.*?)\]/)[1] || 'Something went wrong';
+      msg = msg.replace(/"/g, '');
+      msg = msg.charAt(0).toUpperCase() + msg.slice(1);
+    }
+    return msg;
+  }
+
+  // parse GraphQl Errors
+  parseGraphQlError(graphQLErrors): string {
+    const { message } = graphQLErrors[0];
+    return message;
+  }
+
 }

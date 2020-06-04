@@ -6,7 +6,8 @@ import { map } from 'rxjs/operators';
 import {
   GOAL_QUERY,
   ADD_GOAL_MUTATION,
-  UPDATE_GOAL_MUTATION
+  UPDATE_GOAL_MUTATION,
+  GOAL_DELETE_MUTATION
 } from '../../gql';
 import {
   IGoalConditions,
@@ -26,7 +27,7 @@ export class GoalService {
     return this.apollo
       .watchQuery({
         query: GOAL_QUERY,
-        variables: conditions,
+        variables: conditions
       })
       .valueChanges.pipe(map(({ data }: any) => {
         return data.listThought;
@@ -61,11 +62,11 @@ export class GoalService {
           id: body._id
         };
         break;
-      // case 'DELETE':
-      //   gqlOperation = TODO_DELETE_MUTATION;
-      //   defaultDataKey = 'deleteTodo';
-      //   variables.id = body._id;
-      //   break;
+      case 'DELETE':
+        gqlOperation = GOAL_DELETE_MUTATION;
+        defaultDataKey = 'deleteThought';
+        variables.id = body._id;
+        break;
       default:
         variables = {
           ...variables,
@@ -79,14 +80,6 @@ export class GoalService {
       variables,
       refetchQueries: [
         ...refetch
-        // {
-        //   query: GOAL_QUERY,
-        //   variables: {
-        //     filter: {
-        //       isCompleted: true
-        //     }
-        //   }
-        // }
       ]
     })
       .pipe(map(({ data }: any) => {

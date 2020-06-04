@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { IGoalListType, IGoalConditions, IGoalType, IExternalModal } from '../../../models';
-import { SharedService, GoalService, AppService } from '../../../service';
+import { GoalService, AppService } from '../../../service';
 import { Subscription } from 'rxjs';
 declare var $: any;
 @Component({
@@ -8,10 +8,10 @@ declare var $: any;
   templateUrl: './goal-list.component.html',
   styleUrls: ['./goal-list.component.scss']
 })
-export class GoalListComponent implements OnInit, OnDestroy, AfterViewInit {
+export class GoalListComponent implements OnInit, AfterViewInit {
 
   loader = false;
-  goals$: Subscription;
+  // goals$: Subscription;
   goals: IGoalListType;
   isUpdate = false;
   goal: IGoalType = null;
@@ -28,13 +28,12 @@ export class GoalListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
     private goalService: GoalService,
-    private sharedService: SharedService,
     private appService: AppService
   ) { }
 
   ngOnInit(): void {
     this.loader = true;
-    this.goals$ = this.goalService.listGoals(this.conditions).subscribe((data) => {
+    this.goalService.listGoals(this.conditions).subscribe((data) => {
       this.goals = data;
     });
   }
@@ -43,9 +42,9 @@ export class GoalListComponent implements OnInit, OnDestroy, AfterViewInit {
     $('[data-toggle="tooltip"]').tooltip();
   }
 
-  ngOnDestroy() {
-    this.goals$.unsubscribe();
-  }
+  // ngOnDestroy() {
+  //   // this.goals$.unsubscribe();
+  // }
 
   updateGoal(goal: IGoalType = null, type = 'IS_PINNED') {
     const goalObj = {
@@ -56,16 +55,19 @@ export class GoalListComponent implements OnInit, OnDestroy, AfterViewInit {
     if (type === 'IS_PINNED') {
       this.submit({
         ...goalObj,
+        operationType: 'UPDATE',
         isPinned: !goal.isPinned,
       });
     } else if (type === 'IS_ARCHIEVED') {
       this.submit({
         ...goalObj,
+        operationType: 'UPDATE',
         isAchieved: !goal.isAchieved
       });
-    } else if (type === 'IS_DELETE') {
+    } else if (type === 'DELETE') {
       this.submit({
         ...goalObj,
+        operationType: 'DELETE',
         isDelete: !goal.isDelete
       });
     }
@@ -96,7 +98,7 @@ export class GoalListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   submit(goal: IGoalType = null) {
-    goal.operationType = 'UPDATE';
+    goal.operationType = goal.operationType || 'UPDATE';
     this.goalService.goalOperation(goal, this.conditions).subscribe();
   }
 

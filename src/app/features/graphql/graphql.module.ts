@@ -8,8 +8,10 @@ import { setContext } from 'apollo-link-context';
 import { onError } from 'apollo-link-error';
 import { environment } from '../../../environments/environment';
 import { UtilityService } from '../../service/utility.service';
-import {LsService} from '../../service/ls.service';
+import { LsService } from '../../service/ls.service';
 import { ApolloClient } from 'apollo-client';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @NgModule({
   declarations: [],
@@ -39,39 +41,34 @@ export class GraphqlModule {
         },
       }));
     // error link
-    const errorLink = onError(({ graphQLErrors, networkError, response, operation }) => {
-      if (typeof (networkError) !== 'undefined') {
-        const { error }: any = networkError;
-        let finalObj = null;
-        try {
-          if (!Array.isArray(error.errors)) {
-            finalObj = error;
-          } else {
-            const errors = error.errors[0];
-            finalObj = errors;
+    const errorLink = onError((
+      {
+        graphQLErrors,
+        networkError,
+        // response,
+        // operation
+      }
+    ): any => {
+
+      try {
+        // parse Network Errors
+        if (typeof (networkError) !== 'undefined') {
+          const msg = utilityService.parseErrorMessage(networkError);
+          if (msg === 'LOGOUT') {
+            localStorage.clear();
+            window.location.href = '/auth/login';
+            throw msg;
           }
-        } catch (error) {
-          console.log(error, '@@Graphql Error@@');
+          throw new Error(msg);
         }
-        const { status, code, message } = finalObj;
-        // Checking Error codes
-        if (status && code !== 'ValidationError') {
-          switch (status) {
-            case 401:
-              localStorage.clear();
-              window.location.href = '/auth/login';
-              break;
-            default:
-          }
+        // parse GraphQl specific Errorxs
+        if (typeof (Array.isArray(graphQLErrors) && graphQLErrors.length)) {
+          const message = utilityService.parseGraphQlError(graphQLErrors);
+          throw message;
         }
-        // parsing error message
-        let msg = message;
-        if (message.match(/\[(.*?)\]/)) {
-          msg = message.match(/\[(.*?)\]/)[1] || 'Something went wrong';
-          msg = msg.replace(/"/g, '');
-          msg = msg.charAt(0).toUpperCase() + msg.slice(1);
-        }
-        utilityService.toastrError(msg);
+      } catch (error) {
+        utilityService.toastrError(error);
+        return throwError(new Error(error));
       }
     });
     const httpLinkWithErrorHandling = ApolloLink.from([

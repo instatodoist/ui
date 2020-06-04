@@ -10,7 +10,7 @@ export const ADD_GOAL_MUTATION = gql`
 `;
 
 export const UPDATE_GOAL_MUTATION = gql`
-  mutation updateThought( $id: ID!, $input: ThoughtInputType!) {
+  mutation updateThought( $id: ID!, $input: ThoughtUpdateInputType!) {
     updateThought(id: $id, input: $input){
       message
       ok
@@ -18,14 +18,14 @@ export const UPDATE_GOAL_MUTATION = gql`
   }
 `;
 
-// export const TODO_DELETE_MUTATION = gql`
-//   mutation deleteTodo( $id: ID!) {
-//     deleteTodo(id: $id){
-//       message
-//       ok
-//     }
-//   }
-// `;
+export const GOAL_DELETE_MUTATION = gql`
+  mutation deleteThought( $id: ID!) {
+    deleteThought(id: $id){
+      message
+      ok
+    }
+  }
+`;
 
 
 export const GOAL_QUERY = gql`
