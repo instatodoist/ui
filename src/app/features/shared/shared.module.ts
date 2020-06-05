@@ -35,7 +35,10 @@ import { FileUploadComponent } from '../shared/file-upload/file-upload.component
         deps: [HttpClient]
       }
     }),
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true
+    }),
     QuilljsModule
   ],
   exports: [
