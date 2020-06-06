@@ -109,7 +109,7 @@ export class TodoService {
         offset: 1,
         first: 50,
         sort: {
-          updatedAt: 'DESC'
+          scheduledDate: 'ASC'
         },
         filter: {
           type: 'upcoming'
