@@ -35,13 +35,15 @@
 
         <div class="iq-card-body" *ngIf="!extraLoader && todoCurrentType !== TODOTYPES?.completed">
 
-          <ul class="list-group list-group-flush" cdkDropList [cdkDropListData]="todos?.data"
-            (cdkDropListDropped)="onTodoDrop($event)" cdkDropListOrientation="horizontal">
+          <!-- <ul class="list-group list-group-flush" cdkDropList [cdkDropListData]="todos?.data"
+            (cdkDropListDropped)="onTodoDrop($event)" cdkDropListOrientation="horizontal"> -->
+            <ul class="list-group list-group-flush">
             <ng-container>
               <ng-container *ngFor="let todo of todos?.data; let i = index">
-                <li class="list-group-item tr-{{ i + 1}} cursor" data-toggle="modal" data-target="#todo-dialog"
+                <!-- <li class="list-group-item tr-{{ i + 1}} cursor" data-toggle="modal" data-target="#todo-dialog"
                   (click)="openPopUp(todo)" cdkDropList [id]="todo._id" [cdkDropListData]="todo"
-                  [cdkDropListConnectedTo]="trackIds" (cdkDropListDropped)="onTodoDrop($event)" cdkDrag>
+                  [cdkDropListConnectedTo]="trackIds" (cdkDropListDropped)="onTodoDrop($event)" cdkDrag> -->
+                <li class="list-group-item tr-{{ i + 1}} cursor" (click)="openPopUp(todo)">
                   <div class="custom-control custom-checkbox custom-control-inline flota-l mr-2"
                     style="padding-left: 0px; margin-top: 5px;">
                     <!-- <i class="fa fa-arrows flota-l" aria-hidden="true" cdkDragHandle></i> -->
