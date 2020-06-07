@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TodoService, SharedService, AppService, UtilityService } from '../../../service';
@@ -17,6 +17,7 @@ declare var flatpickr: any;
 })
 export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  @ViewChild('titleInput') private elementRef: ElementRef;
   @Input()
   modelId = 'todo-dialog';
   @Input()
@@ -110,6 +111,8 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    // Set autofocus
+    this.elementRef.nativeElement.focus();
     if (typeof flatpickr !== 'undefined' && $.isFunction(flatpickr)) {
       const config: any = {
         // inline: true,
