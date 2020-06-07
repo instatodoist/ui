@@ -24,6 +24,8 @@
   "completed_todos": "Completed Tasks",
   "label_filter": "Filtered tasks",
   "type_here_to_search": "Type here to search...",
-  "what_todo": "what is on your mind today?",
-  "save_changes": "Save changes"
+  "what_todo": "What is on your mind today?",
+  "save_changes": "Save changes",
+  "save": "Save"
+  
 }
