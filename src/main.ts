@@ -9,7 +9,7 @@ if (environment.production) {
   // Google Analytics will be enabled on Production
   // On deployment server Set the GTAG_ID
   document.write(`
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DW9DEFJQ0S"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=${environment.GTAG_ID}"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
