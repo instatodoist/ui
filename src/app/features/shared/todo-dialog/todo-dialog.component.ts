@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestro
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TodoService, SharedService, AppService, UtilityService } from '../../../service';
-import { TodoType, TodoLabelType, TodoConditions, OperationEnumType } from '../../../models';
+import { TodoType, TodoLabelType, TodoConditions, OperationEnumType, TodoProjectType } from '../../../models';
 import { map } from 'rxjs/operators';
 import { combineLatest, Subscription } from 'rxjs';
 import { } from '../../../gql';
@@ -18,32 +18,25 @@ declare var flatpickr: any;
 export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('titleInput') private elementRef: ElementRef;
-  @Input()
-  modelId = 'todo-dialog';
-  @Input()
-  todo: TodoType = null; // todo object if update
-  @Input()
-  conditions: TodoConditions = null; // conditions object
-  @Input()
-  origin = null;
-  @Output()
-  isOpen: EventEmitter<boolean> = new EventEmitter<boolean>(); // open flag
-  title = 'Add Task';
-  formObj: FormGroup;
-  labels: TodoLabelType[]; // labels array
-  priorityColor = this.todoService.getPriorities[3].color; // default color for priority
-  priorities = [];
-  // TODOTYPES: any; // todo types wrt routes
-  todoCurrentType: string; // current route
-  operationType: OperationEnumType = 'ADD';
-  currentLabel = '';
-  labelIdVal: string[] = [];
-  isSubmit = false;
-  popUpType = 'TODO_ADD';
-  TODOTYPES = this.todoService.todoTypes();
+  @Input() modelId = 'todo-dialog';
+  @Input() todo: TodoType = null; // todo object if update
+  @Input() conditions: TodoConditions = null; // conditions object
+  @Input() origin = null;
+  // @Output() isOpen: EventEmitter<boolean> = new EventEmitter<boolean>(); // open flag
   private modalSubscription: Subscription;
   private routeSubscription: Subscription;
+  title = 'Add Task'; // default title if use same component for ADD/EDIT
+  operationType: OperationEnumType = 'ADD'; // default operationType if use same component for ADD/EDIT
+  popUpType = 'TODO_ADD';
+  todoCurrentType: string; // current route
+  currentProject = 'Personal'; // Default List name
+  labelIdVal: string[] = []; // Tags Array
+  isSubmit = false; // submit button flag
+  TODOTYPES = this.todoService.todoTypes(); // Types of ToDOS
   today = moment(new Date()).startOf('day');
+  labels: TodoLabelType[]; // labels array
+  projects: TodoProjectType[] = [];
+  formObj: FormGroup;
 
   constructor(
     private router: Router,
@@ -56,55 +49,52 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.priorities = this.todoService.getPriorities;
     this.formObj = this.fb.group({
       _id: [''],
-      title: ['', [Validators.required]],
-      scheduling: [false],
-      scheduledDate: [this.sharedService.todayDate()],
-      labelId: [[]],
-      projectId: [''],
-      priority: ['P4'],
-      operationType: [this.operationType],
+      title: ['', [Validators.required]], // Title
+      scheduling: [false], // if date is set
+      scheduledDate: [this.sharedService.todayDate()], // scheduled Date
+      labelIds: [[]], // Tags Array
+      projectId: [''], // List ID
+      operationType: [this.operationType], // ADD || UPDATE
       isCompleted: [false]
     });
-    this.subscribeToModal();
-    this.TODOTYPES = this.todoService.todoTypes(); // getting route types
-    this.routeSubscription = combineLatest([
+    this.subscribeToModal(); // Listen to subscription to choose if popup called
+    this.routeSubscription = combineLatest([ // fetching Tags & Projects/List in the system
+      this.todoService.listTodoLabels(),
       this.todoService.listTodoProjects()
     ])
       .pipe(
         map(data => ({
           // params: data[0],
-          labels: data[0]
+          labels: data[0],
+          projects: data[1]
         }))
       )
       .subscribe(data => {
         const url = this.router.url;
-        let label = null;
+        let project = null;
         if (url.match('lists')) {
           const splitArr = url.split('/');
-          label = splitArr[splitArr.length - 1] || null;
+          project = splitArr[splitArr.length - 1] || null;
         }
-        const { labels = [] } = data;
+        const { labels = [], projects = [] } = data;
         this.labels = labels;
-        if (!label) {
+        this.projects = projects;
+        if (!project) {
           this.todoCurrentType = this.todoService.getCurentRoute();
           this.conditions = this.todoService.getConditions(this.todoCurrentType);
         } else {
-          const labelId = labels.filter(obj => (obj.name).toLowerCase() === label.toLowerCase())[0]._id;
-          // this.formObj.value.labelId.push(labelId);
-          this.formObj.value.projectId = labelId;
-          this.labelIdVal = this.formObj.value.labelId;
-          this.todoCurrentType = label;
-          this.conditions = this.todoService.getConditions(labelId);
+          const projectId = labels.filter(obj => (obj.name).toLowerCase() === project.toLowerCase())[0]._id;
+          this.formObj.value.projectId = projectId;
+          this.conditions = this.todoService.getConditions(projectId);
         }
-        // populate label if any
-        const filterLabel: TodoLabelType[] = this.labels.filter(item => item._id === this.labelIdVal[0]);
-        if (filterLabel.length) {
-          this.currentLabel = filterLabel[0].name;
+        // populate project if any
+        const filteredProject: TodoLabelType[] = this.projects.filter(item => item._id === this.formObj.value.projectId);
+        if (filteredProject.length) {
+          this.currentProject = filteredProject[0].name;
         }
-        if (this.todoCurrentType === 'today') {
+        if (this.todoCurrentType === 'today') { // set scheduled date Today
           this.formObj.patchValue({
             scheduling: true
           });
@@ -113,9 +103,8 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    // Set autofocus
-    this.elementRef.nativeElement.focus();
-    if (typeof flatpickr !== 'undefined' && $.isFunction(flatpickr)) {
+    this.elementRef.nativeElement.focus(); // Set autofocus for title
+    if (typeof flatpickr !== 'undefined' && $.isFunction(flatpickr)) { // Initialise Date Picker
       const config: any = {
         inline: true,
         dateFormat: 'Y-m-d'
@@ -125,11 +114,11 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       $('.flatpicker').flatpickr(config);
     }
-    $('#' + this.modelId).modal('toggle');
+    $('#' + this.modelId).modal('toggle'); // Open & close Popup
     const externalModal = this.appService.externalModal;
     const defaultConfig = this.appService.ExternalModelConfig;
     // tslint:disable-next-line: only-arrow-functions
-    $(`#${this.modelId}`).on('hidden.bs.modal', function () {
+    $(`#${this.modelId}`).on('hidden.bs.modal', () => { // listen modal close event
       externalModal.next({
         ...defaultConfig,
         [this.popUpType]: false
@@ -142,25 +131,21 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.routeSubscription.unsubscribe();
   }
 
-  // set priority
-  setPriority(priority: any) {
-    this.formObj.patchValue({
-      priority: priority.name
-    });
-    this.priorityColor = priority.color;
-  }
-
   // auto checked the labels if exist
-  isChecked(labelId: string) {
-    return this.formObj.value.projectId.indexOf(labelId) !== -1 ? true : false;
+  isChecked(label: TodoLabelType) {
+    return this.formObj.value.labelIds.indexOf(label._id) !== -1 ? true : false;
   }
 
   // check & uncheck labels
-  checkLabels($event, label: any) {
-    this.currentLabel = label.name;
+  checkLabels($event, label: TodoLabelType) {
+    this.currentProject = label.name;
     const labelId = label._id;
-    // this.formObj.value.labelId = [labelId];
-    this.formObj.value.projectId = labelId;
+    const index = this.formObj.value.labelIds.indexOf(labelId);
+    if (index === -1) {
+      this.formObj.value.labelId.push(labelId);
+    } else {
+      this.formObj.value.labelId.splice(index, 1);
+    }
   }
 
   isScheduling() {
@@ -168,6 +153,30 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       scheduling: !this.formObj.value.scheduling
     });
   }
+
+  private subscribeToModal() {
+    this.modalSubscription = this.appService.externalModal.subscribe(data => {
+      if (data.data.todo) {
+        this.title = 'Update Task';
+        this.labelIdVal = this.todo ? (this.todo.labels.map(label => {
+          return label._id;
+        })) : [];
+        this.popUpType = 'TODO_UPDATE';
+        this.todo = data.data.todo;
+        this.formObj.patchValue({
+          _id: this.todo && this.todo._id || '',
+          title: this.todo && this.todo.title,
+          projectId: this.todo && this.todo.projectId,
+          scheduling: this.todo && this.todo.scheduledDate ? true : false,
+          scheduledDate: this.todo && this.todo.scheduledDate ? this.todo.scheduledDate : this.sharedService.todayDate(),
+          labelIds: this.labelIdVal,
+          operationType: 'UPDATE',
+          isCompleted: this.todo && this.todo.isCompleted ? true : false
+        });
+      }
+    });
+  }
+
 
   // add/update the task
   submit() {
@@ -204,7 +213,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         .todoOperation(postBody, this.conditions, refetch)
         .subscribe(() => {
           this.isSubmit = false;
-          this.isOpen.emit(false);
+          // this.isOpen.emit(false);
           $(`#${this.modelId}`).modal('hide');
           let message = 'Task created';
           if (this.formObj.value._id) {
@@ -217,29 +226,5 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         );
     }
-  }
-
-  private subscribeToModal() {
-    this.modalSubscription = this.appService.externalModal.subscribe(data => {
-      if (data.data.todo) {
-        this.title = 'Update Task';
-        this.labelIdVal = this.todo ? (this.todo.labels.map(label => {
-          return label._id;
-        })) : [];
-        this.popUpType = 'TODO_UPDATE';
-        this.todo = data.data.todo;
-        this.formObj.patchValue({
-          _id: this.todo && this.todo._id || '',
-          title: this.todo && this.todo.title,
-          scheduling: this.todo && this.todo.scheduledDate ? true : false,
-          scheduledDate: this.todo && this.todo.scheduledDate ? this.todo.scheduledDate : this.sharedService.todayDate(),
-          labelId: this.labelIdVal,
-          operationType: 'UPDATE',
-          priority: this.todo.priority || 'P4',
-          isCompleted: this.todo && this.todo.isCompleted ? true : false
-        });
-        this.priorityColor = this.todoService.getColor(this.formObj.value.priority);
-      }
-    });
   }
 }
