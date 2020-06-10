@@ -12,8 +12,8 @@
             </span> -->
               <button type="button" class="btn mb-1 iq-bg-primary">
                 {{todo?._id  | date: 'mediumDate'}} <span class="badge badge-light ml-2">{{todo?.list?.length}}</span>
-                </button>
-             
+              </button>
+
             </div>
             <!-- <div class="d-flex align-items-center justify-content-between text-primary">
               Tasks Completed - <span class="badge badge-primary">{{todo?.list?.length}}</span>
@@ -39,8 +39,11 @@
 
           <!-- Labels-->
           <ng-container>
-            <div *ngFor="let label of data?.label" class="badge badge-pill border border-primary text-primary ml-2">{{label?.name}}
-            </div>
+            <!-- <div *ngFor="let label of data?.label" class="badge badge-pill border border-primary text-primary ml-2">{{label?.name}}
+            </div> -->
+            <span *ngIf="data?.project?.name" [routerLink]="['/tasks/labels', data.project.name]"
+              class="badge badge-pill border border-primary text-primary ml-2 cursor">{{data?.project?.name}}
+            </span>
           </ng-container>
         </div>
 

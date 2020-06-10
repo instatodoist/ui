@@ -37,7 +37,7 @@
 
           <!-- <ul class="list-group list-group-flush" cdkDropList [cdkDropListData]="todos?.data"
             (cdkDropListDropped)="onTodoDrop($event)" cdkDropListOrientation="horizontal"> -->
-            <ul class="list-group list-group-flush">
+          <ul class="list-group list-group-flush">
             <ng-container>
               <ng-container *ngFor="let todo of todos?.data; let i = index">
                 <!-- <li class="list-group-item tr-{{ i + 1}} cursor" data-toggle="modal" data-target="#todo-dialog"
@@ -68,8 +68,8 @@
                         </span>
                         <ng-container
                           *ngIf="todoCurrentType == TODOTYPES?.pending || todoCurrentType === TODOTYPES?.inbox || todoCurrentType === TODOTYPES?.today || todoCurrentType === TODOTYPES?.upcoming">
-                          <span *ngFor="let label of todo?.label" [routerLink]="['/tasks/labels', label?.name]"
-                            class="badge badge-pill border border-primary text-primary ml-2 cursor">{{label?.name}}
+                          <span *ngIf="todo?.project?.name" [routerLink]="['/tasks/labels', todo.project.name]"
+                            class="badge badge-pill border border-primary text-primary ml-2 cursor">{{todo?.project?.name}}
                           </span>
                         </ng-container>
                       </div>
