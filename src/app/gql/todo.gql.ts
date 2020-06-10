@@ -14,8 +14,11 @@ ToDo.fragments = {
       title
       createdAt
       updatedAt
-      label {
+      labels {
           name
+      }
+      project {
+        name
       }
     }
     `,
@@ -23,9 +26,12 @@ ToDo.fragments = {
     fragment TodoFields on TodoType {
       _id
       title
-      label {
-          name
-          _id
+      labels {
+        name
+        _id
+      }
+      project {
+        name
       }
       isCompleted
       createdAt
@@ -179,26 +185,47 @@ export const TODO_LABEL_QUERY = gql`
   }
 `;
 
-// export const TODO_COUNT_FRAGMENT = gql`
-//     fragment TodoCount on TodoListType {
-//         count
-//     }
-// `;
+// Here are the APIs for Project
+// This is the new API's replacing lables
+// labels will serve another purpose
 
-// export const TODO_COUNT_QUERY = gql`
-//     query todoCount ($first: Int = 100, $offset: Int = 1, $filter: TodoFilterInputType, $sort: TodoSortInputType){
-//         today: todoList (first: $first, offset: $offset, filter: $filter, sort: $sort ){
-//             ...TodoCount
-//         }
-//         # pending: todoList (first: $first, offset: $offset, filter: $filter, sort: $sort ){
-//         #     ...${TODO_COUNT_FRAGMENT}
-//         # }
-//         # inbox: todoList (first: $first, offset: $offset, filter: $filter, sort: $sort ){
-//         #     ...${TODO_COUNT_FRAGMENT}
-//         # }
-//     }
-//     ${ToDo.fragments.count}
-// `;
+export const TODO_PROJECT_ADD_MUTATION = gql`
+  mutation addTodoProject( $input: TodoProjectInputType!) {
+    addTodoProject(input: $input){
+      message
+      ok
+    }
+  }
+`;
+
+export const TODO_PROJECT_UPDATE_MUTATION = gql`
+  mutation addTodoProject( $id: ID!, $input: TodoProjectInputType!) {
+    updateTodoProject(id: $id, input: $input){
+      message
+      ok
+    }
+  }
+`;
+
+export const TODO_PROJECT_DELETE_MUTATION = gql`
+  mutation deleteTodoProject( $id: ID!) {
+    deleteTodoProject(id: $id){
+      message
+      ok
+    }
+  }
+`;
+
+export const TODO_PROJECT_QUERY = gql`
+  query {
+    todoProjectList {
+      name
+      _id
+      count
+      slug
+    }
+  }
+`;
 
 export default {
   TODO_ADD_MUTATION,
