@@ -139,12 +139,13 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   checkProject(project: TodoProjectType) {
     this.currentProject = project.name;
-    this.formObj.value.projectId = project._id;
+    this.formObj.patchValue({
+      projectId: project._id
+    });
   }
 
   // check & uncheck labels
   checkLabels($event, label: TodoLabelType) {
-    this.currentProject = label.name;
     const labelId = label._id;
     const index = this.formObj.value.labelIds.indexOf(labelId);
     if (index === -1) {

@@ -151,9 +151,9 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // get priority color
-  getPriorityColor(priority: string) {
-    return this.toddService.getColor(priority);
-  }
+  // getPriorityColor(priority: string) {
+  //   return this.toddService.getColor(priority);
+  // }
 
   /**
    * @param conditions - based on route

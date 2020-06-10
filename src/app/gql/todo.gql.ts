@@ -12,14 +12,15 @@ ToDo.fragments = {
     fragment TodoCFields on TodoType {
       _id
       title
-      createdAt
-      updatedAt
       labels {
           name
       }
       project {
         name
       }
+      projectId
+      createdAt
+      updatedAt
     }
     `,
   filelds: gql`
@@ -33,22 +34,23 @@ ToDo.fragments = {
       project {
         name
       }
+      projectId
       isCompleted
       createdAt
       updatedAt
-      priority
       scheduledDate
-      notes {
-          description
-          _id
-          userId {
-              email
-              _id
-          }
-      }
-      user {
-          email
-      }
+      # priority
+      # notes {
+      #     description
+      #     _id
+      #     userId {
+      #         email
+      #         _id
+      #     }
+      # }
+      # user {
+      #     email
+      # }
     }
   `
 };
