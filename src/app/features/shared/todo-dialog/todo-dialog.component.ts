@@ -117,7 +117,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.elementRef.nativeElement.focus();
     if (typeof flatpickr !== 'undefined' && $.isFunction(flatpickr)) {
       const config: any = {
-        // inline: true,
+        inline: true,
         dateFormat: 'Y-m-d'
       };
       if (!this.todo) {
