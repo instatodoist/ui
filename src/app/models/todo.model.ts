@@ -29,8 +29,9 @@ export interface TodoType {
   scheduling?: boolean;
   title?: string;
   scheduledDate?: Date;
+  projectId?: string;
   labelId?: string;
-  label?: TodoLabelType[];
+  labels?: TodoLabelType[];
   isCompleted?: boolean;
   priority?: PriorityEnumType;
   operationType?: string;
@@ -44,10 +45,18 @@ export interface TodoLabelType {
   count?: number;
 }
 
+export interface TodoProjectType {
+  _id?: string;
+  name?: string;
+  operationType?: string;
+  count?: number;
+}
+
 export interface TodoFilterType {
   isCompleted?: boolean;
   title_contains?: string;
-  labelId?: string;
+  labelIds?: string[];
+  projectId?: string;
   startAt?: Date;
   endAt?: Date;
   type?: TodoEnumType;

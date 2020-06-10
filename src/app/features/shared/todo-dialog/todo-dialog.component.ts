@@ -63,6 +63,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       scheduling: [false],
       scheduledDate: [this.sharedService.todayDate()],
       labelId: [[]],
+      projectId: [''],
       priority: ['P4'],
       operationType: [this.operationType],
       isCompleted: [false]
@@ -70,7 +71,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscribeToModal();
     this.TODOTYPES = this.todoService.todoTypes(); // getting route types
     this.routeSubscription = combineLatest([
-      this.todoService.listTodoLabels()
+      this.todoService.listTodoProjects()
     ])
       .pipe(
         map(data => ({
@@ -92,7 +93,8 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           this.conditions = this.todoService.getConditions(this.todoCurrentType);
         } else {
           const labelId = labels.filter(obj => (obj.name).toLowerCase() === label.toLowerCase())[0]._id;
-          this.formObj.value.labelId.push(labelId);
+          // this.formObj.value.labelId.push(labelId);
+          this.formObj.value.projectId = labelId;
           this.labelIdVal = this.formObj.value.labelId;
           this.todoCurrentType = label;
           this.conditions = this.todoService.getConditions(labelId);
@@ -150,14 +152,15 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // auto checked the labels if exist
   isChecked(labelId: string) {
-    return this.formObj.value.labelId.indexOf(labelId) !== -1 ? true : false;
+    return this.formObj.value.projectId.indexOf(labelId) !== -1 ? true : false;
   }
 
   // check & uncheck labels
   checkLabels($event, label: any) {
     this.currentLabel = label.name;
     const labelId = label._id;
-    this.formObj.value.labelId = [labelId];
+    // this.formObj.value.labelId = [labelId];
+    this.formObj.value.projectId = labelId;
   }
 
   isScheduling() {
@@ -220,7 +223,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.modalSubscription = this.appService.externalModal.subscribe(data => {
       if (data.data.todo) {
         this.title = 'Update Task';
-        this.labelIdVal = this.todo ? (this.todo.label.map(label => {
+        this.labelIdVal = this.todo ? (this.todo.labels.map(label => {
           return label._id;
         })) : [];
         this.popUpType = 'TODO_UPDATE';

@@ -6,14 +6,17 @@ import {
   TODO_LIST_COUNT_QUERY,
   TODO_COMPLETED_QUERY,
   TODO_COMPLETED_COUNT_QUERY,
-  TODO_LABEL_QUERY,
   TODO_UPDATE_MUTATION,
   TODO_DELETE_MUTATION,
   TODO_ADD_MUTATION,
   TODO_LABEL_ADD_MUTATION,
   TODO_LABEL_UPDATE_MUTATION,
   TODO_LABEL_DELETE_MUTATION,
-  TODO_LISTCOUNT_QUERY
+  TODO_LABEL_QUERY,
+  TODO_PROJECT_ADD_MUTATION,
+  TODO_PROJECT_UPDATE_MUTATION,
+  TODO_PROJECT_DELETE_MUTATION,
+  TODO_PROJECT_QUERY
 } from '../../gql/todo.gql';
 import { Apollo, Query } from 'apollo-angular';
 import { Observable, forkJoin } from 'rxjs';
@@ -25,7 +28,8 @@ import {
   TodoLabelType,
   TodoType,
   SuccessType,
-  ITodoTypeCount
+  ITodoTypeCount,
+  TodoProjectType
 } from '../../models/todo.model';
 @Injectable({
   providedIn: 'root',
@@ -153,7 +157,7 @@ export class TodoService {
           createdAt: 'DESC'
         },
         filter: {
-          labelId: type,
+          projectId: type,
           isCompleted: false
         }
       };
@@ -284,6 +288,9 @@ export class TodoService {
     if (body.title) {
       postTodo.title = body.title;
     }
+    if (body.projectId) {
+      postTodo.projectId = body.projectId;
+    }
     // checking priority
     if (body.priority) {
       postTodo.priority = body.priority;
@@ -384,6 +391,78 @@ export class TodoService {
       case 'DELETE':
         gqlOperation = TODO_LABEL_DELETE_MUTATION;
         defaultDataKey = 'deleteTodoLabel';
+        variables.id = body._id;
+        break;
+      default:
+        variables = {
+          ...variables,
+          input: {
+            name: body.name
+          }
+        };
+        break;
+    }
+    return this.apollo.mutate({
+      mutation: gqlOperation,
+      variables,
+      refetchQueries: [
+        refetchQuery
+      ]
+    })
+      .pipe(map(({ data }: any) => {
+        return data[defaultDataKey];
+      }));
+  }
+
+  /**
+   * @description - fetching todos labels
+   */
+  listTodoProjects(): Observable<TodoProjectType[]> {
+    return this.apollo
+      .watchQuery({
+        query: TODO_PROJECT_QUERY,
+        variables: {
+          sort: { updatedAt: 'ASC' }
+        },
+      })
+      .valueChanges.pipe(map(({ data }: any) => {
+        return data.todoProjectList;
+      }));
+  }
+
+  /**
+   * @param body - postbody for add/update/delete label
+   * @param conditions - refetch conditions for todos-label wrt apolo
+   */
+  todoProjectOperation(body: TodoProjectType, conditions: any = null): Observable<SuccessType> {
+    let gqlOperation = TODO_PROJECT_ADD_MUTATION;
+    let defaultDataKey = 'addTodoProject';
+    const operationType = body.operationType;
+    // refetch query after add or update
+    const refetchQuery: any = {
+      query: TODO_PROJECT_QUERY
+    };
+    // if passing conditions
+    if (conditions) {
+      refetchQuery.variables = conditions;
+    }
+    // gql variables
+    let variables: any = {};
+    switch (operationType) {
+      case 'UPDATE':
+        gqlOperation = TODO_PROJECT_UPDATE_MUTATION;
+        defaultDataKey = 'updateTodoProject';
+        variables = {
+          ...variables,
+          input: {
+            name: body.name
+          },
+          id: body._id
+        };
+        break;
+      case 'DELETE':
+        gqlOperation = TODO_PROJECT_DELETE_MUTATION;
+        defaultDataKey = 'deleteTodoProject';
         variables.id = body._id;
         break;
       default:

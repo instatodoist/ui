@@ -21,7 +21,7 @@ export class TodoLabelListComponent implements OnInit {
 
   getLabels() {
     this.todoService
-      .listTodoLabels()
+      .listTodoProjects()
       .subscribe(response => {
         this.labels = response;
       });

@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 // import { MDCDialog } from '@material/dialog';
 import { TodoService } from '../../../service/todo/todo.service';
-import { TodoType, TodoLabelType, TodoConditions, OperationEnumType } from '../../../models/todo.model';
+import { TodoType, TodoProjectType, TodoConditions, OperationEnumType } from '../../../models/todo.model';
 
 
 @Component({
@@ -21,7 +21,7 @@ export class TodoLabelComponent implements OnInit, AfterViewInit {
   isOpen: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   formObj: FormGroup;
-  labels: TodoLabelType[];
+  labels: TodoProjectType[];
   // dialog: MDCDialog;
   operationType: OperationEnumType = 'ADD';
 
@@ -33,7 +33,7 @@ export class TodoLabelComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.formObj = this.fb.group(
       {
-        name: ['', [Validators.required] ],
+        name: ['', [Validators.required]],
         _id: [''],
         operationType: [this.operationType]
       }
@@ -51,13 +51,13 @@ export class TodoLabelComponent implements OnInit, AfterViewInit {
 
   getLabels() {
     this.todoService
-      .listTodoLabels()
+      .listTodoProjects()
       .subscribe(response => {
         this.labels = response;
       });
   }
 
-  editLabel(label: TodoLabelType ) {
+  editLabel(label: TodoProjectType) {
     this.operationType = 'UPDATE';
     this.formObj.patchValue({
       _id: label._id,
@@ -66,7 +66,7 @@ export class TodoLabelComponent implements OnInit, AfterViewInit {
     });
   }
 
-  deleteLabel(label: TodoLabelType) {
+  deleteLabel(label: TodoProjectType) {
     this.operationType = 'DELETE';
     this.todoOperationExec({
       _id: label._id,
@@ -83,7 +83,7 @@ export class TodoLabelComponent implements OnInit, AfterViewInit {
 
   todoOperationExec(postBody) {
     this.todoService
-      .todoLabelOperation(postBody)
+      .todoProjectOperation(postBody)
       .subscribe(() => {
         this.formObj.reset();
         this.operationType = 'ADD';

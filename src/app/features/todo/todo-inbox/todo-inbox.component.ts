@@ -104,7 +104,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
     combineLatest([
       this.activatedRoute.params,
       this.activatedRoute.queryParams,
-      this.toddService.listTodoLabels()
+      this.toddService.listTodoProjects()
     ])
       .pipe(
         map(data => ({
