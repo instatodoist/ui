@@ -291,13 +291,9 @@ export class TodoService {
     if (body.projectId) {
       postTodo.projectId = body.projectId;
     }
-    // checking priority
-    if (body.priority) {
-      postTodo.priority = body.priority;
-    }
     // checking labels
-    if (body.labelId && body.labelId.length) {
-      postTodo.label = body.labelId;
+    if (body.labelIds && body.labelIds.length) {
+      postTodo.labelIds = body.labelIds;
       refetch = [...refetch, {
         query: TODO_LABEL_QUERY
       }];

@@ -1,15 +1,15 @@
 import { SortEnumType } from './shared.model';
 
-enum TodoPriorityEnumType {
-  'p1',
-  'p2',
-  'p3',
-  'p4'
-}
+// enum TodoPriorityEnumType {
+//   'p1',
+//   'p2',
+//   'p3',
+//   'p4'
+// }
 
 type TodoEnumType = 'today' | 'backlog' | 'pending' | 'upcoming';
 export type OperationEnumType = 'ADD' | 'UPDATE' | 'DELETE';
-export type PriorityEnumType = 'P1' | 'P2' | 'P3' | 'P4';
+// export type PriorityEnumType = 'P1' | 'P2' | 'P3' | 'P4';
 
 export interface ITodoTypeCount {
   inbox?: number;
@@ -26,16 +26,17 @@ export interface SuccessType {
 
 export interface TodoType {
   _id: string;
-  scheduling?: boolean;
   title?: string;
-  scheduledDate?: Date;
   projectId?: string;
-  labelId?: string;
+  project?: TodoProjectType;
+  labelIds?: string[];
   labels?: TodoLabelType[];
   isCompleted?: boolean;
-  priority?: PriorityEnumType;
+  // priority?: // PriorityEnumType;
   operationType?: string;
   deleteRequest?: boolean;
+  scheduling?: boolean;
+  scheduledDate?: Date;
 }
 
 export interface TodoLabelType {
@@ -60,13 +61,13 @@ export interface TodoFilterType {
   startAt?: Date;
   endAt?: Date;
   type?: TodoEnumType;
-  priority?: TodoPriorityEnumType;
+  // priority?: Todo// PriorityEnumType;
 }
 export interface TodoSortType {
   createdAt?: SortEnumType;
   updatedAt?: SortEnumType;
   scheduledDate?: SortEnumType;
-  priority?: SortEnumType;
+  // priority?: SortEnumType;
 }
 
 export interface TodoConditions {

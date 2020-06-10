@@ -52,8 +52,10 @@
                           <button type="button" class="btn btn-outline-primary rounded-pill mb-3">Next week</button>
                         </li>
                         <li class="d-flex align-items-center justify-content-between">
-                          <button type="button" class="btn btn-outline-primary rounded-pill mb-3" data-toggle="modal"
-                            data-target="#scheduledAt">Custom</button>
+                          <button type="button" class="btn btn-outline-primary rounded-pill mb-3">Custom
+                          </button>
+                          <!-- <input type="text" class="form-control flatpicker iq-bg-primary" formControlName="scheduledDate"
+                      style="background-color: white;" style="display: none;" id="flatpicker"> -->
                         </li>
                       </ul>
                     </div>
@@ -86,10 +88,10 @@
       <div class="modal-body">
         <ul class="list-group">
           <li class="list-group-item d-flex justify-content-between align-items-center"
-            *ngFor="let label of labels; let i = index" [ngClass]="{'active': ( label?.name === currentProject ) }"
-            (click)="checkLabels($event, label)">
-            {{label?.name | titlecase}}
-            <span class="badge badge-pill" *ngIf="label?.name === currentProject"><i class="fa fa-check-circle-o"
+            *ngFor="let project of projects; let i = index"
+            [ngClass]="{'active': ( project?.name === currentProject ) }" (click)="checkProject(project)">
+            {{project?.name | titlecase}}
+            <span class="badge badge-pill" *ngIf="project?.name === currentProject"><i class="fa fa-check-circle-o"
                 aria-hidden="true" style="color: text-primary;"></i></span>
           </li>
         </ul>
@@ -98,7 +100,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="scheduledAt" tabindex="-1" role="dialog" aria-labelledby="scheduledAt" aria-hidden="true"
+<!-- <div class="modal fade" id="scheduledAt" tabindex="-1" role="dialog" aria-labelledby="scheduledAt" aria-hidden="true"
   style="display: none;">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
@@ -112,7 +114,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 <div class="modal fade" id="tagsModal" tabindex="-1" role="dialog" aria-labelledby="tagsModalTitle" aria-hidden="true"
   style="display: none;">

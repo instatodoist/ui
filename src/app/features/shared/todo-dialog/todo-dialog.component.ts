@@ -36,6 +36,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   today = moment(new Date()).startOf('day');
   labels: TodoLabelType[]; // labels array
   projects: TodoProjectType[] = [];
+  flatPickerConfig: any;
   formObj: FormGroup;
 
   constructor(
@@ -105,14 +106,14 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.elementRef.nativeElement.focus(); // Set autofocus for title
     if (typeof flatpickr !== 'undefined' && $.isFunction(flatpickr)) { // Initialise Date Picker
-      const config: any = {
-        inline: true,
+      this.flatPickerConfig = {
+        // inline: true,
         dateFormat: 'Y-m-d'
       };
       if (!this.todo) {
-        config.minDate = new Date();
+        this.flatPickerConfig.minDate = new Date();
       }
-      $('.flatpicker').flatpickr(config);
+      $('.flatpicker').flatpickr(this.flatPickerConfig);
     }
     $('#' + this.modelId).modal('toggle'); // Open & close Popup
     const externalModal = this.appService.externalModal;
@@ -136,15 +137,20 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.formObj.value.labelIds.indexOf(label._id) !== -1 ? true : false;
   }
 
+  checkProject(project: TodoProjectType) {
+    this.currentProject = project.name;
+    this.formObj.value.projectId = project._id;
+  }
+
   // check & uncheck labels
   checkLabels($event, label: TodoLabelType) {
     this.currentProject = label.name;
     const labelId = label._id;
     const index = this.formObj.value.labelIds.indexOf(labelId);
     if (index === -1) {
-      this.formObj.value.labelId.push(labelId);
+      this.formObj.value.labelIds.push(labelId);
     } else {
-      this.formObj.value.labelId.splice(index, 1);
+      this.formObj.value.labelIds.splice(index, 1);
     }
   }
 
@@ -176,8 +182,6 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
   }
-
-
   // add/update the task
   submit() {
     if (this.formObj.valid) {
