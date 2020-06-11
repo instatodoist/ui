@@ -10,7 +10,6 @@ import { GraphqlModule } from './features/graphql/graphql.module';
 
 import { CanActivateAuthenticateGuard } from './guards/can-activate-authenticate.guard';
 
-import { DropdownMenuDirective } from './directive/dropdown/dropdown-menu.directive';
 import { FormValidationDirective } from './directive/form-validation.directive';
 
 import { AppComponent } from './app.component';
@@ -32,7 +31,6 @@ import { environment } from '../environments/environment';
     SidebarComponent,
     PageNotFoundComponent,
     FormValidationDirective,
-    DropdownMenuDirective,
     HomeLayoutComponent
   ],
   imports: [
