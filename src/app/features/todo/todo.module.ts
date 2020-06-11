@@ -8,13 +8,15 @@ import { TodoInboxComponent } from './todo-inbox/todo-inbox.component';
 import { TodoCompletedComponent } from './todo-completed/todo-completed.component';
 import { TodoDeleteComponent } from './todo-delete/todo-delete.component';
 import { TodoLabelFilterComponent } from './todo-label-filter/todo-label-filter.component';
+import { TodoLabelListComponent } from './todo-label-list/todo-label-list.component';
 
 @NgModule({
   declarations: [
     TodoInboxComponent,
     TodoCompletedComponent,
     TodoDeleteComponent,
-    TodoLabelFilterComponent
+    TodoLabelFilterComponent,
+    TodoLabelListComponent
   ],
   imports: [
     CommonModule,

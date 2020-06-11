@@ -183,6 +183,8 @@ export const TODO_LABEL_QUERY = gql`
       _id
       count
       slug
+      color
+      description
     }
   }
 `;
