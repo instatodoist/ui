@@ -60,7 +60,7 @@
                   <div class="media-support-info ml-3">
                     <h6>
                       <span>
-                        <span [ngStyle]="todo?.isCompleted && {'text-decoration': 'line-through'}">{{todo?.title}}
+                        <span [ngStyle]="todo?.isCompleted && {'text-decoration': 'line-through'}" class="mr-2">{{todo?.title}}
                         </span>
                         <ng-container
                           *ngIf="todoCurrentType == TODOTYPES?.pending || todoCurrentType === TODOTYPES?.inbox || todoCurrentType === TODOTYPES?.today || todoCurrentType === TODOTYPES?.upcoming">
