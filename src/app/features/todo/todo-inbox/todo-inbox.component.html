@@ -60,31 +60,47 @@
                   <div class="media-support-info ml-3">
                     <h6>
                       <span>
-                        <span [ngStyle]="todo?.isCompleted && {'text-decoration': 'line-through'}" class="mr-2">{{todo?.title}}
+                        <span [ngStyle]="todo?.isCompleted && {'text-decoration': 'line-through'}"
+                          class="mr-2">{{todo?.title}}
                         </span>
-                        <ng-container
+                        <!-- <ng-container
                           *ngIf="todoCurrentType == TODOTYPES?.pending || todoCurrentType === TODOTYPES?.inbox || todoCurrentType === TODOTYPES?.today || todoCurrentType === TODOTYPES?.upcoming">
                           <span *ngIf="todo?.project?.name" [routerLink]="['/tasks/labels', todo.project.name]"
-                            class="badge badge-pill border border-primary text-primary ml-2 mr-2 cursor">{{todo?.project?.name}}
+                            class="badge badge-primary ml-2 mr-2 cursor">{{todo?.project?.name}}
                           </span>
                           <span
-                            [ngClass]="(checkScheduledDate(todo?.scheduledDate))? 'badge border border-warning text-warning': 'badge border border-danger text-danger'"
+                            [ngClass]="(checkScheduledDate(todo?.scheduledDate))? 'border-warning text-warning': 'border-danger text-danger'"
                             *ngIf="todoCurrentType !== TODOTYPES?.pending && todoCurrentType !== TODOTYPES?.today && todo?.scheduledDate">
                             {{displayDate(todo?.scheduledDate)}}
                           </span>
-                          <span class="badge border border-danger text-danger"
+                          <span class="border-danger text-danger"
                             *ngIf="todoCurrentType === TODOTYPES?.pending && todo?.scheduledDate">
                             {{displayDate(todo?.scheduledDate)}}
                           </span>
-                        </ng-container>
+                        </ng-container> -->
                       </span>
                     </h6>
                     <p class="mb-0 font-size-12">
                       <button *ngFor="let label of todo?.labels" type="button"
-                        class="badge badge-pill btn btn-outline-primary rounded-pill mt-2 mr-2">{{label?.name}}</button>
+                        class="badge badge-pill btn btn-outline-primary rounded-pill mt-2 mr-2">#{{label?.name}}</button>
                     </p>
                   </div>
                   <div class="iq-card-header-toolbar d-flex align-items-center">
+                    <ng-container
+                      *ngIf="todoCurrentType == TODOTYPES?.pending || todoCurrentType === TODOTYPES?.inbox || todoCurrentType === TODOTYPES?.today || todoCurrentType === TODOTYPES?.upcoming">
+                      <span *ngIf="todo?.project?.name" [routerLink]="['/tasks/labels', todo.project.name]"
+                        class="badge badge-primary ml-2 mr-2 cursor">{{todo?.project?.name}}
+                      </span>
+                      <span
+                        [ngClass]="(checkScheduledDate(todo?.scheduledDate))? 'border-warning text-warning': 'border-danger text-danger'"
+                        *ngIf="todoCurrentType !== TODOTYPES?.pending && todoCurrentType !== TODOTYPES?.today && todo?.scheduledDate">
+                        {{displayDate(todo?.scheduledDate)}}
+                      </span>
+                      <span class="border-danger text-danger"
+                        *ngIf="todoCurrentType === TODOTYPES?.pending && todo?.scheduledDate">
+                        {{displayDate(todo?.scheduledDate)}}
+                      </span>
+                    </ng-container>
                     <span class="text-primary">
                       <ng-container>
                         <div class=" ml-auto  ml-4">
