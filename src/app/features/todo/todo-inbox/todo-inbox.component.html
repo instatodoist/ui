@@ -37,72 +37,72 @@
 
           <!-- <ul class="list-group list-group-flush" cdkDropList [cdkDropListData]="todos?.data"
             (cdkDropListDropped)="onTodoDrop($event)" cdkDropListOrientation="horizontal"> -->
-          <ul class="list-group list-group-flush">
+          <ul class="perfomer-lists m-0 p-0">
             <ng-container>
               <ng-container *ngFor="let todo of todos?.data; let i = index">
                 <!-- <li class="list-group-item tr-{{ i + 1}} cursor" data-toggle="modal" data-target="#todo-dialog"
                   (click)="openPopUp(todo)" cdkDropList [id]="todo._id" [cdkDropListData]="todo"
                   [cdkDropListConnectedTo]="trackIds" (cdkDropListDropped)="onTodoDrop($event)" cdkDrag> -->
-                <li class="list-group-item tr-{{ i + 1}} cursor" (click)="openPopUp(todo)">
-                  <div class="custom-control custom-checkbox custom-control-inline flota-l mr-2"
-                    style="padding-left: 0px; margin-top: 5px;">
-                    <!-- <i class="fa fa-arrows flota-l" aria-hidden="true" cdkDragHandle></i> -->
+                <li class="d-flex mb-4 align-items-center tr-{{ i + 1}}" (click)="openPopUp(todo)">
+
+                  <div class="user-img img-fluid">
+                    <div class="custom-control custom-checkbox custom-control-inline flota-l mr-2"
+                      style="padding-left: 0px; margin-top: 5px;">
+                      <!-- <i class="fa fa-arrows flota-l" aria-hidden="true" cdkDragHandle></i> -->
+                    </div>
+                    <div class="custom-control custom-checkbox custom-control-inline flota-l"
+                      (click)="$event.stopPropagation(); updateTodo(todo)">
+                      <input type="checkbox" class="custom-control-input" id="customCheck-f{{i+1}}"
+                        [checked]="todo?.isCompleted">
+                      <label class="custom-control-label" for="customCheck-f{{i+1}}"></label>
+                    </div>
                   </div>
-                  <div class="custom-control custom-checkbox custom-control-inline flota-l"
-                    (click)="$event.stopPropagation(); updateTodo(todo)">
-                    <input type="checkbox" class="custom-control-input" id="customCheck-f{{i+1}}"
-                      [checked]="todo?.isCompleted">
-                    <label class="custom-control-label" for="customCheck-f{{i+1}}"></label>
-                  </div>
-                  <div class="cursor flota-l">
-                    <!--  Title -->
-                    <label>
-                      <div class="d-flex align-items-center justify-content-between">
-                        <span>
-                          <span
-                            [ngStyle]="todo?.isCompleted && {'text-decoration': 'line-through'}">{{todo?.title}}</span>
-                          <!-- <span class="ml-2" *ngIf="todo?.priority !== 'P4'"
-                            [ngStyle]="{color: getPriorityColor(todo?.priority)}">
-                            <i class="fa fa-flag" aria-hidden="true"></i>
-                          </span> -->
+                  <div class="media-support-info ml-3">
+                    <h6>
+                      <span>
+                        <span [ngStyle]="todo?.isCompleted && {'text-decoration': 'line-through'}">{{todo?.title}}
                         </span>
                         <ng-container
                           *ngIf="todoCurrentType == TODOTYPES?.pending || todoCurrentType === TODOTYPES?.inbox || todoCurrentType === TODOTYPES?.today || todoCurrentType === TODOTYPES?.upcoming">
                           <span *ngIf="todo?.project?.name" [routerLink]="['/tasks/labels', todo.project.name]"
-                            class="badge badge-pill border border-primary text-primary ml-2 cursor">{{todo?.project?.name}}
+                            class="badge badge-pill border border-primary text-primary ml-2 mr-2 cursor">{{todo?.project?.name}}
+                          </span>
+                          <span
+                            [ngClass]="(checkScheduledDate(todo?.scheduledDate))? 'badge border border-warning text-warning': 'badge border border-danger text-danger'"
+                            *ngIf="todoCurrentType !== TODOTYPES?.pending && todoCurrentType !== TODOTYPES?.today && todo?.scheduledDate">
+                            {{displayDate(todo?.scheduledDate)}}
+                          </span>
+                          <span class="badge border border-danger text-danger"
+                            *ngIf="todoCurrentType === TODOTYPES?.pending && todo?.scheduledDate">
+                            {{displayDate(todo?.scheduledDate)}}
                           </span>
                         </ng-container>
-                      </div>
-                      <div class="d-flex align-items-center justify-content-between">
-                        <span
-                          [ngClass]="(checkScheduledDate(todo?.scheduledDate))? 'badge border border-warning text-warning': 'badge border border-danger text-danger'"
-                          *ngIf="todoCurrentType !== TODOTYPES?.pending && todoCurrentType !== TODOTYPES?.today && todo?.scheduledDate">
-                          {{displayDate(todo?.scheduledDate)}}
-                        </span>
-                        <span class="badge border border-danger text-danger"
-                          *ngIf="todoCurrentType === TODOTYPES?.pending && todo?.scheduledDate">
-                          {{displayDate(todo?.scheduledDate)}}
-                        </span>
-                      </div>
-                    </label>
-                    <!-- Labels-->
-
+                      </span>
+                    </h6>
+                    <p class="mb-0 font-size-12">
+                      <button *ngFor="let label of todo?.labels" type="button"
+                        class="badge badge-pill btn btn-outline-primary rounded-pill mt-2 mr-2">{{label?.name}}</button>
+                    </p>
                   </div>
-                  <ng-container>
-                    <div class=" ml-auto  ml-4">
-                      <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close"
-                        (click)="$event.stopPropagation(); deleteRequest(todo)">
-                        <span *ngIf="todo?.deleteRequest" (click)="$event.stopPropagation(); deleteTodo(todo)"
-                          class="text-primary"> <i class="fa fa-info-circle mr-2" aria-hidden="true"></i>
-                          click to confirm</span>
-                        <i *ngIf="!todo?.deleteRequest" class="fa fa-minus-circle cursor" aria-hidden="true"></i>
-                      </button>
-                      <!-- <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close">
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                      </button> -->
-                    </div>
-                  </ng-container>
-
+                  <div class="iq-card-header-toolbar d-flex align-items-center">
+                    <span class="text-primary">
+                      <ng-container>
+                        <div class=" ml-auto  ml-4">
+                          <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close"
+                            (click)="$event.stopPropagation(); deleteRequest(todo)">
+                            <span *ngIf="todo?.deleteRequest" (click)="$event.stopPropagation(); deleteTodo(todo)"
+                              class="text-primary"> <i class="fa fa-info-circle mr-2" aria-hidden="true"></i>
+                              click to confirm</span>
+                            <i *ngIf="!todo?.deleteRequest" class="fa fa-minus-circle cursor" aria-hidden="true"></i>
+                          </button>
+                          <!-- <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                          </button> -->
+                        </div>
+                      </ng-container>
+                    </span>
+                  </div>
+                  <hr class="mt-2 mb-2">
                 </li>
               </ng-container>
             </ng-container>

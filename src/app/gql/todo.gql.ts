@@ -13,7 +13,7 @@ ToDo.fragments = {
       _id
       title
       labels {
-          name
+        name
       }
       project {
         name
