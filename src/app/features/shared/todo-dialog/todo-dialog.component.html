@@ -17,11 +17,13 @@
                     <div class="col-lg-12 col-sm-12 mt-2">
                       <ng-container *ngFor="let label of labels">
                         <button
+                          (click)="checkLabels($event, label)"
                           *ngIf="isChecked(label)"
                           type="button"
                           class="btn mb-3 btn-light rounded-pill mr-2 mb-2"
                           >
                           {{label?.name}}
+                          <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                       </ng-container>
                       <button type="button" class="btn mb-3 btn-light rounded-pill" data-toggle="modal"
