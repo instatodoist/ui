@@ -39,11 +39,11 @@
 
           <!-- Labels-->
           <ng-container>
-            <!-- <div *ngFor="let label of data?.label" class="badge badge-pill border border-primary text-primary ml-2">{{label?.name}}
-            </div> -->
-            <span *ngIf="data?.project?.name" [routerLink]="['/tasks/labels', data.project.name]"
+            <div *ngFor="let label of data?.labels" class="badge badge-pill border border-primary text-primary ml-2">{{label?.name}}
+            </div>
+            <!-- <span *ngIf="data?.project?.name" [routerLink]="['/tasks/labels', data.project.name]"
               class="badge badge-pill border border-primary text-primary ml-2 cursor">{{data?.project?.name}}
-            </span>
+            </span> -->
           </ng-container>
         </div>
 
