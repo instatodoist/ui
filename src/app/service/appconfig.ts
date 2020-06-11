@@ -79,6 +79,9 @@ export class AppService implements OnDestroy {
     this.APP_LEVEL.subscribe((data: IAppData) => {
       this.APP_DATA = data;
     });
+    this.externalModal.subscribe((data: IExternalModal) => {
+      this.ExternalModelConfig = {...this.ExternalModelConfig, ...data};
+    });
   }
 
   ngOnDestroy() {

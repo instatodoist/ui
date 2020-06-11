@@ -59,7 +59,7 @@
                           <button type="button" class="btn btn-outline-primary rounded-pill mb-3">Next week</button>
                         </li>
                         <li class="d-flex align-items-center justify-content-between">
-                          <button type="button" class="btn btn-outline-primary rounded-pill mb-3">Custom
+                          <button type="button" class="btn btn-outline-primary rounded-pill mb-3" (click)="askDatePickerToOpen()">Custom
                           </button>
                           <!-- <input type="text" class="form-control flatpicker iq-bg-primary" formControlName="scheduledDate"
                       style="background-color: white;" style="display: none;" id="flatpicker"> -->
@@ -106,22 +106,6 @@
     </div>
   </div>
 </div>
-
-<!-- <div class="modal fade" id="scheduledAt" tabindex="-1" role="dialog" aria-labelledby="scheduledAt" aria-hidden="true"
-  style="display: none;">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-sm-12">
-            <input type="text" class="form-control flatpicker iq-bg-primary d-none" formControlName="scheduledDate"
-              style="background-color: white;" [hidden]="!formObj.value.scheduling">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
 
 <div class="modal fade" id="tagsModal" tabindex="-1" role="dialog" aria-labelledby="tagsModalTitle" aria-hidden="true"
   style="display: none;">

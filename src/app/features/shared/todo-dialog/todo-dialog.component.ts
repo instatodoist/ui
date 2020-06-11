@@ -22,6 +22,9 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() todo: TodoType = null; // todo object if update
   @Input() conditions: TodoConditions = null; // conditions object
   @Input() origin = null;
+  externalModal = this.appService.externalModal;
+  defaultConfig = this.appService.ExternalModelConfig;
+
   // @Output() isOpen: EventEmitter<boolean> = new EventEmitter<boolean>(); // open flag
   private modalSubscription: Subscription;
   private routeSubscription: Subscription;
@@ -101,6 +104,10 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           });
         }
       });
+
+    this.formObj.get('scheduledDate').valueChanges.subscribe((data) => {
+      console.log(data)
+    })
   }
 
   ngAfterViewInit() {
@@ -116,12 +123,10 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       $('.flatpicker').flatpickr(this.flatPickerConfig);
     }
     $('#' + this.modelId).modal('toggle'); // Open & close Popup
-    const externalModal = this.appService.externalModal;
-    const defaultConfig = this.appService.ExternalModelConfig;
     // tslint:disable-next-line: only-arrow-functions
     $(`#${this.modelId}`).on('hidden.bs.modal', () => { // listen modal close event
-      externalModal.next({
-        ...defaultConfig,
+      this.externalModal.next({
+        ...this.defaultConfig,
         [this.popUpType]: false
       });
     });
@@ -183,6 +188,19 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
   }
+
+  askDatePickerToOpen() {
+    this.externalModal.next({
+      ...this.defaultConfig,
+      DATE_PICKER: true,
+      data: {
+        ...this.defaultConfig.data,
+        todo: this.todo,
+        formControlName: 'scheduledDate'
+      }
+    });
+  }
+
   // add/update the task
   submit() {
     if (this.formObj.valid) {

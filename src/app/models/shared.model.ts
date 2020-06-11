@@ -6,9 +6,11 @@ export interface IExternalModal {
   TODO_UPDATE?: boolean;
   GOAL_ADD?: boolean;
   GOAL_UPDATE?: boolean;
+  DATE_PICKER?: boolean;
   data?: {
     todo?: IToDo,
-    goal?: IGoalType
+    goal?: IGoalType,
+    formControlName?: string
   };
 }
 
