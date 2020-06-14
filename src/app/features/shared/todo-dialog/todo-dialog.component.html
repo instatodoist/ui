@@ -16,14 +16,13 @@
                   <div class="row mt-4">
                     <div class="col-lg-12 col-sm-12 mt-2">
                       <ng-container *ngFor="let label of labels">
-                        <button (click)="checkLabels($event, label)" *ngIf="isChecked(label)" type="button"
-                          class="badge badge-pill btn btn-outline-primary rounded-pill mt-2 mr-2 mb-2">
-                          {{label?.name}}
-                          <i class="fa fa-times" aria-hidden="true"></i>
-                        </button>
+                        <span *ngIf="isChecked(label)"
+                          class="badge border border-primary text-primary mt-2 mr-2 cursor">#{{label?.name}} <i
+                            (click)="checkLabels($event, label)" class="fa fa-times" aria-hidden="true"></i></span>
                       </ng-container>
-                      <button type="button" class="btn mt-2 mr-2 mb-2 btn-light rounded-pill" data-toggle="modal"
-                        data-target="#tagsModal"><i class="fa fa-hashtag" aria-hidden="true"></i>Add Tag</button>
+                      <span class="badge border border-secondary text-secondary mt-2 mr-2 cursor" data-toggle="modal"
+                      data-target="#tagsModal"><i
+                          class="fa fa-hashtag" aria-hidden="true"></i>Add Tag</span>
                     </div>
                   </div>
                 </div>
@@ -49,15 +48,12 @@
                             </div>
                           </div>
                         </li>
-                        <li class="d-flex align-items-center justify-content-between" *ngFor="let key of scheduledObjKeys">
-                          <button 
-                          type="button"
-                          class="btn rounded-pill mb-3"
-                          [ngClass]="{
+                        <li class="d-flex align-items-center justify-content-between"
+                          *ngFor="let key of scheduledObjKeys">
+                          <button type="button" class="btn rounded-pill mb-3" [ngClass]="{
                             'btn-outline-primary': formObj.value.scheduledType !== scheduledObj[key].slug,
                             'btn-primary': formObj.value.scheduledType === scheduledObj[key].slug
-                          }"
-                            (click)="askDatePickerToOpen(scheduledObj[key].slug)">{{scheduledObj[key].name}}
+                          }" (click)="askDatePickerToOpen(scheduledObj[key].slug)">{{scheduledObj[key].name}}
                           </button>
                         </li>
                       </ul>
