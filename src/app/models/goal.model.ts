@@ -30,6 +30,8 @@ export interface IGoalSortType {
 export interface IGoalConditions {
   sort?: IGoalSortType;
   filter?: IGoalFilterType;
+  limit?: number;
+  offset?: number;
 }
 
 export interface IGoalListType {
