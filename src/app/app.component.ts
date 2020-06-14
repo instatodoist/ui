@@ -1,4 +1,3 @@
-declare var $: any;
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Title } from '@angular/platform-browser';
@@ -15,11 +14,17 @@ import { map } from 'rxjs/operators';
 import { UtilityService, VersionCheckService, AppService } from './service';
 import { IExternalModal } from './models';
 import { environment } from '../environments/environment';
+declare var $: any;
+// declare ga as a function to set and sent the events
+declare var gtag: Function;
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  providers: [
+    { provide: Window, useValue: window }
+  ]
 })
 export class AppComponent implements OnInit {
 
@@ -29,6 +34,7 @@ export class AppComponent implements OnInit {
   modalSubscription: Subscription;
 
   constructor(
+    private window: Window,
     translate: TranslateService,
     private router: Router,
     private titleService: Title,
@@ -38,25 +44,25 @@ export class AppComponent implements OnInit {
   ) {
     // set default lang as english
     translate.setDefaultLang('en');
+    // Add Analytics
+    // window['dataLayer'] = window['dataLayer'] || [];
+    // function gtag() { dataLayer.push(arguments); }
+    // gtag('js', new Date());
+    // gtag('config', environment.GTAG_ID);
+    // console.log(gtag);
     // setting navigation start/end status
     this.router.events.subscribe((event: Event) => {
-      switch (true) {
-        case event instanceof NavigationStart: {
-          this.loading = true;
-          break;
-        }
-        case event instanceof NavigationEnd:
-          window.scroll(0, 0); // scroll to top on route change
-          this.appService.updateCurentUrl(this.router.url);
-          break;
-        case event instanceof NavigationCancel:
-        case event instanceof NavigationError: {
-          this.loading = false;
-          break;
-        }
-        default: {
-          break;
-        }
+      if (event instanceof NavigationEnd) {
+        // console.log(gTag)
+        // if (environment.production) {
+        // gtag('set', 'page', event.urlAfterRedirects);
+        // gtag('send', 'pageview');
+        // }
+        window.scroll(0, 0); // scroll to top on route change
+        this.appService.updateCurentUrl(this.router.url);
+      }
+      if (event instanceof NavigationError) {
+        this.loading = false;
       }
     });
   }
@@ -88,7 +94,6 @@ export class AppComponent implements OnInit {
   private subscribeToExtTodoAddModal() {
     this.modalSubscription = this.appService.externalModal.subscribe(data => {
       this.extModalConfig = data;
-      console.log(data);
     });
   }
 

@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   API_URL: 'http://0.0.0.0:9000/graphql',
   versionUrl: 'http://localhost:4200/version.json',
-  GTAG_ID: ''
+  GTAG_ID: 'G-DW9DEFJQ0S'
 };
 
 /*
