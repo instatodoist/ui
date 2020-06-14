@@ -79,7 +79,8 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       _id: [''],
       title: ['', [Validators.required]], // Title
       scheduling: [false], // if date is set
-      scheduledDate: [this.sharedService.todayDate()], // scheduled Date
+      // scheduledDate: [this.sharedService.todayDate()], // scheduled Date
+      scheduledDate: [''], // scheduled Date
       labelIds: [[]], // Tags Array
       projectId: [''], // List ID
       operationType: [this.operationType], // ADD || UPDATE
