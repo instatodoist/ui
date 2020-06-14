@@ -305,9 +305,9 @@ export class TodoService {
       // }];
     }
     // checking scheduling
-    if (body.scheduledDate && body.scheduling) {
+    if (body.scheduledDate) {
       postTodo.scheduledDate = body.scheduledDate;
-    } else if (body.scheduledDate && !body.scheduling) {
+    } else if (body.scheduledDate) {
       postTodo.scheduledDate = null;
     }
     // checking which operation - 'ADD' | 'UPDATE' | 'DELETE'

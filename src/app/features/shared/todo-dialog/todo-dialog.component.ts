@@ -8,8 +8,7 @@ import { combineLatest, Subscription } from 'rxjs';
 import { } from '../../../gql';
 import * as moment from 'moment';
 declare var $: any;
-declare var flatpickr: any;
-
+type ScheduledType = 'TODAY' | 'TOMORROW' | 'NEXT_WEEK' | 'CUSTOM';
 @Component({
   selector: 'app-todo-dialog',
   templateUrl: './todo-dialog.component.html',
@@ -41,6 +40,29 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   projects: TodoProjectType[] = [];
   flatPickerConfig: any;
   formObj: FormGroup;
+  scheduledObj = {
+    TODAY: {
+      name: 'Later Today',
+      slug: 'TODAY',
+      value: moment().format('YYYY-MM-DD')
+    },
+    TOMORROW: {
+      name: 'Tomorrow',
+      slug: 'TOMORROW',
+      value: moment().add(1, 'days').format('YYYY-MM-DD')
+    },
+    NEXT_WEEK: {
+      name: 'Next week',
+      slug: 'NEXT_WEEK',
+      value: moment().add(7, 'days').format('YYYY-MM-DD')
+    },
+    CUSTOM: {
+      name: 'Custom',
+      slug: 'CUSTOM',
+      value: ''
+    }
+  };
+  scheduledObjKeys = Object.keys(this.scheduledObj);
 
   constructor(
     private router: Router,
@@ -61,7 +83,8 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       labelIds: [[]], // Tags Array
       projectId: [''], // List ID
       operationType: [this.operationType], // ADD || UPDATE
-      isCompleted: [false]
+      isCompleted: [false],
+      scheduledType: ['']
     });
     this.subscribeToModal(); // Listen to subscription to choose if popup called
     this.routeSubscription = combineLatest([ // fetching Tags & Projects/List in the system
@@ -183,22 +206,33 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  askDatePickerToOpen() {
+  askDatePickerToOpen(scheduledType: ScheduledType) {
     if (!this.todo) {
       this.todo = this.formObj.value;
     }
-    console.log(this.todo);
-    this.externalModal.next({
-      ...this.defaultConfig,
-      DATE_PICKER: true,
-      data: {
-        ...this.defaultConfig.data,
-        todo: {
-          ...( this.defaultConfig.data.todo || {}), ...this.todo
+    if (scheduledType === 'CUSTOM') {
+      this.externalModal.next({
+        ...this.defaultConfig,
+        DATE_PICKER: true,
+        data: {
+          ...this.defaultConfig.data,
+          todo: {
+            ...( this.defaultConfig.data.todo || {}), ...this.todo
+          }
         }
-      }
-    });
-    console.log(this.todo);
+      });
+      this.formObj.patchValue({
+        scheduledType,
+      });
+    } else {
+      this.formObj.patchValue({
+        scheduledType,
+        scheduledDate: this.scheduledObj[scheduledType].value
+      });
+      console.log(
+        this.formObj.value
+      )
+    }
   }
 
   // add/update the task
@@ -207,7 +241,6 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       const postBody = this.formObj.value;
       let refetch: TodoConditions;
       if (
-        postBody.scheduling &&
         postBody.scheduledDate
       ) {
         const scheduledDate = moment(postBody.scheduledDate).startOf('day');

@@ -49,20 +49,16 @@
                             </div>
                           </div>
                         </li>
-                        <li class="d-flex align-items-center justify-content-between">
-                          <button type="button" class="btn btn-outline-primary rounded-pill mb-3">Later Today</button>
-                        </li>
-                        <li class="d-flex align-items-center justify-content-between">
-                          <button type="button" class="btn btn-outline-primary rounded-pill mb-3">Tomorrow</button>
-                        </li>
-                        <li class="d-flex align-items-center justify-content-between">
-                          <button type="button" class="btn btn-outline-primary rounded-pill mb-3">Next week</button>
-                        </li>
-                        <li class="d-flex align-items-center justify-content-between">
-                          <button type="button" class="btn btn-outline-primary rounded-pill mb-3" (click)="askDatePickerToOpen()">Custom
+                        <li class="d-flex align-items-center justify-content-between" *ngFor="let key of scheduledObjKeys">
+                          <button 
+                          type="button"
+                          class="btn rounded-pill mb-3"
+                          [ngClass]="{
+                            'btn-outline-primary': formObj.value.scheduledType !== scheduledObj[key].slug,
+                            'btn-primary': formObj.value.scheduledType === scheduledObj[key].slug
+                          }"
+                            (click)="askDatePickerToOpen(scheduledObj[key].slug)">{{scheduledObj[key].name}}
                           </button>
-                          <!-- <input type="text" class="form-control flatpicker iq-bg-primary" formControlName="scheduledDate"
-                      style="background-color: white;" style="display: none;" id="flatpicker"> -->
                         </li>
                       </ul>
                     </div>
