@@ -8,21 +8,43 @@
             <a class="nav-link" id="home-tab" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true"
               [routerLink]="item?.link" routerLinkActive="active">
               {{('' + item.name ) | translate | titlecase}}
-              <ng-container *ngIf="queryStr && todoCurrentType !== TODOTYPES.completed && ( i === 0 )">
-                {{todos?.totalCount || ''}}
-              </ng-container>
-              <ng-container *ngIf="!queryStr || todoCurrentType === TODOTYPES.completed || i > 0">
-                {{(this.count) && this.count[item.name] || todos?.totalCount || ''}}
-              </ng-container>
-              <!-- {{(this.count) && this.count[item.name] || todos?.totalCount || ''}} -->
-              <!-- <ngContainer [ngSwitch]="todoCurrentType">
-                <span *ngSwitchCase="TODOTYPES.today || TODOTYPES.pending || TODOTYPES.completed">
+
+              <!-- For Todos Other than Completed, Today, Pending-->
+              <ng-container *ngIf="todoCurrentType !== TODOTYPES.completed && tabs[todoCurrentType].length < 2">
+                <span *ngIf="queryStr">
+                  {{ this.count }}
+                </span>
+                <span *ngIf="!queryStr">
                   {{(this.count) && this.count[item.name] || todos?.totalCount || ''}}
                 </span>
-                <span *ngSwitchDefault>
-                  {{ todos?.totalCount || ''}}
-                </span>
-              </ngContainer> -->
+              </ng-container>
+
+              <!-- For Todos - Today, Pending-->
+              <ng-container *ngIf="todoCurrentType !== TODOTYPES.completed && tabs[todoCurrentType].length === 2">
+                <ng-container *ngIf="!queryStr">
+                  <span *ngIf="todoCurrentType === item.name; else falsyTemplate">
+                    <span>{{(this.count) && this.count[item.name] || todos?.totalCount || ''}}</span>
+                  </span>
+                  <ng-template #falsyTemplate>
+                    <span *ngIf="i === 0">{{ this.count && this.count[TODOTYPES.today] || ''}}</span>
+                    <span *ngIf="i === 1">{{ this.count && this.count[TODOTYPES.pending] || ''}}</span>
+                  </ng-template>
+                </ng-container>
+                <ng-container *ngIf="queryStr">
+                  <span *ngIf="todoCurrentType === item.name; else falsyTemplate">
+                    <span>{{ todos?.totalCount || ''}}</span>
+                  </span>
+                  <ng-template #falsyTemplate>
+                    <span *ngIf="i === 0">{{ this.count && this.count[TODOTYPES.today] || ''}}</span>
+                    <span *ngIf="i === 1">{{ this.count && this.count[TODOTYPES.pending] || ''}}</span>
+                  </ng-template>
+                </ng-container>
+              </ng-container>
+
+              <!-- For Completed Todos-->
+              <ng-container *ngIf="todoCurrentType === TODOTYPES.completed">
+                {{(this.count) && this.count[item.name] || todos?.totalCount || ''}}
+              </ng-container>
             </a>
           </li>
         </ul>
@@ -82,7 +104,8 @@
                       </span>
                     </h6>
                     <p class="mb-0 font-size-12">
-                      <span *ngFor="let label of todo?.labels" class="badge border border-primary text-primary mt-2 mr-2">#{{label?.name}}</span>
+                      <span *ngFor="let label of todo?.labels"
+                        class="badge border border-primary text-primary mt-2 mr-2">#{{label?.name}}</span>
                     </p>
                   </div>
                   <div class="iq-card-header-toolbar d-flex align-items-center">
