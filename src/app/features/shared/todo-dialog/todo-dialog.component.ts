@@ -111,21 +111,9 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.elementRef.nativeElement.focus(); // Set autofocus for title
-    if (typeof flatpickr !== 'undefined' && $.isFunction(flatpickr)) { // Initialise Date Picker
-      this.flatPickerConfig = {
-        // inline: true,
-        dateFormat: 'Y-m-d'
-      };
-      if (!this.todo) {
-        this.flatPickerConfig.minDate = new Date();
-      }
-      $('.flatpicker').flatpickr(this.flatPickerConfig);
-    }
     $('#' + this.modelId).modal('toggle'); // Open & close Popup
     // tslint:disable-next-line: only-arrow-functions
     $(`#${this.modelId}`).on('hidden.bs.modal', () => { // listen modal close event
-      console.log(this.modelId, this.popUpType);
       this.externalModal.next({
         ...this.defaultConfig,
         [this.popUpType]: false,
@@ -173,20 +161,20 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscribeToModal() {
     this.modalSubscription = this.appService.externalModal.subscribe(data => {
       if (data.data.todo) {
+        this.todo = data.data.todo;
         this.title = 'Update Task';
-        this.labelIdVal = this.todo ? (this.todo.labels.map(label => {
+        this.labelIdVal = this.todo && this.todo.labels ? (this.todo.labels.map(label => {
           return label._id;
         })) : [];
-        this.popUpType = 'TODO_UPDATE';
-        this.todo = data.data.todo;
+        this.popUpType = this.todo._id ? 'TODO_UPDATE' : 'TODO_ADD';
         this.formObj.patchValue({
           _id: this.todo && this.todo._id || '',
-          title: this.todo && this.todo.title,
-          projectId: this.todo && this.todo.projectId,
+          title: this.todo && this.todo.title || '',
+          projectId: this.todo && this.todo.projectId || '',
           scheduling: this.todo && this.todo.scheduledDate ? true : false,
           scheduledDate: this.todo && this.todo.scheduledDate ? this.todo.scheduledDate : this.sharedService.todayDate(),
           labelIds: this.labelIdVal,
-          operationType: 'UPDATE',
+          operationType: this.todo._id ? 'UPDATE' : 'ADD',
           isCompleted: this.todo && this.todo.isCompleted ? true : false
         });
       } else {
@@ -196,15 +184,21 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   askDatePickerToOpen() {
+    if (!this.todo) {
+      this.todo = this.formObj.value;
+    }
+    console.log(this.todo);
     this.externalModal.next({
       ...this.defaultConfig,
       DATE_PICKER: true,
       data: {
         ...this.defaultConfig.data,
-        todo: this.todo,
-        formControlName: 'scheduledDate'
+        todo: {
+          ...( this.defaultConfig.data.todo || {}), ...this.todo
+        }
       }
     });
+    console.log(this.todo);
   }
 
   // add/update the task

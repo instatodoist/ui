@@ -1,4 +1,4 @@
-import { IUserProfile, TodoType as IToDo, IGoalType } from '../models';
+import { IUserProfile, TodoType, IGoalType } from '../models';
 
 export type SortEnumType = 'ASC' | 'DESC';
 export interface IExternalModal {
@@ -8,7 +8,7 @@ export interface IExternalModal {
   GOAL_UPDATE?: boolean;
   DATE_PICKER?: boolean;
   data?: {
-    todo?: IToDo,
+    todo?: TodoType,
     goal?: IGoalType,
     formControlName?: string
   };

@@ -94,7 +94,6 @@ export class AppComponent implements OnInit {
   private subscribeToExtTodoAddModal() {
     this.modalSubscription = this.appService.externalModal.subscribe(data => {
       this.extModalConfig = data;
-      console.log(this.extModalConfig);
     });
   }
 

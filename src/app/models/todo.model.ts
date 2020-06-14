@@ -25,7 +25,7 @@ export interface SuccessType {
 }
 
 export interface TodoType {
-  _id: string;
+  _id?: string;
   title?: string;
   projectId?: string;
   project?: TodoProjectType;

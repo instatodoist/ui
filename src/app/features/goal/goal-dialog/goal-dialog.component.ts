@@ -63,7 +63,7 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     const modelId = this.modelId;
     const popupType = this.popUpType;
     // tslint:disable-next-line: only-arrow-functions
-    $('#' + modelId).on('hidden.bs.modal', function () {
+    $('#' + modelId).on('hidden.bs.modal', () => {
       externalModal.next({
         ...defaultConfig,
         [popupType]: false

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, HostListener, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, Output, HostListener, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { TodoType } from '../../../models';
 import { AppService } from '../../../service';
@@ -17,40 +17,33 @@ declare var $: any;
     }
   ]
 })
-export class CustomDateModalComponent implements OnInit, AfterViewInit{
+export class CustomDateModalComponent implements OnInit, AfterViewInit {
 
-  externalModal = this.appService.externalModal;
-  defaultConfig = this.appService.ExternalModelConfig;
   @Input() modelId = 'scheduledAt';
   @Input() todo: TodoType = null; // todo object if update
-  @Input() field = 'scheduledDate';
+  externalModal = this.appService.externalModal;
+  defaultConfig = this.appService.ExternalModelConfig;
   flatPickerConfig: any = {};
-  scheduledAt = this.todo && this.todo.scheduledDate;
-  onChange: any;
 
   constructor(
-    private appService: AppService,
-    private elementRef: ElementRef<HTMLInputElement>
+    private appService: AppService
   ) {
   }
 
   ngOnInit() {
-    console.log(this.todo);
   }
 
   ngAfterViewInit() {
     $('#' + this.modelId).modal('toggle'); // Open & close Popup
-    $('#' + this.modelId).on('show.bs.modal', function(event) {
-      const idx = $('.modal:visible').length;
-      $(this).css('z-index', 1040 + (10 * idx));
-      $('.modal-backdrop').not('.stacked').css('z-index', 1039 + (10 * idx));
-    });
+    // Add code for opening date via flatpicker
+    // Initially it will be online
     if (typeof flatpickr !== 'undefined' && $.isFunction(flatpickr)) { // Initialise Date Picker
       this.flatPickerConfig = {
         inline: true,
-        dateFormat: 'Y-m-d'
+        dateFormat: 'Y-m-d',
+        defaultDate: this.todo && this.todo.scheduledDate || new Date()
       };
-      if (!this.todo) {
+      if (!(this.todo && this.todo._id)) {
         this.flatPickerConfig.minDate = new Date();
       }
       $('.flatpicker').flatpickr(this.flatPickerConfig);
@@ -59,7 +52,13 @@ export class CustomDateModalComponent implements OnInit, AfterViewInit{
     $(`#${this.modelId}`).on('hidden.bs.modal', () => { // listen modal close event
       this.externalModal.next({
         ...this.defaultConfig,
-        DATE_PICKER: false
+        DATE_PICKER: false,
+        data: {
+          ...this.defaultConfig.data,
+          todo: {
+            ...this.todo
+          }
+        }
       });
     });
   }
@@ -67,20 +66,10 @@ export class CustomDateModalComponent implements OnInit, AfterViewInit{
   // @HostListener('click', ['$event.target'])
   onEvent($event: any) {
     const target = $event.target;
-    this.onChange($event.target.value);
-  }
-
-  writeValue(value: null) {
-    // clear file input
-    // this.elementRef.nativeElement.value = this.todo && this.todo.scheduledDate || new Date();
-  }
-
-  registerOnChange(fn: any) {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any) {
-    console.log(this.todo);
+    if (target.value) {
+      this.todo.scheduledDate = target.value;
+      $(`#${this.modelId}`).modal('hide');
+    }
   }
 
 }
