@@ -105,9 +105,9 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
 
-    this.formObj.get('scheduledDate').valueChanges.subscribe((data) => {
-      console.log(data)
-    })
+    // this.formObj.get('scheduledDate').valueChanges.subscribe((data) => {
+    //   console.log(data)
+    // })
   }
 
   ngAfterViewInit() {
@@ -125,9 +125,13 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     $('#' + this.modelId).modal('toggle'); // Open & close Popup
     // tslint:disable-next-line: only-arrow-functions
     $(`#${this.modelId}`).on('hidden.bs.modal', () => { // listen modal close event
+      console.log(this.modelId, this.popUpType);
       this.externalModal.next({
         ...this.defaultConfig,
-        [this.popUpType]: false
+        [this.popUpType]: false,
+        data: {
+          ...this.defaultConfig.data, todo: null
+        }
       });
     });
   }
@@ -185,6 +189,8 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           operationType: 'UPDATE',
           isCompleted: this.todo && this.todo.isCompleted ? true : false
         });
+      } else {
+        this.popUpType = 'TODO_ADD';
       }
     });
   }
