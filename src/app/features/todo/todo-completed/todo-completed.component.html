@@ -38,8 +38,8 @@
           </label>
 
           <!-- Labels-->
-          <ng-container>
-            <div *ngFor="let label of data?.labels" class="badge badge-pill border border-primary text-primary ml-2">{{label?.name}}
+          <ng-container *ngIf="data?.project?.name">
+            <div class="badge badge-primary ml-2">{{data?.project?.name}}
             </div>
             <!-- <span *ngIf="data?.project?.name" [routerLink]="['/tasks/labels', data.project.name]"
               class="badge badge-pill border border-primary text-primary ml-2 cursor">{{data?.project?.name}}
