@@ -12,7 +12,7 @@
               <!-- For Todos Other than Completed, Today, Pending-->
               <ng-container *ngIf="todoCurrentType !== TODOTYPES.completed && tabs[todoCurrentType].length < 2">
                 <span *ngIf="queryStr">
-                  {{ this.count }}
+                  {{ todos?.totalCount || '' }}
                 </span>
                 <span *ngIf="!queryStr">
                   {{(this.count) && this.count[item.name] || todos?.totalCount || ''}}
