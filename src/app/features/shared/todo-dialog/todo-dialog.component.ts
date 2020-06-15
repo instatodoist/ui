@@ -114,6 +114,13 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         this.labels = labels;
         this.projects = projects;
         if (!project) {
+          const projectFilteredArr = projects.filter(obj => (obj.name).toLowerCase() === this.currentProject.toLowerCase());
+          if (projectFilteredArr.length) {
+            this.formObj.patchValue({
+              projectId: projectFilteredArr[0]._id
+            });
+            this.currentProject = projectFilteredArr[0].name;
+          }
           this.todoCurrentType = this.todoService.getCurentRoute();
           this.conditions = this.todoService.getConditions(this.todoCurrentType);
         } else {
