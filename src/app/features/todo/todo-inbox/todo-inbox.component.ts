@@ -165,8 +165,8 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((data: any) => {
         if (typeof (data) !== 'undefined') {
           this.todos = data.todoList;
+          this.extraLoader = false;
         }
-        this.extraLoader = false;
       },
         () => {
           this.extraLoader = false;
