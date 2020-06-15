@@ -3,7 +3,7 @@ import { TodoService } from '../../../service';
 import { TodoLabelType } from '../../../models';
 
 @Component({
-  selector: 'app-todo-label-list',
+  selector: 'app-todo-tags-list',
   templateUrl: './todo-label-list.component.html',
   styleUrls: ['./todo-label-list.component.scss']
 })
