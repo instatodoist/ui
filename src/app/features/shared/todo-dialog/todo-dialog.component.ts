@@ -114,8 +114,13 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         this.labels = labels;
         this.projects = projects;
         if (!project) {
-          const projectFilteredArr = projects.filter(obj => (obj.name).toLowerCase() === this.currentProject.toLowerCase());
-          if (projectFilteredArr.length) {
+          let projectFilteredArr = null;
+          if (this.formObj.value.projectId) {
+            projectFilteredArr = projects.filter(obj => (obj._id) === this.formObj.value.projectId);
+          } else {
+            projectFilteredArr = projects.filter(obj => (obj.name).toLowerCase() === this.currentProject.toLowerCase());
+          }
+          if (projectFilteredArr && projectFilteredArr.length) {
             this.formObj.patchValue({
               projectId: projectFilteredArr[0]._id
             });
@@ -177,12 +182,16 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   // check & uncheck labels
   checkLabels($event, label: TodoLabelType) {
     const labelId = label._id;
-    const index = this.formObj.value.labelIds.indexOf(labelId);
+    const labels = this.formObj.value.labelIds;
+    const index = labels.indexOf(labelId);
     if (index === -1) {
-      this.formObj.value.labelIds.push(labelId);
+      labels.push(labelId);
     } else {
-      this.formObj.value.labelIds.splice(index, 1);
+      labels.splice(index, 1);
     }
+    this.formObj.patchValue({
+      labelIds: labels
+    });
   }
 
   isScheduling() {
@@ -204,7 +213,6 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           _id: this.todo && this.todo._id || '',
           title: this.todo && this.todo.title || '',
           projectId: this.todo && this.todo.projectId || '',
-          scheduling: this.todo && this.todo.scheduledDate ? true : false,
           scheduledDate: this.todo && this.todo.scheduledDate ? this.todo.scheduledDate : this.sharedService.todayDate(),
           labelIds: this.labelIdVal,
           operationType: this.todo._id ? 'UPDATE' : 'ADD',

@@ -288,6 +288,8 @@ export class TodoService {
     // checking labels
     if (body.labelIds && body.labelIds.length) {
       postTodo.labelIds = body.labelIds;
+    } else {
+      postTodo.labelIds = [];
     }
     // checking scheduling
     if (body.scheduledDate) {
