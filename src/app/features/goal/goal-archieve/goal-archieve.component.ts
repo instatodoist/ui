@@ -35,8 +35,10 @@ export class GoalArchieveComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loader = true;
-    this.goals$ = this.goalService.listGoals(this.conditions).subscribe((data) => {
-      this.goals = data;
+    this.goals$ = this.goalService.listGoals(this.conditions).subscribe((data: any) => {
+      if (typeof data !== 'undefined') {
+        this.goals = data.listThought;
+      }
     });
   }
 

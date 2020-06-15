@@ -33,8 +33,10 @@ export class GoalListComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.loader = true;
-    this.goalService.listGoals(this.conditions).subscribe((data) => {
-      this.goals = data;
+    this.goalService.listGoals(this.conditions).subscribe((data: any) => {
+      if (typeof data !== 'undefined') {
+        this.goals = data.listThought;
+      }
     });
   }
 

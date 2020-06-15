@@ -27,10 +27,11 @@ export class GoalService {
     return this.apollo
       .watchQuery({
         query: GOAL_QUERY,
-        variables: conditions
+        variables: conditions,
+        fetchPolicy: 'cache-and-network'
       })
-      .valueChanges.pipe(map(({ data }: any) => {
-        return data.listThought;
+      .valueChanges.pipe(map((data: any) => {
+        return data.data;
       }));
   }
 
@@ -39,13 +40,11 @@ export class GoalService {
     let defaultDataKey = 'addThought';
     const { operationType, _id, ...postBody } = body;
     // refetch query after add or update
-    const refetchQuery: any = {
-      query: GOAL_QUERY,
-    };
-    // if passing conditions
-    if (conditions) {
-      refetchQuery.variables = { ...conditions };
-    }
+    // const refetchQuery = [];
+    // // if passing conditions
+    // if (conditions) {
+    //   refetchQuery.variables = { ...conditions };
+    // }
     if (!postBody.accomplishTenure) {
       delete postBody.accomplishTenure;
     }
@@ -74,12 +73,22 @@ export class GoalService {
         };
         break;
     }
-    const refetch = [refetchQuery];
     return this.apollo.mutate({
       mutation: gqlOperation,
       variables,
       refetchQueries: [
-        ...refetch
+        {
+          query: GOAL_QUERY,
+          variables: {
+            filter: {
+              isAchieved: false
+            },
+            sort: {
+              updatedAt: 'DESC',
+              isPinned: 'DESC'
+            }
+          }
+        }
       ]
     })
       .pipe(map(({ data }: any) => {
