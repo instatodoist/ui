@@ -221,7 +221,7 @@ export class TodoService {
         variables: conditions,
         fetchPolicy: 'cache-and-network'
       })
-      .valueChanges.pipe(map(( data: any) => {
+      .valueChanges.pipe(map((data: any) => {
         return data.data;
       }));
   }
@@ -294,7 +294,7 @@ export class TodoService {
     // checking scheduling
     if (body.scheduledDate) {
       postTodo.scheduledDate = body.scheduledDate;
-    } else if (body.scheduledDate) {
+    } else {
       postTodo.scheduledDate = null;
     }
     // checking which operation - 'ADD' | 'UPDATE' | 'DELETE'
