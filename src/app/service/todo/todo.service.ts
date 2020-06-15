@@ -333,6 +333,12 @@ export class TodoService {
               isCompleted: true
             }
           }
+        },
+        {
+          query: TODO_PROJECT_QUERY,
+          variables: {
+            sort: { updatedAt: 'ASC' }
+          }
         }
       ]
     })
