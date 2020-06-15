@@ -6,6 +6,7 @@ import { combineLatest, from, Subscription } from 'rxjs';
 import { TodoListType, TodoCompletedListType, TodoType, TodoConditions, IExternalModal, ITodoTypeCount } from '../../../models';
 import { TodoService, AppService, UtilityService } from '../../../service';
 import * as moment from 'moment';
+import { type } from 'os';
 
 declare var $: any;
 @Component({
@@ -162,7 +163,9 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
     this.extraLoader = true;
     this.toddService.listTodos(conditions)
       .subscribe((data: any) => {
-        this.todos = data;
+        if (typeof (data) !== 'undefined') {
+          this.todos = data.todoList;
+        }
         this.extraLoader = false;
       },
         () => {
@@ -181,16 +184,20 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
     this.extraLoader = false;
     this.toddService.listCompletedTodos(conditions)
       .subscribe((data: any) => {
-        const { totalCount, data: newdata } = data;
-        if (isDirectCall) {
-          this.todosC = { totalCount, data: newdata };
-        } else {
-          this.todosC = { totalCount, data: [...this.todosC.data, ...newdata] };
-        }
-        if ((totalCount === null) || (newdata === null) || (newdata.length === totalCount)) {
-          this.loader = false;
-        } else {
-          this.loader = true;
+        let dataC: any;
+        if (typeof (data) !== 'undefined') {
+          dataC = data.todoCompleted;
+          const { totalCount, data: newdata } = dataC;
+          if (isDirectCall) {
+            this.todosC = { totalCount, data: newdata };
+          } else {
+            this.todosC = { totalCount, data: [...this.todosC.data, ...newdata] };
+          }
+          if ((totalCount === null) || (newdata === null) || (newdata.length === totalCount)) {
+            this.loader = false;
+          } else {
+            this.loader = true;
+          }
         }
       });
   }

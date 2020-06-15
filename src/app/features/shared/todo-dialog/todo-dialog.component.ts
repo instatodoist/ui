@@ -41,6 +41,11 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   flatPickerConfig: any;
   formObj: FormGroup;
   scheduledObj = {
+    NO_DUE_DATE: {
+      name: 'No Due Date',
+      slug: 'NO_DUE_DATE',
+      value: ''
+    },
     TODAY: {
       name: 'Later Today',
       slug: 'TODAY',
@@ -79,13 +84,12 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       _id: [''],
       title: ['', [Validators.required]], // Title
       scheduling: [false], // if date is set
-      // scheduledDate: [this.sharedService.todayDate()], // scheduled Date
-      scheduledDate: [''], // scheduled Date
+      scheduledDate: [this.scheduledObj.TODAY.value], // scheduled Date
       labelIds: [[]], // Tags Array
       projectId: [''], // List ID
       operationType: [this.operationType], // ADD || UPDATE
       isCompleted: [false],
-      scheduledType: ['']
+      scheduledType: ['TODAY']
     });
     this.subscribeToModal(); // Listen to subscription to choose if popup called
     this.routeSubscription = combineLatest([ // fetching Tags & Projects/List in the system
@@ -113,9 +117,11 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           this.todoCurrentType = this.todoService.getCurentRoute();
           this.conditions = this.todoService.getConditions(this.todoCurrentType);
         } else {
-          const projectId = labels.filter(obj => (obj.name).toLowerCase() === project.toLowerCase())[0]._id;
-          this.formObj.value.projectId = projectId;
-          this.conditions = this.todoService.getConditions(projectId);
+          const projectId = projects.filter(obj => (obj.name).toLowerCase() === project.toLowerCase())[0]._id;
+          this.formObj.patchValue({
+            projectId
+          });
+          this.conditions = this.todoService.getConditions(projectId, 'labels');
         }
         // populate project if any
         const filteredProject: TodoLabelType[] = this.projects.filter(item => item._id === this.formObj.value.projectId);
@@ -128,10 +134,6 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           });
         }
       });
-
-    // this.formObj.get('scheduledDate').valueChanges.subscribe((data) => {
-    //   console.log(data)
-    // })
   }
 
   ngAfterViewInit() {
@@ -230,9 +232,6 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         scheduledType,
         scheduledDate: this.scheduledObj[scheduledType].value
       });
-      console.log(
-        this.formObj.value
-      )
     }
   }
 
@@ -240,34 +239,9 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   submit() {
     if (this.formObj.valid) {
       const postBody = this.formObj.value;
-      let refetch: TodoConditions;
-      if (
-        postBody.scheduledDate
-      ) {
-        const scheduledDate = moment(postBody.scheduledDate).startOf('day');
-        if (
-          this.todoCurrentType !== this.TODOTYPES.upcoming &&
-          (scheduledDate.isAfter(this.today))
-        ) {
-          refetch = this.todoService.getConditions(this.TODOTYPES.upcoming);
-        }
-        if (
-          this.todoCurrentType !== this.TODOTYPES.today &&
-          (scheduledDate.isSame(this.today))
-        ) {
-          refetch = this.todoService.getConditions(this.TODOTYPES.today);
-        }
-      } else {
-        refetch = this.todoService.getConditions(this.TODOTYPES.inbox);
-      }
-      if (
-        this.todoCurrentType !== this.TODOTYPES.completed && postBody.isCompleted
-      ) {
-        refetch = this.todoService.getConditions(this.TODOTYPES.completed);
-      }
       this.isSubmit = true;
       this.todoService
-        .todoOperation(postBody, this.conditions, refetch)
+        .todoOperation(postBody, this.conditions)
         .subscribe(() => {
           this.isSubmit = false;
           // this.isOpen.emit(false);

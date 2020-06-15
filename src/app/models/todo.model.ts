@@ -49,6 +49,7 @@ export interface TodoLabelType {
 export interface TodoProjectType {
   _id?: string;
   name?: string;
+  slug?: string;
   operationType?: string;
   count?: number;
 }

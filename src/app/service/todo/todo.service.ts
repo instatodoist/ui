@@ -183,10 +183,10 @@ export class TodoService {
       .watchQuery({
         query: TODO_LIST_QUERY,
         variables: conditions,
-        // fetchPolicy: 'network-only'
+        fetchPolicy: 'cache-and-network'
       })
-      .valueChanges.pipe(map(({ data }: any) => {
-        return data.todoList;
+      .valueChanges.pipe(map((data: any) => {
+        return data.data;
       }));
   }
 
@@ -219,10 +219,10 @@ export class TodoService {
       .watchQuery({
         query: TODO_COMPLETED_QUERY,
         variables: conditions,
-        // fetchPolicy: 'network-only'
+        fetchPolicy: 'cache-and-network'
       })
-      .valueChanges.pipe(map(({ data }: any) => {
-        return data.todoCompleted;
+      .valueChanges.pipe(map(( data: any) => {
+        return data.data;
       }));
   }
 
@@ -273,13 +273,7 @@ export class TodoService {
     if (conditions) {
       refetchQuery.variables = { ...conditions };
     }
-    let refetch = [refetchQuery];
-    if (extraRefetch) {
-      refetch = [...refetch, {
-        query: TODO_LIST_QUERY,
-        variables: extraRefetch
-      }];
-    }
+    const refetch = [refetchQuery];
     // initialising gql variables
     let variables: any = {};
     // initialising input body
@@ -294,15 +288,6 @@ export class TodoService {
     // checking labels
     if (body.labelIds && body.labelIds.length) {
       postTodo.labelIds = body.labelIds;
-      refetch = [...refetch, {
-        query: TODO_LABEL_QUERY
-      }];
-      // refetch = [...refetch, {
-      //   query: TODO_LIST_QUERY,
-      //   variables: {
-      //     ...this.getConditions(body.labelId[0], 'labels')
-      //   }
-      // }];
     }
     // checking scheduling
     if (body.scheduledDate) {
