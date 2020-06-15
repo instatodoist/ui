@@ -150,13 +150,13 @@ export class SidebarComponent implements OnInit {
           }
         ]
       },
-      {
-        active: false,
-        name: 'Notes',
-        slug: 'notes',
-        icon: 'fa fa-sticky-note-o',
-        link: '/notes'
-      }
+      // {
+      //   active: false,
+      //   name: 'Notes',
+      //   slug: 'notes',
+      //   icon: 'fa fa-sticky-note-o',
+      //   link: '/notes'
+      // }
     ];
   }
 

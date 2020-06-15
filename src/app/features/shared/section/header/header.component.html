@@ -29,13 +29,18 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto navbar-list">
           <li class="nav-item nav-icon">
-
             <!-- PopUp [TODO]-->
-            <a href="javascript:void(0)" (click)="openPopUp()" class="iq-waves-effect btn-primary rounded">
+            <a  title="Add Task" href="javascript:void(0)" (click)="openPopUp()" class="iq-waves-effect btn-primary rounded">
               <span class="ripple rippleEffect"></span>
               <i class="fa fa-plus" aria-hidden="true"></i>
             </a>
+          </li>
 
+          <li class="nav-item nav-icon">
+            <a title="Notes" href="javascript:void(0)" class="iq-waves-effect btn-primary rounded" routerLink="/notes">
+              <span class="ripple rippleEffect"></span>
+              <i class="fa fa-sticky-note-o" aria-hidden="true"></i>
+            </a>
           </li>
           <!-- <li class="nav-item">
             <a class="search-toggle iq-waves-effect language-title" href="#">
