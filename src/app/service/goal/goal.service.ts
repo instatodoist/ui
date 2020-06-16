@@ -84,7 +84,7 @@ export class GoalService {
               isAchieved: false
             },
             sort: {
-              updatedAt: 'DESC',
+              createdAt: 'DESC',
               isPinned: 'DESC'
             }
           }

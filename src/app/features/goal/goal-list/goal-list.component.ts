@@ -21,7 +21,7 @@ export class GoalListComponent implements OnInit, AfterViewInit {
       isAchieved: false
     },
     sort: {
-      updatedAt: 'DESC',
+      createdAt: 'DESC',
       isPinned: 'DESC'
     }
   };
