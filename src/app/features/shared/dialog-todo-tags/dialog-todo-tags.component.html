@@ -1,0 +1,27 @@
+<div class="modal fade" id="{{modelId}}" tabindex="-1" role="dialog" aria-labelledby="tagsModalTitle" aria-hidden="true"
+  style="display: none;">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tagsModalTitle"># Tags</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding: 0;min-height: 300px;">
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let tag of labels; let i = index"
+            [style]="{'background-color': tag?.color}">
+            <div class="form-group">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="customCheck{{i+1}}" fromControlName="labelId"
+                  [checked]="isChecked(tag)" (change)="checkLabels(tag)">
+                <label class="custom-control-label" for="customCheck{{i+1}}">{{tag?.name | titlecase}}</label>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

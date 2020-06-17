@@ -23,6 +23,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() origin = null;
   externalModal = this.appService.externalModal;
   defaultConfig = this.appService.ExternalModelConfig;
+  nestedModalId = '';
 
   // @Output() isOpen: EventEmitter<boolean> = new EventEmitter<boolean>(); // open flag
   private modalSubscription: Subscription;
@@ -172,34 +173,6 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.formObj.value.labelIds.indexOf(label._id) !== -1 ? true : false;
   }
 
-  checkProject(project: TodoProjectType) {
-    this.currentProject = project.name;
-    this.formObj.patchValue({
-      projectId: project._id
-    });
-  }
-
-  // check & uncheck labels
-  checkLabels($event, label: TodoLabelType) {
-    const labelId = label._id;
-    const labels = this.formObj.value.labelIds;
-    const index = labels.indexOf(labelId);
-    if (index === -1) {
-      labels.push(labelId);
-    } else {
-      labels.splice(index, 1);
-    }
-    this.formObj.patchValue({
-      labelIds: labels
-    });
-  }
-
-  isScheduling() {
-    this.formObj.patchValue({
-      scheduling: !this.formObj.value.scheduling
-    });
-  }
-
   private subscribeToModal() {
     this.modalSubscription = this.appService.externalModal.subscribe(data => {
       if (data.data.todo) {
@@ -235,7 +208,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         data: {
           ...this.defaultConfig.data,
           todo: {
-            ...( this.defaultConfig.data.todo || {}), ...this.todo
+            ...(this.defaultConfig.data.todo || {}), ...this.todo
           }
         }
       });
@@ -248,6 +221,30 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         scheduledDate: this.scheduledObj[scheduledType].value
       });
     }
+  }
+
+  openListPopup(modalId: string) {
+    this.nestedModalId = modalId;
+    $('#' + modalId).modal('toggle'); // Open & close Popup
+    $(`#${this.modelId}`).css({ 'z-index': 1040 });
+    $('#' + modalId).on('hidden.bs.modal', () => { // listen modal close event
+      $(`#${this.modelId}`).css({ 'z-index': 9999 });
+    });
+  }
+
+  recieveDataAsLabels(data: string[]) {
+    this.formObj.patchValue({
+      labelIds: data
+    });
+  }
+
+  recieveDataAsProjectId(data: string) {
+    const projectName = this.projects.filter(obj => (obj._id) === data)[0].name;
+    this.currentProject = projectName;
+    this.formObj.patchValue({
+      projectId: data
+    });
+    $('#' + this.nestedModalId).modal('toggle');
   }
 
   // add/update the task

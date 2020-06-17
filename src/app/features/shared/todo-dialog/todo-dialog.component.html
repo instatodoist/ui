@@ -25,8 +25,9 @@
                           class="badge border border-primary text-primary mt-2 mr-2 cursor">#{{label?.name}} <i
                             (click)="checkLabels($event, label)" class="fa fa-times" aria-hidden="true"></i></span>
                       </ng-container>
-                      <span class="badge border border-secondary text-secondary mt-2 mr-2 cursor" data-toggle="modal"
-                        data-target="#tagsModal"><i class="fa fa-hashtag" aria-hidden="true"></i>Add Tag</span>
+                      <span class="badge border border-secondary text-secondary mt-2 mr-2 cursor"
+                        (click)="openListPopup('tagsModal')"><i class="fa fa-hashtag" aria-hidden="true"></i>Add
+                        Tag</span>
                     </div>
                   </div>
                 </div>
@@ -35,7 +36,7 @@
                     <div class="iq-card-header d-flex justify-content-between">
                       <div class="iq-header-title">
                         <h4 class="card-title"> List: </h4>
-                        <div class="btn-group mb-2" role="group" data-toggle="modal" data-target="#exampleModalLong">
+                        <div class="btn-group mb-2" role="group" (click)="openListPopup('projectModal')">
                           <!-- <div *ngIf="!currentProject" class="badge badge-pill badge-primary mr-2 cursor">
                             {{'Personal'}}</div> -->
                           <div *ngIf="currentProject" class="badge badge-pill badge-primary mr-2 cursor">
@@ -78,55 +79,16 @@
     </div>
   </div>
 </div>
-<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
-  aria-hidden="true" style="display: none;">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Move to</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body" style="padding: 0; min-height: 300px;">
-        <ul class="list-group">
-          <li class="list-group-item d-flex justify-content-between align-items-center"
-            *ngFor="let project of projects; let i = index"
-            [ngClass]="{'active': ( project?.name === currentProject ) }" (click)="checkProject(project)">
-            {{project?.name | titlecase}}
-            <span class="badge badge-pill" *ngIf="project?.name === currentProject"><i class="fa fa-check-circle-o"
-                aria-hidden="true" style="color: text-primary;"></i></span>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
 
-<div class="modal fade" id="tagsModal" tabindex="-1" role="dialog" aria-labelledby="tagsModalTitle" aria-hidden="true"
-  style="display: none;">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="tagsModalTitle"># Tags</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body" style="padding: 0;min-height: 300px;">
-        <ul class="list-group">
-          <li class="list-group-item" *ngFor="let tag of labels; let i = index"
-            [style]="{'background-color': tag?.color}">
-            <div class="form-group">
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="customCheck{{i+1}}" fromControlName="labelId"
-                  [checked]="isChecked(tag)" (change)="checkLabels($event, tag)">
-                <label class="custom-control-label" for="customCheck{{i+1}}">{{tag?.name | titlecase}}</label>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
+<app-dialog-todo-tags
+[labels]="labels"
+[labelIds]="formObj.value.labelIds"
+(data) = "recieveDataAsLabels($event)"
+>
+</app-dialog-todo-tags>
+
+<app-dialog-todo-projects
+[projects]="projects"
+[projectId]="formObj.value.projectId"
+(data) = "recieveDataAsProjectId($event)"
+>
