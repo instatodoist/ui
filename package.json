@@ -43,7 +43,7 @@
     "graphql-tag": "^2.10.0",
     "moment": "^2.24.0",
     "ngx-pagination": "^5.0.0",
-    "ngx-quilljs": "0.0.6",
+    "ngx-quilljs": "0.0.7",
     "ngx-toastr": "^12.0.1",
     "rxjs": "^6.5.4",
     "tslib": "^1.10.0",
