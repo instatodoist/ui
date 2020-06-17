@@ -16,7 +16,7 @@ type Operation = 'ADD' | 'UPDATE';
   ]
 })
 export class CustomDateModalComponent implements OnInit, AfterViewInit {
-  @Input() operationType: Operation = 'ADD';
+  @Input() operationType: Operation;
   @Input() scheduledAt = '';
   @Input() modelId = 'scheduledModal';
   @Output() data: EventEmitter<string> = new EventEmitter<string>();
@@ -26,7 +26,6 @@ export class CustomDateModalComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    console.log(this.operationType, this.scheduledAt);
   }
 
   ngAfterViewInit() {

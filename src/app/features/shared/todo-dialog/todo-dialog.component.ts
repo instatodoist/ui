@@ -88,7 +88,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       scheduledDate: [this.scheduledObj.TODAY.value], // scheduled Date
       labelIds: [[]], // Tags Array
       projectId: [''], // List ID
-      operationType: [this.operationType], // ADD || UPDATE
+      operationType: [(this.todo && this.todo._id) ? 'UPDATE' : 'ADD'], // ADD || UPDATE
       isCompleted: [false],
       scheduledType: ['TODAY']
     });
@@ -202,6 +202,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           operationType: this.todo._id ? 'UPDATE' : 'ADD',
           isCompleted: this.todo && this.todo.isCompleted ? true : false
         });
+        console.log(this.formObj.value.operationType)
       } else {
         this.popUpType = 'TODO_ADD';
       }
@@ -247,7 +248,6 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   recieveDataAsDate(data: string) {
-    console.log(data);
     this.formObj.patchValue({
       scheduledDate: data
     });
