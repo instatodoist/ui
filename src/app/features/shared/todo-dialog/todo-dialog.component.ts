@@ -209,20 +209,8 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   askDatePickerToOpen(scheduledType: ScheduledType) {
-    if (!this.todo) {
-      this.todo = this.formObj.value;
-    }
     if (scheduledType === 'CUSTOM') {
-      this.externalModal.next({
-        ...this.defaultConfig,
-        DATE_PICKER: true,
-        data: {
-          ...this.defaultConfig.data,
-          todo: {
-            ...(this.defaultConfig.data.todo || {}), ...this.todo
-          }
-        }
-      });
+      this.openListPopup('scheduledModal');
       this.formObj.patchValue({
         scheduledType,
       });
@@ -234,11 +222,11 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  openListPopup(modalId: string) {
-    this.nestedModalId = modalId;
-    $('#' + modalId).modal('toggle'); // Open & close Popup
+  openListPopup(nestedModalId: string) {
+    this.nestedModalId = nestedModalId;
+    $(`#${nestedModalId}`).modal('toggle'); // Open & close Popup
     $(`#${this.modelId}`).css({ 'z-index': 1040 });
-    $('#' + modalId).on('hidden.bs.modal', () => { // listen modal close event
+    $(`#${nestedModalId}`).on('hidden.bs.modal', () => { // listen modal close event
       $(`#${this.modelId}`).css({ 'z-index': 9999 });
     });
   }
@@ -256,6 +244,14 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       projectId: data
     });
     $('#' + this.nestedModalId).modal('toggle');
+  }
+
+  recieveDataAsDate(data: string) {
+    console.log(data);
+    this.formObj.patchValue({
+      scheduledDate: data
+    });
+    $(`#${this.nestedModalId}`).modal('toggle');
   }
 
   // add/update the task

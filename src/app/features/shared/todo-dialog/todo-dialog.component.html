@@ -80,15 +80,13 @@
   </div>
 </div>
 
-<app-dialog-todo-tags
-[labels]="labels"
-[labelIds]="formObj.value.labelIds"
-(data) = "recieveDataAsLabels($event)"
->
+<app-dialog-todo-tags [labels]="labels" [labelIds]="formObj.value.labelIds" (data)="recieveDataAsLabels($event)">
 </app-dialog-todo-tags>
 
-<app-dialog-todo-projects
-[projects]="projects"
-[projectId]="formObj.value.projectId"
-(data) = "recieveDataAsProjectId($event)"
->
+<app-dialog-todo-projects [projects]="projects" [projectId]="formObj.value.projectId"
+  (data)="recieveDataAsProjectId($event)">
+</app-dialog-todo-projects>
+
+<app-custom-date-modal [scheduledAt]="formObj.value.scheduledDate" [operationType]="operationType"
+  (data)="recieveDataAsDate($event)">
+</app-custom-date-modal>
