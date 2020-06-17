@@ -1,6 +1,6 @@
 <div class="modal fade" id="{{modelId}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle"
   aria-hidden="true" style="display: none;">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content">
       <div class="modal-header" style="border-bottom: none; padding: 0; margin-right: 10px;">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -23,7 +23,7 @@
                       <ng-container *ngFor="let label of labels">
                         <span *ngIf="isChecked(label)"
                           class="badge border border-primary text-primary mt-2 mr-2 cursor">#{{label?.name}} <i
-                            (click)="checkLabels($event, label)" class="fa fa-times" aria-hidden="true"></i></span>
+                            (click)="checkLabels(label)" class="fa fa-times" aria-hidden="true"></i></span>
                       </ng-container>
                       <span class="badge border border-secondary text-secondary mt-2 mr-2 cursor"
                         (click)="openListPopup('tagsModal')"><i class="fa fa-hashtag" aria-hidden="true"></i>Add

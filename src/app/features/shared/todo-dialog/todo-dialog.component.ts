@@ -173,6 +173,17 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.formObj.value.labelIds.indexOf(label._id) !== -1 ? true : false;
   }
 
+  // check & uncheck labels
+  checkLabels(label: TodoLabelType) {
+    const labelId = label._id;
+    const index = this.formObj.value.labelIds.indexOf(labelId);
+    if (index === -1) {
+      this.formObj.value.labelIds.push(labelId);
+    } else {
+      this.formObj.value.labelIds.splice(index, 1);
+    }
+  }
+
   private subscribeToModal() {
     this.modalSubscription = this.appService.externalModal.subscribe(data => {
       if (data.data.todo) {

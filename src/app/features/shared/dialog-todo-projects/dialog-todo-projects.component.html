@@ -14,7 +14,7 @@
             *ngFor="let project of projects; let i = index" [ngClass]="{'active': ( project?._id === projectId ) }"
             (click)="checkProject(project)">
             {{project?.name | titlecase}}
-            <span class="badge badge-pill" *ngIf="project?.name === currentProject">
+            <span class="badge badge-pill" *ngIf="project?._id === projectId">
               <i class="fa fa-check-circle-o" aria-hidden="true" style="color: text-primary;"></i>
             </span>
           </li>
