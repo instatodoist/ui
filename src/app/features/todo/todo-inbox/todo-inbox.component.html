@@ -69,14 +69,20 @@
                 padding-bottom: 10px;">
 
                   <div class="user-img img-fluid">
-                    <div class="custom-control custom-checkbox custom-control-inline flota-l mr-2"
+                    <!-- <div class="custom-control custom-checkbox custom-control-inline flota-l mr-2"
                       style="padding-left: 0px; margin-top: 5px;">
-                      <!-- <i class="fa fa-arrows flota-l" aria-hidden="true" cdkDragHandle></i> -->
+                      <i class="fa fa-arrows flota-l" aria-hidden="true" cdkDragHandle></i>
                     </div>
-                    <div class="custom-control custom-checkbox custom-control-inline flota-l"
+                    <div class="custom-control flota-l"
                       (click)="$event.stopPropagation(); updateTodo(todo)">
-                      <input type="checkbox" class="custom-control-input" id="customCheck-f{{i+1}}"
+                      <input type="radio" class="custom-control-input" id="customCheck-f{{i+1}}"
                         [checked]="todo?.isCompleted">
+                      <label class="custom-control-label" for="customCheck-f{{i+1}}"></label>
+                    </div> -->
+                    <div class="custom-control custom-radio custom-radio-color-checked custom-control-inline ml-3 mt-2"
+                      (click)="$event.stopPropagation(); updateTodo(todo)">
+                      <input type="radio" id="customCheck-f{{i+1}}" name="customRadio-10"
+                        class="custom-control-input bg-primary">
                       <label class="custom-control-label" for="customCheck-f{{i+1}}"></label>
                     </div>
                   </div>
