@@ -136,7 +136,8 @@
             <ng-container *ngIf="!todos?.data.length">
               <div class="text-center">
                 <img src="/assets/facelift/images/no-result.svg"/>
-                <div class="text-primary">Hurray!! Everything is on the track.</div>
+                <div class="text-primary" *ngIf="!queryStr">Hurray!! Everything is on the track.</div>
+                <div class="text-primary" *ngIf="queryStr">No Tasks found matching the search criteria. Please try something else</div>
               </div>
             </ng-container>
           </ul>
