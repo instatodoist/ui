@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { IGoalListType, IGoalConditions, IGoalType, IExternalModal } from '../../../models';
 import { GoalService, AppService } from '../../../service';
-import { Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
 declare var $: any;
 
 @Component({
@@ -19,7 +21,8 @@ export class GoalArchieveComponent implements OnInit, OnDestroy {
   extModalConfig: IExternalModal = this.appService.ExternalModelConfig;
   conditions: IGoalConditions = {
     filter: {
-      isAchieved: true
+      isAchieved: true,
+      q: null
     },
     sort: {
       createdAt: 'DESC',
@@ -30,20 +33,35 @@ export class GoalArchieveComponent implements OnInit, OnDestroy {
   loaderImage = this.appService.loaderImage;
 
   constructor(
+    private activatedRoute: ActivatedRoute,
     private goalService: GoalService,
     private appService: AppService
   ) { }
 
   ngOnInit(): void {
-    this.loader = true;
-    this.goals$ = this.goalService.listGoals(this.conditions).subscribe((data: any) => {
-      if (typeof data !== 'undefined') {
-        this.goals = data.listThought;
-        this.loader = false;
-      }
-    }, () => {
-      this.loader = false;
-    });
+    combineLatest([
+      this.activatedRoute.queryParams,
+    ])
+      .pipe(
+        map(data => ({
+          query: data[0],
+        }))
+      )
+      .subscribe(data => {
+        this.loader = true;
+        const { query = null } = data;
+        if (query && query.q) {
+          this.conditions.filter.q = query.q;
+        }
+        this.goalService.listGoals(this.conditions).subscribe((response: any) => {
+          if (typeof response !== 'undefined') {
+            this.loader = false;
+            this.goals = response.listThought;
+          }
+        }, () => {
+          this.loader = false;
+        });
+      });
   }
 
   ngOnDestroy() {
