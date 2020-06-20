@@ -106,7 +106,11 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
             message = 'Goal updated';
           }
           this.toastr.toastrSuccess(message);
-        });
+        },
+        (() => {
+          this.isSubmit = false;
+        })
+        );
     }
   }
 

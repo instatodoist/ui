@@ -1,12 +1,18 @@
-.my-card {
-  height: 350px;
-  width: 350px;
-}
-.my-card-content {
-  padding: 16px;
-}
+// .my-card {
+//   height: 350px;
+//   width: 350px;
+// }
+// .my-card-content {
+//   padding: 16px;
+// }
 .bottom-right{
   position: fixed;
   bottom: 0;
   right: 0;
+}
+blockquote {
+  overflow: hidden !important;
+  img {
+    width: 100% !important;
+  }
 }
