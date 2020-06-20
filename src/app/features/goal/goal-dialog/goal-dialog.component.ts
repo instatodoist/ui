@@ -101,9 +101,9 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         .subscribe(() => {
           this.isSubmit = false;
           $(`#${this.modelId}`).modal('hide');
-          let message = 'Goal created';
+          let message = 'Note created';
           if (this.formObj.value._id) {
-            message = 'Goal updated';
+            message = 'Note updated';
           }
           this.toastr.toastrSuccess(message);
         },
