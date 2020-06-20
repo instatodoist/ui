@@ -48,9 +48,7 @@ export class GoalListComponent implements OnInit, AfterViewInit {
       .subscribe(data => {
         this.loader = true;
         const { query = null } = data;
-        if (query && query.q) {
-          this.conditions.filter.q = query.q;
-        }
+        this.conditions.filter.q = query.q || null;
         this.goalService.listGoals(this.conditions).subscribe((response: any) => {
           if (typeof response !== 'undefined') {
             this.loader = false;

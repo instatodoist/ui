@@ -50,10 +50,8 @@ export class GoalArchieveComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.loader = true;
         const { query = null } = data;
-        if (query && query.q) {
-          this.conditions.filter.q = query.q;
-        }
-        this.goalService.listGoals(this.conditions).subscribe((response: any) => {
+        this.conditions.filter.q = query.q || null;
+        this.goals$ = this.goalService.listGoals(this.conditions).subscribe((response: any) => {
           if (typeof response !== 'undefined') {
             this.loader = false;
             this.goals = response.listThought;
