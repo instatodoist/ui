@@ -124,7 +124,7 @@ export class SidebarComponent implements OnInit {
           {
             name: 'Upcoming',
             slug: 'upcoming',
-            icon: 'fa fa-calendar-plus-o',
+            icon: 'far fa-calendar-plus',
             link: '/tasks/upcoming',
             count: 0
           },

@@ -21,17 +21,23 @@
               <div class="d-flex mr-3 align-items-center">
                 <div class="send-panel float-right">
                   <!-- <label class="ml-2 mb-0 rounded iq-bg-primary" (click)="updateGoal(goal)">
-                    <a><i class="fa fa-thumb-tack" aria-hidden="true"
+                    <a>
+                        <i class="fas fa-thumbtack"
                         [ngClass]="{ 'text-success': goal?.isPinned, 'text-primary': !goal?.isPinned }"></i>
                     </a>
                   </label> -->
                   <label class="ml-2 mb-0 iq-bg-primary rounded cursor" (click)="openUpdatePopUp(goal)">
-                    <a><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    <a><i class="fa fa-pencil-alt" aria-hidden="true"></i></a>
                   </label>
-                  <label class="ml-2 mb-0 iq-bg-primary rounded" (click)="updateGoal(goal, 'DELETE')"
+                  <label class="ml-2 mb-0 iq-bg-primary rounded" (click)="updateGoal(goal, 'IS_ARCHIEVED')"
                     data-toggle="tooltip" data-placement="top" data-original-title="Tooltip on top">
                     <a>
                       <i class="fa fa-archive cursor" aria-hidden="true"></i>
+                    </a>
+                  </label>
+                  <label class="ml-2 mb-0 rounded iq-bg-primary" (click)="updateGoal(goal, 'DELETE')">
+                    <a>
+                      <i class="far fa-trash-alt"></i>
                     </a>
                   </label>
                 </div>
