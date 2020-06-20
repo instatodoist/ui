@@ -27,6 +27,7 @@ export class GoalArchieveComponent implements OnInit, OnDestroy {
     },
     limit: 100
   };
+  loaderImage = this.appService.loaderImage;
 
   constructor(
     private goalService: GoalService,
@@ -38,7 +39,10 @@ export class GoalArchieveComponent implements OnInit, OnDestroy {
     this.goals$ = this.goalService.listGoals(this.conditions).subscribe((data: any) => {
       if (typeof data !== 'undefined') {
         this.goals = data.listThought;
+        this.loader = false;
       }
+    }, () => {
+      this.loader = false;
     });
   }
 

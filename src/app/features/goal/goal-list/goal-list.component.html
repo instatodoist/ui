@@ -1,7 +1,12 @@
-<div class="card-columns">
+<!-- Loader on fetching data-->
+<div class="col-sm-12 text-center" *ngIf="loader">
+  <img [src]="loaderImage" alt="loader" style="height: 100px;">
+</div>
+<div class="card-columns" *ngIf="!loader">
   <!-- <div class="col-sm-12">
    <h3 class="mt-4 mb-3">Card Colored Styles</h3>
 </div> -->
+  <!--END-->
   <div class="card" *ngFor="let goal of goals?.data;" [style]="{ 'border': '1px solid #ccc' }">
     <!-- <div class="card iq-mb-3" [ngClass]="{ 'bg-secondary': goal?.isPinned }"> -->
     <div class="card">

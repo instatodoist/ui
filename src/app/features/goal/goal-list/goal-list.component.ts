@@ -25,6 +25,7 @@ export class GoalListComponent implements OnInit, AfterViewInit {
       isPinned: 'DESC'
     }
   };
+  loaderImage = this.appService.loaderImage;
 
   constructor(
     private goalService: GoalService,
@@ -35,8 +36,11 @@ export class GoalListComponent implements OnInit, AfterViewInit {
     this.loader = true;
     this.goalService.listGoals(this.conditions).subscribe((data: any) => {
       if (typeof data !== 'undefined') {
+        this.loader = false;
         this.goals = data.listThought;
       }
+    }, () => {
+      this.loader = false;
     });
   }
 
