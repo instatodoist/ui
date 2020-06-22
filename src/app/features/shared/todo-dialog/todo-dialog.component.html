@@ -38,27 +38,25 @@
                     </div>
                     <div>
                       <ul class="perfomer-lists m-0 p-0" formArrayName="subTasks">
-                        <li class="d-flex mb-4 align-items-center"
+                        <li class="d-flex align-items-center mr-4 mb-2"
                           *ngFor="let item of formObj.get('subTasks')['controls']; let i = index;"
                           style="border: 1px solid black !important" (click)="addSubTask()">
                           <ng-container [formGroupName]="i">
                             <div class="user-img img-fluid">
                               <div
-                                class="custom-control custom-radio custom-radio-color-checked custom-control-inline ml-3 mt-2">
+                                class="custom-control custom-radio custom-radio-color-checked custom-control-inline ml-3 mt-2 mr-0">
                                 <input type="radio" id="customCheck-f" class="custom-control-input bg-primary"
                                   formControlName="isCompleted">
                                 <label class="custom-control-label" for="customCheck-f"></label>
                               </div>
                             </div>
                             <div class="media-support-info">
-                              <h6>
-                                <span>
-                                  <span class="mr-2">
-                                    <input type="text" class="form-control" formControlName="title" style="border:none;"
-                                      placeholder="Add new substask">
-                                  </span>
-                                </span>
-                              </h6>
+                              <!-- <h6>
+                                <span> -->
+                                  <input type="text" class="form-control" formControlName="title"
+                                    placeholder="Add new substask"  style="padding-top: 7px !important; border:none;">
+                                <!-- </span>
+                              </h6> -->
                             </div>
                             <div class=" ml-auto  ml-4"
                               *ngIf="formObj.get('subTasks')['controls'].length > 1 && i !== (formObj.get('subTasks')['controls'].length -1)">
