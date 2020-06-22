@@ -299,7 +299,11 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       const filteredSubTasks = subTasks.filter((item: TodoType) => {
         return item.title;
       });
-      postBody.subTasks = filteredSubTasks;
+      if (postBody._id) {
+        postBody.subTasks = filteredSubTasks;
+      } else {
+        delete postBody.subTasks;
+      }
       this.isSubmit = true;
       this.todoService
         .todoOperation(postBody, this.conditions)
