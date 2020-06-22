@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder,  FormArray, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { TodoService, SharedService, AppService, UtilityService } from '../../../service';
 import { TodoType, TodoLabelType, TodoConditions, OperationEnumType, TodoProjectType } from '../../../models';
 import { map } from 'rxjs/operators';
@@ -178,7 +178,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   addSubTask(): void {
-    const subTasksEmpty = this.formObj.value.subTasks.filter((item: TodoType ) => {
+    const subTasksEmpty = this.formObj.value.subTasks.filter((item: TodoType) => {
       return !item.isCompleted && !item.title;
     });
     if (subTasksEmpty.length < 2) {
@@ -213,6 +213,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscribeToModal() {
     this.modalSubscription = this.appService.externalModal.subscribe(data => {
       if (data.data.todo) {
+        console.log(data.data.todo)
         this.todo = data.data.todo;
         this.title = 'Update Task';
         this.labelIdVal = this.todo && this.todo.labels ? (this.todo.labels.map(label => {
@@ -228,7 +229,17 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           operationType: this.todo._id ? 'UPDATE' : 'ADD',
           isCompleted: this.todo && this.todo.isCompleted ? true : false
         });
-        console.log(this.formObj.value.operationType)
+        if (this.todo.subTasks.length) {
+          const subTasksControl = <FormArray>this.formObj.controls.subTasks;
+          (this.formObj.get('subTasks') as FormArray).clear();
+          this.todo.subTasks.forEach((element: TodoType) => {
+            subTasksControl.push(this.fb.group({
+              title: element.title,
+              isCompleted: element.isCompleted
+            }));
+          });
+          this.addSubTask();
+        }
       } else {
         this.popUpType = 'TODO_ADD';
       }
