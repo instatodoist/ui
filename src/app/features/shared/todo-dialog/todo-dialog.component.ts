@@ -210,6 +210,10 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  get subTasks(): FormArray {
+    return this.formObj.get('subTasks') as FormArray;
+  }
+
   private subscribeToModal() {
     this.modalSubscription = this.appService.externalModal.subscribe(data => {
       if (data.data.todo) {
@@ -230,7 +234,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           isCompleted: this.todo && this.todo.isCompleted ? true : false
         });
         if (this.todo.subTasks.length) {
-          const subTasksControl = <FormArray>this.formObj.controls.subTasks;
+          const subTasksControl = this.subTasks;
           (this.formObj.get('subTasks') as FormArray).clear();
           this.todo.subTasks.forEach((element: TodoType) => {
             subTasksControl.push(this.fb.group({
