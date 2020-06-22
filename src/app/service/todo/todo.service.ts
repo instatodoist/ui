@@ -355,7 +355,7 @@ export class TodoService {
   todoLabelOperation(body: TodoLabelType, conditions: any = null): Observable<SuccessType> {
     let gqlOperation = TODO_LABEL_ADD_MUTATION;
     let defaultDataKey = 'addTodoLabel';
-    const operationType = body.operationType;
+    const {_id, operationType, ...postBody } = body;
     // refetch query after add or update
     const refetchQuery: any = {
       query: TODO_LABEL_QUERY
@@ -373,9 +373,9 @@ export class TodoService {
         variables = {
           ...variables,
           input: {
-            name: body.name
+            ...postBody
           },
-          id: body._id
+          id: _id
         };
         break;
       case 'DELETE':
@@ -387,7 +387,7 @@ export class TodoService {
         variables = {
           ...variables,
           input: {
-            name: body.name
+            ...postBody
           }
         };
         break;

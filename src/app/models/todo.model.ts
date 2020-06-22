@@ -43,6 +43,8 @@ export interface TodoType {
 export interface TodoLabelType {
   _id?: string;
   name?: string;
+  color?: string;
+  description?: string;
   operationType?: string;
   count?: number;
 }
