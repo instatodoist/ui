@@ -297,6 +297,7 @@ export class TodoService {
     } else {
       postTodo.scheduledDate = null;
     }
+    postTodo.subTasks = body.subTasks;
     // checking which operation - 'ADD' | 'UPDATE' | 'DELETE'
     switch (operationType) {
       case 'UPDATE':

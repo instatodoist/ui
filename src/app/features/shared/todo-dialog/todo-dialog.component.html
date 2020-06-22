@@ -30,6 +30,49 @@
                         Tag</span>
                     </div>
                   </div>
+
+                  <!-- Integrate SubTasks-->
+                  <div class="row mb-4 ml-3">
+                    <div style="width: 100%;">
+                      <h4 class="card-title"> SubTasks </h4>
+                    </div>
+                    <div>
+                      <ul class="perfomer-lists m-0 p-0" formArrayName="subTasks">
+                        <li class="d-flex mb-4 align-items-center"
+                          *ngFor="let item of formObj.get('subTasks')['controls']; let i = index;"
+                          style="border: 1px solid black !important" (click)="addSubTask()">
+                          <ng-container [formGroupName]="i">
+                            <div class="user-img img-fluid">
+                              <div
+                                class="custom-control custom-radio custom-radio-color-checked custom-control-inline ml-3 mt-2">
+                                <input type="radio" id="customCheck-f" class="custom-control-input bg-primary"
+                                  formControlName="isCompleted">
+                                <label class="custom-control-label" for="customCheck-f"></label>
+                              </div>
+                            </div>
+                            <div class="media-support-info">
+                              <h6>
+                                <span>
+                                  <span class="mr-2">
+                                    <input type="text" class="form-control" formControlName="title" style="border:none;"
+                                      placeholder="Add new substask">
+                                  </span>
+                                </span>
+                              </h6>
+                            </div>
+                            <div class=" ml-auto  ml-4"
+                              *ngIf="formObj.get('subTasks')['controls'].length > 1 && i !== (formObj.get('subTasks')['controls'].length -1)">
+                              <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close"
+                                (click)="removeSubTask(i)">
+                                <i class="fa fa-minus-circle cursor" aria-hidden="true"></i>
+                              </button>
+                            </div>
+                          </ng-container>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
                 </div>
                 <div class="col-sm-4" style="padding-right: 0px;">
                   <div class="iq-card iq-card-block iq-card-stretch iq-card-height">

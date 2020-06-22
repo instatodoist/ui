@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder,  FormArray, Validators } from '@angular/forms';
 import { TodoService, SharedService, AppService, UtilityService } from '../../../service';
 import { TodoType, TodoLabelType, TodoConditions, OperationEnumType, TodoProjectType } from '../../../models';
 import { map } from 'rxjs/operators';
@@ -69,6 +69,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   };
   scheduledObjKeys = Object.keys(this.scheduledObj);
+  subTasksFormArray: FormArray;
 
   constructor(
     private router: Router,
@@ -90,7 +91,8 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       projectId: [''], // List ID
       operationType: [(this.todo && this.todo._id) ? 'UPDATE' : 'ADD'], // ADD || UPDATE
       isCompleted: [false],
-      scheduledType: ['TODAY']
+      scheduledType: ['TODAY'],
+      subTasks: this.fb.array([this.initSubTasks()])
     });
     this.subscribeToModal(); // Listen to subscription to choose if popup called
     this.routeSubscription = combineLatest([ // fetching Tags & Projects/List in the system
@@ -166,6 +168,30 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy() {
     this.modalSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
+  }
+
+  private initSubTasks(): FormGroup {
+    return this.fb.group({
+      title: '',
+      isCompleted: false
+    });
+  }
+
+  addSubTask(): void {
+    const subTasksEmpty = this.formObj.value.subTasks.filter((item: TodoType ) => {
+      return !item.isCompleted && !item.title;
+    });
+    if (subTasksEmpty.length < 2) {
+      this.subTasksFormArray = this.formObj.get('subTasks') as FormArray;
+      this.subTasksFormArray.push(this.initSubTasks());
+    }
+  }
+
+  removeSubTask(itemIndex: number): void {
+    this.subTasksFormArray = this.formObj.get('subTasks') as FormArray;
+    if (itemIndex > -1) {
+      this.subTasksFormArray.removeAt(itemIndex);
+    }
   }
 
   // auto checked the labels if exist
@@ -258,6 +284,11 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   submit() {
     if (this.formObj.valid) {
       const postBody = this.formObj.value;
+      const { subTasks } = postBody;
+      const filteredSubTasks = subTasks.filter((item: TodoType) => {
+        return item.title;
+      });
+      postBody.subTasks = filteredSubTasks;
       this.isSubmit = true;
       this.todoService
         .todoOperation(postBody, this.conditions)
