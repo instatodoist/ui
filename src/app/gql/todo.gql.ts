@@ -28,6 +28,7 @@ ToDo.fragments = {
       _id
       title
       labels {
+        color
         name
         _id
       }
