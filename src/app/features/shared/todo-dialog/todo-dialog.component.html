@@ -40,7 +40,7 @@
                       <ul class="perfomer-lists m-0 p-0" formArrayName="subTasks">
                         <li class="d-flex align-items-center mr-4 mb-2"
                           *ngFor="let item of formObj.get('subTasks')['controls']; let i = index;"
-                          style="border: 1px solid black !important" (click)="addSubTask()">
+                          style="border: 1px solid #ccc !important" (click)="addSubTask()">
                           <ng-container [formGroupName]="i">
                             <div class="user-img img-fluid">
                               <div

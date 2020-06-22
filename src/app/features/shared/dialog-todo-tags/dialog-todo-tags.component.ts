@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { TodoLabelType } from '../../../models';
+import { Router } from '@angular/router';
+declare var $: any;
 
 @Component({
   selector: 'app-dialog-todo-tags',
@@ -15,7 +17,8 @@ export class DialogTodoTagsComponent implements OnInit {
   @Output() data: EventEmitter<string[]> = new EventEmitter<string[]>();
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) { }
 
   ngOnInit(): void { }
@@ -35,6 +38,12 @@ export class DialogTodoTagsComponent implements OnInit {
       this.labelIds.splice(index, 1);
     }
     this.data.next(this.labelIds);
+  }
+
+  redirectToTagsUi() {
+    $('.modal').modal('hide'); // closes all active pop ups.
+    $('.modal-backdrop').remove();
+    this.router.navigate(['/tasks/tags']);
   }
 
 }
