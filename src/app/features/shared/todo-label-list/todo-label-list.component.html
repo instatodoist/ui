@@ -1,3 +1,7 @@
+<li>
+  <a href="javascript:void(0)" data-toggle="modal" data-target="#exampleModalScrollable"><i class="fa fa-pencil-alt"
+      aria-hidden="true"></i></a>
+</li>
 <li *ngFor="let data of labels" routerLinkActive="active">
   <a [routerLink]="['/tasks/lists', data?.name]">
     <i class="fa fa-tag" aria-hidden="true"></i>
@@ -6,8 +10,4 @@
       {{data?.count ? data?.count : ''}}
     </span>
   </a>
-</li>
-<li>
-  <a href="javascript:void(0)" data-toggle="modal" data-target="#exampleModalScrollable"><i
-      class="fa fa-pencil-square-o mr-2" aria-hidden="true"></i></a>
 </li>
