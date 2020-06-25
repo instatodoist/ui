@@ -1,6 +1,6 @@
 <div class="modal fade" id="{{modelId}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle"
   aria-hidden="true" style="display: none;">
-  <div class="modal-dialog modal-dialog-scrollable" role="document">
+  <div class="modal-dialog modal-dialog-scrollable" role="document" [ngClass]="{'modal-lg': formObj.value._id}">
     <div class="modal-content">
       <div class="modal-header" style="border-bottom: none; padding: 0; margin-right: 10px;">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -32,12 +32,12 @@
                   </div>
 
                   <!-- Integrate SubTasks-->
-                  <div class="row mb-4 ml-3" *ngIf="formObj.value._id">
-                    <div style="width: 100%;">
+                  <ng-container *ngIf="formObj.value._id">
+                    <div class="row ml-3">
                       <h4 class="card-title"> SubTasks </h4>
                     </div>
-                    <div>
-                      <ul class="perfomer-lists m-0 p-0" formArrayName="subTasks">
+                    <div class="row mb-4 ml-3">
+                      <ul class="perfomer-lists m-0 p-0" formArrayName="subTasks" style="width: 100%;">
                         <li class="d-flex align-items-center mr-4 mb-2"
                           *ngFor="let item of formObj.get('subTasks')['controls']; let i = index;"
                           style="border: 1px solid #ccc !important" (click)="addSubTask()"
@@ -53,11 +53,11 @@
                             </div>
                             <div class="media-support-info">
                               <!-- <h6>
-                                <span> -->
+                                  <span> -->
                               <input type="text" class="form-control" formControlName="title"
                                 placeholder="Add new substask" style="padding-top: 7px !important; border:none;">
                               <!-- </span>
-                              </h6> -->
+                                </h6> -->
                             </div>
                             <div class=" ml-auto  ml-4"
                               *ngIf="formObj.get('subTasks')['controls'].length > 1 && i !== (formObj.get('subTasks')['controls'].length -1)">
@@ -70,8 +70,7 @@
                         </li>
                       </ul>
                     </div>
-                  </div>
-
+                  </ng-container>
                 </div>
                 <div class="col-sm-4" style="padding-right: 0px;">
                   <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
