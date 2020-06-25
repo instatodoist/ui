@@ -8,7 +8,7 @@ import { combineLatest, Subscription } from 'rxjs';
 import { } from '../../../gql';
 import * as moment from 'moment';
 declare var $: any;
-type ScheduledType = 'TODAY' | 'TOMORROW' | 'NEXT_WEEK' | 'CUSTOM';
+type ScheduledType = 'NO_DUE_DATE' | 'TODAY' | 'TOMORROW' | 'NEXT_WEEK' | 'CUSTOM';
 @Component({
   selector: 'app-todo-dialog',
   templateUrl: './todo-dialog.component.html',
@@ -217,7 +217,6 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscribeToModal() {
     this.modalSubscription = this.appService.externalModal.subscribe(data => {
       if (data.data.todo) {
-        console.log(data.data.todo)
         this.todo = data.data.todo;
         this.title = 'Update Task';
         this.labelIdVal = this.todo && this.todo.labels ? (this.todo.labels.map(label => {
@@ -228,7 +227,8 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           _id: this.todo && this.todo._id || '',
           title: this.todo && this.todo.title || '',
           projectId: this.todo && this.todo.projectId || '',
-          scheduledDate: this.todo && this.todo.scheduledDate ? this.todo.scheduledDate : this.sharedService.todayDate(),
+          scheduledDate: this.todo && this.todo.scheduledDate ? this.todo.scheduledDate : '',
+          scheduledType: this.todo && this.todo.scheduledDate ? 'CUSTOM' : 'NO_DUE_DATE',
           labelIds: this.labelIdVal,
           operationType: this.todo._id ? 'UPDATE' : 'ADD',
           isCompleted: this.todo && this.todo.isCompleted ? true : false
