@@ -214,6 +214,16 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.formObj.get('subTasks') as FormArray;
   }
 
+  scheduleTypeOnUpdate(scheduledDate: any) {
+    if (scheduledDate) {
+      if (moment(scheduledDate).isSame(moment(), 'day')) {
+        return 'TODAY';
+      }
+      return 'CUSTOM';
+    }
+    return 'NO_DUE_DATE';
+  }
+
   private subscribeToModal() {
     this.modalSubscription = this.appService.externalModal.subscribe(data => {
       if (data.data.todo) {
@@ -228,7 +238,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           title: this.todo && this.todo.title || '',
           projectId: this.todo && this.todo.projectId || '',
           scheduledDate: this.todo && this.todo.scheduledDate ? this.todo.scheduledDate : '',
-          scheduledType: this.todo && this.todo.scheduledDate ? 'CUSTOM' : 'NO_DUE_DATE',
+          scheduledType: this.scheduleTypeOnUpdate(this.todo.scheduledDate),
           labelIds: this.labelIdVal,
           operationType: this.todo._id ? 'UPDATE' : 'ADD',
           isCompleted: this.todo && this.todo.isCompleted ? true : false
