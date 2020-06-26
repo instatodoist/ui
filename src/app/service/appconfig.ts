@@ -3,6 +3,8 @@ import { BehaviorSubject, Subscription, of, Observable } from 'rxjs';
 import { IExternalModal, IAppData, ILanguage } from './../models';
 import { LsService } from '../service/ls.service';
 
+// TODO: Add Angular decorator.
+// TODO: Add Angular decorator.
 @Injectable({
   providedIn: 'root',
 })

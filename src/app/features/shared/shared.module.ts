@@ -61,7 +61,7 @@ import { DialogTodoProjectsComponent } from './dialog-todo-projects/dialog-todo-
   ]
 })
 export class SharedModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<SharedModule> {
     return {
       ngModule: SharedModule,
       providers: [ AppService ]
