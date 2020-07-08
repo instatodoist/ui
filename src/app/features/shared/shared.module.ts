@@ -27,7 +27,7 @@ import { DialogTodoProjectsComponent } from './dialog-todo-projects/dialog-todo-
     FileUploadComponent,
     CustomDateModalComponent,
     DialogTodoTagsComponent,
-    DialogTodoProjectsComponent
+    DialogTodoProjectsComponent,
   ],
   imports: [
     CommonModule,

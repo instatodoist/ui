@@ -37,6 +37,7 @@ export interface TodoType {
   deleteRequest?: boolean;
   scheduling?: boolean;
   scheduledDate?: Date;
+  createdAt?: Date;
   subTasks?: TodoType[];
 }
 

@@ -246,11 +246,12 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.todo.subTasks.length) {
           const subTasksControl = this.subTasks;
           (this.formObj.get('subTasks') as FormArray).clear();
-          this.todo.subTasks.forEach((element: TodoType) => {
-            subTasksControl.push(this.fb.group({
-              title: element.title,
-              isCompleted: element.isCompleted
-            }));
+          console.log(this.todo.subTasks);
+          // Sort subtasks by title
+          const subTasks = this.todo.subTasks
+            .sort((a, b) => a.title.localeCompare(b.title));
+          subTasks.forEach((element: TodoType) => {
+            subTasksControl.push(this.fb.group(element));
           });
           this.addSubTask();
         }
@@ -310,8 +311,15 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.formObj.valid) {
       const postBody = this.formObj.value;
       const { subTasks } = postBody;
-      const filteredSubTasks = subTasks.filter((item: TodoType) => {
+      let filteredSubTasks = subTasks.filter((item: TodoType) => {
         return item.title;
+      });
+      filteredSubTasks = filteredSubTasks.map((item: TodoType) => {
+        const { isCompleted, title } = item;
+        return {
+          isCompleted,
+          title
+        };
       });
       if (postBody._id) {
         postBody.subTasks = filteredSubTasks;
