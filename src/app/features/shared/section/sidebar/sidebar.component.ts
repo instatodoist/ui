@@ -6,7 +6,11 @@ import { combineLatest } from 'rxjs';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styles: []
+  styles: [`
+    .iq-menu-custom {
+      padding-bottom: 100% !important;
+    }
+  `]
 })
 export class SidebarComponent implements OnInit {
 

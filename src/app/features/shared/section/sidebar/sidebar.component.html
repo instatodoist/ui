@@ -28,7 +28,7 @@
               <i class="ri-arrow-right-s-line iq-arrow-right"></i>
             </a>
             <ul id="{{link?.name}}" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle"
-              [ngClass]="{'collapse': !link?.active, 'show': link?.active }">
+              [ngClass]="{'collapse': !link?.active, 'show': link?.active, 'iq-menu-custom':  link?.name === 'Lists' }">
               <ng-container *ngIf="link?.name !== 'Lists'">
                 <li routerLinkActive="active" *ngFor="let data of link?.children">
                   <a class="nav-link" [routerLink]="data?.link">
