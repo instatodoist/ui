@@ -100,18 +100,13 @@
                     </p>
                   </div>
                   <div class="iq-card-header-toolbar d-flex align-items-center">
-                    <ng-container
-                      *ngIf="todoCurrentType == TODOTYPES?.pending || todoCurrentType === TODOTYPES?.inbox || todoCurrentType === TODOTYPES?.today || todoCurrentType === TODOTYPES?.upcoming">
-                      <span *ngIf="todo?.project?.name" [routerLink]="['/tasks/labels', todo.project.name]"
+                    <ng-container>
+                      <span *ngIf="todo?.project?.name && ( todoCurrentType === TODOTYPES?.today || todoCurrentType === TODOTYPES?.pending || todoCurrentType === TODOTYPES?.upcoming || todoCurrentType === TODOTYPES?.inbox)" [routerLink]="['/tasks/labels', todo.project.name]"
                         class="badge badge-primary ml-2 mr-2 cursor">{{todo?.project?.name}}
                       </span>
                       <span
-                        [ngClass]="(checkScheduledDate(todo?.scheduledDate))? 'border-warning text-warning': 'border-danger text-danger'"
-                        *ngIf="todoCurrentType !== TODOTYPES?.pending && todoCurrentType !== TODOTYPES?.today && todo?.scheduledDate">
-                        {{displayDate(todo?.scheduledDate)}}
-                      </span>
-                      <span class="border-danger text-danger"
-                        *ngIf="todoCurrentType === TODOTYPES?.pending && todo?.scheduledDate">
+                        *ngIf="todoCurrentType !== TODOTYPES?.today"
+                        [ngClass]="(checkScheduledDate(todo?.scheduledDate))? 'border-warning text-warning': 'border-danger text-danger'">
                         {{displayDate(todo?.scheduledDate)}}
                       </span>
                     </ng-container>
