@@ -35,7 +35,7 @@
                       <i class="fa fa-archive cursor" aria-hidden="true"></i>
                     </a>
                   </label>
-                  <label class="ml-2 mb-0 rounded iq-bg-primary" (click)="updateGoal(goal, 'DELETE')">
+                  <label class="ml-2 mb-0 rounded iq-bg-primary" (click)="updateGoal(goal, 'IS_DELETED')">
                     <a>
                       <i class="far fa-trash-alt"></i>
                     </a>
@@ -49,7 +49,7 @@
       </div>
     </div>
   </div>
-  <button (click)="openUpdatePopUp(null, 'GOAL_ADD')" type="button"
+  <button (click)="openUpdatePopUp(null, 'IS_ADD')" type="button"
     class="bottom-right btn btn-primary active rounded-pill mb-3 mr-3"><i class="fa fa-plus" aria-hidden="true"></i>
     Note</button>
 </div>

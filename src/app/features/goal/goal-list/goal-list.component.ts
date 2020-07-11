@@ -1,12 +1,10 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { IGoalListType, IGoalConditions, IGoalType, IExternalModal, IOperationEnumType } from '../../../models';
+import { IGoalListType, IGoalConditions, IGoalType, IExternalModal, IOperationEnumType, ITemplateOperation } from '../../../models';
 import { GoalService, AppService } from '../../../service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 declare var $: any;
-
-type IGoalUpdateOperation = 'GOAL_UPDATE' | 'GOAL_ADD' | 'IS_PINNED' | 'IS_ARCHIEVED' | 'DELETE';
 
 @Component({
   selector: 'app-goal-list',
@@ -68,8 +66,8 @@ export class GoalListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.goals$.unsubscribe();
   }
 
-  openUpdatePopUp(goal: IGoalType = null, type: IGoalUpdateOperation = 'GOAL_UPDATE'): void {
-    if (type === 'GOAL_UPDATE') {
+  openUpdatePopUp(goal: IGoalType = null, type: ITemplateOperation = 'IS_UPDATE'): void {
+    if (type === 'IS_UPDATE') {
       this.extModalConfig = {
         ...this.extModalConfig,
         GOAL_ADD: false,
@@ -93,7 +91,7 @@ export class GoalListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.appService.externalModal.next(this.extModalConfig);
   }
 
-  updateGoal(goal: IGoalType = null, type: IGoalUpdateOperation = 'IS_PINNED') {
+  updateGoal(goal: IGoalType = null, type: ITemplateOperation = 'IS_PINNED') {
     let operationType: IOperationEnumType = 'ADD';
     const goalObj = {
       _id: goal._id,
@@ -114,7 +112,7 @@ export class GoalListComponent implements OnInit, AfterViewInit, OnDestroy {
         operationType,
         isAchieved: !goal.isAchieved
       });
-    } else if (type === 'DELETE') {
+    } else if (type === 'IS_DELETED') {
       operationType = 'DELETE';
       this.submit({
         ...goalObj,

@@ -4,6 +4,8 @@ export type SortEnumType = 'ASC' | 'DESC';
 
 export type IOperationEnumType = 'ADD' | 'UPDATE' | 'DELETE';
 
+export type ITemplateOperation = 'IS_ADD' | 'IS_UPDATE' | 'IS_DELETED' | 'IS_PINNED' | 'IS_ARCHIEVED';
+
 export interface IGQLLoading {
   loading?: boolean;
 }
