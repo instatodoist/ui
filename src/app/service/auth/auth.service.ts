@@ -4,7 +4,7 @@ import { environment } from '../../../environments/environment';
 import { Apollo } from 'apollo-angular';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { UserModel, IUserProfile, IUserPassword, SuccessType as ISuccessType } from '../../models';
+import { UserModel, IUserProfile, IUserPassword, ISuccessType } from '../../models';
 import {
   LOGIN_QUERY,
   REGISTER_MUTATION,

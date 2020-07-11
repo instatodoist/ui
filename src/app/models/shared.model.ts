@@ -1,6 +1,18 @@
-import { IUserProfile, TodoType, IGoalType } from '../models';
+import { IUserProfile, TodoType, IGoalType, IGoalConditions } from '../models';
 
 export type SortEnumType = 'ASC' | 'DESC';
+
+export type IOperationEnumType = 'ADD' | 'UPDATE' | 'DELETE';
+
+export interface IGQLLoading {
+  loading?: boolean;
+}
+
+export interface ISuccessType extends IGQLLoading{
+  ok?: boolean;
+  message?: string;
+}
+
 export interface IExternalModal {
   TODO_ADD?: boolean;
   TODO_UPDATE?: boolean;
@@ -8,9 +20,10 @@ export interface IExternalModal {
   GOAL_UPDATE?: boolean;
   DATE_PICKER?: boolean;
   data?: {
-    todo?: TodoType,
-    goal?: IGoalType,
-    formControlName?: string
+    todo?: TodoType;
+    goal?: IGoalType;
+    formControlName?: string;
+    conditions?: IGoalConditions;
   };
 }
 

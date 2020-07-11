@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { GoalService, AppService, UtilityService } from '../../../service';
-import { IGoalType, IExternalModal } from '../../../models';
+import { IGoalType, IExternalModal, IGoalConditions } from '../../../models';
 import { Subscription } from 'rxjs';
 declare var $: any;
 
@@ -12,29 +12,18 @@ declare var $: any;
 })
 export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  @Input()
+  @Input() // Goal object
   goal: IGoalType = null;
-  @Input()
+  @Input() // model ID
   modelId = 'goal-dialog';
+  @Input() // parent Conditions
+  conditions: IGoalConditions;
   formObj: FormGroup;
   isSubmit = false;
   popUpType = 'GOAL_ADD';
   private modalSubscription: Subscription;
   defaultConfig: IExternalModal;
-  QUILL_OPTIONS = {
-    theme: 'snow',
-    placeholder: 'Write your note here ...',
-    toolbar: [
-      [
-        'bold',
-        'italic',
-        'underline',
-        'strike',
-        'code',
-        'image'
-      ]
-    ]
-  };
+  QUILL_OPTIONS: unknown;
 
   constructor(
     private goalService: GoalService,
@@ -44,6 +33,20 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.QUILL_OPTIONS = {
+      theme: 'snow',
+      placeholder: 'Write your note here ...',
+      toolbar: [
+        [
+          'bold',
+          'italic',
+          'underline',
+          'strike',
+          'code',
+          'image'
+        ]
+      ]
+    };
     this.formObj = this.fb.group({
       _id: [''],
       title: ['', [Validators.required]],
@@ -78,6 +81,10 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscribeToModal() {
     this.modalSubscription = this.appService.externalModal.subscribe(data => {
       this.defaultConfig = { ...data };
+      if (data.data.conditions) {
+        this.conditions = data.data.conditions;
+        console.log(this.conditions);
+      }
       if (data.data.goal) {
         this.popUpType = 'GOAL_UPDATE';
         this.goal = data.data.goal;
@@ -97,7 +104,8 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   submit() {
     if (this.formObj.valid) {
       this.isSubmit = true;
-      this.goalService.goalOperation(this.formObj.value)
+      delete this.formObj.value.accomplishTenure;
+      this.goalService.goalOperation(this.formObj.value, this.conditions)
         .subscribe(() => {
           this.isSubmit = false;
           $(`#${this.modelId}`).modal('hide');

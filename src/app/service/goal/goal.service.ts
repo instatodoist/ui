@@ -13,7 +13,9 @@ import {
   IGoalConditions,
   IGoalListType,
   IGoalType,
-  SuccessType as ISuccessType
+  ISuccessType,
+  IGoalResponseType,
+  IGoalGQLNames,
 } from '../../models';
 
 @Injectable({
@@ -30,28 +32,23 @@ export class GoalService {
         variables: conditions,
         fetchPolicy: 'cache-and-network'
       })
-      .valueChanges.pipe(map((data: any) => {
-        return data.data;
-      }));
+      .valueChanges.pipe(
+        map((response: IGoalResponseType) => {
+          return {
+            data: response?.data?.listThought.data || [],
+            totalCount: response?.data?.listThought.totalCount || 0,
+            loading: response.loading
+          };
+        })
+      );
   }
 
   goalOperation(body: IGoalType, conditions: IGoalConditions = null): Observable<ISuccessType> {
     let gqlOperation = ADD_GOAL_MUTATION;
-    let defaultDataKey = 'addThought';
+    let defaultDataKey: IGoalGQLNames = 'addThought';
     const { operationType, _id, ...postBody } = body;
-    // refetch query after add or update
-    // const refetchQuery = [];
-    // // if passing conditions
-    // if (conditions) {
-    //   refetchQuery.variables = { ...conditions };
-    // }
-    if (!postBody.accomplishTenure) {
-      delete postBody.accomplishTenure;
-    }
-    // initialising gql variables
-    let variables: any = {};
-    // checking which operation - 'ADD' | 'UPDATE' | 'DELETE'
-    switch (operationType) {
+    let variables: any = {}; // initialising gql variables
+    switch (operationType) { // checking which operation - 'ADD' | 'UPDATE' | 'DELETE'
       case 'UPDATE':
         gqlOperation = UPDATE_GOAL_MUTATION;
         defaultDataKey = 'updateThought';
@@ -80,19 +77,16 @@ export class GoalService {
         {
           query: GOAL_QUERY,
           variables: {
-            filter: {
-              isAchieved: false
-            },
-            sort: {
-              createdAt: 'DESC',
-              isPinned: 'DESC'
-            }
+            ...conditions
           }
         }
       ]
     })
-      .pipe(map(({ data }: any) => {
-        return data[defaultDataKey];
-      }));
+      .pipe(
+        map((response: IGoalResponseType) => ({
+          ...response?.data[defaultDataKey],
+          loading: response.loading
+        }))
+      );
   }
 }

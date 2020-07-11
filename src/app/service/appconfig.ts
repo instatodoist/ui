@@ -19,7 +19,8 @@ export class AppService implements OnDestroy {
     GOAL_ADD: false,
     data: {
       todo: null,
-      goal: null
+      goal: null,
+      conditions: null
     }
   };
   APP_DATA: IAppData = {

@@ -27,10 +27,10 @@ import {
   TodoCompletedListType,
   TodoLabelType,
   TodoType,
-  SuccessType,
   ITodoTypeCount,
-  TodoProjectType
-} from '../../models/todo.model';
+  TodoProjectType,
+  ISuccessType,
+} from '../../models';
 @Injectable({
   providedIn: 'root',
 })
@@ -261,7 +261,7 @@ export class TodoService {
    * @param body - postbody for add/update/delete task
    * @param conditions - refetch conditions for todos-task wrt apolo
    */
-  todoOperation(body: TodoType, conditions: any = null, extraRefetch: TodoConditions = null): Observable<SuccessType> {
+  todoOperation(body: TodoType, conditions: any = null, extraRefetch: TodoConditions = null): Observable<ISuccessType> {
     let gqlOperation = TODO_ADD_MUTATION;
     let defaultDataKey = 'addTodo';
     const operationType = body.operationType;
@@ -352,7 +352,7 @@ export class TodoService {
    * @param body - postbody for add/update/delete label
    * @param conditions - refetch conditions for todos-label wrt apolo
    */
-  todoLabelOperation(body: TodoLabelType, conditions: any = null): Observable<SuccessType> {
+  todoLabelOperation(body: TodoLabelType, conditions: any = null): Observable<ISuccessType> {
     let gqlOperation = TODO_LABEL_ADD_MUTATION;
     let defaultDataKey = 'addTodoLabel';
     const {_id, operationType, ...postBody } = body;
@@ -424,7 +424,7 @@ export class TodoService {
    * @param body - postbody for add/update/delete label
    * @param conditions - refetch conditions for todos-label wrt apolo
    */
-  todoProjectOperation(body: TodoProjectType, conditions: any = null): Observable<SuccessType> {
+  todoProjectOperation(body: TodoProjectType, conditions: any = null): Observable<ISuccessType> {
     let gqlOperation = TODO_PROJECT_ADD_MUTATION;
     let defaultDataKey = 'addTodoProject';
     const operationType = body.operationType;

@@ -1,101 +1,74 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { IGoalListType, IGoalConditions, IGoalType, IExternalModal } from '../../../models';
+import { IGoalListType, IGoalConditions, IGoalType, IExternalModal, IOperationEnumType } from '../../../models';
 import { GoalService, AppService } from '../../../service';
-import { Subscription, combineLatest } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 declare var $: any;
+
+type IGoalUpdateOperation = 'GOAL_UPDATE' | 'GOAL_ADD' | 'IS_PINNED' | 'IS_ARCHIEVED' | 'DELETE';
+
 @Component({
   selector: 'app-goal-list',
   templateUrl: './goal-list.component.html',
   styleUrls: ['./goal-list.component.scss']
 })
-export class GoalListComponent implements OnInit, AfterViewInit {
+export class GoalListComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  loader = false;
-  // goals$: Subscription;
+  goals$: Subscription;
   goals: IGoalListType;
   isUpdate = false;
   goal: IGoalType = null;
   extModalConfig: IExternalModal = this.appService.ExternalModelConfig;
-  conditions: IGoalConditions = {
-    filter: {
-      isAchieved: false,
-      q: null
-    },
-    sort: {
-      createdAt: 'DESC',
-      isPinned: 'DESC'
-    }
-  };
+  conditions: IGoalConditions;
   loaderImage = this.appService.loaderImage;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private goalService: GoalService,
     private appService: AppService
-  ) { }
+  ) {
+    this.conditions = {
+      filter: {
+        isAchieved: false,
+        q: null
+      },
+      sort: {
+        createdAt: 'DESC',
+        isPinned: 'DESC'
+      }
+    };
+  }
 
   ngOnInit(): void {
-    combineLatest([
-      this.activatedRoute.queryParams,
-    ])
+    this.goals$ = this.activatedRoute.queryParams
       .pipe(
-        map(data => ({
-          query: data[0],
-        }))
+        switchMap((qParams: any) => {
+          const { q = null } = qParams;
+          this.conditions = {
+            ...this.conditions, filter: {
+              ...this.conditions.filter, q
+            }
+          };
+          return this.goalService.listGoals(this.conditions);
+        })
       )
-      .subscribe(data => {
-        this.loader = true;
-        const { query = null } = data;
-        this.conditions.filter.q = query.q || null;
-        this.goalService.listGoals(this.conditions).subscribe((response: any) => {
-          if (typeof response !== 'undefined') {
-            this.loader = false;
-            this.goals = response.listThought;
-          }
-        }, () => {
-          this.loader = false;
-        });
-      });
+      .subscribe(
+        (response) => {
+          this.goals = response;
+        }
+      );
   }
 
   ngAfterViewInit() {
     $('[data-toggle="tooltip"]').tooltip();
   }
 
-  // ngOnDestroy() {
-  //   // this.goals$.unsubscribe();
-  // }
-
-  updateGoal(goal: IGoalType = null, type = 'IS_PINNED') {
-    const goalObj = {
-      _id: goal._id,
-      title: goal.title,
-      description: goal.description
-    };
-    if (type === 'IS_PINNED') {
-      this.submit({
-        ...goalObj,
-        operationType: 'UPDATE',
-        isPinned: !goal.isPinned,
-      });
-    } else if (type === 'IS_ARCHIEVED') {
-      this.submit({
-        ...goalObj,
-        operationType: 'UPDATE',
-        isAchieved: !goal.isAchieved
-      });
-    } else if (type === 'DELETE') {
-      this.submit({
-        ...goalObj,
-        operationType: 'DELETE',
-        isDelete: !goal.isDelete
-      });
-    }
+  ngOnDestroy() {
+    this.goals$.unsubscribe();
   }
 
-  openUpdatePopUp(goal: IGoalType = null, type = 'GOAL_UPDATE'): void {
+  openUpdatePopUp(goal: IGoalType = null, type: IGoalUpdateOperation = 'GOAL_UPDATE'): void {
     if (type === 'GOAL_UPDATE') {
       this.extModalConfig = {
         ...this.extModalConfig,
@@ -103,7 +76,8 @@ export class GoalListComponent implements OnInit, AfterViewInit {
         GOAL_UPDATE: true,
         data: {
           ...this.extModalConfig.data,
-          goal
+          goal,
+          conditions: this.conditions
         }
       };
     } else {
@@ -112,16 +86,46 @@ export class GoalListComponent implements OnInit, AfterViewInit {
         GOAL_ADD: true,
         GOAL_UPDATE: false,
         data: {
-          ...this.extModalConfig.data, goal: null
+          ...this.extModalConfig.data, goal: null, conditions: this.conditions
         }
       };
     }
     this.appService.externalModal.next(this.extModalConfig);
   }
 
-  submit(goal: IGoalType = null) {
-    goal.operationType = goal.operationType || 'UPDATE';
-    this.goalService.goalOperation(goal, this.conditions).subscribe();
+  updateGoal(goal: IGoalType = null, type: IGoalUpdateOperation = 'IS_PINNED') {
+    let operationType: IOperationEnumType = 'ADD';
+    const goalObj = {
+      _id: goal._id,
+      title: goal.title,
+      description: goal.description
+    };
+    if (type === 'IS_PINNED') {
+      operationType = 'UPDATE';
+      this.submit({
+        ...goalObj,
+        operationType,
+        isPinned: !goal.isPinned,
+      });
+    } else if (type === 'IS_ARCHIEVED') {
+      operationType = 'UPDATE';
+      this.submit({
+        ...goalObj,
+        operationType,
+        isAchieved: !goal.isAchieved
+      });
+    } else if (type === 'DELETE') {
+      operationType = 'DELETE';
+      this.submit({
+        ...goalObj,
+        operationType,
+        isDelete: !goal.isDelete
+      });
+    }
+  }
+
+  submit(postBody: IGoalType = null) {
+    this.goalService.goalOperation(postBody, this.conditions).subscribe();
   }
 
 }
