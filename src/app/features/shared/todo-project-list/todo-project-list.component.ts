@@ -3,15 +3,15 @@ import { TodoService, AppService } from '../../../service';
 import { TodoLabelType } from '../../../models/todo.model';
 
 @Component({
-  selector: 'app-todo-label-list',
-  templateUrl: './todo-label-list.component.html',
+  selector: 'app-todo-project-list',
+  templateUrl: './todo-project-list.component.html',
   styles: [`
     .child-labels{
       background: var(--iq-light-primary) !important;
     }
   `]
 })
-export class TodoLabelListComponent implements OnInit {
+export class TodoProjectListComponent implements OnInit {
 
   labels: TodoLabelType[];
   currentUrl = '';

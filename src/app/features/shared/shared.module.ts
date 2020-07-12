@@ -9,19 +9,19 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { QuilljsModule } from 'ngx-quilljs';
 import { AppService } from '../../service';
 import { TodoDialogComponent } from './todo-dialog/todo-dialog.component';
-import {TodoLabelComponent} from './todo-label/todo-label.component';
-import {TodoLabelListComponent} from './todo-label-list/todo-label-list.component';
+import {TodoProjectComponent} from './todo-project/todo-project.component';
+import {TodoProjectListComponent} from './todo-project-list/todo-project-list.component';
 import { InfiniteScrollComponent } from './infinite-scroll/infinite-scroll.component';
 import { GoalDialogComponent } from '../goal/goal-dialog/goal-dialog.component';
 import { FileUploadComponent } from '../shared/file-upload/file-upload.component';
 import { CustomDateModalComponent } from './custom-date-modal/custom-date-modal.component';
-import { DialogTodoTagsComponent } from './dialog-todo-tags/dialog-todo-tags.component';
-import { DialogTodoProjectsComponent } from './dialog-todo-projects/dialog-todo-projects.component';
+import { DialogTodoTagsComponent } from './todo-tag-dialog/dialog-todo-tags.component';
+import { DialogTodoProjectsComponent } from './todo-project-dialog/dialog-todo-projects.component';
 @NgModule({
   declarations: [
     TodoDialogComponent,
-    TodoLabelComponent,
-    TodoLabelListComponent,
+    TodoProjectComponent,
+    TodoProjectListComponent,
     InfiniteScrollComponent,
     GoalDialogComponent,
     FileUploadComponent,
@@ -49,8 +49,8 @@ import { DialogTodoProjectsComponent } from './dialog-todo-projects/dialog-todo-
   ],
   exports: [
     TodoDialogComponent,
-    TodoLabelComponent,
-    TodoLabelListComponent,
+    TodoProjectComponent,
+    TodoProjectListComponent,
     InfiniteScrollComponent,
     GoalDialogComponent,
     TranslateModule,

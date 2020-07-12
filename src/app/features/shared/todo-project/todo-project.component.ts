@@ -6,11 +6,11 @@ import { TodoType, TodoProjectType, TodoConditions, OperationEnumType } from '..
 
 
 @Component({
-  selector: 'app-todo-label',
-  templateUrl: './todo-label.component.html',
-  styleUrls: ['./todo-label.component.scss']
+  selector: 'app-todo-project',
+  templateUrl: './todo-project.component.html',
+  styles: []
 })
-export class TodoLabelComponent implements OnInit, AfterViewInit {
+export class TodoProjectComponent implements OnInit, AfterViewInit {
 
   @Input()
   todo: TodoType;
