@@ -1,9 +1,7 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-// import { MDCDialog } from '@material/dialog';
-import { TodoService } from '../../../service/todo/todo.service';
-import { TodoType, TodoProjectType, TodoConditions, OperationEnumType } from '../../../models/todo.model';
-
+import { TodoService, UtilityService } from '../../../service';
+import { TodoType, TodoProjectType, TodoConditions, IOperationEnumType } from '../../../models';
 
 @Component({
   selector: 'app-todo-project',
@@ -23,11 +21,12 @@ export class TodoProjectComponent implements OnInit, AfterViewInit {
   formObj: FormGroup;
   labels: TodoProjectType[];
   // dialog: MDCDialog;
-  operationType: OperationEnumType = 'ADD';
+  operationType: IOperationEnumType = 'ADD';
 
   constructor(
     private fb: FormBuilder,
-    private todoService: TodoService
+    private todoService: TodoService,
+    private toast: UtilityService
   ) { }
 
   ngOnInit(): void {
@@ -41,13 +40,7 @@ export class TodoProjectComponent implements OnInit, AfterViewInit {
     this.getLabels();
   }
 
-  ngAfterViewInit() {
-    // this.dialog = new MDCDialog(document.querySelector('.mdc-dialog'));
-    // this.dialog.open();
-    // this.dialog.listen('MDCDialog:closing', () => {
-    //   this.isOpen.emit(false);
-    // });
-  }
+  ngAfterViewInit() {}
 
   getLabels() {
     this.todoService
@@ -86,6 +79,17 @@ export class TodoProjectComponent implements OnInit, AfterViewInit {
       .todoProjectOperation(postBody)
       .subscribe(() => {
         this.formObj.reset();
+        switch (this.operationType) {
+          case 'ADD':
+            this.toast.toastrSuccess('List has been added');
+            break;
+          case 'UPDATE':
+            this.toast.toastrSuccess('List has been updated');
+            break;
+          case 'DELETE':
+            this.toast.toastrWarning('List has been deleted');
+            break;
+        }
         this.operationType = 'ADD';
       });
   }

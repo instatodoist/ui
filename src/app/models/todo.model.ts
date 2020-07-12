@@ -8,7 +8,6 @@ import { SortEnumType } from './shared.model';
 // }
 
 type TodoEnumType = 'today' | 'backlog' | 'pending' | 'upcoming';
-export type OperationEnumType = 'ADD' | 'UPDATE' | 'DELETE';
 // export type PriorityEnumType = 'P1' | 'P2' | 'P3' | 'P4';
 
 export interface ITodoTypeCount {
