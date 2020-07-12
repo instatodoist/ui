@@ -1,0 +1,15 @@
+@media all and (max-width: 600px) and (orientation:landscape) 
+{
+  /* styles here */ 
+  .iq-top-navbar {
+    padding-bottom: 0 !important;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) { 
+  select,
+  textarea,
+  input {
+    font-size: 16px;
+  }
+}
