@@ -1,8 +1,4 @@
-<!-- <li>
-  <a href="javascript:void(0)" data-toggle="modal" data-target="#exampleModalScrollable"><i class="fa fa-pencil-alt"
-      aria-hidden="true"></i></a>
-</li> -->
-<li *ngFor="let data of labels" routerLinkActive="active">
+<li *ngFor="let data of labels" [ngClass]="{ 'child-labels': currentUrl === '/tasks/lists/' + data?.name }">
   <a [routerLink]="['/tasks/lists', data?.name]">
     <i class="fa fa-tag" aria-hidden="true"></i>
     {{data?.name | titlecase}}

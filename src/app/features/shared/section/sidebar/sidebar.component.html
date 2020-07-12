@@ -35,7 +35,7 @@
             </a>
             <ul id="{{link?.name}}" class="iq-submenu" [ngClass]="{'iq-menu-custom':  link?.name === 'Lists' }">
               <ng-container *ngIf="link?.name !== 'Lists'">
-                <li routerLinkActive="active" *ngFor="let data of link?.children">
+                <li *ngFor="let data of link?.children">
                   <a class="nav-link" [routerLink]="data?.link">
                     <i [ngClass]="data?.icon"></i>{{('' + data?.slug ) | translate}}
                     <span class="badge badge-primary ml-2 p-1" *ngIf="data?.count">
