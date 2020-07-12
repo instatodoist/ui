@@ -32,7 +32,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   operationType: OperationEnumType = 'ADD'; // default operationType if use same component for ADD/EDIT
   popUpType = 'TODO_ADD';
   todoCurrentType: string; // current route
-  currentProject = 'Personal'; // Default List name
+  currentProject = 'Inbox'; // Default List name
   labelIdVal: string[] = []; // Tags Array
   isSubmit = false; // submit button flag
   TODOTYPES = this.todoService.todoTypes(); // Types of ToDOS
