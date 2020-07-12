@@ -14,21 +14,26 @@
   <div id="sidebar-scrollbar">
     <nav class="iq-sidebar-menu">
       <ul id="iq-sidebar-toggle" class="iq-menu">
-        <li *ngFor="let link of navLinks" [ngClass]="{'active active-menu': link?.active }">
+        <li *ngFor="let link of navLinks" [ngClass]="{'active': link?.active &&  link?.name !== 'Lists'}">
           <ng-container *ngIf="!link?.children">
             <a [routerLink]="link?.link" class="iq-waves-effect" routerLinkActive>
               <i class="iq-arrow-left" [ngClass]="link?.icon"></i><span>{{('' + link?.slug ) | translate}}</span>
+              <span class="badge badge-primary ml-2 p-1" *ngIf="link?.count">
+                {{link?.count ? link?.count : ''}}
+              </span>
             </a>
           </ng-container>
           <ng-container *ngIf="link?.children && link?.children.length">
-            <a href="#{{link?.name}}" class="iq-waves-effect" data-toggle="collapse">
+            <hr>
+            <a class="iq-waves-effect ml-2">
               <span class="ripple rippleEffect"></span>
-              <i class=" iq-arrow-left" [ngClass]="link?.icon"></i>
+              <!-- <i class=" iq-arrow-left" [ngClass]="link?.icon"></i> -->
               <span>{{('' + link?.slug ) | translate}}</span>
-              <i class="ri-arrow-right-s-line iq-arrow-right"></i>
+              <i class="fa fa-pencil-alt ml-2 cursor" aria-hidden="true" style="font-size: 14px;" data-toggle="modal"
+                data-target="#exampleModalScrollable"></i>
+              <!-- <i class="ri-arrow-right-s-line iq-arrow-right"></i> -->
             </a>
-            <ul id="{{link?.name}}" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle"
-              [ngClass]="{'collapse': !link?.active, 'show': link?.active, 'iq-menu-custom':  link?.name === 'Lists' }">
+            <ul id="{{link?.name}}" class="iq-submenu" [ngClass]="{'iq-menu-custom':  link?.name === 'Lists' }">
               <ng-container *ngIf="link?.name !== 'Lists'">
                 <li routerLinkActive="active" *ngFor="let data of link?.children">
                   <a class="nav-link" [routerLink]="data?.link">

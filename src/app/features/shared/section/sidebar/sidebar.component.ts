@@ -49,20 +49,16 @@ export class SidebarComponent implements OnInit {
         };
         this.attachActiveClass(currentUrl);
         this.navLinks = this.navLinks.map(item => {
-          if (item.children && item.children.length) {
+          if (item.slug === 'today') {
+            item = { ...item, count: this.count.today };
+          } else if (item.slug === 'inbox') {
+            item = { ...item, count: this.count.inbox };
+          } else if (item.slug === 'upcoming') {
+            item = { ...item, count: this.count.upcoming };
+          } else if (item.slug === 'completed') {
+            item = { ...item, count: this.count.completed };
+          } else if (item.children && item.children.length) {
             item.children = item.children.map(child => {
-              if (child.slug === 'today') {
-                child = { ...child, count: this.count.today };
-              }
-              if (child.slug === 'inbox') {
-                child = { ...child, count: this.count.inbox };
-              }
-              if (child.slug === 'upcoming') {
-                child = { ...child, count: this.count.upcoming };
-              }
-              if (child.slug === 'completed') {
-                child = { ...child, count: this.count.completed };
-              }
               return child;
             });
           }
@@ -106,40 +102,32 @@ export class SidebarComponent implements OnInit {
   private nav(): INavLink[] {
     return [
       {
-        active: true,
-        name: 'Tasks',
-        slug: 'tasks',
-        icon: 'fa fa-tasks',
-        children: [
-          {
-            name: 'Today',
-            slug: 'today',
-            icon: 'fa fa-calendar',
-            link: '/tasks/today',
-            count: 0
-          },
-          {
-            name: 'Inbox',
-            slug: 'inbox',
-            icon: 'fa fa-inbox',
-            link: '/tasks/inbox',
-            count: 0
-          },
-          {
-            name: 'Upcoming',
-            slug: 'upcoming',
-            icon: 'far fa-calendar-plus',
-            link: '/tasks/upcoming',
-            count: 0
-          },
-          {
-            name: 'Completed',
-            slug: 'completed',
-            icon: 'fa fa-check',
-            link: '/tasks/completed',
-            count: 0
-          },
-        ]
+        name: 'Today',
+        slug: 'today',
+        icon: 'fa fa-calendar',
+        link: '/tasks/today',
+        count: 0
+      },
+      {
+        name: 'Upcoming',
+        slug: 'upcoming',
+        icon: 'far fa-calendar-plus',
+        link: '/tasks/upcoming',
+        count: 0
+      },
+      {
+        name: 'Completed',
+        slug: 'completed',
+        icon: 'fa fa-check',
+        link: '/tasks/completed',
+        count: 0
+      },
+      {
+        name: 'Inbox',
+        slug: 'inbox',
+        icon: 'fa fa-inbox',
+        link: '/tasks/inbox',
+        count: 0
       },
       {
         active: false,
@@ -153,14 +141,7 @@ export class SidebarComponent implements OnInit {
             link: '/lsits'
           }
         ]
-      },
-      // {
-      //   active: false,
-      //   name: 'Notes',
-      //   slug: 'notes',
-      //   icon: 'fa fa-sticky-note-o',
-      //   link: '/notes'
-      // }
+      }
     ];
   }
 
