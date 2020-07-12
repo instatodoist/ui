@@ -4,6 +4,6 @@ export const environment = {
   // versionUrl: process.env.APP_VERSION_URL || 'https://instatodos.netlify.app/version.json',
   // GTAG_ID: process.env.APP_GTAG_ID || ''
   API_URL: 'https://instatodo.herokuapp.com/graphql',
-  versionUrl: 'https://instatodos.com',
+  versionUrl: 'https://www.instatodos.com/version.json',
   GTAG_ID: ''
 };
