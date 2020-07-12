@@ -16,6 +16,7 @@ import {
   ISuccessType,
   IGoalResponseType,
   IGoalGQLNames,
+  IGQLVariable
 } from '../../models';
 
 @Injectable({
@@ -47,7 +48,7 @@ export class GoalService {
     let gqlOperation = ADD_GOAL_MUTATION;
     let defaultDataKey: IGoalGQLNames = 'addThought';
     const { operationType, _id, ...postBody } = body;
-    let variables: any = {}; // initialising gql variables
+    let variables: IGQLVariable<string, IGoalType> = {}; // initialising gql variables
     switch (operationType) { // checking which operation - 'ADD' | 'UPDATE' | 'DELETE'
       case 'UPDATE':
         gqlOperation = UPDATE_GOAL_MUTATION;

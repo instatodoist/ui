@@ -30,6 +30,7 @@ import {
   ITodoTypeCount,
   TodoProjectType,
   ISuccessType,
+  IGQLVariable
 } from '../../models';
 @Injectable({
   providedIn: 'root',
@@ -274,10 +275,8 @@ export class TodoService {
       refetchQuery.variables = { ...conditions };
     }
     const refetch = [refetchQuery];
-    // initialising gql variables
-    let variables: any = {};
     // initialising input body
-    const postTodo: any = {};
+    const postTodo: TodoType = {};
     // checking title
     if (body.title) {
       postTodo.title = body.title;
@@ -298,16 +297,17 @@ export class TodoService {
       postTodo.scheduledDate = null;
     }
     postTodo.subTasks = body.subTasks;
-    // checking which operation - 'ADD' | 'UPDATE' | 'DELETE'
-    switch (operationType) {
+    // initialising gql variables
+    const variables: IGQLVariable<string,  TodoType> = {};
+    switch (operationType) { // checking which operation - 'ADD' | 'UPDATE' | 'DELETE'
       case 'UPDATE':
         gqlOperation = TODO_UPDATE_MUTATION;
         defaultDataKey = 'updateTodo';
-        variables = {
-          ...variables,
-          input: { ...postTodo, isCompleted: !!body.isCompleted },
-          id: body._id
+        variables.input = {
+          ...postTodo,
+          isCompleted: !!body.isCompleted
         };
+        variables.id = body._id;
         break;
       case 'DELETE':
         gqlOperation = TODO_DELETE_MUTATION;
@@ -315,10 +315,7 @@ export class TodoService {
         variables.id = body._id;
         break;
       default:
-        variables = {
-          ...variables,
-          input: postTodo
-        };
+        variables.input = postTodo;
         break;
     }
     // const refetch = [refetchQuery];
@@ -365,7 +362,7 @@ export class TodoService {
       refetchQuery.variables = conditions;
     }
     // gql variables
-    let variables: any = {};
+    let variables: IGQLVariable<string,  TodoLabelType> = {};
     switch (operationType) {
       case 'UPDATE':
         gqlOperation = TODO_LABEL_UPDATE_MUTATION;
@@ -437,7 +434,7 @@ export class TodoService {
       refetchQuery.variables = conditions;
     }
     // gql variables
-    let variables: any = {};
+    let variables: IGQLVariable<string,  TodoProjectType> = {};
     switch (operationType) {
       case 'UPDATE':
         gqlOperation = TODO_PROJECT_UPDATE_MUTATION;
@@ -445,7 +442,7 @@ export class TodoService {
         variables = {
           ...variables,
           input: {
-            name: body.name
+            name: body.name,
           },
           id: body._id
         };
