@@ -1,9 +1,10 @@
 import { Component, OnInit, AfterViewInit, Input, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { GoalService, AppService, UtilityService } from '../../../service';
-import { IGoalType, IExternalModal, IGoalConditions, ITemplateOperation } from '../../../models';
+import { IGoalType, IExternalModal, IGoalConditions } from '../../../models';
 import { Subscription } from 'rxjs';
 declare var $: any;
+type IGoalPopupType = 'GOAL_ADD' | 'GOAL_UPDATE';
 
 @Component({
   selector: 'app-goal-dialog',
@@ -18,12 +19,12 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   modelId = 'goal-dialog';
   @Input() // parent Conditions
   conditions: IGoalConditions;
-  formObj: FormGroup;
-  isSubmit = false;
-  popUpType: ITemplateOperation = 'IS_ADD';
   private modalSubscription: Subscription;
   defaultConfig: IExternalModal;
+  formObj: FormGroup;
   QUILL_OPTIONS: unknown;
+  isSubmit = false;
+  popUpType: IGoalPopupType = 'GOAL_ADD';
 
   constructor(
     private goalService: GoalService,
@@ -83,10 +84,9 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       this.defaultConfig = { ...data };
       if (data.data.conditions) {
         this.conditions = data.data.conditions;
-        console.log(this.conditions);
       }
       if (data.data.goal) {
-        this.popUpType = 'IS_UPDATE';
+        this.popUpType = 'GOAL_UPDATE';
         this.goal = data.data.goal;
         this.formObj.patchValue({
           _id: this.goal._id,
@@ -115,9 +115,9 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           }
           this.toastr.toastrSuccess(message);
         },
-        (() => {
-          this.isSubmit = false;
-        })
+          (() => {
+            this.isSubmit = false;
+          })
         );
     }
   }
