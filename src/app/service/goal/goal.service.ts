@@ -36,7 +36,7 @@ export class GoalService {
       .valueChanges.pipe(
         map((response: IGoalResponseType) => {
           return {
-            data: response?.data?.listThought.data || [],
+            data: response?.data?.listThought.data || null,
             totalCount: response?.data?.listThought.totalCount || 0,
             loading: response.loading
           };

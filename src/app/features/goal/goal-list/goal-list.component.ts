@@ -15,11 +15,12 @@ export class GoalListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   goals$: Subscription;
   goals: IGoalListType;
-  isUpdate = false;
-  goal: IGoalType = null;
   extModalConfig: IExternalModal = this.appService.ExternalModelConfig;
   conditions: IGoalConditions;
+  isUpdate = false;
+  goal: IGoalType = null;
   loaderImage = this.appService.loaderImage;
+  loader = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -39,6 +40,7 @@ export class GoalListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loader = true;
     this.goals$ = this.activatedRoute.queryParams
       .pipe(
         switchMap((qParams: any) => {
@@ -53,6 +55,9 @@ export class GoalListComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .subscribe(
         (response) => {
+          if (response.data){
+            this.loader = false;
+          }
           this.goals = response;
         }
       );

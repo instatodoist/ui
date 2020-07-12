@@ -1,10 +1,9 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IGoalListType, IGoalConditions, IGoalType, IExternalModal } from '../../../models';
 import { GoalService, AppService } from '../../../service';
-import { Subscription, combineLatest } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
-declare var $: any;
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-goal-archieve',
@@ -39,27 +38,27 @@ export class GoalArchieveComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    combineLatest([
-      this.activatedRoute.queryParams,
-    ])
+    this.loader = true;
+    this.goals$ = this.activatedRoute.queryParams
       .pipe(
-        map(data => ({
-          query: data[0],
-        }))
+        switchMap((qParams: any) => {
+          const { q = null } = qParams;
+          this.conditions = {
+            ...this.conditions, filter: {
+              ...this.conditions.filter, q
+            }
+          };
+          return this.goalService.listGoals(this.conditions);
+        })
       )
-      .subscribe(data => {
-        this.loader = true;
-        const { query = null } = data;
-        this.conditions.filter.q = query.q || null;
-        this.goals$ = this.goalService.listGoals(this.conditions).subscribe((response: any) => {
-          if (typeof response !== 'undefined') {
+      .subscribe(
+        (response) => {
+          if (response.data){
             this.loader = false;
-            this.goals = response.listThought;
           }
-        }, () => {
-          this.loader = false;
-        });
-      });
+          this.goals = response;
+        }
+      );
   }
 
   ngOnDestroy() {
