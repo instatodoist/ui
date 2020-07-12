@@ -80,9 +80,10 @@
                         <div class="btn-group mb-2" role="group" (click)="openListPopup('projectModal')">
                           <!-- <div *ngIf="!currentProject" class="badge badge-pill badge-primary mr-2 cursor">
                             {{'Personal'}}</div> -->
-                          <div *ngIf="currentProject" class="badge badge-pill badge-primary mr-2 cursor">
+                          <div *ngIf="currentProject else chooseList" class="badge badge-pill badge-primary mr-2 cursor">
                             {{currentProject | titlecase}}</div>
-                        </div>
+                          </div>
+                          <ng-template #chooseList> <span class="text-primary cursor"> Choose </span></ng-template>
                       </div>
                     </div>
                     <div class="iq-card-body">

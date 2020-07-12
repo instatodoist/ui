@@ -32,7 +32,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   operationType: OperationEnumType = 'ADD'; // default operationType if use same component for ADD/EDIT
   popUpType = 'TODO_ADD';
   todoCurrentType: string; // current route
-  currentProject = 'Inbox'; // Default List name
+  currentProject = ''; // Default List name
   labelIdVal: string[] = []; // Tags Array
   isSubmit = false; // submit button flag
   TODOTYPES = this.todoService.todoTypes(); // Types of ToDOS
@@ -120,9 +120,10 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           let projectFilteredArr = null;
           if (this.formObj.value.projectId) {
             projectFilteredArr = projects.filter(obj => (obj._id) === this.formObj.value.projectId);
-          } else {
-            projectFilteredArr = projects.filter(obj => (obj.name).toLowerCase() === this.currentProject.toLowerCase());
           }
+          // else {
+          //   projectFilteredArr = projects.filter(obj => (obj.name).toLowerCase() === this.currentProject.toLowerCase());
+          // }
           if (projectFilteredArr && projectFilteredArr.length) {
             this.formObj.patchValue({
               projectId: projectFilteredArr[0]._id
