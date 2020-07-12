@@ -13,20 +13,20 @@ export class VersionCheckService {
 
   /**
    * Checks in every set frequency the version of frontend application
-   * @param url
-   * @param {number} frequency - in milliseconds, defaults to 30 minutes
+   * @param url - version url
+   * @param frequency - in milliseconds, defaults to 30 minutes
    */
-  public initVersionCheck(url, frequency = 1000 * 60 * 30) {
+  initVersionCheck(url: string, frequency = 1000 * 60 * 30): void {
     setInterval(() => {
       this.checkVersion(url);
-    }, 10000);
+    }, frequency);
   }
 
   /**
    * Will do the call and check if the hash has changed or not
-   * @param url
+   * @param url - version url
    */
-  private checkVersion(url) {
+  private checkVersion(url: string) {
     // timestamp these requests to invalidate caches
     this.http.get(url + '?t=' + new Date().getTime()).pipe(
       first()
@@ -57,15 +57,13 @@ export class VersionCheckService {
    * Checks if hash has changed.
    * This file has the JS hash, if it is a different one than in the version.json
    * we are dealing with version change
-   * @param currentHash
-   * @param newHash
-   * @returns {boolean}
+   * @param currentHash - old versionHash
+   * @param newHash - old versionHash
    */
-  private hasHashChanged(currentHash, newHash) {
+  private hasHashChanged(currentHash: string, newHash: string): boolean {
     if (!currentHash || currentHash === '{{POST_BUILD_ENTERS_HASH_HERE}}') {
       return false;
     }
-
     return currentHash !== newHash;
   }
 }

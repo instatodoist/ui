@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.subscribeToExtTodoAddModal();
     if (environment.production) {
-      this.versionCheckService.initVersionCheck(environment.versionUrl);
+      this.versionCheckService.initVersionCheck(environment.versionUrl, 30 * 1000);
     }
     this.titleService.setTitle(this.title);
     // network checking
