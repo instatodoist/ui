@@ -7,6 +7,7 @@ import { AuthModule } from './features/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './features/shared/shared.module';
 import { GraphqlModule } from './features/graphql/graphql.module';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 import { CanActivateAuthenticateGuard } from './guards/can-activate-authenticate.guard';
 
@@ -43,6 +44,7 @@ import { environment } from '../environments/environment';
     AppRoutingModule,
     SharedModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    LazyLoadImageModule
   ],
   exports: [
     RouterModule,

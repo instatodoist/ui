@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeLayoutComponent implements OnInit {
 
+  image = '/assets/images/login-page-graphic.jpg';
   constructor() { }
 
   ngOnInit(): void {

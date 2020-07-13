@@ -1,6 +1,13 @@
 import { Component, OnInit, AfterContentInit, AfterViewInit } from '@angular/core';
 import { AppService } from '../../../../service';
 declare var $: any;
+
+interface ICarousel {
+  image: string;
+  title: string;
+  description: string;
+}
+
 @Component({
   selector: 'app-front',
   templateUrl: './front.component.html',
@@ -8,15 +15,35 @@ declare var $: any;
 })
 export class FrontComponent implements OnInit, AfterViewInit {
 
+  carousel: ICarousel[] = [];
+
   constructor(
     private appService: AppService
-  ) { }
+  ) {
+    this.carousel = [
+      {
+        image: '/assets/images/prod_1.png',
+        title: 'Create Tasks',
+        description: 'Create Tasks to manage your daily work life priorities'
+      },
+      {
+        image: '/assets/images/prod_2.jpg',
+        title: 'Track your Productivity',
+        description: 'Easily Track your productivity on daily,monthly & yearly basis'
+      },
+      {
+        image: '/assets/images/prod_3.png',
+        title: 'Create Notes',
+        description: 'Easily make notes to remember OR to for creating & tracking the Goals .'
+      }
+    ]
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngAfterViewInit(): void {
     this.appService.changeTheme(this.appService.APP_DATA.config.theme);
-    $('.owl-carousel').each(function() {
+    $('.owl-carousel').each(function () {
       const jQuerycarousel = $(this);
       jQuerycarousel.owlCarousel({
         items: jQuerycarousel.data('items'),

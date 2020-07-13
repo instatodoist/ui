@@ -10,6 +10,7 @@ import { AuthVerifyComponent } from './auth-verify/auth-verify.component';
 import { AuthForgotComponent } from './auth-forgot/auth-forgot.component';
 import { AuthResetPasswordComponent } from './auth-reset-password/auth-reset-password.component';
 import { SharedModule } from '../shared/shared.module';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { SharedModule } from '../shared/shared.module';
     HttpClientModule,
     ReactiveFormsModule,
     FrontRoutingModule,
-    SharedModule
+    SharedModule,
+    LazyLoadImageModule
   ],
   exports: [
     SharedModule
