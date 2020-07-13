@@ -1,5 +1,5 @@
 import { SortEnumType as ISortEnumType, ISuccessType, IGQLLoading } from './shared.model';
-import { OperationEnumType as IOperationEnumType } from '../models/todo.model';
+import { IOperationEnumType } from '../models/shared.model';
 
 export type IGoalGQLNames = 'addThought' | 'updateThought' | 'deleteThought' | 'listThought';
 

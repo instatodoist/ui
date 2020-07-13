@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestro
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { TodoService, SharedService, AppService, UtilityService } from '../../../service';
-import { TodoType, TodoLabelType, TodoConditions, OperationEnumType, TodoProjectType } from '../../../models';
+import { TodoType, TodoLabelType, TodoConditions, IOperationEnumType, TodoProjectType } from '../../../models';
 import { map } from 'rxjs/operators';
 import { combineLatest, Subscription } from 'rxjs';
 import { } from '../../../gql';
@@ -29,7 +29,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   private modalSubscription: Subscription;
   private routeSubscription: Subscription;
   title = 'Add Task'; // default title if use same component for ADD/EDIT
-  operationType: OperationEnumType = 'ADD'; // default operationType if use same component for ADD/EDIT
+  operationType: IOperationEnumType = 'ADD'; // default operationType if use same component for ADD/EDIT
   popUpType = 'TODO_ADD';
   todoCurrentType: string; // current route
   currentProject = ''; // Default List name
