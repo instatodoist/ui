@@ -53,7 +53,13 @@ const authRoutes: Routes = [
       {
         path: '',
         component: HomeComponent
-      },
+      }
+    ]
+  },
+  {
+    path: 'pages',
+    component: HomeLayoutComponent,
+    children: [
       {
         path: 'privacy-policy',
         component: PrivacyPolicyComponent
