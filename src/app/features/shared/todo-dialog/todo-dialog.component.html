@@ -111,7 +111,7 @@
             </div>
           </div>
           <hr>
-          <button type="submit" class="btn btn-primary d-block w-100 mt-3" [disabled]="!formObj.valid || isSubmit">
+          <button type="submit" class="btn btn-primary d-block w-100 mb-2" [disabled]="!formObj.valid || isSubmit">
             <span *ngIf="formObj.value._id">{{'save_changes' | translate}}</span>
             <span *ngIf="!formObj.value._id">{{'save' | translate}}</span>
             <i *ngIf="isSubmit" class="fa fa-spinner fa-spin ml-2"></i>
