@@ -9,6 +9,9 @@ import { AuthVerifyComponent } from './auth-verify/auth-verify.component';
 import { AuthForgotComponent } from './auth-forgot/auth-forgot.component';
 import { AuthResetPasswordComponent } from './auth-reset-password/auth-reset-password.component';
 import { HomeComponent } from './home/home.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { TermsConditionsComponent } from './terms-conditions/terms-conditions.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
 
 const authRoutes: Routes = [
   {
@@ -50,7 +53,19 @@ const authRoutes: Routes = [
       {
         path: '',
         component: HomeComponent
-      }
+      },
+      {
+        path: 'privacy-policy',
+        component: PrivacyPolicyComponent
+      },
+      {
+        path: 'terms',
+        component: TermsConditionsComponent
+      },
+      {
+        path: 'contacts-us',
+        component: ContactUsComponent
+      },
     ]
   }
 ];

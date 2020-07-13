@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ReactiveFormsModule } from '@angular/forms';
 import { QuilljsModule } from 'ngx-quilljs';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { AppService } from '../../service';
 import { TodoDialogComponent } from './todo-dialog/todo-dialog.component';
 import {TodoProjectComponent} from './todo-project/todo-project.component';
@@ -17,6 +18,7 @@ import { FileUploadComponent } from '../shared/file-upload/file-upload.component
 import { CustomDateModalComponent } from './custom-date-modal/custom-date-modal.component';
 import { DialogTodoTagsComponent } from './todo-tag-dialog/dialog-todo-tags.component';
 import { DialogTodoProjectsComponent } from './todo-project-dialog/dialog-todo-projects.component';
+import { FooterComponent } from '../shared/section/footer/footer.component';
 @NgModule({
   declarations: [
     TodoDialogComponent,
@@ -28,6 +30,7 @@ import { DialogTodoProjectsComponent } from './todo-project-dialog/dialog-todo-p
     CustomDateModalComponent,
     DialogTodoTagsComponent,
     DialogTodoProjectsComponent,
+    FooterComponent
   ],
   imports: [
     CommonModule,
@@ -45,7 +48,8 @@ import { DialogTodoProjectsComponent } from './todo-project-dialog/dialog-todo-p
       positionClass: 'toast-bottom-right',
       preventDuplicates: true
     }),
-    QuilljsModule
+    QuilljsModule,
+    LazyLoadImageModule
   ],
   exports: [
     TodoDialogComponent,
@@ -57,7 +61,9 @@ import { DialogTodoProjectsComponent } from './todo-project-dialog/dialog-todo-p
     FileUploadComponent,
     CustomDateModalComponent,
     DialogTodoTagsComponent,
-    DialogTodoProjectsComponent
+    DialogTodoProjectsComponent,
+    FooterComponent,
+    LazyLoadImageModule
   ]
 })
 export class SharedModule {

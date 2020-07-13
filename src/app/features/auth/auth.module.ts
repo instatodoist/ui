@@ -1,25 +1,36 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FrontRoutingModule } from './auth-routing.module'
+import { FrontRoutingModule } from './auth-routing.module';
+import { HttpClientModule } from '@angular/common/http';
+import { SharedModule } from '../shared/shared.module';
+// Components
+// import { FooterComponent } from '../shared/section/footer/footer.component';
+import { HomeLayoutComponent } from '../shared/layout/home-layout/home-layout.component';
 import { AuthComponent } from './auth-login/auth.component';
 import { FrontComponent } from '../shared/layout/front/front.component';
-import { HttpClientModule } from '@angular/common/http';
 import { AuthRegisterComponent } from './auth-register/auth-register.component';
 import { AuthVerifyComponent } from './auth-verify/auth-verify.component';
 import { AuthForgotComponent } from './auth-forgot/auth-forgot.component';
 import { AuthResetPasswordComponent } from './auth-reset-password/auth-reset-password.component';
-import { SharedModule } from '../shared/shared.module';
-import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { HomeComponent } from './home/home.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { TermsConditionsComponent } from './terms-conditions/terms-conditions.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
 
 @NgModule({
   declarations: [
+    HomeLayoutComponent,
     FrontComponent,
     AuthComponent,
     AuthRegisterComponent,
     AuthVerifyComponent,
     AuthForgotComponent,
-    AuthResetPasswordComponent
+    AuthResetPasswordComponent,
+    HomeComponent,
+    PrivacyPolicyComponent,
+    TermsConditionsComponent,
+    ContactUsComponent
   ],
   imports: [
     CommonModule,
@@ -27,7 +38,6 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
     ReactiveFormsModule,
     FrontRoutingModule,
     SharedModule,
-    LazyLoadImageModule
   ],
   exports: [
     SharedModule
