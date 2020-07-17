@@ -11,6 +11,7 @@ export class AccountUpdateComponent implements OnInit, AfterViewInit {
 
   formObj: FormGroup;
   defaultProfileImage = this.appService.defautProfileImage;
+  uploadedImage = '';
 
   constructor(
     private fb: FormBuilder,
@@ -25,9 +26,13 @@ export class AccountUpdateComponent implements OnInit, AfterViewInit {
       lastname: [''],
       profileImg: [null]
     });
-    this.getProfile();
-    this.formObj.get('profileImg').valueChanges.subscribe((item) => {
-      console.log(item);
+    // this.getProfile();
+    this.appService.APP_LEVEL.subscribe(({session}) => {
+      this.formObj.patchValue({
+        firstname: session?.firstname || '',
+        lastname: session?.lastname || ''
+      });
+      this.uploadedImage = session?.profilePic?.url;
     });
   }
 
@@ -37,9 +42,11 @@ export class AccountUpdateComponent implements OnInit, AfterViewInit {
 
   getProfile() {
     this.authService.profile().subscribe((data) => {
-      this.formObj.patchValue({
-        firstname: data.firstname,
-        lastname: data.lastname
+      this.appService.__updateCoreAppData({
+        ...this.appService.APP_DATA,
+        session: {
+          ...this.appService.APP_DATA.session, ...data
+        }
       });
     });
   }
@@ -50,8 +57,8 @@ export class AccountUpdateComponent implements OnInit, AfterViewInit {
       if (profileImg) {
         postBody.image = profileImg;
       }
-      console.log(postBody);
       this.authService.updateProfile(postBody).subscribe(() => {
+        this.getProfile();
         this.utilityService.toastrSuccess('Profile Info updated succesfully');
       });
     }

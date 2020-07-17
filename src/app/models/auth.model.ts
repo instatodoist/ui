@@ -12,6 +12,9 @@ export interface IUserProfile {
   lastname?: string;
   firstname?: string;
   image?: unknown;
+  profilePic: {
+    url: string
+  };
 }
 export interface UserType {
   email: string;

@@ -7,6 +7,9 @@ export const PROFILE_QUERY = gql`
       id
       firstname
       lastname
+      profilePic {
+        url
+      }
     }
   }
 `;

@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subscription, of, Observable } from 'rxjs';
-import { IExternalModal, IAppData, ILanguage } from './../models';
+import { IExternalModal, IAppData, ILanguage, IUserProfile } from './../models';
 import { LsService } from '../service/ls.service';
 
 // TODO: Add Angular decorator.
@@ -57,7 +57,7 @@ export class AppService implements OnDestroy {
     this.externalModal.next(obj);
   }
 
-  updateCoreAppData(data: IAppData) {
+  __updateCoreAppData(data: IAppData) {
     this.APP_LEVEL.next(data);
   }
 
@@ -84,7 +84,7 @@ export class AppService implements OnDestroy {
   // subscribe & update any app level data
   private subscribeToAppData() {
     this.APP_LEVEL.subscribe((data: IAppData) => {
-      this.APP_DATA = data;
+      this.APP_DATA = {...this.APP_DATA, ...data};
     });
     this.externalModal.subscribe((data: IExternalModal) => {
       this.ExternalModelConfig = {...this.ExternalModelConfig, ...data};

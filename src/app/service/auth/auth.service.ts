@@ -118,10 +118,11 @@ export class AuthService {
   profile(): Observable<UserModel.IUserProfile> {
     return this.apollo
       .watchQuery({
-        query: PROFILE_QUERY
+        query: PROFILE_QUERY,
+        fetchPolicy: 'cache-and-network'
       })
       .valueChanges.pipe(map(({ data }: any) => {
-        return data.profile;
+        return data?.profile || null;
       }));
   }
 

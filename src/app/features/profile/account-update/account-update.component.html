@@ -9,7 +9,7 @@
       <form [formGroup]="formObj" (ngSubmit)="submit()" novalidate>
         <div class="form-group row align-items-center">
           <div class="col-md-12">
-            <app-file-upload formControlName="profileImg" [src]="defaultProfileImage"></app-file-upload>
+            <app-file-upload formControlName="profileImg" [src]="uploadedImage || defaultProfileImage"></app-file-upload>
           </div>
         </div>
         <div class=" row align-items-center">

@@ -7,7 +7,7 @@ import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService, AppService } from '../../../../service';
 import { Subscription } from 'rxjs';
-import { ILanguage } from '../../../../models';
+import { ILanguage, IUserProfile } from '../../../../models';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
 
   tabTitle = 'InstaTodo';
   headerTitle: string;
-  session: any;
+  session: IUserProfile;
   formObj: FormGroup;
   languages$: Subscription;
   languages: ILanguage[] = [];
@@ -69,6 +69,9 @@ export class HeaderComponent implements OnInit {
         query: urlTree.queryParams.q
       });
     }
+    this.appService.APP_LEVEL.subscribe(({ session }) => {
+      this.session = session;
+    });
   }
 
   ngOnInit() {
@@ -100,6 +103,10 @@ export class HeaderComponent implements OnInit {
     this.userService.profile()
       .subscribe(data => {
         this.session = data;
+        this.appService.__updateCoreAppData({
+          ...this.appService.APP_DATA,
+          session: this.session
+        });
       });
   }
 
@@ -121,7 +128,7 @@ export class HeaderComponent implements OnInit {
     this.translate.use(lang.value);
     this.defaultLang = lang;
     localStorage.setItem('lang', JSON.stringify(lang));
-    this.appService.updateCoreAppData({ ...this.appService.APP_DATA, lang });
+    this.appService.__updateCoreAppData({ ...this.appService.APP_DATA, lang });
     // this.languages = this.languages.filter(item => item.value !== lang.value);
   }
 
