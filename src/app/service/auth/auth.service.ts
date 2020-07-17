@@ -126,10 +126,15 @@ export class AuthService {
   }
 
   updateProfile(postBody: IUserProfile): Observable<IUserProfile> {
+    const { image, ...body} = postBody;
     return this.apollo.mutate({
       mutation: PROFILE_UPDATE_GQL,
       variables: {
-        input: postBody
+        input: body,
+        image: postBody.image
+      },
+      context: {
+        useMultipart: true
       }
     })
       .pipe(map(({ data }: any) => {

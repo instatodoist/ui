@@ -69,7 +69,7 @@ const authRoutes: Routes = [
         component: TermsConditionsComponent
       },
       {
-        path: 'contacts-us',
+        path: 'contact-us',
         component: ContactUsComponent
       },
     ]

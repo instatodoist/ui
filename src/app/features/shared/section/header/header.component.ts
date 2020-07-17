@@ -23,6 +23,7 @@ export class HeaderComponent implements OnInit {
   languages$: Subscription;
   languages: ILanguage[] = [];
   defaultLang: ILanguage = null;
+  defaultProfileImage = this.appService.defautProfileImage;
 
   constructor(
     private router: Router,

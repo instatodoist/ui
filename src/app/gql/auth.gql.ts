@@ -12,8 +12,8 @@ export const PROFILE_QUERY = gql`
 `;
 
 export const PROFILE_UPDATE_GQL = gql`
-  mutation updateProfile( $input: ProfileInputType) {
-    updateProfile(input: $input){
+  mutation updateProfile($file: Upload, $input: ProfileInputType) {
+    updateProfile(input: $input, image: $file){
       lastname
       firstname
     }

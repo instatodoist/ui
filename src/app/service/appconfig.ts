@@ -77,6 +77,10 @@ export class AppService implements OnDestroy {
     return '/assets/facelift/images/page-img/page-load-loader.gif';
   }
 
+  get defautProfileImage() {
+    return '/assets/facelift/images/defafault_user.png';
+  }
+
   // subscribe & update any app level data
   private subscribeToAppData() {
     this.APP_LEVEL.subscribe((data: IAppData) => {

@@ -11,6 +11,7 @@ export interface IUserProfile {
   email?: string;
   lastname?: string;
   firstname?: string;
+  image?: unknown;
 }
 export interface UserType {
   email: string;

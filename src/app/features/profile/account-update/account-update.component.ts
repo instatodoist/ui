@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { AuthService, UtilityService } from '../../../service';
+import { AuthService, UtilityService, AppService } from '../../../service';
 
 @Component({
   selector: 'app-account-update',
@@ -10,10 +10,11 @@ import { AuthService, UtilityService } from '../../../service';
 export class AccountUpdateComponent implements OnInit, AfterViewInit {
 
   formObj: FormGroup;
-  src = '/assets/facelift/images/user/11.png';
+  defaultProfileImage = this.appService.defautProfileImage;
 
   constructor(
     private fb: FormBuilder,
+    private appService: AppService,
     private authService: AuthService,
     private utilityService: UtilityService
   ) { }
@@ -47,7 +48,7 @@ export class AccountUpdateComponent implements OnInit, AfterViewInit {
     if (this.formObj.valid && this.formObj.dirty) {
       const { profileImg, ...postBody } = this.formObj.value;
       if (profileImg) {
-        postBody.profileImg = profileImg;
+        postBody.image = profileImg;
       }
       console.log(postBody);
       this.authService.updateProfile(postBody).subscribe(() => {
