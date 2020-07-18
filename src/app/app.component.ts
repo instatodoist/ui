@@ -16,7 +16,7 @@ import { IExternalModal } from './models';
 import { environment } from '../environments/environment';
 declare var $: any;
 // declare ga as a function to set and sent the events
-// declare var gtag: Function;
+declare var gtag: (arg0: string, arg1: string, arg2?: string, arg3?: string) => void;
 
 @Component({
   selector: 'app-root',
@@ -50,11 +50,11 @@ export class AppComponent implements OnInit {
       if (event instanceof NavigationEnd) {
         window.scroll(0, 0); // scroll to top on route change
         this.appService.updateCurentUrl(this.router.url);
-        // console.log(gTag)
-        // if (environment.production) {
-        //   gtag('set', 'page', event.urlAfterRedirects);
-        //   gtag('send', 'pageview');
-        // }
+        // send analytics
+        if (environment.production) {
+          gtag('set', 'page', event.urlAfterRedirects);
+          gtag('send', 'pageview');
+        }
       }
       if (event instanceof NavigationError) {
         this.loading = false;
@@ -91,5 +91,4 @@ export class AppComponent implements OnInit {
       this.extModalConfig = data;
     });
   }
-
 }
