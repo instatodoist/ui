@@ -45,21 +45,16 @@ export class AppComponent implements OnInit {
     // set default lang as english
     translate.setDefaultLang('en');
     // Add Analytics
-    // window['dataLayer'] = window['dataLayer'] || [];
-    // function gtag() { dataLayer.push(arguments); }
-    // gtag('js', new Date());
-    // gtag('config', environment.GTAG_ID);
-    // console.log(gtag);
     // setting navigation start/end status
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
-        // console.log(gTag)
-        // if (environment.production) {
-        // gtag('set', 'page', event.urlAfterRedirects);
-        // gtag('send', 'pageview');
-        // }
         window.scroll(0, 0); // scroll to top on route change
         this.appService.updateCurentUrl(this.router.url);
+        // console.log(gTag)
+        if (environment.production) {
+          gtag('set', 'page', event.urlAfterRedirects);
+          gtag('send', 'pageview');
+        }
       }
       if (event instanceof NavigationError) {
         this.loading = false;

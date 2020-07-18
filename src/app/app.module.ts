@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './features/shared/shared.module';
 import { GraphqlModule } from './features/graphql/graphql.module';
 // import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { GoogleAnalyticService } from './service/analytics/google-analytic.service';
 
 import { CanActivateAuthenticateGuard } from './guards/can-activate-authenticate.guard';
 
@@ -51,7 +52,8 @@ import { environment } from '../environments/environment';
     SharedModule
   ],
   providers: [
-    CanActivateAuthenticateGuard
+    CanActivateAuthenticateGuard,
+    GoogleAnalyticService
   ],
   entryComponents: [],
   bootstrap: [AppComponent]
