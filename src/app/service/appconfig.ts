@@ -123,7 +123,7 @@ export class AppService implements OnDestroy {
   }
 
   configureSeo(title: string, metaTags: IMetaTag[] = null) {
-    this.titleService.setTitle(`${title} | InstaTodo`);
+    this.titleService.setTitle(`${title} | InstaTodos`);
     if (metaTags && metaTags.length) {
       this.metaService.addTags(metaTags);
     }
