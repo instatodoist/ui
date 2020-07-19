@@ -1,6 +1,7 @@
+import { Title, Meta } from '@angular/platform-browser';
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subscription, of, Observable } from 'rxjs';
-import { IExternalModal, IAppData, ILanguage, IUserProfile } from './../models';
+import { IExternalModal, IAppData, ILanguage, IMetaTag } from './../models';
 import { LsService } from '../service/ls.service';
 
 // TODO: Add Angular decorator.
@@ -44,6 +45,8 @@ export class AppService implements OnDestroy {
   }
 
   constructor(
+    private titleService: Title,
+    private metaService: Meta,
     private lsService: LsService
   ) {
     // initialize app level data
@@ -119,5 +122,12 @@ export class AppService implements OnDestroy {
       },
     ];
     return of(lang);
+  }
+
+  configureSeo(title: string, metaTags?: IMetaTag[]) {
+    this.titleService.setTitle(`InstaTodo: ${title}`);
+    if (metaTags.length) {
+      this.metaService.addTags(metaTags);
+    }
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { LsService, AuthService } from '../../../service';
+import { LsService, AuthService, AppService } from '../../../service';
 
 @Component({
   selector: 'app-auth',
@@ -19,10 +19,13 @@ export class AuthComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private lsService: LsService
+    private lsService: LsService,
+    private appService: AppService
   ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.appService.configureSeo('Login');
+  }
 
   // auth check after submit
   signIn(): void {

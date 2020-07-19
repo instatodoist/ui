@@ -1,13 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Title } from '@angular/platform-browser';
 import {
   Router,
   Event,
-  NavigationCancel,
   NavigationEnd,
-  NavigationError,
-  NavigationStart
 } from '@angular/router';
 import { Observable, Observer, fromEvent, merge, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -26,40 +22,52 @@ declare var gtag: (arg0: string, arg1: string, arg2?: string, arg3?: string) => 
     { provide: Window, useValue: window }
   ]
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
 
-  title = 'InstaTodo';
   loading = false;
   extModalConfig: IExternalModal;
   modalSubscription: Subscription;
+  routerEventSubscription: Subscription;
 
   constructor(
-    private window: Window,
     translate: TranslateService,
     private router: Router,
-    private titleService: Title,
     private utilityService: UtilityService,
     private versionCheckService: VersionCheckService,
     private appService: AppService
   ) {
-    // set default lang as english
-    translate.setDefaultLang('en');
-    // Add Analytics
-    // setting navigation start/end status
-    this.router.events.subscribe((event: Event) => {
+    translate.setDefaultLang('en'); // set default lang as english
+    this.routerEventSubscription = this.router.events.subscribe((event: Event) => { // setting navigation start/end status
       if (event instanceof NavigationEnd) {
-        window.scroll(0, 0); // scroll to top on route change
-        this.appService.updateCurentUrl(this.router.url);
-        // send analytics
-        if (environment.production) {
+        if (environment.production) { // send analytics
           gtag('set', 'page', event.urlAfterRedirects);
           gtag('send', 'pageview');
         }
-      }
-      if (event instanceof NavigationError) {
-        this.loading = false;
+        if (this.router.url === '/') {
+          this.setMetaTags();
+        }
+        window.scroll(0, 0); // scroll to top on route change
+        this.appService.updateCurentUrl(this.router.url); // update current url via through Behaviour Subject
       }
     });
+  }
+
+  // used for open & closing of todo add modal
+  private subscribeToExtTodoAddModal() {
+    this.modalSubscription = this.appService.externalModal.subscribe(data => {
+      this.extModalConfig = data;
+    });
+  }
+
+  private setMetaTags() {
+    this.appService.configureSeo('Enhance Productivity', [
+      {
+        name: 'description',
+        content: 'Enhance your Productivity & make your life more better Organize yourself you never experienced ever.'
+      },
+      { name: 'keywords', content: 'Todo, Tasks, Productivity, work' },
+      { charset: 'UTF-8' }
+    ]);
   }
 
   ngOnInit(): void {
@@ -67,14 +75,18 @@ export class AppComponent implements OnInit {
     if (environment.production) {
       this.versionCheckService.initVersionCheck(environment.versionUrl, 30 * 1000);
     }
-    this.titleService.setTitle(this.title);
-    // network checking
-    this.createOnline$().subscribe(isOnline => {
+    this.createOnline$().subscribe(isOnline => { // network checking
       !isOnline ?
         this.utilityService.toastrWarning('Network is down', { close: false, timeout: false, overlay: true }) : null;
       // this.utilityService.toastrSuccess('Network is up');
     });
   }
+
+  ngOnDestroy() {
+    this.routerEventSubscription.unsubscribe();
+    this.modalSubscription.unsubscribe();
+  }
+
   createOnline$() {
     return merge<boolean>(
       fromEvent(window, 'offline').pipe(map(() => false)),
@@ -83,12 +95,5 @@ export class AppComponent implements OnInit {
         sub.next(navigator.onLine);
         sub.complete();
       }));
-  }
-
-  // used for open & closing of todo add modal
-  private subscribeToExtTodoAddModal() {
-    this.modalSubscription = this.appService.externalModal.subscribe(data => {
-      this.extModalConfig = data;
-    });
   }
 }

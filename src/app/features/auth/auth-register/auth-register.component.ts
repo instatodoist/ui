@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
-import { AuthService } from '../../../service/auth/auth.service';
-import { LsService } from '../../../service/ls.service';
+import { LsService, AppService, AuthService } from '../../../service';
 import { UserModel } from '../../../models';
 
 @Component({
@@ -20,29 +19,32 @@ export class AuthRegisterComponent implements OnInit {
   });
 
   constructor(
+    private appService: AppService,
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private lsService: LsService ) { }
+    private lsService: LsService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.appService.configureSeo('Sign Up');
+  }
 
   // auth check after submit
   register(): void {
     this.loader = true;
     this.isSubmit = true;
     this.authService.register(this.signinForm.value)
-    .subscribe((response: UserModel.RegisterResponse) => {
-      const data = response;
-      this.router.navigate(['auth/verification', data.hashToken]);
-      this.loader = false;
-      this.isSubmit = false;
-    },
-    () => {
-      this.isSubmit = false;
-      this.loader = false;
-    }
-    );
+      .subscribe((response: UserModel.RegisterResponse) => {
+        const data = response;
+        this.router.navigate(['auth/verification', data.hashToken]);
+        this.loader = false;
+        this.isSubmit = false;
+      },
+        () => {
+          this.isSubmit = false;
+          this.loader = false;
+        }
+      );
   }
 
 }
