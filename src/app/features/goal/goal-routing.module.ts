@@ -14,14 +14,14 @@ const routes: Routes = [
         path: '',
         component: GoalListComponent,
         data: {
-          header_title: 'my_goals'
+          header_title: 'notes'
         }
       },
       {
         path: 'archieved',
         component: GoalArchieveComponent,
         data: {
-          header_title: 'my_goals'
+          header_title: 'notes-archieved'
         }
       }
     ]

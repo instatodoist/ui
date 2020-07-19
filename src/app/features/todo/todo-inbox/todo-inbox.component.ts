@@ -148,6 +148,10 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
           this.getTodosCount();
           this.getTodos(this.conditions);
         }
+        // title
+        if (this.todoCurrentType) {
+          this.appService.configureSeo(this.todoCurrentType);
+        }
       });
   }
 

@@ -21,6 +21,8 @@
   "completed": "Completed",
   "lists": "Lists",
   "notes": "Notes",
+  "notes-archieved": "Archieved Notes",
+  "tags": "Tags",
   "completed_todos": "Completed Tasks",
   "label_filter": "Filtered tasks",
   "type_here_to_search": "Type here to search...",
@@ -28,6 +30,7 @@
   "save_changes": "Save changes",
   "save": "Save",
   "login": "Sign In",
-  "register": "Singn Up"
-  
+  "register": "Singn Up",
+  "account_password": "Update Password",
+  "account_update": "Update Account Information"
 }

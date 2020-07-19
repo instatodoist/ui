@@ -33,7 +33,7 @@ const routes: Routes = [
         path: 'completed',
         component: TodoInboxComponent,
         data: {
-          header_title: 'completed_todos'
+          header_title: 'completed'
         }
       },
       {
@@ -46,9 +46,6 @@ const routes: Routes = [
       {
         path: 'lists/:label',
         component: TodoInboxComponent,
-        data: {
-          header_title: 'label_filter'
-        }
       },
       {
         path: 'tags',
