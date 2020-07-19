@@ -25,9 +25,7 @@ export class AuthRegisterComponent implements OnInit {
     private router: Router,
     private lsService: LsService) { }
 
-  ngOnInit(): void {
-    this.appService.configureSeo('Sign Up');
-  }
+  ngOnInit(): void {}
 
   // auth check after submit
   register(): void {

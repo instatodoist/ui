@@ -22,26 +22,44 @@ const authRoutes: Routes = [
       {
         path: 'login',
         component: AuthComponent,
+        data: {
+          header_title: 'login'
+        }
       },
       {
         path: 'forgot-password',
         component: AuthForgotComponent,
+        data: {
+          header_title: 'forgot-password'
+        }
       },
       {
         path: 'forgot-password/confirmation/:hash',
         component: AuthVerifyComponent,
+        data: {
+          header_title: 'forgot-password-confirmation'
+        }
       },
       {
         path: 'reset-password/:hash',
         component: AuthResetPasswordComponent,
+        data: {
+          header_title: 'reset-password'
+        }
       },
       {
         path: 'register',
         component: AuthRegisterComponent,
+        data: {
+          header_title: 'register'
+        }
       },
       {
         path: 'verification/:hash',
         component: AuthVerifyComponent,
+        data: {
+          header_title: 'verification'
+        }
       }
     ]
   },

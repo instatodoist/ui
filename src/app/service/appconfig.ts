@@ -4,8 +4,6 @@ import { BehaviorSubject, Subscription, of, Observable } from 'rxjs';
 import { IExternalModal, IAppData, ILanguage, IMetaTag } from './../models';
 import { LsService } from '../service/ls.service';
 
-// TODO: Add Angular decorator.
-// TODO: Add Angular decorator.
 @Injectable({
   providedIn: 'root',
 })
@@ -124,9 +122,9 @@ export class AppService implements OnDestroy {
     return of(lang);
   }
 
-  configureSeo(title: string, metaTags?: IMetaTag[]) {
-    this.titleService.setTitle(`InstaTodo: ${title}`);
-    if (metaTags.length) {
+  configureSeo(title: string, metaTags: IMetaTag[] = null) {
+    this.titleService.setTitle(`${title} | InstaTodo`);
+    if (metaTags && metaTags.length) {
       this.metaService.addTags(metaTags);
     }
   }

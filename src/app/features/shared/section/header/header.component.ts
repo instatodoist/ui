@@ -35,31 +35,6 @@ export class HeaderComponent implements OnInit {
     private authService: AuthService,
     private appService: AppService
   ) {
-    this.router
-      .events
-      .pipe(
-        filter(event => event instanceof NavigationEnd),
-        map(() => {
-          let child = this.activatedRoute.firstChild;
-          while (child) {
-            if (child.firstChild) {
-              child = child.firstChild;
-            } else if (child.snapshot.data && child.snapshot.data.header_title) {
-              return child.snapshot.data.header_title;
-            } else {
-              return null;
-            }
-          }
-          return null;
-        })
-      )
-      .subscribe((title: any) => {
-        this.headerTitle = title;
-        // tslint:disable-next-line: no-shadowed-variable
-        this.translate.get(title).subscribe(title => {
-          this.titleService.setTitle(title + ' | ' + this.tabTitle);
-        });
-      });
     this.formObj = this.fb.group({
       query: ['']
     });

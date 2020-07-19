@@ -23,9 +23,7 @@ export class AuthComponent implements OnInit {
     private appService: AppService
   ) { }
 
-  ngOnInit(): void {
-    this.appService.configureSeo('Login');
-  }
+  ngOnInit(): void {}
 
   // auth check after submit
   signIn(): void {
