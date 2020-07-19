@@ -8,7 +8,7 @@
             {{link?.name}}
           </a>
           <ng-template #external>
-            <a href="link?.href" [ngClass]="{ 'text-warning': !link?.internal }" target="_blank">
+            <a href="{{link?.href}}" [ngClass]="{ 'text-warning': !link?.internal }" target="_blank">
               {{link?.name}}
             </a>
           </ng-template>
