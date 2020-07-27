@@ -99,7 +99,7 @@ export class AppComponent implements OnInit, OnDestroy {
     ]);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.routerEventSubscription.unsubscribe();
     this.modalSubscription.unsubscribe();
   }

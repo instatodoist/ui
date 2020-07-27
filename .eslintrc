@@ -9,7 +9,8 @@
   },
   "parser": "@typescript-eslint/parser",
   "plugins": [
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "html"
   ],
   "extends": [
     "eslint:recommended",
@@ -24,6 +25,19 @@
     "comma-dangle": [
       "error",
       "never"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "no-trailing-spaces": "error",
+    "space-before-function-paren": [
+      "error",
+      {
+        "anonymous": "always",
+        "named": "never",
+        "asyncArrow": "always"
+      }
     ]
   }
 }

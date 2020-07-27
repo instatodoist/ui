@@ -36,7 +36,7 @@ export class FrontComponent implements OnInit, AfterViewInit {
         title: 'Create Notes',
         description: 'Easily make notes to remember OR to for creating & tracking the Goals .'
       }
-    ]
+    ];
   }
 
   ngOnInit(): void { }
