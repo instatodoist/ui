@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, AfterViewInit, EventEmitter } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-declare var flatpickr: any;
-declare var $: any;
+declare let flatpickr: any;
+declare let $: any;
 type Operation = 'ADD' | 'UPDATE';
 @Component({
   selector: 'app-custom-date-modal',

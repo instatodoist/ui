@@ -10,7 +10,7 @@ describe('DialogTodoProjectsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ DialogTodoProjectsComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

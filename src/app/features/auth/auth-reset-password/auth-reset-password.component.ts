@@ -24,7 +24,7 @@ export class AuthResetPasswordComponent implements OnInit {
   ngOnInit(): void {
     this.formObj = this.fb.group({
       password: ['', Validators.required],
-      hashToken: ['', Validators.required],
+      hashToken: ['', Validators.required]
     });
     this.activatedRoute.params.subscribe((params) => {
       this.formObj.patchValue({
@@ -39,15 +39,15 @@ export class AuthResetPasswordComponent implements OnInit {
     this.loader = true;
     this.isSubmit = true;
     this.authService.resetPassword(this.formObj.value)
-    .subscribe(() => {
-      this.loader = false;
-      this.isSubmit = false;
-      this.router.navigate(['/']);
-    },
-    () => {
-      this.isSubmit = false;
-      this.loader = false;
-    });
+      .subscribe(() => {
+        this.loader = false;
+        this.isSubmit = false;
+        this.router.navigate(['/']);
+      },
+      () => {
+        this.isSubmit = false;
+        this.loader = false;
+      });
   }
 
 }

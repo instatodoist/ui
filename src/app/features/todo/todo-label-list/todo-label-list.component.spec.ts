@@ -10,7 +10,7 @@ describe('TodoLabelListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ TodoLabelListComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

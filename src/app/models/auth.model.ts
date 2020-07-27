@@ -25,4 +25,4 @@ export interface RegisterResponse {
   ok?: boolean;
   message?: string;
   hashToken?: string;
-};
+}

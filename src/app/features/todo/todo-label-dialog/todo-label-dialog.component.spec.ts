@@ -10,7 +10,7 @@ describe('TodoLabelDialogComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ TodoLabelDialogComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -2,12 +2,12 @@ import { Component, OnInit, Input, AfterViewInit, Output, EventEmitter } from '@
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { TodoLabelType } from '../../../models';
 import { Router } from '@angular/router';
-declare var $: any;
+declare let $: any;
 
 @Component({
   selector: 'app-dialog-todo-tags',
   templateUrl: './dialog-todo-tags.component.html',
-  styleUrls: ['./dialog-todo-tags.component.scss'],
+  styleUrls: ['./dialog-todo-tags.component.scss']
 })
 export class DialogTodoTagsComponent implements OnInit {
 

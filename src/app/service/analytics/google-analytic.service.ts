@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+// eslint-disable-next-line @typescript-eslint/ban-types
 declare let ga: Function; // Declare ga as a function
 
 @Injectable({

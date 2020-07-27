@@ -33,7 +33,7 @@ import {
   IGQLVariable
 } from '../../models';
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 
 export class TodoService {
@@ -198,7 +198,7 @@ export class TodoService {
     return this.apollo
       .watchQuery({
         query: TODO_LIST_COUNT_QUERY,
-        variables: conditions,
+        variables: conditions
         // fetchPolicy: 'network-only'
       })
       .valueChanges.pipe(map(({ data }: any) => {
@@ -207,7 +207,7 @@ export class TodoService {
           today: data.today.totalCount || 0,
           inbox: data.inbox.totalCount || 0,
           completed: data.completed.totalCount || 0,
-          upcoming: data.upcoming.totalCount || 0,
+          upcoming: data.upcoming.totalCount || 0
         };
       }));
   }
@@ -251,7 +251,7 @@ export class TodoService {
         query: TODO_LABEL_QUERY,
         variables: {
           sort: { updatedAt: 'ASC' }
-        },
+        }
       })
       .valueChanges.pipe(map(({ data }: any) => {
         return data.todoLabelList;
@@ -300,23 +300,23 @@ export class TodoService {
     // initialising gql variables
     const variables: IGQLVariable<string,  TodoType> = {};
     switch (operationType) { // checking which operation - 'ADD' | 'UPDATE' | 'DELETE'
-      case 'UPDATE':
-        gqlOperation = TODO_UPDATE_MUTATION;
-        defaultDataKey = 'updateTodo';
-        variables.input = {
-          ...postTodo,
-          isCompleted: !!body.isCompleted
-        };
-        variables.id = body._id;
-        break;
-      case 'DELETE':
-        gqlOperation = TODO_DELETE_MUTATION;
-        defaultDataKey = 'deleteTodo';
-        variables.id = body._id;
-        break;
-      default:
-        variables.input = postTodo;
-        break;
+    case 'UPDATE':
+      gqlOperation = TODO_UPDATE_MUTATION;
+      defaultDataKey = 'updateTodo';
+      variables.input = {
+        ...postTodo,
+        isCompleted: !!body.isCompleted
+      };
+      variables.id = body._id;
+      break;
+    case 'DELETE':
+      gqlOperation = TODO_DELETE_MUTATION;
+      defaultDataKey = 'deleteTodo';
+      variables.id = body._id;
+      break;
+    default:
+      variables.input = postTodo;
+      break;
     }
     // const refetch = [refetchQuery];
     return this.apollo.mutate({
@@ -364,30 +364,30 @@ export class TodoService {
     // gql variables
     let variables: IGQLVariable<string,  TodoLabelType> = {};
     switch (operationType) {
-      case 'UPDATE':
-        gqlOperation = TODO_LABEL_UPDATE_MUTATION;
-        defaultDataKey = 'updateTodoLabel';
-        variables = {
-          ...variables,
-          input: {
-            ...postBody
-          },
-          id: _id
-        };
-        break;
-      case 'DELETE':
-        gqlOperation = TODO_LABEL_DELETE_MUTATION;
-        defaultDataKey = 'deleteTodoLabel';
-        variables.id = body._id;
-        break;
-      default:
-        variables = {
-          ...variables,
-          input: {
-            ...postBody
-          }
-        };
-        break;
+    case 'UPDATE':
+      gqlOperation = TODO_LABEL_UPDATE_MUTATION;
+      defaultDataKey = 'updateTodoLabel';
+      variables = {
+        ...variables,
+        input: {
+          ...postBody
+        },
+        id: _id
+      };
+      break;
+    case 'DELETE':
+      gqlOperation = TODO_LABEL_DELETE_MUTATION;
+      defaultDataKey = 'deleteTodoLabel';
+      variables.id = body._id;
+      break;
+    default:
+      variables = {
+        ...variables,
+        input: {
+          ...postBody
+        }
+      };
+      break;
     }
     return this.apollo.mutate({
       mutation: gqlOperation,
@@ -410,7 +410,7 @@ export class TodoService {
         query: TODO_PROJECT_QUERY,
         variables: {
           sort: { updatedAt: 'ASC' }
-        },
+        }
       })
       .valueChanges.pipe(map(({ data }: any) => {
         return data.todoProjectList;
@@ -436,30 +436,30 @@ export class TodoService {
     // gql variables
     let variables: IGQLVariable<string,  TodoProjectType> = {};
     switch (operationType) {
-      case 'UPDATE':
-        gqlOperation = TODO_PROJECT_UPDATE_MUTATION;
-        defaultDataKey = 'updateTodoProject';
-        variables = {
-          ...variables,
-          input: {
-            name: body.name,
-          },
-          id: body._id
-        };
-        break;
-      case 'DELETE':
-        gqlOperation = TODO_PROJECT_DELETE_MUTATION;
-        defaultDataKey = 'deleteTodoProject';
-        variables.id = body._id;
-        break;
-      default:
-        variables = {
-          ...variables,
-          input: {
-            name: body.name
-          }
-        };
-        break;
+    case 'UPDATE':
+      gqlOperation = TODO_PROJECT_UPDATE_MUTATION;
+      defaultDataKey = 'updateTodoProject';
+      variables = {
+        ...variables,
+        input: {
+          name: body.name
+        },
+        id: body._id
+      };
+      break;
+    case 'DELETE':
+      gqlOperation = TODO_PROJECT_DELETE_MUTATION;
+      defaultDataKey = 'deleteTodoProject';
+      variables.id = body._id;
+      break;
+    default:
+      variables = {
+        ...variables,
+        input: {
+          name: body.name
+        }
+      };
+      break;
     }
     return this.apollo.mutate({
       mutation: gqlOperation,

@@ -10,7 +10,7 @@ describe('CustomDateModalComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ CustomDateModalComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

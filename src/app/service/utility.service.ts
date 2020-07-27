@@ -80,15 +80,15 @@ export class UtilityService {
         finalObj = errors;
       }
     } catch (error) {
-        return 'Something Went Wrong';
+      return 'Something Went Wrong';
     }
     const { status, code, message } = finalObj;
     // Checking Error codes
     if (status && code !== 'ValidationError') {
       switch (status) {
-        case 401:
-          return 'LOGOUT';
-        default:
+      case 401:
+        return 'LOGOUT';
+      default:
       }
     }
     // parsing error message

@@ -45,7 +45,7 @@ const routes: Routes = [
       },
       {
         path: 'lists/:label',
-        component: TodoInboxComponent,
+        component: TodoInboxComponent
       },
       {
         path: 'tags',
@@ -53,7 +53,7 @@ const routes: Routes = [
         data: {
           header_title: 'tags'
         }
-      },
+      }
     ]
   }
 ];

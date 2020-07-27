@@ -10,7 +10,7 @@ describe('AuthRegisterComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ AuthRegisterComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

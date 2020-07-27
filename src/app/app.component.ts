@@ -13,7 +13,7 @@ import { environment } from '../environments/environment';
 import { of } from 'rxjs';
 
 // declare ga as a function to set and sent the events
-declare var gtag: (arg0: string, arg1: string, arg2?: string, arg3?: string) => void;
+declare let gtag: (arg0: string, arg1: string, arg2?: string, arg3?: string) => void;
 
 @Component({
   selector: 'app-root',

@@ -28,7 +28,7 @@ import { TodoSingleComponent } from './todo-single/todo-single.component';
     DragDropModule
   ],
   exports: [
-    TodoDeleteComponent,
+    TodoDeleteComponent
   ]
 })
 export class TodoModule { }

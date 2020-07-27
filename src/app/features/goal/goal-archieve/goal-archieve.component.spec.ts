@@ -10,7 +10,7 @@ describe('GoalArchieveComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ GoalArchieveComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

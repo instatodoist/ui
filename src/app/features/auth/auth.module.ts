@@ -37,7 +37,7 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
     HttpClientModule,
     ReactiveFormsModule,
     FrontRoutingModule,
-    SharedModule,
+    SharedModule
   ],
   exports: [
     SharedModule

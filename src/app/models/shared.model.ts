@@ -11,6 +11,7 @@ export type IOperationEnumType = 'ADD' | 'UPDATE' | 'DELETE';
 
 export type ITemplateOperation = 'IS_ADD' | 'IS_UPDATE' | 'IS_DELETED' | 'IS_PINNED' | 'IS_ARCHIEVED';
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export interface IGQLVariable <T, U extends object> {
   id?: T;
   input?: U;

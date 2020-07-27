@@ -6,14 +6,15 @@
     "start": "ng serve",
     "build": "ng build --aot --prod",
     "test": "ng test",
-    "lint": "tslint --project tsconfig.json src/**/**.ts",
-    "lint-fix": "tslint --fix --project tsconfig.json --config tsconfig.json src/**/*.ts",
+    "lint": "eslint --ext .ts src/",
+    "fixlint": "eslint --fix 'src/**/*.ts'",
     "e2e": "ng e2e",
     "postbuild": "node build/post-build.js"
   },
   "husky": {
     "hooks": {
-      "pre-push": "npm run build"
+      "pre-push": "npm run build",
+      "pre-commit": "npm run lint"
     }
   },
   "private": true,
@@ -58,7 +59,10 @@
     "@types/jasmine": "^3.5.11",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.12.47",
+    "@typescript-eslint/eslint-plugin": "^3.7.0",
+    "@typescript-eslint/parser": "^3.7.0",
     "codelyzer": "^5.2.2",
+    "eslint": "^7.5.0",
     "husky": "^4.2.5",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~5.0.0",

@@ -32,7 +32,7 @@ import { environment } from '../environments/environment';
     // FooterComponent,
     SidebarComponent,
     PageNotFoundComponent,
-    FormValidationDirective,
+    FormValidationDirective
     // HomeLayoutComponent
   ],
   imports: [
@@ -44,7 +44,7 @@ import { environment } from '../environments/environment';
     AuthModule,
     AppRoutingModule,
     SharedModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     // LazyLoadImageModule
   ],
   exports: [

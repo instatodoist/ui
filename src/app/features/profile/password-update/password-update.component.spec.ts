@@ -10,7 +10,7 @@ describe('PasswordUpdateComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ PasswordUpdateComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

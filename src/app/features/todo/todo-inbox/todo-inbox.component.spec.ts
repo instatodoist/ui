@@ -10,7 +10,7 @@ describe('TodoInboxComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ TodoInboxComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

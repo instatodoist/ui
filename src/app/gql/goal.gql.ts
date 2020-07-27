@@ -47,5 +47,5 @@ export const GOAL_QUERY = gql`
 `;
 
 export default {
-  GOAL_QUERY,
+  GOAL_QUERY
 };

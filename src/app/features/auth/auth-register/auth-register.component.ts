@@ -15,7 +15,7 @@ export class AuthRegisterComponent implements OnInit {
   isSubmit = false;
   signinForm = this.fb.group({
     email: ['', Validators.required],
-    password: ['', Validators.required],
+    password: ['', Validators.required]
   });
 
   constructor(
@@ -38,10 +38,10 @@ export class AuthRegisterComponent implements OnInit {
         this.loader = false;
         this.isSubmit = false;
       },
-        () => {
-          this.isSubmit = false;
-          this.loader = false;
-        }
+      () => {
+        this.isSubmit = false;
+        this.loader = false;
+      }
       );
   }
 

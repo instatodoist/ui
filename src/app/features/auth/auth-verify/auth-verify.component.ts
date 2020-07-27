@@ -24,7 +24,7 @@ export class AuthVerifyComponent implements OnInit {
   ngOnInit(): void {
     this.formObj = this.fb.group({
       otp: ['', Validators.required],
-      hashToken: ['', Validators.required],
+      hashToken: ['', Validators.required]
     });
     this.activatedRoute.params.subscribe((params) => {
       this.formObj.patchValue({
@@ -39,21 +39,21 @@ export class AuthVerifyComponent implements OnInit {
     this.loader = true;
     this.isSubmit = true;
     this.authService.verification(this.formObj.value)
-    .subscribe((response: UserModel.RegisterResponse) => {
-      this.loader = false;
-      if (this.router.url.match('auth/forgot-password/confirmation')) {
-        const data = response;
-        this.router.navigate(['auth/reset-password/', data.hashToken]);
+      .subscribe((response: UserModel.RegisterResponse) => {
         this.loader = false;
-      } else {
+        if (this.router.url.match('auth/forgot-password/confirmation')) {
+          const data = response;
+          this.router.navigate(['auth/reset-password/', data.hashToken]);
+          this.loader = false;
+        } else {
+          this.isSubmit = false;
+          this.router.navigate(['/auth/login']);
+        }
+      },
+      () => {
         this.isSubmit = false;
-        this.router.navigate(['/auth/login']);
-      }
-    },
-    () => {
-      this.isSubmit = false;
-      this.loader = false;
-    });
+        this.loader = false;
+      });
   }
 
 }

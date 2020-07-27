@@ -10,7 +10,7 @@ describe('HomeLayoutComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ HomeLayoutComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

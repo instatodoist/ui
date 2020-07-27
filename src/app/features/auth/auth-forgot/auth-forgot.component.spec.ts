@@ -10,7 +10,7 @@ describe('AuthForgotComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ AuthForgotComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

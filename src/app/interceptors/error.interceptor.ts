@@ -13,32 +13,32 @@ export class ErrorInterceptor implements HttpInterceptor {
       .handle(request)
       .pipe(
         catchError((errors: HttpErrorResponse) => {
-            const {
-                error,
-                headers,
-                url,
-                name,
-                message,
-                ok,
-                status,
-                statusText
-            } = errors;
-            const errObject = {
-                error,
-                headers,
-                status,
-                statusText,
-                name,
-                message,
-                ok,
-                url: url || undefined,
-            };
-            if (status && status === 401) {
-              localStorage.clear();
-              this.router.navigate(['/']);
-            } else {
-              return throwError(errObject);
-            }
+          const {
+            error,
+            headers,
+            url,
+            name,
+            message,
+            ok,
+            status,
+            statusText
+          } = errors;
+          const errObject = {
+            error,
+            headers,
+            status,
+            statusText,
+            name,
+            message,
+            ok,
+            url: url || undefined
+          };
+          if (status && status === 401) {
+            localStorage.clear();
+            this.router.navigate(['/']);
+          } else {
+            return throwError(errObject);
+          }
         })
       );
   }

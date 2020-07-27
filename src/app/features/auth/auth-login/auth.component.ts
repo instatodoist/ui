@@ -13,7 +13,7 @@ export class AuthComponent implements OnInit {
   isSubmit = false;
   signinForm = this.fb.group({
     email: ['', Validators.required],
-    password: ['', Validators.required],
+    password: ['', Validators.required]
   });
 
   constructor(

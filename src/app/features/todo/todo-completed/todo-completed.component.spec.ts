@@ -10,7 +10,7 @@ describe('TodoCompletedComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ TodoCompletedComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

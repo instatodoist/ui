@@ -80,15 +80,15 @@ export class TodoProjectComponent implements OnInit, AfterViewInit {
       .subscribe(() => {
         this.formObj.reset();
         switch (this.operationType) {
-          case 'ADD':
-            this.toast.toastrSuccess('List has been added');
-            break;
-          case 'UPDATE':
-            this.toast.toastrSuccess('List has been updated');
-            break;
-          case 'DELETE':
-            this.toast.toastrWarning('List has been deleted');
-            break;
+        case 'ADD':
+          this.toast.toastrSuccess('List has been added');
+          break;
+        case 'UPDATE':
+          this.toast.toastrSuccess('List has been updated');
+          break;
+        case 'DELETE':
+          this.toast.toastrWarning('List has been deleted');
+          break;
         }
         this.operationType = 'ADD';
       });

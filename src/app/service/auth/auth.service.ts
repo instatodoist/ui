@@ -17,7 +17,7 @@ import {
 } from '../../gql/auth.gql';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthService {
   authKey = 'isLoggedIn';
@@ -43,8 +43,8 @@ export class AuthService {
       .watchQuery({
         query: LOGIN_QUERY,
         variables: {
-          input: postData,
-        },
+          input: postData
+        }
       })
       .valueChanges.pipe(map(({ data }) => {
         return data;

@@ -12,7 +12,7 @@ import { GoalComponent } from './goal/goal.component';
   declarations: [
     GoalListComponent,
     GoalArchieveComponent,
-    GoalComponent,
+    GoalComponent
     // GoalDialogComponent
   ],
   exports: [

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TodoService } from '../../../service';
 import { TodoLabelType } from '../../../models';
 import { UtilityService  } from '../../../service';
-declare var $: any;
+declare let $: any;
 @Component({
   selector: 'app-todo-tags-list',
   templateUrl: './todo-label-list.component.html',

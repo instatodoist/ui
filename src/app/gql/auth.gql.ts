@@ -82,5 +82,5 @@ export const LOGIN_QUERY = gql`
 
 export default {
   REGISTER_MUTATION,
-  LOGIN_QUERY,
+  LOGIN_QUERY
 };

@@ -10,7 +10,7 @@ describe('DialogTodoTagsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ DialogTodoTagsComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

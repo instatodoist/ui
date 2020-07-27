@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 import { combineLatest, Subscription } from 'rxjs';
 import { } from '../../../gql';
 import * as moment from 'moment';
-declare var $: any;
+declare let $: any;
 type ScheduledType = 'NO_DUE_DATE' | 'TODAY' | 'TOMORROW' | 'NEXT_WEEK' | 'CUSTOM';
 @Component({
   selector: 'app-todo-dialog',
@@ -266,7 +266,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     if (scheduledType === 'CUSTOM') {
       this.openListPopup('scheduledModal');
       this.formObj.patchValue({
-        scheduledType,
+        scheduledType
       });
     } else {
       this.formObj.patchValue({
@@ -340,9 +340,9 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           }
           this.toastr.toastrSuccess(message);
         },
-          () => {
-            this.isSubmit = false;
-          }
+        () => {
+          this.isSubmit = false;
+        }
         );
     }
   }

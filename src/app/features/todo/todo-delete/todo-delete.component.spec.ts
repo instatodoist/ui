@@ -10,7 +10,7 @@ describe('TodoDeleteComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ TodoDeleteComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

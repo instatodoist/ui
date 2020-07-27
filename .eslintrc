@@ -1,0 +1,29 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "@typescript-eslint/no-empty-function": "off",
+    "indent": [
+      "error",
+      2
+    ],
+    "comma-dangle": [
+      "error",
+      "never"
+    ]
+  }
+}

@@ -89,7 +89,7 @@ const authRoutes: Routes = [
       {
         path: 'contact-us',
         component: ContactUsComponent
-      },
+      }
     ]
   }
 ];

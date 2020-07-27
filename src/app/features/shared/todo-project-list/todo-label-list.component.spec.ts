@@ -10,7 +10,7 @@ describe('TodoProjectListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ TodoProjectListComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

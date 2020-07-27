@@ -1,4 +1,4 @@
 {
-    "tslint.ignoreDefinitionFiles": true,
-    "tslint.jsEnable": true
+  "eslint.format.enable": true,
+  "eslint.lintTask.enable": true
 }

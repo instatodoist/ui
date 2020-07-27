@@ -6,11 +6,11 @@ import { combineLatest } from 'rxjs';
 import { TodoListType, TodoCompletedListType, TodoType, TodoConditions, IExternalModal, ITodoTypeCount } from '../../../models';
 import { TodoService, AppService, UtilityService } from '../../../service';
 
-declare var $: any;
+declare let $: any;
 @Component({
   selector: 'app-todo-inbox',
   templateUrl: './todo-inbox.component.html',
-  styleUrls: ['./todo-inbox.component.scss'],
+  styleUrls: ['./todo-inbox.component.scss']
 })
 export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   loader = true;
@@ -164,9 +164,9 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
           this.extraLoader = false;
         }
       },
-        () => {
-          this.extraLoader = false;
-        });
+      () => {
+        this.extraLoader = false;
+      });
   }
 
   /**
@@ -280,7 +280,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
         today,
         inbox,
         completed,
-        upcoming,
+        upcoming
       };
     });
   }

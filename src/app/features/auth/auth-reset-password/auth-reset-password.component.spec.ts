@@ -10,7 +10,7 @@ describe('AuthResetPasswordComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ AuthResetPasswordComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

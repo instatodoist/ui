@@ -10,7 +10,7 @@ describe('ProfileUpdateComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ ProfileUpdateComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

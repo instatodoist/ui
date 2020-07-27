@@ -10,7 +10,7 @@ describe('InfiniteScrollComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ InfiniteScrollComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

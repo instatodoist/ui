@@ -10,7 +10,7 @@ describe('GoalDialogComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ GoalDialogComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

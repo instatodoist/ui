@@ -5,7 +5,7 @@ import { IExternalModal, IAppData, ILanguage, IMetaTag } from './../models';
 import { LsService } from '../service/ls.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 
 export class AppService implements OnDestroy {
@@ -117,7 +117,7 @@ export class AppService implements OnDestroy {
         name: 'Hindi',
         value: 'hi',
         logo: '/assets/facelift/images/small/flag-04.png'
-      },
+      }
     ];
     return of(lang);
   }

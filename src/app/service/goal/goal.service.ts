@@ -50,26 +50,26 @@ export class GoalService {
     const { operationType, _id, ...postBody } = body;
     let variables: IGQLVariable<string, IGoalType> = {}; // initialising gql variables
     switch (operationType) { // checking which operation - 'ADD' | 'UPDATE' | 'DELETE'
-      case 'UPDATE':
-        gqlOperation = UPDATE_GOAL_MUTATION;
-        defaultDataKey = 'updateThought';
-        variables = {
-          ...variables,
-          input: { ...postBody },
-          id: body._id
-        };
-        break;
-      case 'DELETE':
-        gqlOperation = GOAL_DELETE_MUTATION;
-        defaultDataKey = 'deleteThought';
-        variables.id = body._id;
-        break;
-      default:
-        variables = {
-          ...variables,
-          input: postBody
-        };
-        break;
+    case 'UPDATE':
+      gqlOperation = UPDATE_GOAL_MUTATION;
+      defaultDataKey = 'updateThought';
+      variables = {
+        ...variables,
+        input: { ...postBody },
+        id: body._id
+      };
+      break;
+    case 'DELETE':
+      gqlOperation = GOAL_DELETE_MUTATION;
+      defaultDataKey = 'deleteThought';
+      variables.id = body._id;
+      break;
+    default:
+      variables = {
+        ...variables,
+        input: postBody
+      };
+      break;
     }
     return this.apollo.mutate({
       mutation: gqlOperation,

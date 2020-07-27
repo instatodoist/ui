@@ -25,7 +25,7 @@ export class GraphqlModule {
   constructor(apollo: Apollo, httpLink: HttpLink, utilityService: UtilityService, lsService: LsService) {
 
     const httpLink2 = httpLink.create({
-      uri: environment.API_URL,
+      uri: environment.API_URL
     });
 
     const accessToken = lsService.getValue('__token');
@@ -37,14 +37,14 @@ export class GraphqlModule {
       ({
         headers: {
           ...headers,
-          authorization: accessToken ? `Bearer ${accessToken}` : '',
-        },
+          authorization: accessToken ? `Bearer ${accessToken}` : ''
+        }
       }));
     // error link
     const errorLink = onError((
       {
         graphQLErrors,
-        networkError,
+        networkError
         // response,
         // operation
       }
@@ -62,6 +62,7 @@ export class GraphqlModule {
           throw new Error(msg);
         }
         // parse GraphQl specific Errorxs
+        // eslint-disable-next-line no-constant-condition
         if (typeof (Array.isArray(graphQLErrors) && graphQLErrors.length)) {
           const message = utilityService.parseGraphQlError(graphQLErrors);
           throw message;

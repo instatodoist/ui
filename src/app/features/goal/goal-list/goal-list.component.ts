@@ -4,7 +4,7 @@ import { GoalService, AppService } from '../../../service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
-declare var $: any;
+declare let $: any;
 
 @Component({
   selector: 'app-goal-list',
@@ -108,7 +108,7 @@ export class GoalListComponent implements OnInit, AfterViewInit, OnDestroy {
       this.submit({
         ...goalObj,
         operationType,
-        isPinned: !goal.isPinned,
+        isPinned: !goal.isPinned
       });
     } else if (type === 'IS_ARCHIEVED') {
       operationType = 'UPDATE';

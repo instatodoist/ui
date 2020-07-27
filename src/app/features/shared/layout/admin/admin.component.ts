@@ -1,4 +1,4 @@
-declare var $: any;
+declare let $: any;
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { AppService } from '../../../../service';
 
@@ -61,6 +61,7 @@ export class AdminComponent implements OnInit, AfterViewInit {
         selector.toggleClass('iq-show');
         mainElement.toggleClass('active');
         e.preventDefault();
+      // eslint-disable-next-line no-empty
       } else if ($(myTargetElement).is('.search-input')) { } else {
         $('.navbar-list li').removeClass('iq-show');
         $('.navbar-list li .search-toggle').removeClass('active');

@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { GoalService, AppService, UtilityService } from '../../../service';
 import { IGoalType, IExternalModal, IGoalConditions } from '../../../models';
 import { Subscription } from 'rxjs';
-declare var $: any;
+declare let $: any;
 type IGoalPopupType = 'GOAL_ADD' | 'GOAL_UPDATE';
 
 @Component({
@@ -115,9 +115,9 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
           }
           this.toastr.toastrSuccess(message);
         },
-          (() => {
-            this.isSubmit = false;
-          })
+        (() => {
+          this.isSubmit = false;
+        })
         );
     }
   }
