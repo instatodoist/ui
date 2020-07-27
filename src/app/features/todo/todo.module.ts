@@ -9,6 +9,7 @@ import { TodoCompletedComponent } from './todo-completed/todo-completed.componen
 import { TodoDeleteComponent } from './todo-delete/todo-delete.component';
 import { TodoLabelListComponent } from './todo-label-list/todo-label-list.component';
 import { TodoLabelDialogComponent } from './todo-label-dialog/todo-label-dialog.component';
+import { TodoSingleComponent } from './todo-single/todo-single.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { TodoLabelDialogComponent } from './todo-label-dialog/todo-label-dialog.
     TodoCompletedComponent,
     TodoDeleteComponent,
     TodoLabelListComponent,
-    TodoLabelDialogComponent
+    TodoLabelDialogComponent,
+    TodoSingleComponent
   ],
   imports: [
     CommonModule,

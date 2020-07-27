@@ -57,77 +57,22 @@
 
         <div class="iq-card-body" *ngIf="!extraLoader && todoCurrentType !== TODOTYPES?.completed">
 
-          <!-- <ul class="list-group list-group-flush" cdkDropList [cdkDropListData]="todos?.data"
-            (cdkDropListDropped)="onTodoDrop($event)" cdkDropListOrientation="horizontal"> -->
           <ul class="perfomer-lists m-0 p-0">
             <ng-container *ngIf="todos?.data.length">
               <ng-container *ngFor="let todo of todos?.data; let i = index">
-                <!-- <li class="list-group-item tr-{{ i + 1}} cursor" data-toggle="modal" data-target="#todo-dialog"
-                  (click)="openPopUp(todo)" cdkDropList [id]="todo._id" [cdkDropListData]="todo"
-                  [cdkDropListConnectedTo]="trackIds" (cdkDropListDropped)="onTodoDrop($event)" cdkDrag> -->
-                <li class="d-flex mb-4 align-items-center tr-{{ i + 1}}" (click)="openPopUp(todo)" style="border-bottom: 1px solid #cccc;
-                padding-bottom: 10px;">
-
-                  <div class="user-img img-fluid">
-                    <!-- <div class="custom-control custom-checkbox custom-control-inline flota-l mr-2"
-                      style="padding-left: 0px; margin-top: 5px;">
-                      <i class="fa fa-arrows flota-l" aria-hidden="true" cdkDragHandle></i>
-                    </div>
-                    <div class="custom-control flota-l"
-                      (click)="$event.stopPropagation(); updateTodo(todo)">
-                      <input type="radio" class="custom-control-input" id="customCheck-f{{i+1}}"
-                        [checked]="todo?.isCompleted">
-                      <label class="custom-control-label" for="customCheck-f{{i+1}}"></label>
-                    </div> -->
-                    <div class="custom-control custom-radio custom-radio-color-checked custom-control-inline ml-3 mt-2"
-                      (click)="$event.stopPropagation(); updateTodo(todo)">
-                      <input type="radio" id="customCheck-f{{i+1}}" name="customRadio-10"
-                        class="custom-control-input bg-primary">
-                      <label class="custom-control-label" for="customCheck-f{{i+1}}"></label>
-                    </div>
-                  </div>
-                  <div class="media-support-info ml-3">
-                    <h6>
-                      <span>
-                        <span [ngStyle]="todo?.isCompleted && {'text-decoration': 'line-through'}"
-                          class="mr-2">{{todo?.title}}
-                        </span>
-                      </span>
-                    </h6>
-                    <p class="mb-0 font-size-12">
-                      <span *ngFor="let label of todo?.labels"
-                        class="badge border mt-2 mr-2" [ngStyle]="{ 'color': label?.color, 'border-color': '#ccc !important' }">#{{label?.name}}</span>
-                    </p>
-                  </div>
-                  <div class="iq-card-header-toolbar d-flex align-items-center">
-                    <ng-container>
-                      <span *ngIf="todo?.project?.name && ( todoCurrentType === TODOTYPES?.today || todoCurrentType === TODOTYPES?.pending || todoCurrentType === TODOTYPES?.upcoming || todoCurrentType === TODOTYPES?.inbox)" [routerLink]="['/tasks/labels', todo.project.name]"
-                        class="badge badge-primary ml-2 mr-2 cursor">{{todo?.project?.name}}
-                      </span>
-                      <span
-                        *ngIf="todoCurrentType !== TODOTYPES?.today"
-                        [ngClass]="(checkScheduledDate(todo?.scheduledDate))? 'border-warning text-warning': 'border-danger text-danger'">
-                        {{displayDate(todo?.scheduledDate)}}
-                      </span>
-                    </ng-container>
-                    <span class="text-primary">
-                      <ng-container>
-                        <div class=" ml-auto  ml-4">
-                          <button type="button" class="close ml-4" data-dismiss="alert" aria-label="Close"
-                            (click)="$event.stopPropagation(); deleteRequest(todo)">
-                            <span *ngIf="todo?.deleteRequest" (click)="$event.stopPropagation(); deleteTodo(todo)"
-                              class="text-primary"> <i class="fa fa-info-circle mr-2" aria-hidden="true"></i>
-                              click to confirm</span>
-                            <i *ngIf="!todo?.deleteRequest" class="fa fa-minus-circle cursor" aria-hidden="true"></i>
-                          </button>
-                        </div>
-                      </ng-container>
-                    </span>
-                  </div>
-                  <hr class="mt-2 mb-2">
-                </li>
+               <app-todo-single
+                [todo]= "todo"
+                [index]="i"
+                [todoCurrentType]="todoCurrentType"
+                [TODOTYPES]="TODOTYPES"
+                (openPopUpCb)="openPopUp($event)"
+                (updateTodoCb)="updateTodo($event)"
+                (deleteTodoCb)="deleteTodo($event)"
+               ></app-todo-single>
               </ng-container>
             </ng-container>
+
+            <!-- If No Todos -->
             <ng-container *ngIf="!todos?.data.length">
               <div class="text-center">
                 <img src="/assets/facelift/images/no-result.svg"/>

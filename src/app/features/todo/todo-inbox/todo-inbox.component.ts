@@ -1,12 +1,10 @@
-import { Component, OnInit, ViewChild, TemplateRef, AfterViewInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { map } from 'rxjs/operators';
-import { combineLatest, from, Subscription } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { TodoListType, TodoCompletedListType, TodoType, TodoConditions, IExternalModal, ITodoTypeCount } from '../../../models';
 import { TodoService, AppService, UtilityService } from '../../../service';
-import * as moment from 'moment';
-import { type } from 'os';
 
 declare var $: any;
 @Component({
@@ -15,7 +13,6 @@ declare var $: any;
   styleUrls: ['./todo-inbox.component.scss'],
 })
 export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('dialog') dialog: TemplateRef<any>;
   loader = true;
   extraLoader = true;
   todosC: TodoCompletedListType = {
@@ -155,11 +152,6 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  // get priority color
-  // getPriorityColor(priority: string) {
-  //   return this.toddService.getColor(priority);
-  // }
-
   /**
    * @param conditions - based on route
    */
@@ -211,6 +203,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param popupType - update/delete
    */
   openPopUp(todo: TodoType): void {
+    console.log(todo);
     this.extModalConfig = { ...this.extModalConfig, TODO_UPDATE: true, data: { ...this.extModalConfig.data, todo } };
     this.appService.externalModal.next(this.extModalConfig);
   }
@@ -232,13 +225,6 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
           this.router.navigate(['/tasks/today']);
         }
       });
-  }
-
-  deleteRequest(todo: TodoType) {
-    todo.deleteRequest = true;
-    setTimeout(() => {
-      todo.deleteRequest = false;
-    }, 3000);
   }
 
   /**
@@ -305,22 +291,6 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onTodoDrop(event: CdkDragDrop<TodoType[]>) {
     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-  }
-
-  checkScheduledDate(date: Date): boolean {
-    const diff = moment(new Date(date)).diff((moment(new Date()).format('YYYY-MM-DD')));
-    return diff === 0 || diff > 1;
-  }
-
-  // check if today || yesterday || tomorrow
-  displayDate(date: Date) {
-    if (!date) {
-      return '';
-    }
-    if (moment(date).isSame(moment(), 'day')) {
-      return 'Today';
-    }
-    return moment(date).endOf('day').fromNow();
   }
 
 }
