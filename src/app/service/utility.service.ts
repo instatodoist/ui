@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare let $: any;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +15,12 @@ export class UtilityService {
     private iziToast: ToastrService
   ) { }
 
-  parseErrorMessage(message) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  get JQuery(): any {
+    return $;
+  }
+
+  parseErrorMessage(message: string): string {
     let msg = message;
     if (message.match(/\[(.*?)\]/)) {
       msg = message.match(/\[(.*?)\]/)[1] || 'Something went wrong';
@@ -23,44 +31,18 @@ export class UtilityService {
   }
 
   // error toaster
-  toastrError(message: any, options?: any): void {
+  toastrError(message: string): void {
     this.iziToast.error(this.parseErrorMessage(message));
-    // const msg = this.translate.instant(message);
-    // this.iziToast.destroy();
-    // this.iziToast.error(message, {
-    //   // position: 'topCenter',
-    //   // timeout: (options && !options.timeout) ? false : 5000,
-    //   // overlay: (options && options.overlay) ? true : false,
-    //   // close: (options && !options.close) ? false : true
-    // });
   }
 
   // error toaster
-  toastrWarning(message: any, options?: any): void {
+  toastrWarning(message: string): void {
     this.iziToast.warning(this.parseErrorMessage(message));
-    // const msg = this.translate.instant(message)
-    // this.iziToast.destroy();
-    // this.iziToast.warning({
-    //   position: 'topCenter',
-    //   message,
-    //   timeout: (options && !options.timeout) ? false : 5000,
-    //   overlay: (options && options.overlay) ? true : false,
-    //   close: (options && !options.close) ? false : true
-    // });
   }
 
   // success Toastr
-  toastrSuccess(message: any, options?: any): void {
+  toastrSuccess(message: string): void {
     this.iziToast.success(this.parseErrorMessage(message));
-    // const msg = this.translate.instant(message);
-    // this.iziToast.destroy();
-    // this.iziToast.success({
-    //   position: 'topCenter',
-    //   message,
-    //   timeout: (options && !options.timeout) ? false : 5000,
-    //   overlay: (options && options.overlay) ? true : false,
-    //   close: (options && !options.close) ? false : true
-    // });
   }
 
   // destroy toaster
@@ -69,7 +51,8 @@ export class UtilityService {
   }
 
   // parse network Errors
-  parseNetworkError(networkError): string {
+  parseNetworkError(networkError: unknown): string {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { error }: any = networkError;
     let finalObj = null;
     try {
@@ -102,6 +85,7 @@ export class UtilityService {
   }
 
   // parse GraphQl Errors
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   parseGraphQlError(graphQLErrors): string {
     const { message } = graphQLErrors[0];
     return message;

@@ -10,6 +10,16 @@ import { SortEnumType } from './shared.model';
 type TodoEnumType = 'today' | 'backlog' | 'pending' | 'upcoming';
 // export type PriorityEnumType = 'P1' | 'P2' | 'P3' | 'P4';
 
+export interface ISingletab {
+  name: string;
+  isShown: boolean;
+  link: string;
+}
+
+export interface ItabName {
+  [key: string]: ISingletab[]
+}
+
 export interface ITodoTypeCount {
   inbox?: number;
   today?: number;

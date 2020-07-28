@@ -3,10 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
-import { TodoListType, TodoCompletedListType, TodoType, TodoConditions, IExternalModal, ITodoTypeCount } from '../../../models';
+import { TodoListType, TodoCompletedListType, TodoType, TodoConditions, IExternalModal, ITodoTypeCount, ItabName } from '../../../models';
 import { TodoService, AppService, UtilityService } from '../../../service';
 
-declare let $: any;
+// declare let $: any;
 @Component({
   selector: 'app-todo-inbox',
   templateUrl: './todo-inbox.component.html',
@@ -32,7 +32,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   extModalConfig: IExternalModal = this.appService.ExternalModelConfig;
   // modalSubscription: Subscription;
   count: ITodoTypeCount;
-  tabs = {
+  tabs: ItabName = {
     [this.TODOTYPES.today]: [
       {
         name: this.TODOTYPES.today,
@@ -79,8 +79,10 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     ]
   };
+  jQuery = this.utilityService.JQuery;
 
   constructor(
+    private utilityService: UtilityService,
     private toddService: TodoService,
     private activatedRoute: ActivatedRoute,
     private appService: AppService,
@@ -89,11 +91,11 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
   }
 
-  ngAfterViewInit() {
-    $('[data-toggle="tooltip"]').tooltip();
+  ngAfterViewInit(): void {
+    this.jQuery('[data-toggle="tooltip"]').tooltip();
   }
 
   ngOnInit(): void {
@@ -155,7 +157,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * @param conditions - based on route
    */
-  getTodos(conditions: TodoConditions) {
+  getTodos(conditions: TodoConditions): void {
     // this.extraLoader = true;
     this.toddService.listTodos(conditions)
       .subscribe((data: any) => {
@@ -172,7 +174,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * @param conditions - based on route
    */
-  getCompletedTodos(conditions: TodoConditions, isDirectCall = false) {
+  getCompletedTodos(conditions: TodoConditions, isDirectCall = false): void {
     this.loader = true;
     if (isDirectCall) {
       conditions.offset = 1;
@@ -211,7 +213,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * @param todo - todo object
    */
-  updateTodo(todo: TodoType) {
+  updateTodo(todo: TodoType): void {
     const postBody: TodoType = {
       _id: todo._id,
       isCompleted: (this.todoCurrentType === this.TODOTYPES?.today) ? !todo.isCompleted : true,
@@ -247,7 +249,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   @HostListener('scroll', ['$event'])
-  refresh() {
+  refresh(): void {
     const { totalCount, data } = this.todosC;
     // if (this.conditions.offset === ) {
     //   this.getCompletedTodos(this.conditions);
@@ -259,7 +261,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  getTotalCount() {
+  getTotalCount(): void {
     const query: TodoConditions = {
       filter: {
         isCompleted: true,
@@ -272,7 +274,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  getTodosCount(query = null) {
+  getTodosCount(query = null): void {
     this.toddService.listTodosCount(query).subscribe((response: ITodoTypeCount) => {
       const { today = 0, pending = 0, inbox = 0, completed = 0, upcoming = 0 } = response;
       this.count = {
@@ -289,7 +291,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.todos.data.map(track => track._id);
   }
 
-  onTodoDrop(event: CdkDragDrop<TodoType[]>) {
+  onTodoDrop(event: CdkDragDrop<TodoType[]>): void {
     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
   }
 
