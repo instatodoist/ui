@@ -20,7 +20,7 @@ export class UtilityService {
     return $;
   }
 
-  parseErrorMessage(message: string): string {
+  parseErrorMessage(message: any): string {
     let msg = message;
     if (message.match(/\[(.*?)\]/)) {
       msg = message.match(/\[(.*?)\]/)[1] || 'Something went wrong';

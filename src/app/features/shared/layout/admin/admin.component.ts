@@ -1,6 +1,5 @@
-declare let $: any;
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { AppService } from '../../../../service';
+import { UtilityService } from '../../../../service';
 
 @Component({
   selector: 'app-admin',
@@ -8,119 +7,64 @@ import { AppService } from '../../../../service';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit, AfterViewInit {
-  snachBar: any;
-  defaultTheme = this.appService.APP_DATA.config.theme;
+
+  jQuery = this.utilityService.JQuery;
 
   constructor(
-    private appService: AppService
+    private utilityService: UtilityService
   ) { }
 
   ngOnInit(): void {
   }
 
-  ngAfterViewInit() {
-    this.changeThemeJs();
-    this.sidemenuJs();
+  ngAfterViewInit(): void {
     this.headerJs();
     this.toolTipJs();
   }
 
-  toolTipJs() {
+  toolTipJs(): void {
     /*---------------------------------------------------------------------
     Tooltip
     -----------------------------------------------------------------------*/
-    $('[data-toggle="popover"]').popover();
-    $('[data-toggle="tooltip"]').tooltip();
+    this.jQuery('[data-toggle="popover"]').popover();
+    this.jQuery('[data-toggle="tooltip"]').tooltip();
   }
 
-  headerJs() {
+  headerJs(): void {
+    const jQuery = this.jQuery;
     // tslint:disable-next-line: only-arrow-functions
-    $(document).on('click', function (e) {
+    jQuery(document).on('click', function (e) {
       const myTargetElement = e.target;
       let selector;
       let mainElement;
       if (
-        $(myTargetElement).hasClass('search-toggle') ||
-        $(myTargetElement).parent().hasClass('search-toggle') ||
-        $(myTargetElement).parent().parent().hasClass('search-toggle')
+        jQuery(myTargetElement).hasClass('search-toggle') ||
+        jQuery(myTargetElement).parent().hasClass('search-toggle') ||
+        jQuery(myTargetElement).parent().parent().hasClass('search-toggle')
       ) {
-        if ($(myTargetElement).hasClass('search-toggle')) {
-          selector = $(myTargetElement).parent();
-          mainElement = $(myTargetElement);
-        } else if ($(myTargetElement).parent().hasClass('search-toggle')) {
-          selector = $(myTargetElement).parent().parent();
-          mainElement = $(myTargetElement).parent();
-        } else if ($(myTargetElement).parent().parent().hasClass('search-toggle')) {
-          selector = $(myTargetElement).parent().parent().parent();
-          mainElement = $(myTargetElement).parent().parent();
+        if (jQuery(myTargetElement).hasClass('search-toggle')) {
+          selector = jQuery(myTargetElement).parent();
+          mainElement = jQuery(myTargetElement);
+        } else if (jQuery(myTargetElement).parent().hasClass('search-toggle')) {
+          selector = jQuery(myTargetElement).parent().parent();
+          mainElement = jQuery(myTargetElement).parent();
+        } else if (jQuery(myTargetElement).parent().parent().hasClass('search-toggle')) {
+          selector = jQuery(myTargetElement).parent().parent().parent();
+          mainElement = jQuery(myTargetElement).parent().parent();
         }
-        if (!mainElement.hasClass('active') && $('.navbar-list li').find('.active')) {
-          $('.navbar-list li').removeClass('iq-show');
-          $('.navbar-list li .search-toggle').removeClass('active');
+        if (!mainElement.hasClass('active') && jQuery('.navbar-list li').find('.active')) {
+          jQuery('.navbar-list li').removeClass('iq-show');
+          jQuery('.navbar-list li .search-toggle').removeClass('active');
         }
         selector.toggleClass('iq-show');
         mainElement.toggleClass('active');
         e.preventDefault();
       // eslint-disable-next-line no-empty
-      } else if ($(myTargetElement).is('.search-input')) { } else {
-        $('.navbar-list li').removeClass('iq-show');
-        $('.navbar-list li .search-toggle').removeClass('active');
+      } else if (jQuery(myTargetElement).is('.search-input')) { } else {
+        jQuery('.navbar-list li').removeClass('iq-show');
+        jQuery('.navbar-list li .search-toggle').removeClass('active');
       }
     });
   }
 
-  sidemenuJs() {
-    /*---------------------------------------------------------------------
-    Sidebar Widget
-    -----------------------------------------------------------------------*/
-    $('.iq-sidebar-menu .active').each(function (ele, index) {
-      $(this).find('.iq-submenu').addClass('show');
-      $(this).addClass('active-menu');
-      $(this).next().attr('aria-expanded', 'true');
-    });
-    $(document).on('click', '.iq-menu > li > a', function () {
-      $('.iq-menu > li > a').parent().removeClass('active');
-      $(this).parent().addClass('active');
-    });
-    $('.wrapper-menu').click(function () {
-      console.log($(this));
-      $(this).toggleClass('open');
-      $('body').toggleClass('sidebar-main');
-    });
-  }
-
-  changeThemeJs() {
-    if (this.appService.APP_DATA.config.tClass) {
-      $('.iq-colorbox .iq-colorselect .iq-colormark').removeClass('iq-colormark');
-      $('.iq-colorselect').find('li.' + this.appService.APP_DATA.config.tClass).addClass('iq-colormark');
-    }
-    const updateThemFunc = this.appService.changeTheme;
-    updateThemFunc(this.defaultTheme);
-    const styleSwitcher = $('.iq-colorbox');
-    const panelWidth = styleSwitcher.outerWidth(true);
-    // tslint:disable-next-line: only-arrow-functions
-    $('.iq-colorbox .color-full').on('click', function () {
-      if ($('.iq-colorbox.color-fix').length > 0) {
-        styleSwitcher.animate({ right: '0px' });
-        $('.iq-colorbox.color-fix').removeClass('color-fix');
-        $('.iq-colorbox').addClass('opened');
-      } else {
-        $('.iq-colorbox.opened').removeClass('opened');
-        $('.iq-colorbox').addClass('color-fix');
-        styleSwitcher.animate({ right: '-' + panelWidth });
-      }
-      return false;
-    });
-
-    $('.iq-colorbox .iq-colorselect li').on('click', function () {
-      const $this = $(this);
-      const className = $this.attr('class');
-      console.log(className);
-      localStorage.setItem('defaultThemeClass', className);
-      const iqColor = $this.css('background-color');
-      $('.iq-colorbox .iq-colorselect .iq-colormark').removeClass('iq-colormark');
-      $this.addClass('iq-colormark');
-      updateThemFunc(iqColor);
-    });
-  }
 }

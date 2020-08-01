@@ -19,6 +19,7 @@ import { CustomDateModalComponent } from './custom-date-modal/custom-date-modal.
 import { DialogTodoTagsComponent } from './todo-tag-dialog/dialog-todo-tags.component';
 import { DialogTodoProjectsComponent } from './todo-project-dialog/dialog-todo-projects.component';
 import { FooterComponent } from '../shared/section/footer/footer.component';
+// import { ThemeComponent } from './section/theme/theme.component';
 @NgModule({
   declarations: [
     TodoDialogComponent,
