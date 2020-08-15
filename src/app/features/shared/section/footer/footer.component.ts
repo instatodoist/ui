@@ -36,7 +36,7 @@ export class FooterComponent implements OnInit {
       // },
       {
         name: 'Report an Issue',
-        href: 'https://github.com/sumanixinc/instatodos.com/issues/new',
+        href: 'https://github.com/techyaura/instatodos-ui/issues/new',
         internal: false
       }
     ];
