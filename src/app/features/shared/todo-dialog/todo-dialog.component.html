@@ -100,7 +100,7 @@
                           <button type="button" class="btn rounded-pill mb-3" [ngClass]="{
                             'btn-outline-primary': formObj.value.scheduledType !== scheduledObj[key].slug,
                             'btn-primary': formObj.value.scheduledType === scheduledObj[key].slug
-                          }" (click)="askDatePickerToOpen(scheduledObj[key].slug, 'DATE')">{{scheduledObj[key].name}}
+                          }" (click)="askDatePickerToOpen(scheduledObj[key].slug)">{{scheduledObj[key].name}}
                           </button>
                         </li>
                       </ul>
