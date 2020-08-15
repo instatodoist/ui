@@ -47,7 +47,7 @@
     "ngx-pagination": "^5.0.0",
     "ngx-quilljs": "0.0.10",
     "ngx-toastr": "^12.1.0",
-    "rxjs": "^6.5.5",
+    "rxjs": "^6.6.2",
     "tslib": "^2.0.0",
     "zone.js": "^0.10.3"
   },
