@@ -5,9 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { filter, map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
-import { AuthService, AppService } from '../../../../service';
+import { AuthService, AppService, UtilityService } from '../../../../service';
 import { Subscription } from 'rxjs';
 import { ILanguage, IUserProfile } from '../../../../models';
+import { TodoDialogComponent } from '../../../shared/todo-dialog/todo-dialog.component';
 
 @Component({
   selector: 'app-header',
@@ -33,7 +34,8 @@ export class HeaderComponent implements OnInit {
     private userService: AuthService,
     private fb: FormBuilder,
     private authService: AuthService,
-    private appService: AppService
+    private appService: AppService,
+    private utilityService: UtilityService
   ) {
     this.formObj = this.fb.group({
       query: ['']
@@ -49,7 +51,7 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getProfile();
     this.onSearch();
     this.getLanguages();
@@ -63,18 +65,28 @@ export class HeaderComponent implements OnInit {
   }
 
   // change language
-  useLanguage(language: string) {
+  useLanguage(language: string): void {
     this.translate.use(language);
   }
 
+  /**
+   * open popup
+   */
   openPopUp(): void {
-    this.appService.updateExternalModal({
-      ...this.appService.ExternalModelConfig,
-      TODO_ADD: true
-    });
+    this.utilityService.openMdcDialog({
+      type: 'component',
+      value: TodoDialogComponent,
+      data: {
+        modelId: 'todo-dialog'
+      }
+    })
+      .subscribe((_)=>_);
   }
 
-  getProfile() {
+  /**
+   * fectch user profile
+   */
+  getProfile() : void {
     this.userService.profile()
       .subscribe(data => {
         this.session = data;
@@ -85,7 +97,10 @@ export class HeaderComponent implements OnInit {
       });
   }
 
-  onSearch() {
+  /**
+   * search content specific to the current routes
+   */
+  onSearch() : void {
     this.formObj.get('query').valueChanges.pipe(
       debounceTime(500),
       distinctUntilChanged()
@@ -99,7 +114,11 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  onChangeLanguage(lang: ILanguage) {
+  /**
+   * set the current language for the app
+   * @param lang - language
+   */
+  onChangeLanguage(lang: ILanguage): void {
     this.translate.use(lang.value);
     this.defaultLang = lang;
     localStorage.setItem('lang', JSON.stringify(lang));
@@ -107,7 +126,10 @@ export class HeaderComponent implements OnInit {
     // this.languages = this.languages.filter(item => item.value !== lang.value);
   }
 
-  getLanguages() {
+  /**
+   * fetch all the languages for internationalization
+   */
+  getLanguages(): void {
     this.languages$ = this.appService.languages().subscribe((response) => {
       const languages = response;
       if (localStorage.getItem('lang')) {

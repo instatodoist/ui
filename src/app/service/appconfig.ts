@@ -1,7 +1,7 @@
 import { Title, Meta } from '@angular/platform-browser';
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subscription, of, Observable } from 'rxjs';
-import { IExternalModal, IAppData, ILanguage, IMetaTag } from './../models';
+import { IAppData, ILanguage, IMetaTag } from './../models';
 import { LsService } from '../service/ls.service';
 
 @Injectable({
@@ -10,18 +10,6 @@ import { LsService } from '../service/ls.service';
 
 export class AppService implements OnDestroy {
   APP_LEVEL: BehaviorSubject<IAppData>;
-  externalModal: BehaviorSubject<IExternalModal>;
-  ExternalModelConfig: IExternalModal = {
-    TODO_ADD: false,
-    TODO_UPDATE: false,
-    GOAL_UPDATE: false,
-    GOAL_ADD: false,
-    data: {
-      todo: null,
-      goal: null,
-      conditions: null
-    }
-  };
   APP_DATA: IAppData = {
     config: {
       theme: localStorage.getItem('defaultTheme') || 'rgb(243, 95, 59)',
@@ -38,7 +26,7 @@ export class AppService implements OnDestroy {
 
   currentUrlObservable = this.currentUrlDataSource.asObservable();
 
-  updateCurentUrl(data: string) {
+  updateCurentUrl(data: string): void {
     this.currentUrlDataSource.next(data);
   }
 
@@ -50,19 +38,14 @@ export class AppService implements OnDestroy {
     // initialize app level data
     this.APP_LEVEL = new BehaviorSubject(this.APP_DATA);
     // initialize the modal config
-    this.externalModal = new BehaviorSubject(this.ExternalModelConfig);
     this.subscribeToAppData();
   }
 
-  updateExternalModal(obj: IExternalModal) {
-    this.externalModal.next(obj);
-  }
-
-  __updateCoreAppData(data: IAppData) {
+  __updateCoreAppData(data: IAppData): void {
     this.APP_LEVEL.next(data);
   }
 
-  changeTheme(iqColor: any) {
+  changeTheme(iqColor: any): void {
     localStorage.setItem('defaultTheme', iqColor);
     const str = iqColor;
     const res = str.replace('rgb(', '');
@@ -74,11 +57,11 @@ export class AppService implements OnDestroy {
     document.documentElement.style.setProperty('--iq-primary-hover', iqColor3);
   }
 
-  get loaderImage() {
+  get loaderImage(): string {
     return '/assets/facelift/images/page-img/page-load-loader.gif';
   }
 
-  get defautProfileImage() {
+  get defautProfileImage(): string {
     return '/assets/facelift/images/defafault_user.png';
   }
 
@@ -87,12 +70,9 @@ export class AppService implements OnDestroy {
     this.APP_LEVEL.subscribe((data: IAppData) => {
       this.APP_DATA = {...this.APP_DATA, ...data};
     });
-    this.externalModal.subscribe((data: IExternalModal) => {
-      this.ExternalModelConfig = {...this.ExternalModelConfig, ...data};
-    });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.appSubscription.unsubscribe();
   }
 
@@ -122,7 +102,7 @@ export class AppService implements OnDestroy {
     return of(lang);
   }
 
-  configureSeo(title: string, metaTags: IMetaTag[] = null) {
+  configureSeo(title: string, metaTags: IMetaTag[] = null): void {
     this.titleService.setTitle(`${title} | InstaTodos`);
     if (metaTags && metaTags.length) {
       this.metaService.addTags(metaTags);

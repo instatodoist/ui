@@ -1,8 +1,7 @@
-import { Component, OnInit, AfterViewInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { GoalService, AppService, UtilityService } from '../../../service';
+import { GoalService, UtilityService } from '../../../service';
 import { IGoalType, IExternalModal, IGoalConditions } from '../../../models';
-import { Subscription } from 'rxjs';
 declare let $: any;
 type IGoalPopupType = 'GOAL_ADD' | 'GOAL_UPDATE';
 
@@ -11,7 +10,7 @@ type IGoalPopupType = 'GOAL_ADD' | 'GOAL_UPDATE';
   templateUrl: './goal-dialog.component.html',
   styleUrls: ['./goal-dialog.component.scss']
 })
-export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
+export class GoalDialogComponent implements OnInit {
 
   @Input() // Goal object
   goal: IGoalType = null;
@@ -19,7 +18,6 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   modelId = 'goal-dialog';
   @Input() // parent Conditions
   conditions: IGoalConditions;
-  private modalSubscription: Subscription;
   defaultConfig: IExternalModal;
   formObj: FormGroup;
   QUILL_OPTIONS: unknown;
@@ -28,7 +26,6 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private goalService: GoalService,
-    private appService: AppService,
     private fb: FormBuilder,
     private toastr: UtilityService
   ) { }
@@ -57,51 +54,24 @@ export class GoalDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       accomplishTenure: [null],
       operationType: ['ADD']
     });
-    this.subscribeToModal();
+    this.populateModal();
   }
 
-  ngAfterViewInit() {
-    $('#' + this.modelId).modal('toggle');
-    const externalModal = this.appService.externalModal;
-    const defaultConfig = this.defaultConfig;
-    const modelId = this.modelId;
-    const popupType = this.popUpType;
-    // tslint:disable-next-line: only-arrow-functions
-    $('#' + modelId).on('hidden.bs.modal', () => {
-      externalModal.next({
-        ...defaultConfig,
-        [popupType]: false
+  private populateModal() {
+    if (this.goal) {
+      this.formObj.patchValue({
+        _id: this.goal._id,
+        title: this.goal.title,
+        description: this.goal.description,
+        isAchieved: this.goal.isAchieved,
+        isPinned: this.goal.isPinned,
+        accomplishTenure: this.goal.accomplishTenure,
+        operationType: 'UPDATE'
       });
-    });
+    }
   }
 
-  ngOnDestroy() {
-    this.modalSubscription.unsubscribe();
-  }
-
-  private subscribeToModal() {
-    this.modalSubscription = this.appService.externalModal.subscribe(data => {
-      this.defaultConfig = { ...data };
-      if (data.data.conditions) {
-        this.conditions = data.data.conditions;
-      }
-      if (data.data.goal) {
-        this.popUpType = 'GOAL_UPDATE';
-        this.goal = data.data.goal;
-        this.formObj.patchValue({
-          _id: this.goal._id,
-          title: this.goal.title,
-          description: this.goal.description,
-          isAchieved: this.goal.isAchieved,
-          isPinned: this.goal.isPinned,
-          accomplishTenure: this.goal.accomplishTenure,
-          operationType: 'UPDATE'
-        });
-      }
-    });
-  }
-
-  submit() {
+  submit(): void {
     if (this.formObj.valid) {
       this.isSubmit = true;
       delete this.formObj.value.accomplishTenure;

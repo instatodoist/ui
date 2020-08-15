@@ -1,6 +1,9 @@
-import { Injectable } from '@angular/core';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Injectable, ViewContainerRef, ComponentRef, Injector, ComponentFactoryResolver, TemplateRef, ViewRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
+import { IDialogRef, TDialogTempRef, TDialogCompRef} from '../models';
+import { Observable } from 'apollo-link';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let $: any;
@@ -10,7 +13,11 @@ declare let $: any;
 })
 export class UtilityService {
 
+  vcRef: ViewContainerRef;
+
   constructor(
+    private injector: Injector,
+    private componentFactoryResolver: ComponentFactoryResolver,
     private translate: TranslateService,
     private iziToast: ToastrService
   ) { }
@@ -90,5 +97,91 @@ export class UtilityService {
     const { message } = graphQLErrors[0];
     return message;
   }
+
+  /**
+   * register vc for appcomponets on load
+   * @param vc - view containerref
+   */
+  registerAppCOntainerViewRef(vc: ViewContainerRef): void {
+    this.vcRef = vc;
+  }
+
+  /**
+   * Create a component instance from params [ComponentRef]
+   * @param ref - ComponentRef
+   */
+  createComponentOutlet(ref: TDialogCompRef): any {
+    const factory = this.componentFactoryResolver.resolveComponentFactory(ref.value);
+    const componentRef: ComponentRef<any> = factory.create(this.injector);
+    if (ref?.data) {
+      (Object.keys(ref?.data)).forEach(element => {
+        if (element in ref?.data) {
+          componentRef.instance[element] = ref?.data[element];
+        }
+      });
+    }
+    const view = componentRef.hostView;
+    this.insertInAppViewContainer(view);
+    return componentRef.instance;
+  }
+
+  /**
+   * Create a template reference from param [TemplateRef]
+   * @param ref - TemplateRef
+   */
+  createTemplateRef(ref: TDialogTempRef): void {
+    const temRef: TemplateRef<any> = ref.value;
+    const view = temRef.createEmbeddedView(null);
+    this.insertInAppViewContainer(view);
+  }
+
+  /**
+   * Insert ComponentRef & TemplateRef in the APP ViewContanerRef
+   * @param view - TemplateRef | ComponentRef
+   */
+  insertInAppViewContainer(view: ViewRef): void {
+    this.vcRef.insert(view);
+  }
+
+  /**
+   * Passing ComponentRef | TemplateRef to open as a dialog
+   * @param ref - TemplateRef | ComponentRef
+   */
+  openMdcDialog(ref: IDialogRef): Observable<{dialog: any, instance: any}> {
+    let instance: any;
+    if (ref.type === 'template') {
+      instance = this.createTemplateRef(ref);
+    } else {
+      instance = this.createComponentOutlet(ref);
+    }
+    return this.triggerMdcDialog(instance, ref.data.modelId);
+  }
+
+  /**
+   * Open ComponentRef | TemplateRef as a dialog
+   */
+  triggerMdcDialog(instance: any, modelId: string): Observable<{dialog: any, instance: any}> {
+    return new Observable((observer) => {
+      setTimeout(()=>{
+        const dialog = $(`#${modelId}`);
+        dialog.modal('toggle'); // Open & close Popup
+        // instance.dialog = dialog;
+        dialog.on('hidden.bs.modal', () => { // listen modal close event
+          this.vcRef.clear();
+        });
+        observer.next({ dialog, instance });
+      },0);
+    });
+  }
+
+  /**
+   * Close MDC Dialog
+   * @param dialog - MDCDialog
+   */
+  closeMdcDialog(dialog: any): void {
+    dialog.close();
+    this.vcRef.clear();
+  }
+
 
 }

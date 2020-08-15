@@ -14,19 +14,19 @@ type ScheduledType = 'NO_DUE_DATE' | 'TODAY' | 'TOMORROW' | 'NEXT_WEEK' | 'CUSTO
   templateUrl: './todo-dialog.component.html',
   styleUrls: ['./todo-dialog.component.scss']
 })
-export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
+export class TodoDialogComponent implements OnInit, OnDestroy {
 
   @ViewChild('titleInput') private elementRef: ElementRef;
   @Input() modelId = 'todo-dialog';
   @Input() todo: TodoType = null; // todo object if update
   @Input() conditions: TodoConditions = null; // conditions object
   @Input() origin = null;
-  externalModal = this.appService.externalModal;
-  defaultConfig = this.appService.ExternalModelConfig;
+  // externalModal = this.appService.externalModal;
+  // defaultConfig = this.appService.ExternalModelConfig;
   nestedModalId = '';
 
   // @Output() isOpen: EventEmitter<boolean> = new EventEmitter<boolean>(); // open flag
-  private modalSubscription: Subscription;
+  // private modalSubscription: Subscription;
   private routeSubscription: Subscription;
   title = 'Add Task'; // default title if use same component for ADD/EDIT
   operationType: IOperationEnumType = 'ADD'; // default operationType if use same component for ADD/EDIT
@@ -94,7 +94,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       scheduledType: ['TODAY'],
       subTasks: this.fb.array([this.initSubTasks()])
     });
-    this.subscribeToModal(); // Listen to subscription to choose if popup called
+    this.populateTodoModal(); // Listen to subscription to choose if popup called
     this.routeSubscription = combineLatest([ // fetching Tags & Projects/List in the system
       this.todoService.listTodoLabels(),
       this.todoService.listTodoProjects()
@@ -152,25 +152,6 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  ngAfterViewInit() {
-    $('#' + this.modelId).modal('toggle'); // Open & close Popup
-    // tslint:disable-next-line: only-arrow-functions
-    $(`#${this.modelId}`).on('hidden.bs.modal', () => { // listen modal close event
-      this.externalModal.next({
-        ...this.defaultConfig,
-        [this.popUpType]: false,
-        data: {
-          ...this.defaultConfig.data, todo: null
-        }
-      });
-    });
-  }
-
-  ngOnDestroy() {
-    this.modalSubscription.unsubscribe();
-    this.routeSubscription.unsubscribe();
-  }
-
   private initSubTasks(): FormGroup {
     return this.fb.group({
       title: '',
@@ -196,12 +177,12 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // auto checked the labels if exist
-  isChecked(label: TodoLabelType) {
+  isChecked(label: TodoLabelType): boolean {
     return this.formObj.value.labelIds.indexOf(label._id) !== -1 ? true : false;
   }
 
   // check & uncheck labels
-  checkLabels(label: TodoLabelType) {
+  checkLabels(label: TodoLabelType): void {
     const labelId = label._id;
     const index = this.formObj.value.labelIds.indexOf(labelId);
     if (index === -1) {
@@ -215,7 +196,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.formObj.get('subTasks') as FormArray;
   }
 
-  scheduleTypeOnUpdate(scheduledDate: any) {
+  scheduleTypeOnUpdate(scheduledDate: Date): string {
     if (scheduledDate) {
       if (moment(scheduledDate).isSame(moment(), 'day')) {
         return 'TODAY';
@@ -225,44 +206,38 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     return 'NO_DUE_DATE';
   }
 
-  private subscribeToModal() {
-    this.modalSubscription = this.appService.externalModal.subscribe(data => {
-      if (data.data.todo) {
-        this.todo = data.data.todo;
-        this.title = 'Update Task';
-        this.labelIdVal = this.todo && this.todo.labels ? (this.todo.labels.map(label => {
-          return label._id;
-        })) : [];
-        this.popUpType = this.todo._id ? 'TODO_UPDATE' : 'TODO_ADD';
-        this.formObj.patchValue({
-          _id: this.todo && this.todo._id || '',
-          title: this.todo && this.todo.title || '',
-          projectId: this.todo && this.todo.projectId || '',
-          scheduledDate: this.todo && this.todo.scheduledDate ? this.todo.scheduledDate : '',
-          scheduledType: this.scheduleTypeOnUpdate(this.todo.scheduledDate),
-          labelIds: this.labelIdVal,
-          operationType: this.todo._id ? 'UPDATE' : 'ADD',
-          isCompleted: this.todo && this.todo.isCompleted ? true : false
+  private populateTodoModal() {
+    if(this.todo) {
+      this.title = 'Update Task';
+      this.labelIdVal = this.todo && this.todo.labels ? (this.todo.labels.map(label => {
+        return label._id;
+      })) : [];
+      this.formObj.patchValue({
+        _id: this.todo && this.todo._id || '',
+        title: this.todo && this.todo.title || '',
+        projectId: this.todo && this.todo.projectId || '',
+        scheduledDate: this.todo && this.todo.scheduledDate ? this.todo.scheduledDate : '',
+        scheduledType: this.scheduleTypeOnUpdate(this.todo.scheduledDate),
+        labelIds: this.labelIdVal,
+        operationType: this.todo._id ? 'UPDATE' : 'ADD',
+        isCompleted: this.todo && this.todo.isCompleted ? true : false
+      });
+      if (this.todo.subTasks.length) {
+        const subTasksControl = this.subTasks;
+        (this.formObj.get('subTasks') as FormArray).clear();
+        console.log(this.todo.subTasks);
+        // Sort subtasks by title
+        const subTasks = this.todo.subTasks
+          .sort((a, b) => a.title.localeCompare(b.title));
+        subTasks.forEach((element: TodoType) => {
+          subTasksControl.push(this.fb.group(element));
         });
-        if (this.todo.subTasks.length) {
-          const subTasksControl = this.subTasks;
-          (this.formObj.get('subTasks') as FormArray).clear();
-          console.log(this.todo.subTasks);
-          // Sort subtasks by title
-          const subTasks = this.todo.subTasks
-            .sort((a, b) => a.title.localeCompare(b.title));
-          subTasks.forEach((element: TodoType) => {
-            subTasksControl.push(this.fb.group(element));
-          });
-          this.addSubTask();
-        }
-      } else {
-        this.popUpType = 'TODO_ADD';
+        this.addSubTask();
       }
-    });
+    }
   }
 
-  askDatePickerToOpen(scheduledType: ScheduledType) {
+  askDatePickerToOpen(scheduledType: ScheduledType): void {
     if (scheduledType === 'CUSTOM') {
       this.openListPopup('scheduledModal');
       this.formObj.patchValue({
@@ -276,7 +251,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  openListPopup(nestedModalId: string) {
+  openListPopup(nestedModalId: string): void {
     this.nestedModalId = nestedModalId;
     $(`#${nestedModalId}`).modal('toggle'); // Open & close Popup
     $(`#${this.modelId}`).css({ 'z-index': 1040 });
@@ -285,13 +260,13 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  recieveDataAsLabels(data: string[]) {
+  recieveDataAsLabels(data: string[]): void {
     this.formObj.patchValue({
       labelIds: data
     });
   }
 
-  recieveDataAsProjectId(data: string) {
+  recieveDataAsProjectId(data: string): void {
     const projectName = this.projects.filter(obj => (obj._id) === data)[0].name;
     this.currentProject = projectName;
     this.formObj.patchValue({
@@ -300,7 +275,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     $('#' + this.nestedModalId).modal('toggle');
   }
 
-  recieveDataAsDate(data: string) {
+  recieveDataAsDate(data: string): void {
     this.formObj.patchValue({
       scheduledDate: data
     });
@@ -308,7 +283,7 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // add/update the task
-  submit() {
+  submit(): void {
     if (this.formObj.valid) {
       const postBody = this.formObj.value;
       const { subTasks } = postBody;
@@ -346,4 +321,9 @@ export class TodoDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         );
     }
   }
+
+  ngOnDestroy(): void {
+    this.routeSubscription.unsubscribe();
+  }
+
 }

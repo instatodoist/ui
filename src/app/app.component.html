@@ -1,16 +1,2 @@
 <router-outlet></router-outlet>
-
-<!-- Popup for GOALS -->
-<app-goal-dialog [modelId]="'goal-dialog-add'" *ngIf="extModalConfig.GOAL_ADD"></app-goal-dialog>
-<app-goal-dialog [goal]="extModalConfig?.data?.goal" *ngIf="extModalConfig.GOAL_UPDATE"></app-goal-dialog>
-
-<!-- Popup for TODOS -->
-<app-todo-dialog [modelId]="'todo-dialog-add'" *ngIf="extModalConfig.TODO_ADD"></app-todo-dialog>
-<app-todo-dialog [todo]="extModalConfig?.data?.todo" *ngIf="extModalConfig.TODO_UPDATE"></app-todo-dialog>
-
-<!-- Popup for Date-->
-<!-- <app-custom-date-modal
-  *ngIf="extModalConfig?.DATE_PICKER"
-  [todo]="extModalConfig?.data?.todo"
-  >
-</app-custom-date-modal> -->
+<ng-container #vc></ng-container>

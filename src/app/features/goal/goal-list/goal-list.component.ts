@@ -1,31 +1,32 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { IGoalListType, IGoalConditions, IGoalType, IExternalModal, IOperationEnumType, ITemplateOperation } from '../../../models';
-import { GoalService, AppService } from '../../../service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { IGoalListType, IGoalConditions, IGoalType, IOperationEnumType, ITemplateOperation } from '../../../models';
+import { GoalService, AppService, UtilityService } from '../../../service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
-declare let $: any;
+import { GoalDialogComponent } from '../goal-dialog/goal-dialog.component';
 
 @Component({
   selector: 'app-goal-list',
   templateUrl: './goal-list.component.html',
   styleUrls: ['./goal-list.component.scss']
 })
-export class GoalListComponent implements OnInit, AfterViewInit, OnDestroy {
+export class GoalListComponent implements OnInit, OnDestroy {
 
   goals$: Subscription;
   goals: IGoalListType;
-  extModalConfig: IExternalModal = this.appService.ExternalModelConfig;
   conditions: IGoalConditions;
   isUpdate = false;
   goal: IGoalType = null;
   loaderImage = this.appService.loaderImage;
   loader = false;
+  $ =  this.utilityService.JQuery;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private goalService: GoalService,
-    private appService: AppService
+    private appService: AppService,
+    private utilityService: UtilityService
   ) {
     this.conditions = {
       filter: {
@@ -63,40 +64,34 @@ export class GoalListComponent implements OnInit, AfterViewInit, OnDestroy {
       );
   }
 
-  ngAfterViewInit() {
-    $('[data-toggle="tooltip"]').tooltip();
-  }
-
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.goals$.unsubscribe();
   }
 
   openUpdatePopUp(goal: IGoalType = null, type: ITemplateOperation = 'IS_UPDATE'): void {
     if (type === 'IS_UPDATE') {
-      this.extModalConfig = {
-        ...this.extModalConfig,
-        GOAL_ADD: false,
-        GOAL_UPDATE: true,
+      this.utilityService.openMdcDialog({
+        type: 'component',
+        value: GoalDialogComponent,
         data: {
-          ...this.extModalConfig.data,
-          goal,
-          conditions: this.conditions
+          modelId: 'goal-dialog-update',
+          goal
         }
-      };
+      })
+        .subscribe((_)=>_);
     } else {
-      this.extModalConfig = {
-        ...this.extModalConfig,
-        GOAL_ADD: true,
-        GOAL_UPDATE: false,
+      this.utilityService.openMdcDialog({
+        type: 'component',
+        value: GoalDialogComponent,
         data: {
-          ...this.extModalConfig.data, goal: null, conditions: this.conditions
+          modelId: 'goal-dialog-add'
         }
-      };
+      })
+        .subscribe((_)=>_);
     }
-    this.appService.externalModal.next(this.extModalConfig);
   }
 
-  updateGoal(goal: IGoalType = null, type: ITemplateOperation = 'IS_PINNED') {
+  updateGoal(goal: IGoalType = null, type: ITemplateOperation = 'IS_PINNED'): void {
     let operationType: IOperationEnumType = 'ADD';
     const goalObj = {
       _id: goal._id,
@@ -127,7 +122,7 @@ export class GoalListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  submit(postBody: IGoalType = null) {
+  submit(postBody: IGoalType = null): void {
     this.goalService.goalOperation(postBody, this.conditions).subscribe();
   }
 

@@ -3,8 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
-import { TodoListType, TodoCompletedListType, TodoType, TodoConditions, IExternalModal, ITodoTypeCount, ItabName } from '../../../models';
+import { TodoListType, TodoCompletedListType, TodoType, TodoConditions, ITodoTypeCount, ItabName } from '../../../models';
 import { TodoService, AppService, UtilityService } from '../../../service';
+import { TodoDialogComponent } from '../../shared/todo-dialog/todo-dialog.component';
 
 // declare let $: any;
 @Component({
@@ -29,7 +30,6 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   compltedCount = 0;
   loaderImage = this.appService.loaderImage;
   isDeleting = false;
-  extModalConfig: IExternalModal = this.appService.ExternalModelConfig;
   // modalSubscription: Subscription;
   count: ITodoTypeCount;
   tabs: ItabName = {
@@ -205,9 +205,15 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param popupType - update/delete
    */
   openPopUp(todo: TodoType): void {
-    console.log(todo);
-    this.extModalConfig = { ...this.extModalConfig, TODO_UPDATE: true, data: { ...this.extModalConfig.data, todo } };
-    this.appService.externalModal.next(this.extModalConfig);
+    this.utilityService.openMdcDialog({
+      type: 'component',
+      value: TodoDialogComponent,
+      data: {
+        modelId: 'todo-dialog-update',
+        todo
+      }
+    })
+      .subscribe((_)=>_);
   }
 
   /**

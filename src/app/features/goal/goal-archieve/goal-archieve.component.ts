@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { IGoalListType, IGoalConditions, IGoalType, IExternalModal } from '../../../models';
+import { IGoalListType, IGoalConditions, IGoalType } from '../../../models';
 import { GoalService, AppService } from '../../../service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
@@ -17,7 +17,6 @@ export class GoalArchieveComponent implements OnInit, OnDestroy {
   goals: IGoalListType;
   isUpdate = false;
   goal: IGoalType = null;
-  extModalConfig: IExternalModal = this.appService.ExternalModelConfig;
   conditions: IGoalConditions = {
     filter: {
       isAchieved: true,
@@ -61,7 +60,7 @@ export class GoalArchieveComponent implements OnInit, OnDestroy {
       );
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.goals$.unsubscribe();
   }
 }

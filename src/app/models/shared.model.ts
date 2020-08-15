@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { TemplateRef, Type } from '@angular/core';
+
 import {
   IUserProfile,
   TodoType,
@@ -69,3 +72,25 @@ export type IMetaTag = {
 } & {
   [prop: string]: string;
 };
+
+type TDialogRefData = {
+  data?: {
+    buttonText?: string;
+    title?: string;
+    modelId?: string;
+    todo?: TodoType;
+    goal?: IGoalType;
+  }
+};
+
+export type TDialogTempRef = {
+  type: 'template',
+  value: TemplateRef<any>
+} & TDialogRefData;
+
+export type TDialogCompRef = {
+  type: 'component',
+  value: Type<any>
+} & TDialogRefData;
+
+export type IDialogRef = TDialogCompRef | TDialogTempRef;

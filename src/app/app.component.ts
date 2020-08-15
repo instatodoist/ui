@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ViewContainerRef, AfterViewInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
   Router,
@@ -7,8 +7,7 @@ import {
 } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
-import { VersionCheckService, AppService } from './service';
-import { IExternalModal } from './models';
+import { VersionCheckService, AppService, UtilityService } from './service';
 import { environment } from '../environments/environment';
 import { of } from 'rxjs';
 
@@ -23,11 +22,10 @@ declare let gtag: (arg0: string, arg1: string, arg2?: string, arg3?: string) => 
     { provide: Window, useValue: window }
   ]
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('vc', { read: ViewContainerRef }) vcref: ViewContainerRef;
 
   loading = false;
-  extModalConfig: IExternalModal;
-  modalSubscription: Subscription;
   routerEventSubscription: Subscription;
 
   constructor(
@@ -35,7 +33,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private router: Router,
     private versionCheckService: VersionCheckService,
     private appService: AppService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private utilityService: UtilityService
   ) {
     translateService.setDefaultLang('en'); // set default lang as english
     this.routerEventSubscription = this.router
@@ -75,17 +74,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscribeToExtTodoAddModal();
     if (environment.production) {
       this.versionCheckService.initVersionCheck(environment.versionUrl, 30 * 1000);
     }
   }
 
-  // used for open & closing of todo add modal
-  private subscribeToExtTodoAddModal() {
-    this.modalSubscription = this.appService.externalModal.subscribe(data => {
-      this.extModalConfig = data;
-    });
+  ngAfterViewInit(): void {
+    this.utilityService.registerAppCOntainerViewRef(this.vcref);
   }
 
   private setMetaTags() {
@@ -101,6 +96,5 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.routerEventSubscription.unsubscribe();
-    this.modalSubscription.unsubscribe();
   }
 }
