@@ -4,10 +4,10 @@ import { TodoProjectType } from '../../../models';
 
 @Component({
   selector: 'app-dialog-todo-projects',
-  templateUrl: './dialog-todo-projects.component.html',
-  styleUrls: ['./dialog-todo-projects.component.scss']
+  templateUrl: './todo-projects-dialog.component.html',
+  styleUrls: ['./todo-projects-dialog.component.scss']
 })
-export class DialogTodoProjectsComponent implements OnInit {
+export class TodoProjectListDialogComponent implements OnInit {
   @Input() projectId = '';
   @Input() projects: TodoProjectType[] = [];
   @Input() modelId = 'projectModal';

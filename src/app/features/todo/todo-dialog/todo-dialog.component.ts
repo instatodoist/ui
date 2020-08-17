@@ -11,7 +11,7 @@ import { } from '../../../gql';
 import * as moment from 'moment';
 import {  SharedModule } from '../../shared/shared.module';
 import { DialogTodoTagsComponent } from '../todo-tag-dialog/dialog-todo-tags.component';
-import { DialogTodoProjectsComponent } from '../todo-project-dialog/dialog-todo-projects.component';
+import { TodoProjectListDialogComponent } from '../todo-project-list-dialog/todo-projects-dialog.component';
 
 
 declare let $: any;
@@ -412,7 +412,7 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
   declarations:[
     TodoDialogComponent,
     DialogTodoTagsComponent,
-    DialogTodoProjectsComponent
+    TodoProjectListDialogComponent
   ]
 })
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

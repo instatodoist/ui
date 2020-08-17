@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ITodoTypeCount, INavLink } from '../../../../models';
 import { combineLatest } from 'rxjs';
 
-import { TodoProjectDialogComponent } from '../../../todo/todo-project/todo-project.component';
+import { TodoProjectDialogComponent } from '../../../todo/todo-project-dialog/todo-project-dialog.component';
 
 
 @Component({

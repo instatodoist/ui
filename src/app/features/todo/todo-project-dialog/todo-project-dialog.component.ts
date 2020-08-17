@@ -8,7 +8,7 @@ import { TodoType, TodoProjectType, TodoConditions, IOperationEnumType } from '.
 
 @Component({
   selector: 'app-todo-project',
-  templateUrl: './todo-project.component.html',
+  templateUrl: './todo-project-dialog.component.html',
   styles: []
 })
 export class TodoProjectDialogComponent implements OnInit, AfterViewInit {
