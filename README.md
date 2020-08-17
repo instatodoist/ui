@@ -2,6 +2,11 @@
 
 This project is live on [here](https://instatodos.com)
 
+# Test Credentails
+Email Address - `techyaura_test@mailinator.com`
+
+Password- `hello123`
+
 # Stack
 
 `Instatodos` is using Angular as Frontend framework & [GraphQL](https://graphql.org/) as Query language for Interaction with server.
