@@ -1,4 +1,6 @@
-import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, ViewContainerRef, TemplateRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, ViewContainerRef, TemplateRef, NgModule } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { TodoService, UtilityService } from '../../../service';
@@ -7,6 +9,11 @@ import { map } from 'rxjs/operators';
 import { combineLatest, Subscription } from 'rxjs';
 import { } from '../../../gql';
 import * as moment from 'moment';
+import {  SharedModule } from '../../shared/shared.module';
+import { DialogTodoTagsComponent } from '../todo-tag-dialog/dialog-todo-tags.component';
+import { DialogTodoProjectsComponent } from '../todo-project-dialog/dialog-todo-projects.component';
+
+
 declare let $: any;
 type ScheduledType = 'NO_DUE_DATE' | 'TODAY' | 'TOMORROW' | 'NEXT_WEEK' | 'CUSTOM';
 @Component({
@@ -394,3 +401,19 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
   }
 
 }
+
+
+@NgModule({
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    SharedModule
+  ],
+  declarations:[
+    TodoDialogComponent,
+    DialogTodoTagsComponent,
+    DialogTodoProjectsComponent
+  ]
+})
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+class TodoDialogModule{}

@@ -1,4 +1,7 @@
-import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {RouterModule} from '@angular/router';
+import {ReactiveFormsModule} from '@angular/forms';
+import { NgModule, Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TodoService, UtilityService } from '../../../service';
 import { TodoType, TodoProjectType, TodoConditions, IOperationEnumType } from '../../../models';
@@ -8,7 +11,7 @@ import { TodoType, TodoProjectType, TodoConditions, IOperationEnumType } from '.
   templateUrl: './todo-project.component.html',
   styles: []
 })
-export class TodoProjectComponent implements OnInit, AfterViewInit {
+export class TodoProjectDialogComponent implements OnInit, AfterViewInit {
 
   @Input()
   todo: TodoType;
@@ -95,3 +98,16 @@ export class TodoProjectComponent implements OnInit, AfterViewInit {
   }
 
 }
+
+@NgModule({
+  imports: [
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule
+  ],
+  declarations: [
+    TodoProjectDialogComponent
+  ]
+})
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+class TodoProjectDialogModule{}

@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AuthService, AppService, UtilityService } from '../../../../service';
 import { Subscription } from 'rxjs';
 import { ILanguage, IUserProfile } from '../../../../models';
-import { TodoDialogComponent } from '../../../shared/todo-dialog/todo-dialog.component';
+import { TodoDialogComponent } from '../../../todo/todo-dialog/todo-dialog.component';
 
 @Component({
   selector: 'app-header',

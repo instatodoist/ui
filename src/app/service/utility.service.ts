@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable, ViewContainerRef, ComponentRef, Injector, ComponentFactoryResolver, TemplateRef, ViewRef } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { IDialogRef, TDialogTempRef, TDialogCompRef} from '../models';
 import { Observable } from 'apollo-link';
@@ -18,7 +17,6 @@ export class UtilityService {
   constructor(
     private injector: Injector,
     private componentFactoryResolver: ComponentFactoryResolver,
-    private translate: TranslateService,
     private iziToast: ToastrService
   ) { }
 
@@ -182,6 +180,5 @@ export class UtilityService {
     dialog.close();
     this.vcRef.clear();
   }
-
 
 }

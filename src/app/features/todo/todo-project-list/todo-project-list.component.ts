@@ -28,7 +28,7 @@ export class TodoProjectListComponent implements OnInit {
     });
   }
 
-  getLabels() {
+  getLabels(): void {
     this.todoService
       .listTodoProjects()
       .subscribe(response => {

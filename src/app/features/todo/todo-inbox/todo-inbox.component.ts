@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { TodoListType, TodoCompletedListType, TodoType, TodoConditions, ITodoTypeCount, ItabName } from '../../../models';
 import { TodoService, AppService, UtilityService } from '../../../service';
-import { TodoDialogComponent } from '../../shared/todo-dialog/todo-dialog.component';
+import { TodoDialogComponent } from '../todo-dialog/todo-dialog.component';
 
 // declare let $: any;
 @Component({

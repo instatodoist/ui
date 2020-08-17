@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, ComponentRef, AfterViewInit } from '@angular/core';
 import { TodoService, AppService } from '../../../../service';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 import { ITodoTypeCount, INavLink } from '../../../../models';
 import { combineLatest } from 'rxjs';
+
+import { TodoProjectDialogComponent } from '../../../todo/todo-project/todo-project.component';
+
+
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -12,7 +16,8 @@ import { combineLatest } from 'rxjs';
     }
   `]
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, AfterViewInit {
+  @ViewChild('vcprojects', { read: ViewContainerRef }) projectVcRef: ViewContainerRef;
 
   isOpen = false;
   count: ITodoTypeCount;
@@ -21,8 +26,10 @@ export class SidebarComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private injector: Injector,
     private todoService: TodoService,
-    private appService: AppService
+    private appService: AppService,
+    private componentFactoryResolver: ComponentFactoryResolver
   ) { }
 
   ngOnInit(): void {
@@ -48,28 +55,14 @@ export class SidebarComponent implements OnInit {
           upcoming
         };
         this.attachActiveClass(currentUrl);
-        this.navLinks = this.navLinks.map(item => {
-          if (item.slug === 'today') {
-            item = { ...item, count: this.count.today };
-          } else if (item.slug === 'pending') {
-            item = { ...item, count: this.count.pending };
-          } else if (item.slug === 'inbox') {
-            item = { ...item, count: this.count.inbox };
-          } else if (item.slug === 'upcoming') {
-            item = { ...item, count: this.count.upcoming };
-          } else if (item.slug === 'completed') {
-            item = { ...item, count: this.count.completed };
-          } else if (item.children && item.children.length) {
-            item.children = item.children.map(child => {
-              return child;
-            });
-          }
-          return item;
-        });
+        this.populateCount();
+        this.lazyLoadComponent();
       });
   }
 
-  attachActiveClass(currentUrl: string) {
+  ngAfterViewInit(): void {}
+
+  attachActiveClass(currentUrl: string): void {
     this.currentUrl = currentUrl;
     const navLinks = this.nav().filter(item => {
       if (item.link && this.currentUrl.match(new RegExp(item.link, 'g'))) {
@@ -99,6 +92,34 @@ export class SidebarComponent implements OnInit {
         return item;
       });
     }
+  }
+
+  populateCount(): void {
+    this.navLinks = this.navLinks.map(item => {
+      switch(item.slug) {
+      case 'today':
+        item = { ...item, count: this.count.today };
+        break;
+      case 'pending':
+        item = { ...item, count: this.count.pending };
+        break;
+      case 'inbox':
+        item = { ...item, count: this.count.inbox };
+        break;
+      case 'upcoming':
+        item = { ...item, count: this.count.upcoming };
+        break;
+      case 'completed':
+        item = { ...item, count: this.count.completed };
+        break;
+      default:
+        item.children = item.children && item.children.length && item.children.map(child => {
+          return child;
+        });
+        break;
+      }
+      return item;
+    });
   }
 
   private nav(): INavLink[] {
@@ -152,6 +173,12 @@ export class SidebarComponent implements OnInit {
         ]
       }
     ];
+  }
+
+  lazyLoadComponent(): void{
+    const factory = this.componentFactoryResolver.resolveComponentFactory(TodoProjectDialogComponent);
+    const componentRef: ComponentRef<any> = factory.create(this.injector);
+    this.projectVcRef.insert(componentRef.hostView); //lazy load
   }
 
 }
