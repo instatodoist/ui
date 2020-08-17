@@ -38,19 +38,9 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
         name: this.TODOTYPES.today,
         isShown: true,
         link: '/tasks/today'
-      },
-      {
-        name: this.TODOTYPES.pending,
-        isShown: true,
-        link: '/tasks/pending'
       }
     ],
     [this.TODOTYPES.pending]: [
-      {
-        name: this.TODOTYPES.today,
-        isShown: true,
-        link: '/tasks/today'
-      },
       {
         name: this.TODOTYPES.pending,
         isShown: true,

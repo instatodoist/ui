@@ -51,6 +51,8 @@ export class SidebarComponent implements OnInit {
         this.navLinks = this.navLinks.map(item => {
           if (item.slug === 'today') {
             item = { ...item, count: this.count.today };
+          } else if (item.slug === 'pending') {
+            item = { ...item, count: this.count.pending };
           } else if (item.slug === 'inbox') {
             item = { ...item, count: this.count.inbox };
           } else if (item.slug === 'upcoming') {
@@ -106,6 +108,13 @@ export class SidebarComponent implements OnInit {
         slug: 'today',
         icon: 'fa fa-calendar',
         link: '/tasks/today',
+        count: 0
+      },
+      {
+        name: 'Pending',
+        slug: 'pending',
+        icon: 'far fa-calendar-times',
+        link: '/tasks/pending',
         count: 0
       },
       {
