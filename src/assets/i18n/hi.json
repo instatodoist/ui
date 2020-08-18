@@ -1,8 +1,16 @@
 {
   "auth": {
     "signin": "लॉग इन करें",
+    "signup": "साइन अप करें",
+    "sign_out": "प्रस्थान करें",
     "username": "उपयोगकर्ता नाम",
-    "password": "कुंजिका"
+    "password": "कुंजिका",
+    "email": "ईमेल",
+    "reset": "पासवर्ड रीसेट",
+    "my_profile": "मेरी प्रोफाइल",
+    "my_profile_label": "व्यक्तिगत प्रोफ़ाइल विवरण देखें।",
+    "change_password": "पासवर्ड अपडेट करें",
+    "account_update": "लेखा जानकारी को अद्यतन बनाएं"
   },
   "tasks": "कार्य",
   "inbox": "इनबॉक्स",
@@ -12,8 +20,14 @@
   "completed": "पूर्ण",
   "lists": "सूचियों",
   "notes": "टिप्पणियाँ",
-  "app_dir": "అప్లికేషన్ డైరెక్టరీ",
+  "notes-archieved": "संग्रहीत नोट्स",
+  "tags": "टैग",
+  "completed_todos": "पूर्ण किए गए कार्य",
+  "label_filter": "फ़िल्टर किए गए कार्य",
   "type_here_to_search": "खोजने के लिए यहां टाइप करें ...",
   "what_todo": "आज आपके मन में क्या है?",
-  "save_changes": "सहेजें"
+  "save_changes": "सहेजें",
+  "save": "सहेजें",
+  "hello": "हैलो",
+  "available": "उपलब्ध"
 }

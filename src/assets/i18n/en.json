@@ -2,17 +2,21 @@
   "auth": {
     "signin": "Sign In",
     "signup": "Sign Up",
-    "username": "Uesrname",
+    "sign_out": "Sign Out",
+    "username": "Username",
     "password": "Password",
-    "email": "Email",
-    "reset": "Reset Password"
+    "email": "Email Address",
+    "reset": "Reset Password",
+    "no_account": "Don't have an account?",
+    "password_required": "Password is required",
+    "email_required": "Email is required",
+    "forgot_password": "Forgot password?",
+    "my_profile": "My Profile",
+    "my_profile_label": "View personal profile details.",
+    "change_password": "Update Password",
+    "account_update": "Update Account Information"
   },
-  "app_dir": "Application Directory",
-  "blacklist_portals": "Blacklist Portals",
-  "blacklist_emails": "Blacklist Emails",
-  "docs": "Docs",
-  "domain_status": "Domain Mapping Status",
-  "subscription_request": "Subscription Request",
+  "login_text": "Enter your email address and password to access",
   "tasks": "Tasks",
   "inbox": "Inbox",
   "today": "Today",
@@ -29,8 +33,6 @@
   "what_todo": "What is on your mind today?",
   "save_changes": "Save changes",
   "save": "Save",
-  "login": "Sign In",
-  "register": "Singn Up",
-  "account_password": "Update Password",
-  "account_update": "Update Account Information"
+  "hello": "Hello",
+  "available": "Available"
 }
