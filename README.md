@@ -38,5 +38,8 @@ use `npx` to use [Angular-CLI](https://cli.angular.io/).
 # Contribution
 Please feel free to contribute.
 
+# Screenshots
+![image](https://user-images.githubusercontent.com/5227618/91307097-226a7180-e7cb-11ea-9dd1-23dcb4bf687d.png)
+
 # License
 [Mozilla Public License 2.0](https://github.com/techyaura/instatodos-ui/blob/master/LICENSE)
