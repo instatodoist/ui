@@ -32,7 +32,7 @@ export class AuthForgotComponent implements OnInit {
       .subscribe(
         (response: any) => {
           const data = response;
-          this.router.navigate(['forgot-password/confirmation', data.hashToken]);
+          this.router.navigate(['auth/forgot-password/confirmation', data.hashToken]);
           this.loader = false;
           this.isSubmit = false;
         },
