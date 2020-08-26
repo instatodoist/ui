@@ -23,7 +23,7 @@ declare let gtag: (arg0: string, arg1: string, arg2?: string, arg3?: string) => 
   ]
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('vc', { read: ViewContainerRef }) vcref: ViewContainerRef;
+  @ViewChild('vc', { read: ViewContainerRef }) rootVcRef: ViewContainerRef;
 
   loading = false;
   routerEventSubscription: Subscription;
@@ -80,7 +80,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.utilityService.registerAppCOntainerViewRef(this.vcref);
+    this.utilityService.rootVcRef = this.rootVcRef;
   }
 
   private setMetaTags() {

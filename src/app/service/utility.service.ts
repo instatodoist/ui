@@ -12,7 +12,7 @@ declare let $: any;
 })
 export class UtilityService {
 
-  vcRef: ViewContainerRef;
+  vcRefRoot: ViewContainerRef;
 
   constructor(
     private injector: Injector,
@@ -23,6 +23,14 @@ export class UtilityService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get JQuery(): any {
     return $;
+  }
+
+  /**
+   * register vc for appcomponets on load
+   * @param vc - view containerref
+   */
+  set rootVcRef(vc: ViewContainerRef) {
+    this.vcRefRoot = vc;
   }
 
   parseErrorMessage(message: any): string {
@@ -97,14 +105,6 @@ export class UtilityService {
   }
 
   /**
-   * register vc for appcomponets on load
-   * @param vc - view containerref
-   */
-  registerAppCOntainerViewRef(vc: ViewContainerRef): void {
-    this.vcRef = vc;
-  }
-
-  /**
    * Create a component instance from params [ComponentRef]
    * @param ref - ComponentRef
    */
@@ -138,7 +138,7 @@ export class UtilityService {
    * @param view - TemplateRef | ComponentRef
    */
   insertInAppViewContainer(view: ViewRef): void {
-    this.vcRef.insert(view);
+    this.vcRefRoot.insert(view);
   }
 
   /**
@@ -165,7 +165,7 @@ export class UtilityService {
         dialog.modal('toggle'); // Open & close Popup
         // instance.dialog = dialog;
         dialog.on('hidden.bs.modal', () => { // listen modal close event
-          this.vcRef.clear();
+          this.vcRefRoot.clear();
         });
         observer.next({ dialog, instance });
       },0);
@@ -178,7 +178,7 @@ export class UtilityService {
    */
   closeMdcDialog(dialog: any): void {
     dialog.close();
-    this.vcRef.clear();
+    this.vcRefRoot.clear();
   }
 
 }

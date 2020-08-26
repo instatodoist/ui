@@ -42,7 +42,7 @@ export class AuthResetPasswordComponent implements OnInit {
       .subscribe(() => {
         this.loader = false;
         this.isSubmit = false;
-        this.router.navigate(['/']);
+        this.router.navigate(['/auth/login']);
       },
       () => {
         this.isSubmit = false;
