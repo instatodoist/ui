@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   API_URL: 'http://0.0.0.0:9000/graphql',
-  versionUrl: 'http://localhost:4200/version.json'
+  versionUrl: 'http://localhost:4200/version.json',
+  GID: '355670795843-8pov2avftr579al16lqrfd7tia703g05.apps.googleusercontent.com'
 };
 
 /*

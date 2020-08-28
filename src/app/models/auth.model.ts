@@ -12,9 +12,11 @@ export interface IUserProfile {
   lastname?: string;
   firstname?: string;
   image?: unknown;
-  profilePic: {
+  profilePic?: {
     url: string
   };
+  profile_image?: string;
+  gID?: string;
 }
 export interface UserType {
   email: string;
@@ -25,4 +27,10 @@ export interface RegisterResponse {
   ok?: boolean;
   message?: string;
   hashToken?: string;
+}
+
+export interface ILoginResponse {
+  message: string;
+  token: string;
+  user: IUserProfile;
 }

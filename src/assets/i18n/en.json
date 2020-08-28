@@ -14,7 +14,8 @@
     "my_profile": "My Profile",
     "my_profile_label": "View personal profile details.",
     "change_password": "Update Password",
-    "account_update": "Update Account Information"
+    "account_update": "Update Account Information",
+    "sign_with_google": "Sign with Google"
   },
   "login_text": "Enter your email address and password to access",
   "tasks": "Tasks",

@@ -5,5 +5,6 @@ export const environment = {
   // GTAG_ID: process.env.APP_GTAG_ID || ''
   API_URL: 'https://instatodo.herokuapp.com/graphql',
   versionUrl: 'https://www.instatodos.com/version.json',
-  GTAG_ID: 'G-M7LBHP82F7'
+  GTAG_ID: 'G-M7LBHP82F7',
+  GID: '355670795843-8pov2avftr579al16lqrfd7tia703g05.apps.googleusercontent.com'
 };
