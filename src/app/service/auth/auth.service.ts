@@ -4,7 +4,7 @@ import { environment } from '../../../environments/environment';
 import { Apollo } from 'apollo-angular';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { UserModel, IUserProfile, IUserPassword, ISuccessType } from '../../models';
+import { UserModel, IUserProfile, IUserPassword, ISuccessType, ILoginResponse } from '../../models';
 import {
   LOGIN_QUERY,
   REGISTER_MUTATION,
@@ -13,7 +13,8 @@ import {
   PROFILE_QUERY,
   RESET_PASSWORD,
   PROFILE_UPDATE_GQL,
-  UPDATE_PASSWORD_GQL
+  UPDATE_PASSWORD_GQL,
+  GOOGLE_MUTATION
 } from '../../gql/auth.gql';
 
 @Injectable({
@@ -141,5 +142,19 @@ export class AuthService {
       .pipe(map(({ data }: any) => {
         return data.updateProfile;
       }));
+  }
+
+  googleLogin(postData: IUserProfile): Observable<ILoginResponse>  {
+    return this.apollo
+      .mutate({
+        mutation: GOOGLE_MUTATION,
+        variables: {
+          input: postData
+        }
+      })
+      .pipe(map(({ data }: any) => {
+        return data.googleLogin;
+      })
+      );
   }
 }

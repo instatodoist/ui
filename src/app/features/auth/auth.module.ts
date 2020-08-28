@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FrontRoutingModule } from './auth-routing.module';
 import { HttpClientModule } from '@angular/common/http';
+import { SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider } from 'angularx-social-login';
 import { SharedModule } from '../shared/shared.module';
+import { environment } from '../../../environments/environment';
 // Components
 // import { FooterComponent } from '../shared/section/footer/footer.component';
 import { HomeLayoutComponent } from '../shared/layout/home-layout/home-layout.component';
@@ -37,10 +39,24 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
     HttpClientModule,
     ReactiveFormsModule,
     FrontRoutingModule,
-    SharedModule
+    SharedModule,
+    SocialLoginModule
   ],
   exports: [
     SharedModule
+  ],
+  providers: [
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(environment.GID)
+          }        ]
+      } as SocialAuthServiceConfig
+    }
   ]
 })
 

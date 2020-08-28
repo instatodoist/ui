@@ -80,6 +80,18 @@ export const LOGIN_QUERY = gql`
   }
 `;
 
+
+export const GOOGLE_MUTATION = gql`
+    mutation googleLogin( $input: GoogleInputType!) {
+      googleLogin(input: $input){
+        token
+        user {
+          email
+        }
+    }
+  }
+`;
+
 export default {
   REGISTER_MUTATION,
   LOGIN_QUERY

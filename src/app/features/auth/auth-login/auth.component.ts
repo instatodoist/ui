@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { SocialAuthService } from "angularx-social-login";
+import {  GoogleLoginProvider } from "angularx-social-login";
 import { LsService, AuthService, AppService } from '../../../service';
+import { IUserProfile } from '../../../models';
 
 @Component({
   selector: 'app-auth',
@@ -20,7 +23,8 @@ export class AuthComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private lsService: LsService,
-    private appService: AppService
+    private appService: AppService,
+    private socialService: SocialAuthService
   ) { }
 
   ngOnInit(): void {}
@@ -45,5 +49,28 @@ export class AuthComponent implements OnInit {
           this.loader = false;
         }
       );
+  }
+
+  signInWithGoogle(): void {
+    try {
+      this.socialService.signIn(GoogleLoginProvider.PROVIDER_ID);
+      this.socialService.authState.subscribe((user) => {
+        const postBody: IUserProfile  = {
+          firstname: user.firstName,
+          lastname: user.lastName || '',
+          email: user.email,
+          gID: user.id,
+          profile_image: user.photoUrl
+        };
+        this.authService.googleLogin(postBody)
+          .subscribe(data=>{
+            this.lsService.setValue('isLoggedIn', true);
+            this.lsService.setValue('__token', data.token);
+            window.location.reload();
+          });
+      });
+    } catch(err) {
+      console.log(err);
+    }
   }
 }
