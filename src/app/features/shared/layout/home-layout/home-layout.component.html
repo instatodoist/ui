@@ -2,13 +2,10 @@
   <div class="iq-sidebar" style="height: 0%;">
     <div class="iq-navbar-logo d-flex justify-content-between">
       <a routerLink="/" class="header-logo">
-        <!-- <img src="/assets/facelift/images/logo.png" class="img-fluid rounded" alt=""> -->
         <span>InstaTodos</span>
       </a>
       <div class="iq-menu-bt align-self-center">
         <div class="wrapper-menu">
-          <!-- <div class="main-circle"><i class="ri-menu-line"></i></div> -->
-          <!-- <div class="hover-circle"><i class="ri-close-fill"></i></div> -->
         </div>
       </div>
     </div>
@@ -18,12 +15,9 @@
       <nav class="navbar navbar-expand-lg navbar-light p-0">
         <div class="iq-menu-bt d-flex align-items-center">
           <div class="wrapper-menu">
-            <!-- <div class="main-circle"><i class="fas fa-bars"></i></div>
-            <div class="hover-circle"><i class="fas fa-times"></i></div> -->
           </div>
           <div class="iq-navbar-logo d-flex justify-content-between ml-3">
             <a routerLink="/" class="header-logo">
-              <!-- <img src="/assets/facelift/images/logo.png" class="img-fluid rounded" alt=""> -->
               <span>InstaTodos</span>
             </a>
           </div>
@@ -36,37 +30,13 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto navbar-list">
-            <!-- <li class="nav-item">
-                            <a class="search-toggle iq-waves-effect language-title" href="#"><span
-                                    class="ripple rippleEffect"
-                                    style="width: 98px; height: 98px; top: -15px; left: 56.2969px;"></span><img
-                                    src="/assets/facelift/images/small/flag-01.png" alt="img-flaf"
-                                    class="img-fluid mr-1" style="height: 16px; width: 16px;"> EN <i
-                                    class="ri-arrow-down-s-line"></i></a>
-                            <div class="iq-sub-dropdown">
-                                <a class="iq-sub-card" href="#"><img src="/assets/facelift/images/small/flag-02.png"
-                                        alt="img-flaf" class="img-fluid mr-2">French</a>
-                                <a class="iq-sub-card" href="#"><img src="/assets/facelift/images/small/flag-03.png"
-                                        alt="img-flaf" class="img-fluid mr-2">Spanish</a>
-                                <a class="iq-sub-card" href="#"><img src="/assets/facelift/images/small/flag-04.png"
-                                        alt="img-flaf" class="img-fluid mr-2">Italian</a>
-                                <a class="iq-sub-card" href="#"><img src="/assets/facelift/images/small/flag-05.png"
-                                        alt="img-flaf" class="img-fluid mr-2">German</a>
-                                <a class="iq-sub-card" href="#"><img src="/assets/facelift/images/small/flag-06.png"
-                                        alt="img-flaf" class="img-fluid mr-2">Japanese</a>
-                            </div>
-                        </li> -->
-            <li class="nav-item">
-              <a class="search-toggle iq-waves-effect language-title" routerLink="/auth/register"><span
-                  style="width: 98px; height: 98px; top: -15px; left: 56.2969px;"></span>
-                Get Started
-              </a>
-            </li>
+            <ng-container>
+              <app-multilingual></app-multilingual>
+            </ng-container>
             <li class="nav-item">
               <a class="search-toggle iq-waves-effect language-title" routerLink="/auth/login"><span
                   style="width: 98px; height: 98px; top: -15px; left: 56.2969px;"></span>
-                <i class="fa fa-sign-in mr-2" aria-hidden="true"></i>
-                Login
+                Get Started
               </a>
             </li>
           </ul>
@@ -79,22 +49,6 @@
   </div>
 </div>
 
-
 <footer class="iq-footer mt-5" style="margin-left: 0px;">
   <app-footer></app-footer>
 </footer>
-<!-- <footer class="iq-footer mt-5" style="margin-left: 0px;">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-lg-6">
-        <ul class="list-inline mb-0">
-          <li class="list-inline-item"><a href="privacy-policy.html">Privacy Policy</a></li>
-          <li class="list-inline-item"><a href="terms-of-service.html">Terms of Use</a></li>
-        </ul>
-      </div>
-      <div class="col-lg-6 text-right">
-        Copyright@2020 <a routerLink="/">InstaTodos</a> All Rights Reserved.
-      </div>
-    </div>
-  </div>
-</footer> -->

@@ -43,20 +43,9 @@
               <i class="fa fa-sticky-note" aria-hidden="true"></i>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="search-toggle iq-waves-effect language-title" href="#">
-              <span class="ripple rippleEffect" style="width: 98px; height: 98px; top: -15px; left: 56.2969px;">
-              </span>
-              <img src="{{defaultLang?.logo}}" alt="img-flaf" class="img-fluid mr-1" style="height: 16px; width: 16px;">
-              {{defaultLang?.value | uppercase}}
-              <i class="ri-arrow-down-s-line"></i>
-            </a>
-            <div class="iq-sub-dropdown">
-              <a class="iq-sub-card cursor" *ngFor="let lang of languages" (click)="onChangeLanguage(lang)">
-                <img src="{{lang?.logo}}" alt="img-flaf" class="img-fluid mr-2">{{lang?.name}}
-              </a>
-            </div>
-          </li>
+          <ng-container>
+            <app-multilingual></app-multilingual>
+          </ng-container>
         </ul>
       </div>
       <ul class="navbar-list">

@@ -14,6 +14,7 @@ import { FileUploadComponent } from '../shared/file-upload/file-upload.component
 import { InfiniteScrollComponent } from './infinite-scroll/infinite-scroll.component';
 import { GoalDialogComponent } from '../goal/goal-dialog/goal-dialog.component';
 import { CustomDateModalComponent } from './custom-date-modal/custom-date-modal.component';import {TodoProjectListComponent} from '../todo/todo-project-list/todo-project-list.component';
+import { MultilingualComponent } from '../../utilities/components/multilingual/multilingual.component';
 @NgModule({
   declarations: [
     TodoProjectListComponent,
@@ -21,7 +22,8 @@ import { CustomDateModalComponent } from './custom-date-modal/custom-date-modal.
     GoalDialogComponent,
     FileUploadComponent,
     CustomDateModalComponent,
-    FooterComponent
+    FooterComponent,
+    MultilingualComponent
   ],
   imports: [
     CommonModule,
@@ -50,7 +52,8 @@ import { CustomDateModalComponent } from './custom-date-modal/custom-date-modal.
     FileUploadComponent,
     CustomDateModalComponent,
     FooterComponent,
-    LazyLoadImageModule
+    LazyLoadImageModule,
+    MultilingualComponent
   ]
 })
 export class SharedModule {

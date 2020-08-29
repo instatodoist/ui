@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { filter, map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { Title } from '@angular/platform-browser';
-import { TranslateService } from '@ngx-translate/core';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AuthService, AppService, UtilityService } from '../../../../service';
 import { Subscription } from 'rxjs';
 import { ILanguage, IUserProfile } from '../../../../models';
@@ -28,9 +25,6 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private titleService: Title,
-    private translate: TranslateService,
     private userService: AuthService,
     private fb: FormBuilder,
     private authService: AuthService,
@@ -54,7 +48,6 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.getProfile();
     this.onSearch();
-    this.getLanguages();
   }
 
   // do singout
@@ -62,11 +55,6 @@ export class HeaderComponent implements OnInit {
     this.authService.logout();
     this.router.navigate(['/']);
     return false;
-  }
-
-  // change language
-  useLanguage(language: string): void {
-    this.translate.use(language);
   }
 
   /**
@@ -114,33 +102,4 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  /**
-   * set the current language for the app
-   * @param lang - language
-   */
-  onChangeLanguage(lang: ILanguage): void {
-    this.translate.use(lang.value);
-    this.defaultLang = lang;
-    localStorage.setItem('lang', JSON.stringify(lang));
-    this.appService.__updateCoreAppData({ ...this.appService.APP_DATA, lang });
-    // this.languages = this.languages.filter(item => item.value !== lang.value);
-  }
-
-  /**
-   * fetch all the languages for internationalization
-   */
-  getLanguages(): void {
-    this.languages$ = this.appService.languages().subscribe((response) => {
-      const languages = response;
-      if (localStorage.getItem('lang')) {
-        const language: ILanguage = JSON.parse(localStorage.getItem('lang'));
-        this.defaultLang = languages.filter(item => item.value === language.value)[0];
-      } else {
-        this.defaultLang = languages.filter(item => item.value === 'en')[0];
-      }
-      this.translate.use(this.defaultLang.value);
-      this.languages = languages;
-      // this.languages = languages.filter(item => item.value !== this.defaultLang.value);
-    });
-  }
 }

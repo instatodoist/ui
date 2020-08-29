@@ -2,6 +2,9 @@
 .cursor {
   cursor: pointer;
 }
+.display-block {
+  display: block !important;
+}
 button:disabled, button[disabled] {
   background-color: var(--iq-primary) !important;
   border-color: var(--iq-primary) !important;
