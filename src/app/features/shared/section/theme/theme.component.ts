@@ -97,7 +97,6 @@ export class ThemeComponent implements AfterViewInit {
     jQuery('.iq-colorbox .iq-colorselect li').on('click', function () {
       const jQuerythis = jQuery(this);
       const className = jQuerythis.attr('class');
-      console.log(className);
       localStorage.setItem('defaultThemeClass', className);
       const iqColor = jQuerythis.css('background-color');
       jQuery('.iq-colorbox .iq-colorselect .iq-colormark').removeClass('iq-colormark');
