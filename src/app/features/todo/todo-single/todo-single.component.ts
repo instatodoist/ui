@@ -23,23 +23,23 @@ export class TodoSingleComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  expandSubTasks() {
+  expandSubTasks(): void {
     this.isExpand = !this.isExpand;
   }
 
-  openPopUp(todo: TodoType) {
+  openPopUp(todo: TodoType): void {
     this.openPopUpCb.next(todo);
   }
 
-  updateTodo(todo: TodoType) {
+  updateTodo(todo: TodoType): void {
     this.updateTodoCb.next(todo);
   }
 
-  deleteTodo(todo: TodoType) {
+  deleteTodo(todo: TodoType): void {
     this.deleteTodoCb.next(todo);
   }
 
-  deleteRequest(todo: TodoType) {
+  deleteRequest(todo: TodoType): void {
     todo.deleteRequest = true;
     setTimeout(() => {
       todo.deleteRequest = false;
@@ -52,7 +52,7 @@ export class TodoSingleComponent implements OnInit {
     return diff === 0 || diff > 1;
   }
 
-  displayDate(todo: TodoType) {
+  displayDate(todo: TodoType): string {
     const date = todo.scheduledDate;
     if (!date) {
       return '';
