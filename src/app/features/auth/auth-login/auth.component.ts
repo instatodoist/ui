@@ -11,7 +11,7 @@ import { IUserProfile } from '../../../models';
   styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent implements OnInit {
-
+  isGoogleLogin = false;
   loader: boolean;
   isSubmit = false;
   signinForm = this.fb.group({
@@ -54,21 +54,28 @@ export class AuthComponent implements OnInit {
   signInWithGoogle(): void {
     try {
       this.socialService.signIn(GoogleLoginProvider.PROVIDER_ID);
-      this.socialService.authState.subscribe((user) => {
-        const postBody: IUserProfile  = {
-          firstname: user.firstName,
-          lastname: user.lastName || '',
-          email: user.email,
-          gID: user.id,
-          profile_image: user.photoUrl
-        };
-        this.authService.googleLogin(postBody)
-          .subscribe(data=>{
-            this.lsService.setValue('isLoggedIn', true);
-            this.lsService.setValue('__token', data.token);
-            window.location.reload();
-          });
-      });
+      this.socialService.authState
+        .subscribe((user) => {
+          this.isGoogleLogin = true;
+          const postBody: IUserProfile  = {
+            firstname: user.firstName,
+            lastname: user.lastName || '',
+            email: user.email,
+            gID: user.id,
+            profile_image: user.photoUrl
+          };
+          this.authService.googleLogin(postBody)
+            .subscribe(
+              data=>{
+                this.lsService.setValue('isLoggedIn', true);
+                this.lsService.setValue('__token', data.token);
+                window.location.reload();
+              },
+              ()=>{
+                this.isGoogleLogin = false;
+              }
+            );
+        });
     } catch(err) {
       console.log(err);
     }

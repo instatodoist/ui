@@ -33,7 +33,8 @@
       {{'auth.signin'|translate}} <i *ngIf="isSubmit" class="fa fa-spinner fa-spin ml-2"></i>
     </button>
     <button type="button" class="btn btn-secondary d-block w-100 mb-2" (click)="signInWithGoogle()">
-      <i class="fab fa-google"></i> {{'auth.sign_with_google' | translate}}
+      <i class="fab fa-google"></i> {{'auth.sign_with_google' | translate}} <i [hidden]="!isGoogleLogin"
+        class="fa fa-spinner fa-spin ml-2"></i>
     </button>
     <span class="text-dark dark-color d-inline-block line-height-2">{{'auth.no_account' | translate}} <a
         routerLink="/auth/register">{{'auth.signup'|translate}}</a></span>

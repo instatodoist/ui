@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider } from 'angularx-social-login';
 import { AuthModule } from './features/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './features/shared/shared.module';
@@ -46,8 +47,8 @@ import { environment } from '../environments/environment';
     AuthModule,
     AppRoutingModule,
     SharedModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
-    // LazyLoadImageModule
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    SocialLoginModule
   ],
   exports: [
     RouterModule,
@@ -55,7 +56,18 @@ import { environment } from '../environments/environment';
   ],
   providers: [
     CanActivateAuthenticateGuard,
-    GoogleAnalyticService
+    GoogleAnalyticService,
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(environment.GID)
+          }        ]
+      } as SocialAuthServiceConfig
+    }
   ],
   entryComponents: [],
   bootstrap: [AppComponent]
