@@ -10,7 +10,7 @@ describe('MultilingualComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ MultilingualComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

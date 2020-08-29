@@ -8,7 +8,7 @@ import { ILanguage } from '../../../models';
   selector: 'app-multilingual',
   template: `
     <li class="nav-item">
-      <a  (click)="hasChild = !hasChild" class="search-toggle iq-waves-effect language-title active" href="#">
+      <a  (click)="hasChild = !hasChild" class="search-toggle iq-waves-effect language-title active" href="javascript:void(0)">
         <span class="ripple rippleEffect" style="width: 98px; height: 98px; top: -15px; left: 56.2969px;">
         </span>
         <img src="{{defaultLang?.logo}}" alt="img-flaf" class="img-fluid mr-1" style="height: 16px; width: 16px;">

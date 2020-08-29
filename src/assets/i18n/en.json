@@ -1,4 +1,13 @@
 {
+  "get_started": "Get Started",
+  "enhance_productivity": "Enhance your Productivity & make your life more better",
+  "organize_yourself": "Organize yourself you never experienced ever.",
+  "why_app": "Why InstaTodos?",
+  "how_to_organize": "How to Organize?",
+  "track_everything": "Track Everything",
+  "why_app_desc": "We have only one goal to make yourself more productive & that's why we have keep InstaTodos completely Free.",
+  "how_to_organize_desc": "InstaTodos provides everything to get you started to your path to success to track everything & analyse your progress in real time.",
+  "track_everything_desc": "Track your progress. Add reminders to remember everything. With beautiful themes and efficient tools, you save time and achieve great goals.",
   "auth": {
     "signin": "Sign In",
     "signup": "Sign Up",

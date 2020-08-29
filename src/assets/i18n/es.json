@@ -1,4 +1,13 @@
 {
+  "get_started": "Empezar",
+  "enhance_productivity": "Mejore su productividad y mejore su vida",
+  "organize_yourself": "Organízate que nunca has experimentado.",
+  "why_app": "¿Por qué InstaTodos?",
+  "how_to_organize": "¿Cómo organizar?",
+  "track_everything": "Seguimiento de todo",
+  "why_app_desc": "Solo tenemos un objetivo para ser más productivo y es por eso que hemos mantenido InstaTodos completamente gratis.",
+  "how_to_organize_desc": "InstaTodos ofrece todo lo necesario para comenzar su camino hacia el éxito para realizar un seguimiento de todo y analizar su progreso en tiempo real.",
+  "track_everything_desc": "Seguimiento de su progreso. Agrega recordatorios para recordar todo. Con hermosos temas y herramientas eficientes, ahorra tiempo y logra grandes objetivos.",
   "auth": {
     "signin": "Registrarse",
     "signup": "Regístrate",
@@ -10,7 +19,8 @@
     "my_profile": "Mi perfil",
     "my_profile_label": "Ver detalles de perfil personal.",
     "change_password": "Actualiza contraseña",
-    "account_update": "Actualizar información de la cuenta"
+    "account_update": "Actualizar información de la cuenta",
+    "sign_with_google": "Firmar con Google"
   },
   "tasks": "Tareas",
   "inbox": "Bandeja de entrada",
