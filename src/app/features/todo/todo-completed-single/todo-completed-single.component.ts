@@ -6,11 +6,15 @@ import { TodoType } from '../../../models';
   template: `
     <ng-container>
 
-      <li class="d-flex mb-4 tr-{{ index + 1}} cursor" [ngClass]="{'i-am-subtask': isSubTask }">
+      <li class="d-flex mb-4 tr-{{ index + 1}} cursor" style="border-bottom: 1px solid #cccc;
+padding-bottom: 10px;" [ngClass]="{'i-am-subtask': isSubTask }">
         <!-- Expand button if exist-->
         <div class="user-img img-fluid">
+          <span style="font-size: 1em;">
+            {{index + 1 + ". "}}
+          </span>
           <span *ngIf="todo?.subTasks?.length" (click)="$event.stopPropagation(); expandSubTasks()">
-            <i class="fas fa-angle-down" [ngClass]="{ 'fa-angle-down' : isExpand, 'fa-angle-right': !isExpand}" style="font-size: 2em;"></i>
+            <i class="fas fa-angle-down" [ngClass]="{ 'fa-angle-down' : isExpand, 'fa-angle-right': !isExpand}"></i>
           </span>
         </div>
 
@@ -55,8 +59,11 @@ import { TodoType } from '../../../models';
 
   </ng-container>
   `,
-  styles: [
-  ]
+  styles: [`
+    .i-am-subtask div.user-img {
+      margin-left: 40px;
+    }
+  `]
 })
 export class TodoCompletedSingleComponent implements OnInit {
   @Input() todo: TodoType = null;
