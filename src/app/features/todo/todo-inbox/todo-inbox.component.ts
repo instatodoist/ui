@@ -210,12 +210,13 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param todo - todo object
    */
   updateTodo(todo: TodoType): void {
+    todo.subTasks = todo.subTasks || [];
     const postBody: TodoType = {
       _id: todo._id,
-      isCompleted: (this.todoCurrentType === this.TODOTYPES?.today) ? !todo.isCompleted : true,
+      isCompleted: !todo.isCompleted,
       operationType: 'UPDATE'
     };
-    const subTasks = todo.subTasks.map((item: TodoType) => {
+    const subTasks = todo?.subTasks.map((item: TodoType) => {
       const { isCompleted, title } = item;
       return {
         isCompleted,
