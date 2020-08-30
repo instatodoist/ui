@@ -35,18 +35,10 @@ interface Ischeduled {
 type TscheduledObj = { [ key in TScheduledString ] : Ischeduled }
 
 /**
- * Subtask interface
- */
-interface ISubTask {
-  title: string;
-  isCompleted: boolean;
-}
-
-/**
  * Task Form Interface
  */
 interface ITodoFormModel extends TodoType {
-  scheduledType: TScheduledString;
+  scheduledType?: TScheduledString;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -119,7 +111,7 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
   /**
    * Create type safe form group object
    */
-  private createForm(model: ( ITodoFormModel | ISubTask ) ): FormGroup {
+  private createForm(model: ITodoFormModel): FormGroup {
     return this.fb.group(model);
   }
 
@@ -283,7 +275,7 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
         operationType: this.todo._id ? 'UPDATE' : 'ADD',
         isCompleted: this.todo && this.todo.isCompleted ? true : false
       });
-      if (this.todo.subTasks.length) {
+      if (this.todo?.subTasks?.length) {
         const subTasksControl = this.subTasks;
         (this.formObj.get('subTasks') as FormArray).clear();
         // Sort subtasks by title

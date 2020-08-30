@@ -43,6 +43,7 @@ export interface TodoType {
   scheduledDate?: Date;
   createdAt?: Date;
   subTasks?: TodoType[];
+  parent?: string;
 }
 
 export interface TodoLabelType {

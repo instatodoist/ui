@@ -40,9 +40,22 @@ ToDo.fragments = {
         name
       }
       subTasks {
+        _id
         title
+        labels {
+          color
+          name
+          _id
+        }
+        project {
+          name
+        }
+        projectId
         isCompleted
+        scheduledDate
+        parent
       }
+      parent
       projectId
       isCompleted
       createdAt
