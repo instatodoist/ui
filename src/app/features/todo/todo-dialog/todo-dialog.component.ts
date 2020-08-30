@@ -2,19 +2,56 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, ViewContainerRef, TemplateRef, NgModule } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { combineLatest, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+import * as moment from 'moment';
 import { TodoService, UtilityService } from '../../../service';
 import { TodoType, TodoLabelType, TodoConditions, IOperationEnumType, TodoProjectType } from '../../../models';
-import { map } from 'rxjs/operators';
-import { combineLatest, Subscription } from 'rxjs';
 import { } from '../../../gql';
-import * as moment from 'moment';
 import {  SharedModule } from '../../shared/shared.module';
 import { DialogTodoTagsComponent } from '../todo-tag-dialog/dialog-todo-tags.component';
 import { TodoProjectListDialogComponent } from '../todo-project-list-dialog/todo-projects-dialog.component';
 
+/**
+ * Date Types Options
+ * on choosing Date
+ */
+type TScheduledString = 'NO_DUE_DATE' | 'TODAY' | 'TOMORROW' | 'NEXT_WEEK' | 'CUSTOM';
+
+/**
+ * Scheduled Object Values
+ */
+interface Ischeduled {
+  name: string;
+  value: string;
+  slug: string;
+}
+
+/**
+ * Hash map for date types
+ * for popups
+ */
+type TscheduledObj = { [ key in TScheduledString ] : Ischeduled }
+
+/**
+ * Subtask interface
+ */
+interface ISubTask {
+  title: string;
+  isCompleted: boolean;
+}
+
+/**
+ * Task Form Interface
+ */
+interface ITodoFormModel extends TodoType {
+  scheduledType: TScheduledString;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let $: any;
-type ScheduledType = 'NO_DUE_DATE' | 'TODAY' | 'TOMORROW' | 'NEXT_WEEK' | 'CUSTOM';
+
 @Component({
   selector: 'app-todo-dialog',
   templateUrl: './todo-dialog.component.html',
@@ -22,56 +59,29 @@ type ScheduledType = 'NO_DUE_DATE' | 'TODAY' | 'TOMORROW' | 'NEXT_WEEK' | 'CUSTO
 })
 export class TodoDialogComponent implements OnInit, OnDestroy {
   @ViewChild('vctodo', { read: ViewContainerRef }) private vctodoRef: ViewContainerRef;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @ViewChild('tags', { read: TemplateRef }) private tagsRef: TemplateRef<any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @ViewChild('projectRef', { read: TemplateRef }) private projectsRef: TemplateRef<any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @ViewChild('date', { read: TemplateRef }) private dateRef: TemplateRef<any>;
   @ViewChild('titleInput') private elementRef: ElementRef;
   @Input() modelId = 'todo-dialog';
   @Input() todo: TodoType = null; // todo object if update
   @Input() conditions: TodoConditions = null; // conditions object
-  @Input() origin = null;
   private routeSubscription: Subscription;
   nestedModalId = '';
   title = 'Add Task'; // default title if use same component for ADD/EDIT
   operationType: IOperationEnumType = 'ADD'; // default operationType if use same component for ADD/EDIT
-  popUpType = 'TODO_ADD';
   todoCurrentType: string; // current route
   currentProject = ''; // Default List name
   labelIdVal: string[] = []; // Tags Array
   isSubmit = false; // submit button flag
-  TODOTYPES = this.todoService.todoTypes(); // Types of ToDOS
   today = moment(new Date()).startOf('day');
   labels: TodoLabelType[]; // labels array
   projects: TodoProjectType[] = [];
-  flatPickerConfig: any;
   formObj: FormGroup;
-  scheduledObj = {
-    NO_DUE_DATE: {
-      name: 'No Due Date',
-      slug: 'NO_DUE_DATE',
-      value: ''
-    },
-    TODAY: {
-      name: 'Later Today',
-      slug: 'TODAY',
-      value: moment().format('YYYY-MM-DD')
-    },
-    TOMORROW: {
-      name: 'Tomorrow',
-      slug: 'TOMORROW',
-      value: moment().add(1, 'days').format('YYYY-MM-DD')
-    },
-    NEXT_WEEK: {
-      name: 'Next week',
-      slug: 'NEXT_WEEK',
-      value: moment().add(7, 'days').format('YYYY-MM-DD')
-    },
-    CUSTOM: {
-      name: 'Custom',
-      slug: 'CUSTOM',
-      value: ''
-    }
-  };
+  scheduledObj = this.initscheduledObj();
   scheduledObjKeys = Object.keys(this.scheduledObj);
   subTasksFormArray: FormArray;
 
@@ -86,19 +96,120 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
    * Lifecycle Method
    */
   ngOnInit(): void {
-    this.formObj = this.fb.group({
-      _id: [''],
-      title: ['', [Validators.required]], // Title
-      scheduling: [false], // if date is set
-      scheduledDate: [this.scheduledObj.TODAY.value], // scheduled Date
-      labelIds: [[]], // Tags Array
-      projectId: [''], // List ID
-      operationType: [(this.todo && this.todo._id) ? 'UPDATE' : 'ADD'], // ADD || UPDATE
-      isCompleted: [false],
-      scheduledType: ['TODAY'],
-      subTasks: this.fb.array([this.initSubTasks()])
+    this.formObj = this.createForm({
+      _id: '',
+      title: '',
+      scheduling: false,
+      scheduledDate: new Date(this.scheduledObj.TODAY.value),
+      labelIds: [],
+      projectId: '',
+      operationType: 'ADD',
+      isCompleted: false,
+      scheduledType: 'TODAY',
+      subTasks: this.createFormArray()
     });
     this.populateTodoModal(); // Listen to subscription to choose if popup called
+    this.fetchData();
+  }
+
+  get formValue(): ITodoFormModel {
+    return this.formObj.value as ITodoFormModel;
+  }
+
+  /**
+   * Create type safe form group object
+   */
+  private createForm(model: ( ITodoFormModel | ISubTask ) ): FormGroup {
+    return this.fb.group(model);
+  }
+
+  /**
+   * Create type safe form group object
+   */
+  private createFormArray()  {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return this.fb.array([ this.initSubTasks() ]) as any;
+  }
+
+  /**
+   * Initiate subTask form group
+   */
+  private initSubTasks() {
+    return this.createForm({
+      title: '',
+      isCompleted: false
+    });
+  }
+
+  /**
+   * Add subask onject
+   */
+  addSubTask(): void {
+    const subTasksEmpty = this.formObj.value.subTasks.filter((item: TodoType) => {
+      return !item.isCompleted && !item.title;
+    });
+    if (subTasksEmpty.length < 2) {
+      this.subTasksFormArray = this.formObj.get('subTasks') as FormArray;
+      this.subTasksFormArray.push(this.initSubTasks());
+    }
+  }
+
+  /**
+   * Remove subtask
+   * @param itemIndex - index for subtask object
+   */
+  removeSubTask(itemIndex: number): void {
+    this.subTasksFormArray = this.formObj.get('subTasks') as FormArray;
+    if (itemIndex > -1) {
+      this.subTasksFormArray.removeAt(itemIndex);
+    }
+  }
+
+  /**
+   * Get all subtasks as form array
+   */
+  get subTasks(): FormArray {
+    return this.formObj.get('subTasks') as FormArray;
+  }
+
+  /**
+   * Creating scheduled hashmap
+   * for date option
+   */
+  private initscheduledObj(): TscheduledObj {
+    return {
+      NO_DUE_DATE: {
+        name: 'No Due Date',
+        slug: 'NO_DUE_DATE',
+        value: null
+      },
+      TODAY: {
+        name: 'Later Today',
+        slug: 'TODAY',
+        value: moment().format('YYYY-MM-DD')
+      },
+      TOMORROW: {
+        name: 'Tomorrow',
+        slug: 'TOMORROW',
+        value: moment().add(1, 'days').format('YYYY-MM-DD')
+      },
+      NEXT_WEEK: {
+        name: 'Next week',
+        slug: 'NEXT_WEEK',
+        value: moment().add(7, 'days').format('YYYY-MM-DD')
+      },
+      CUSTOM: {
+        name: 'Custom',
+        slug: 'CUSTOM',
+        value: null
+      }
+    };
+  }
+
+  /**
+   * load initial Data
+   */
+  private fetchData() {
     this.routeSubscription = combineLatest([ // fetching Tags & Projects/List in the system
       this.todoService.listTodoLabels(),
       this.todoService.listTodoProjects()
@@ -154,47 +265,6 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Initiate subTask form group
-   */
-  private initSubTasks(): FormGroup {
-    return this.fb.group({
-      title: '',
-      isCompleted: false
-    });
-  }
-
-  /**
-   * Add subask onject
-   */
-  addSubTask(): void {
-    const subTasksEmpty = this.formObj.value.subTasks.filter((item: TodoType) => {
-      return !item.isCompleted && !item.title;
-    });
-    if (subTasksEmpty.length < 2) {
-      this.subTasksFormArray = this.formObj.get('subTasks') as FormArray;
-      this.subTasksFormArray.push(this.initSubTasks());
-    }
-  }
-
-  /**
-   * Remove subtask
-   * @param itemIndex - index for subtask object
-   */
-  removeSubTask(itemIndex: number): void {
-    this.subTasksFormArray = this.formObj.get('subTasks') as FormArray;
-    if (itemIndex > -1) {
-      this.subTasksFormArray.removeAt(itemIndex);
-    }
-  }
-
-  /**
-   * Get all subtasks as form array
-   */
-  get subTasks(): FormArray {
-    return this.formObj.get('subTasks') as FormArray;
-  }
-
-  /**
    * On UPDATE: populate form
    */
   private populateTodoModal() {
@@ -216,7 +286,6 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
       if (this.todo.subTasks.length) {
         const subTasksControl = this.subTasks;
         (this.formObj.get('subTasks') as FormArray).clear();
-        console.log(this.todo.subTasks);
         // Sort subtasks by title
         const subTasks = this.todo.subTasks
           .sort((a, b) => a.title.localeCompare(b.title));
@@ -233,7 +302,7 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
    * @param label - label Object
    */
   isChecked(label: TodoLabelType): boolean {
-    return this.formObj.value.labelIds.indexOf(label._id) !== -1 ? true : false;
+    return this.formObj.value.labelIds && this.formObj.value.labelIds.indexOf(label._id) !== -1 ? true : false;
   }
 
   /**
@@ -248,6 +317,16 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
     } else {
       this.formObj.value.labelIds.splice(index, 1);
     }
+  }
+
+  /**
+   * get labels from child component vai Output
+   * @param data - labels/Tags Arrray
+   */
+  callbackLabel(data: string[]): void {
+    this.formObj.patchValue({
+      labelIds: data
+    });
   }
 
   /**
@@ -268,7 +347,7 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
    * Set the scheduled Date
    * @param scheduledType - scheduledType
    */
-  askDatePickerToOpen(scheduledType: ScheduledType): void {
+  askDatePickerToOpen(scheduledType: TScheduledString): void {
     if (scheduledType === 'CUSTOM') {
       this.openListPopup('scheduledModal', 'DATE');
       this.formObj.patchValue({
@@ -308,16 +387,6 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * get labels from child component vai Output
-   * @param data - labels/Tags Arrray
-   */
-  callbackLabel(data: string[]): void {
-    this.formObj.patchValue({
-      labelIds: data
-    });
-  }
-
-  /**
    * get projectId from child component vai Output
    * @param data - projectId
    */
@@ -346,7 +415,7 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
    */
   submit(): void {
     if (this.formObj.valid) {
-      const postBody = this.formObj.value;
+      const postBody = this.formValue;
       const { subTasks } = postBody;
       let filteredSubTasks = subTasks.filter((item: TodoType) => {
         return item.title;
@@ -387,6 +456,7 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
    * Insert TemplateRef into View Conatiner
    * @param ref - TemplateRef
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   insertTemplateRef(ref: TemplateRef<any>): void {
     this.vctodoRef.insert(ref.createEmbeddedView(null));
   }
@@ -400,7 +470,6 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
   }
 
 }
-
 
 @NgModule({
   imports: [

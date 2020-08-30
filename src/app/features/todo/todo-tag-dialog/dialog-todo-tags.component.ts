@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, AfterViewInit, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { TodoLabelType } from '../../../models';
 import { Router } from '@angular/router';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let $: any;
 
 @Component({
@@ -17,19 +17,20 @@ export class DialogTodoTagsComponent implements OnInit {
   @Output() data: EventEmitter<string[]> = new EventEmitter<string[]>();
 
   constructor(
-    private fb: FormBuilder,
     private router: Router
   ) { }
 
   ngOnInit(): void { }
 
   // auto checked the labels if exist
-  isChecked(label: TodoLabelType) {
+  isChecked(label: TodoLabelType): boolean {
+    this.labelIds = this.labelIds || [];
     return this.labelIds.indexOf(label._id) !== -1 ? true : false;
   }
 
   // check & uncheck labels
-  checkLabels(label: TodoLabelType) {
+  checkLabels(label: TodoLabelType): void {
+    this.labelIds = this.labelIds || [];
     const labelId = label._id;
     const index = this.labelIds.indexOf(labelId);
     if (index === -1) {
@@ -40,7 +41,7 @@ export class DialogTodoTagsComponent implements OnInit {
     this.data.next(this.labelIds);
   }
 
-  redirectToTagsUi() {
+  redirectToTagsUi(): void {
     $('.modal').modal('hide'); // closes all active pop ups.
     $('.modal-backdrop').remove();
     this.router.navigate(['/tasks/tags']);
