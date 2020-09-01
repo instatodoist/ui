@@ -29,11 +29,11 @@ export class AuthService {
     private apollo: Apollo
   ) { }
 
-  login() {
+  login(): boolean {
     return this.lsService.getValue(this.authKey) ? true : false;
   }
 
-  logout() {
+  logout(): boolean {
     this.lsService.deleteValue(this.authKey);
     this.lsService.deleteValue('__token');
     return true;

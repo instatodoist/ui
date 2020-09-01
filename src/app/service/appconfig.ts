@@ -45,13 +45,13 @@ export class AppService implements OnDestroy {
     this.APP_LEVEL.next(data);
   }
 
-  changeTheme(iqColor: any): void {
+  changeTheme(iqColor: string): void {
     localStorage.setItem('defaultTheme', iqColor);
     const str = iqColor;
     const res = str.replace('rgb(', '');
     const res1 = res.replace(')', '');
-    const iqColor2 = 'rgba(' + res1.concat(',', 0.1) + ')';
-    const iqColor3 = 'rgba(' + res1.concat(',', 0.8) + ')';
+    const iqColor2 = 'rgba(' + res1.concat(',', '0.1') + ')';
+    const iqColor3 = 'rgba(' + res1.concat(',', '0.8') + ')';
     document.documentElement.style.setProperty('--iq-primary', iqColor);
     document.documentElement.style.setProperty('--iq-light-primary', iqColor2);
     document.documentElement.style.setProperty('--iq-primary-hover', iqColor3);

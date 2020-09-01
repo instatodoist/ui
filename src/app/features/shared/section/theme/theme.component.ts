@@ -12,26 +12,7 @@ import { AppService } from '../../../../service';
       </div>
       <div class="clearfix color-picker">
         <ul class="iq-colorselect clearfix">
-          <li class="color-1 iq-colormark" data-style="color-1"></li>
-          <li class="color-2" data-style="iq-color-2"></li>
-          <li class="color-3" data-style="iq-color-3"></li>
-          <li class="color-4" data-style="iq-color-4"></li>
-          <li class="color-5" data-style="iq-color-5"></li>
-          <li class="color-6" data-style="iq-color-6"></li>
-          <li class="color-7" data-style="iq-color-7"></li>
-          <li class="color-8" data-style="iq-color-8"></li>
-          <li class="color-9" data-style="iq-color-9"></li>
-          <li class="color-10" data-style="iq-color-10"></li>
-          <li class="color-11" data-style="iq-color-11"></li>
-          <li class="color-12" data-style="iq-color-12"></li>
-          <li class="color-13" data-style="iq-color-13"></li>
-          <li class="color-14" data-style="iq-color-14"></li>
-          <li class="color-15" data-style="iq-color-15"></li>
-          <li class="color-16" data-style="iq-color-16"></li>
-          <li class="color-17" data-style="iq-color-17"></li>
-          <li class="color-18" data-style="iq-color-18"></li>
-          <li class="color-19" data-style="iq-color-19"></li>
-          <li class="color-20" data-style="iq-color-20"></li>
+          <li *ngFor="let theme of this.themeOptions(); let i = index" [ngClass]="'color-' + (i + 1)" [attr.data-style]="'iq-color-' + ( i+1 )" [attr.data-color]="theme"></li>
         </ul>
       </div>
     </div>
@@ -74,7 +55,7 @@ export class ThemeComponent implements AfterViewInit {
     const jQuery = this.jQuery;
     if (this.appService.APP_DATA.config.tClass) {
       jQuery('.iq-colorbox .iq-colorselect .iq-colormark').removeClass('iq-colormark');
-      jQuery('.iq-colorselect').find('li.' + this.appService.APP_DATA.config.tClass).addClass('iq-colormark');
+      jQuery('.iq-colorselect').find(`li.${this.appService.APP_DATA.config.tClass}`).addClass('iq-colormark');
     }
     const updateThemFunc = this.appService.changeTheme;
     updateThemFunc(this.defaultTheme);
@@ -103,5 +84,30 @@ export class ThemeComponent implements AfterViewInit {
       jQuerythis.addClass('iq-colormark');
       updateThemFunc(iqColor);
     });
+  }
+
+  themeOptions(): string[] {
+    return [
+      'rgb(30, 61, 115)',
+      'rgb(2, 216, 113)',
+      'rgb(48, 156, 243)',
+      'rgb(255, 0, 255)',
+      'rgb(251, 31, 76)',
+      'rgb(0, 206, 209)',
+      'rgb(243, 95, 59)',
+      'rgb(253, 225, 23)',
+      'rgb(255, 0, 0)',
+      'rgb(136, 2, 140)',
+      'rgb(0, 213, 171)',
+      'rgb(206, 146, 82)',
+      'rgb(249, 174, 2)',
+      'rgb(30, 127, 228)',
+      'rgb(0, 100, 0)',
+      'rgb(250, 124, 4)',
+      'rgb(129, 191, 2)',
+      'rgb(153, 167, 202)',
+      'rgb(61, 42, 38)',
+      'rgb(160, 116, 107)'
+    ];
   }
 }
