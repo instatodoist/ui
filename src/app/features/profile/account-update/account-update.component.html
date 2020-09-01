@@ -9,7 +9,8 @@
       <form [formGroup]="formObj" (ngSubmit)="submit()" novalidate>
         <div class="form-group row align-items-center">
           <div class="col-md-12">
-            <app-file-upload formControlName="profileImg" [src]="uploadedImage || defaultProfileImage"></app-file-upload>
+            <app-file-upload formControlName="profileImg" [src]="uploadedImage || defaultProfileImage">
+            </app-file-upload>
           </div>
         </div>
         <div class=" row align-items-center">
@@ -22,8 +23,7 @@
             <input type="text" class="form-control" id="lname" formControlName="lastname" placeholder="Lastname">
           </div>
         </div>
-        <button type="submit" class="btn btn-primary mr-2" [disabled]="!formObj.valid">Submit</button>
-        <button type="reset" class="btn iq-bg-danger">Cancel</button>
+        <button type="submit" class="btn btn-primary mr-2" [disabled]="!formObj.valid">{{'save' | translate}}</button>
       </form>
     </div>
   </div>

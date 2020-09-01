@@ -36,11 +36,9 @@ export class AccountUpdateComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {}
 
-  }
-
-  getProfile() {
+  getProfile(): void {
     this.authService.profile().subscribe((data) => {
       this.appService.__updateCoreAppData({
         ...this.appService.APP_DATA,
@@ -51,7 +49,7 @@ export class AccountUpdateComponent implements OnInit, AfterViewInit {
     });
   }
 
-  submit() {
+  submit(): void {
     if (this.formObj.valid && this.formObj.dirty) {
       const { profileImg, ...postBody } = this.formObj.value;
       if (profileImg) {

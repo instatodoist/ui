@@ -17,6 +17,14 @@
                   <div id="post-modal-data" class="iq-card">
                     <div class="iq-card-body" data-toggle="modal" data-target="#post-modal">
                       <div class="d-flex align-items-center">
+                        <div class="user-img img-fluid" *ngIf="todo">
+                          <div class="custom-control custom-radio custom-radio-color-checked custom-control-inline mt-2"
+                            [ngStyle]="{'margin-right': '0px'}">
+                            <input id="task-completed" type="checkbox" class="custom-control-input bg-primary"
+                              formControlName="isCompleted">
+                            <label class="custom-control-label" for="task-completed"></label>
+                          </div>
+                        </div>
                         <input type="text" class="form-control rounded" style="border:none;" formControlName="title"
                           placeholder="{{ 'what_todo' | translate }}" #titleInput>
                       </div>
