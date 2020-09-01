@@ -11,6 +11,10 @@ const routes: Routes = [
     canActivate: [CanActivateAuthenticateGuard],
     children: [
       {
+        path: 'smart-analysis',
+        loadChildren: () => import('./features/smart-analysis/smart-analysis.module').then(m => m.SmartAnalysisModule)
+      },
+      {
         path: 'profile',
         loadChildren: () => import('./features/profile/profile.module').then(m => m.ProfileModule)
       },

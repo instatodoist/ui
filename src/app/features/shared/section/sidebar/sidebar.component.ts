@@ -125,6 +125,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   private nav(): INavLink[] {
     return [
       {
+        name: 'Smart Analysis',
+        slug: 'smart-analysis',
+        icon: 'fa fa-calendar',
+        link: '/smart-analysis'
+      },
+      {
         name: 'Today',
         slug: 'today',
         icon: 'fa fa-calendar',

@@ -41,5 +41,7 @@ Please feel free to contribute.
 # Screenshots
 ![image](https://user-images.githubusercontent.com/5227618/91307097-226a7180-e7cb-11ea-9dd1-23dcb4bf687d.png)
 
+![image](https://user-images.githubusercontent.com/5227618/91909069-2ebe6500-ecca-11ea-8a3c-3ddec488d0c3.png)
+
 # License
 [Mozilla Public License 2.0](https://github.com/techyaura/instatodos-ui/blob/master/LICENSE)
