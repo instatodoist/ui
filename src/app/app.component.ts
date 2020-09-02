@@ -5,7 +5,7 @@ import {
   NavigationEnd,
   ActivatedRoute
 } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, EMPTY } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { VersionCheckService, AppService, UtilityService } from './service';
 import { environment } from '../environments/environment';
@@ -63,8 +63,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           return null;
         }),
         switchMap(title=> {
-          this.translateService.use(this.utilityService.getCurrentLanguage());
-          return this.translateService.get(title);
+          if(title) {
+            this.translateService.use(this.utilityService.getCurrentLanguage());
+            return this.translateService.get(title);
+          }
+          return of(EMPTY);
         })
       )
       .subscribe(titleText => {
