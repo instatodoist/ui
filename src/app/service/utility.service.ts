@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable, ViewContainerRef, ComponentRef, Injector, ComponentFactoryResolver, TemplateRef, ViewRef } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { IDialogRef, TDialogTempRef, TDialogCompRef} from '../models';
 import { Observable } from 'apollo-link';
+import { TranslateService } from '@ngx-translate/core';
+import { IDialogRef, TDialogTempRef, TDialogCompRef, ILanguage} from '../models';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let $: any;
@@ -17,7 +18,8 @@ export class UtilityService {
   constructor(
     private injector: Injector,
     private componentFactoryResolver: ComponentFactoryResolver,
-    private iziToast: ToastrService
+    private iziToast: ToastrService,
+    private translateService: TranslateService
   ) { }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -179,6 +181,15 @@ export class UtilityService {
   closeMdcDialog(dialog: any): void {
     dialog.close();
     this.vcRefRoot.clear();
+  }
+
+  getCurrentLanguage(): string {
+    const currentStoredLang = localStorage.getItem('lang');
+    if(currentStoredLang) {
+      const lang: ILanguage = JSON.parse(currentStoredLang);
+      return lang.value;
+    }
+    return this.translateService.getDefaultLang();
   }
 
 }

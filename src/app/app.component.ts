@@ -61,12 +61,15 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             }
           }
           return null;
+        }),
+        switchMap(title=> {
+          this.translateService.use(this.utilityService.getCurrentLanguage());
+          return this.translateService.get(title);
         })
-      ).subscribe(title => {
-        if (title) {
-          this.translateService.get(title).subscribe(titleText => {
-            this.appService.configureSeo(titleText);
-          });
+      )
+      .subscribe(titleText => {
+        if (titleText) {
+          this.appService.configureSeo(titleText);
         }
       });
     this.setMetaTags();
