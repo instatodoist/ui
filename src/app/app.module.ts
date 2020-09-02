@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 import { SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider } from 'angularx-social-login';
 import { AuthModule } from './features/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -22,6 +21,9 @@ import { SidebarComponent } from './features/shared/section/sidebar/sidebar.comp
 import { PageNotFoundComponent } from './features/shared/page-not-found/page-not-found.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -43,11 +45,16 @@ import { environment } from '../environments/environment';
     AppRoutingModule,
     SharedModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-    SocialLoginModule
-  ],
-  exports: [
-    RouterModule,
-    SharedModule
+    SocialLoginModule,
+    TranslateModule.forRoot({
+      defaultLanguage: 'en',
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      },
+      isolate: true
+    })
   ],
   providers: [
     CanActivateAuthenticateGuard,
@@ -64,7 +71,11 @@ import { environment } from '../environments/environment';
       } as SocialAuthServiceConfig
     }
   ],
-  entryComponents: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+// required for AOT compilation
+export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader  {
+  return new TranslateHttpLoader(http);
+}

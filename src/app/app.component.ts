@@ -36,7 +36,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private activatedRoute: ActivatedRoute,
     private utilityService: UtilityService
   ) {
-    translateService.setDefaultLang('en'); // set default lang as english
     this.routerEventSubscription = this.router
       .events
       .pipe(

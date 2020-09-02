@@ -2,9 +2,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RouterModule} from '@angular/router';
 import { ToastrModule } from 'ngx-toastr';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { HttpClient } from '@angular/common/http';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateModule } from '@ngx-translate/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { QuilljsModule } from 'ngx-quilljs';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
@@ -29,14 +27,7 @@ import { MultilingualComponent } from '../../utilities/components/multilingual/m
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
-    TranslateModule.forRoot({
-      defaultLanguage: 'en',
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    }),
+    TranslateModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       preventDuplicates: true
@@ -63,9 +54,4 @@ export class SharedModule {
       providers: [ AppService ]
     };
   }
-}
-
-// required for AOT compilation
-export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader  {
-  return new TranslateHttpLoader(http);
 }
