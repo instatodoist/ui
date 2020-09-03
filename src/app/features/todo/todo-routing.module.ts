@@ -44,7 +44,10 @@ const routes: Routes = [
       },
       {
         path: 'lists/:label',
-        component: TodoInboxComponent
+        component: TodoInboxComponent,
+        data: {
+          header_title: 'lists'
+        }
       },
       {
         path: 'tags',

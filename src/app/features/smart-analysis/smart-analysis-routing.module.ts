@@ -5,7 +5,10 @@ import { SaDailyComponent } from './sa-daily/sa-daily.component';
 
 const routes: Routes = [{
   path: '',
-  component: SaDailyComponent
+  component: SaDailyComponent,
+  data: {
+    header_title: 'smart-analysis'
+  }
 }];
 
 @NgModule({

@@ -83,15 +83,24 @@ const authRoutes: Routes = [
     children: [
       {
         path: 'privacy-policy',
-        component: PrivacyPolicyComponent
+        component: PrivacyPolicyComponent,
+        data: {
+          header_title: 'privacy-policy'
+        }
       },
       {
         path: 'terms',
-        component: TermsConditionsComponent
+        component: TermsConditionsComponent,
+        data: {
+          header_title: 'terms'
+        }
       },
       {
         path: 'contact-us',
-        component: ContactUsComponent
+        component: ContactUsComponent,
+        data: {
+          header_title: 'contact-us'
+        }
       }
     ]
   }
