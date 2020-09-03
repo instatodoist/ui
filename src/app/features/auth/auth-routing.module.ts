@@ -70,7 +70,10 @@ const authRoutes: Routes = [
     children: [
       {
         path: '',
-        component: HomeComponent
+        component: HomeComponent,
+        data: {
+          header_title: 'enhance_productivity'
+        }
       }
     ]
   },
