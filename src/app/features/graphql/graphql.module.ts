@@ -43,33 +43,21 @@ export class GraphqlModule {
     // error link
     const errorLink = onError((
       {
-        graphQLErrors,
-        networkError
-        // response,
+        graphQLErrors = null,
+        networkError = null
+        // response
         // operation
       }
     ): any => {
-
-      try {
-        // parse Network Errors
-        if (typeof (networkError) !== 'undefined') {
-          const msg = utilityService.parseErrorMessage(networkError);
-          if (msg === 'LOGOUT') {
-            localStorage.clear();
-            window.location.href = '/auth/login';
-            throw msg;
-          }
-          throw new Error(msg);
-        }
-        // parse GraphQl specific Errorxs
-        // eslint-disable-next-line no-constant-condition
-        if (typeof (Array.isArray(graphQLErrors) && graphQLErrors.length)) {
-          const message = utilityService.parseGraphQlError(graphQLErrors);
-          throw message;
-        }
-      } catch (error) {
-        utilityService.toastrError(error);
-        return throwError(new Error(error));
+      if (graphQLErrors) {
+        graphQLErrors.map(({ message }) =>
+          utilityService.toastrError(message)
+        );
+        return throwError(graphQLErrors[0]);
+      } else if (networkError) {
+        const { message } = networkError;
+        utilityService.toastrError(message);
+        return throwError(networkError);
       }
     });
     const httpLinkWithErrorHandling = ApolloLink.from([
