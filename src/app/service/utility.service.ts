@@ -35,16 +35,6 @@ export class UtilityService {
     this.vcRefRoot = vc;
   }
 
-  // parseErrorMessage(message: any): string {
-  //   let msg = message;
-  //   if (message.match(/\[(.*?)\]/)) {
-  //     msg = message.match(/\[(.*?)\]/)[1] || 'Something went wrong';
-  //     msg = msg.replace(/"/g, '');
-  //     msg = msg.charAt(0).toUpperCase() + msg.slice(1);
-  //   }
-  //   return msg;
-  // }
-
   // error toaster
   toastrError(message: string): void {
     this.iziToast.error(message);
