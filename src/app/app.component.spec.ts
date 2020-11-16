@@ -1,4 +1,4 @@
-import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { of } from 'rxjs';
 import {delay} from 'rxjs/operators';
 import { AppModule } from './app.module';
@@ -9,7 +9,7 @@ import { IExternalModal } from './models';
 fdescribe('AppComponent', () => {
   let appService: AppService;
   let modalDefaultCOnfig: IExternalModal;
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         AppModule

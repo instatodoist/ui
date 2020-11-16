@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TodoInboxComponent } from './todo-inbox.component';
 
@@ -6,7 +6,7 @@ describe('TodoInboxComponent', () => {
   let component: TodoInboxComponent;
   let fixture: ComponentFixture<TodoInboxComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TodoInboxComponent ]
     })

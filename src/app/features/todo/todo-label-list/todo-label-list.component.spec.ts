@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TodoLabelListComponent } from './todo-label-list.component';
 
@@ -6,7 +6,7 @@ describe('TodoLabelListComponent', () => {
   let component: TodoLabelListComponent;
   let fixture: ComponentFixture<TodoLabelListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TodoLabelListComponent ]
     })

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CustomDateModalComponent } from './custom-date-modal.component';
 
@@ -6,7 +6,7 @@ describe('CustomDateModalComponent', () => {
   let component: CustomDateModalComponent;
   let fixture: ComponentFixture<CustomDateModalComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CustomDateModalComponent ]
     })

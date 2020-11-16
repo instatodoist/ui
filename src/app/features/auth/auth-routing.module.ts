@@ -107,7 +107,7 @@ const authRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(authRoutes, { enableTracing: true })],
+  imports: [RouterModule.forRoot(authRoutes, { enableTracing: true, relativeLinkResolution: 'legacy' })],
   exports: [RouterModule]
 })
 export class FrontRoutingModule { }

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TodoLabelDialogComponent } from './todo-label-dialog.component';
 
@@ -6,7 +6,7 @@ describe('TodoLabelDialogComponent', () => {
   let component: TodoLabelDialogComponent;
   let fixture: ComponentFixture<TodoLabelDialogComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TodoLabelDialogComponent ]
     })
