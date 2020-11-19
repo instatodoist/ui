@@ -17,6 +17,10 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "graphql-tag",
+              "chart.js"
+            ],
             "outputPath": "dist/instatodo",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -55,7 +59,7 @@
           },
           "configurations": {
             "production": {
-              "index": { 
+              "index": {
                 "input": "src/index.prod.html",
                 "output": "index.html"
               },
@@ -68,7 +72,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
