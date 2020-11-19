@@ -17,6 +17,10 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "graphql-tag",
+              "chart.js"
+            ],
             "outputPath": "dist/instatodo",
             "index": "src/index.html",
             "main": "src/main.ts",

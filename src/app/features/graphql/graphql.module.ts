@@ -9,9 +9,11 @@ import { onError } from 'apollo-link-error';
 import { environment } from '../../../environments/environment';
 import { UtilityService } from '../../service/utility.service';
 import { LsService } from '../../service/ls.service';
+import { AuthService } from '../../service/auth/auth.service';
 import { ApolloClient } from 'apollo-client';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { Router } from '@angular/router';
 
 @NgModule({
   declarations: [],
@@ -22,7 +24,14 @@ import { throwError } from 'rxjs';
   ]
 })
 export class GraphqlModule {
-  constructor(apollo: Apollo, httpLink: HttpLink, utilityService: UtilityService, lsService: LsService) {
+  constructor(
+    apollo: Apollo,
+    httpLink: HttpLink,
+    utilityService: UtilityService,
+    lsService: LsService,
+    private authService: AuthService,
+    private router: Router
+  ) {
 
     const httpLink2 = httpLink.create({
       uri: environment.API_URL
@@ -55,9 +64,12 @@ export class GraphqlModule {
         );
         return throwError(graphQLErrors[0]);
       } else if (networkError) {
-        const { message } = networkError;
-        utilityService.toastrError(message);
-        return throwError(networkError);
+        this.authService.logout();
+        this.router.navigate(['/']);
+        return false;
+        // const { message } = networkError;
+        // utilityService.toastrError(message);
+        // return throwError(networkError);
       }
     });
     const httpLinkWithErrorHandling = ApolloLink.from([
