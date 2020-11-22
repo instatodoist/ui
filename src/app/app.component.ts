@@ -88,6 +88,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.utilityService.rootVcRef = this.rootVcRef;
   }
 
+  ngOnDestroy(): void {
+    this.routerEventSubscription.unsubscribe();
+  }
+
   private setMetaTags() {
     this.appService.configureSeo('Enhance Productivity', [
       {
@@ -99,7 +103,4 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     ]);
   }
 
-  ngOnDestroy(): void {
-    this.routerEventSubscription.unsubscribe();
-  }
 }
