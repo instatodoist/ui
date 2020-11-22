@@ -44,6 +44,7 @@ export interface TodoType {
   createdAt?: Date;
   subTasks?: TodoType[];
   parent?: string;
+  list?: TodoType[];
 }
 
 export interface TodoLabelType {

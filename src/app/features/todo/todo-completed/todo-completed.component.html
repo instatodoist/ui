@@ -8,7 +8,7 @@
             <div class="d-flex align-items-center justify-content-between text-primary">
               <button type="button" class="btn mb-1 iq-bg-primary">
                 {{todo?._id  | date: 'mediumDate'}}
-                <span class="badge badge-light ml-2">{{todo?.subTasks?.length}}</span>
+                <span class="badge badge-light ml-2">{{todo?.list?.length}}</span>
               </button>
             </div>
           </label>
@@ -16,7 +16,7 @@
       </div>
 
       <!-- Childs-->
-      <div class="d-flex tasks-card" role="alert" *ngFor="let data of todo?.subTasks; let i = index">
+      <div class="d-flex tasks-card" role="alert" *ngFor="let data of todo?.list; let i = index">
         <app-todo-completed-single [todo]="data" [index]="i"></app-todo-completed-single>
       </div>
     </ng-container>
