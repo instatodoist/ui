@@ -73,9 +73,7 @@ export class TodoService {
 
   // populate color for the label
   getColor(priority: string): string {
-    const priorityObj = this.getPriorities.filter(item => {
-      return item.name === priority;
-    });
+    const priorityObj = this.getPriorities.filter(item => item.name === priority);
     return priorityObj[0].color;
   }
 
@@ -186,9 +184,7 @@ export class TodoService {
         variables: conditions,
         fetchPolicy: 'cache-and-network'
       })
-      .valueChanges.pipe(map((data: any) => {
-        return data.data;
-      }));
+      .valueChanges.pipe(map((data: any) => data.data));
   }
 
   /**
@@ -201,15 +197,13 @@ export class TodoService {
         variables: conditions
         // fetchPolicy: 'network-only'
       })
-      .valueChanges.pipe(map(({ data }: any) => {
-        return {
+      .valueChanges.pipe(map(({ data }: any) => ({
           pending: data.pending.totalCount || 0,
           today: data.today.totalCount || 0,
           inbox: data.inbox.totalCount || 0,
           completed: data.completed.totalCount || 0,
           upcoming: data.upcoming.totalCount || 0
-        };
-      }));
+        })));
   }
 
   /**
@@ -222,9 +216,7 @@ export class TodoService {
         variables: conditions,
         fetchPolicy: 'cache-and-network'
       })
-      .valueChanges.pipe(map((data: any) => {
-        return data.data;
-      }));
+      .valueChanges.pipe(map((data: any) => data.data));
   }
 
   /**
@@ -237,9 +229,7 @@ export class TodoService {
         variables: conditions,
         fetchPolicy: 'network-only'
       })
-      .valueChanges.pipe(map(({ data }: any) => {
-        return data.todoCompleted;
-      }));
+      .valueChanges.pipe(map(({ data }: any) => data.todoCompleted));
   }
 
   /**
@@ -253,9 +243,7 @@ export class TodoService {
           sort: { updatedAt: 'ASC' }
         }
       })
-      .valueChanges.pipe(map(({ data }: any) => {
-        return data.todoLabelList;
-      }));
+      .valueChanges.pipe(map(({ data }: any) => data.todoLabelList));
   }
 
   /**
@@ -340,9 +328,7 @@ export class TodoService {
         }
       ]
     })
-      .pipe(map(({ data }: any) => {
-        return data[defaultDataKey];
-      }));
+      .pipe(map(({ data }: any) => data[defaultDataKey]));
   }
 
   /**
@@ -396,9 +382,7 @@ export class TodoService {
         refetchQuery
       ]
     })
-      .pipe(map(({ data }: any) => {
-        return data[defaultDataKey];
-      }));
+      .pipe(map(({ data }: any) => data[defaultDataKey]));
   }
 
   /**
@@ -412,9 +396,7 @@ export class TodoService {
           sort: { updatedAt: 'ASC' }
         }
       })
-      .valueChanges.pipe(map(({ data }: any) => {
-        return data.todoProjectList;
-      }));
+      .valueChanges.pipe(map(({ data }: any) => data.todoProjectList));
   }
 
   /**
@@ -468,9 +450,7 @@ export class TodoService {
         refetchQuery
       ]
     })
-      .pipe(map(({ data }: any) => {
-        return data[defaultDataKey];
-      }));
+      .pipe(map(({ data }: any) => data[defaultDataKey]));
   }
 
   /**

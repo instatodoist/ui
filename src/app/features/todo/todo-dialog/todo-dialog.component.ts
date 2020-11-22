@@ -32,7 +32,7 @@ interface Ischeduled {
  * Hash map for date types
  * for popups
  */
-type TscheduledObj = { [ key in TScheduledString ] : Ischeduled }
+type TscheduledObj = { [ key in TScheduledString ]: Ischeduled };
 
 /**
  * Task Form Interface
@@ -137,9 +137,7 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
    * Add subask onject
    */
   addSubTask(): void {
-    const subTasksEmpty = this.formObj.value.subTasks.filter((item: TodoType) => {
-      return !item.isCompleted && !item.title;
-    });
+    const subTasksEmpty = this.formObj.value.subTasks.filter((item: TodoType) => !item.isCompleted && !item.title);
     if (subTasksEmpty.length < 2) {
       this.subTasksFormArray = this.formObj.get('subTasks') as FormArray;
       this.subTasksFormArray.push(this.initSubTasks());
@@ -148,6 +146,7 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
 
   /**
    * Remove subtask
+   *
    * @param itemIndex - index for subtask object
    */
   removeSubTask(itemIndex: number): void {
@@ -262,9 +261,7 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
   private populateTodoModal() {
     if(this.todo) {
       this.title = 'Update Task';
-      this.labelIdVal = this.todo && this.todo.labels ? (this.todo.labels.map(label => {
-        return label._id;
-      })) : [];
+      this.labelIdVal = this.todo && this.todo.labels ? (this.todo.labels.map(label => label._id)) : [];
       this.formObj.patchValue({
         _id: this.todo && this.todo._id || '',
         title: this.todo && this.todo.title || '',
@@ -291,6 +288,7 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
 
   /**
    * auto checked the labels if exist
+   *
    * @param label - label Object
    */
   isChecked(label: TodoLabelType): boolean {
@@ -299,6 +297,7 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
 
   /**
    * check & uncheck labels
+   *
    * @param label - label object
    */
   checkLabels(label: TodoLabelType): void {
@@ -313,6 +312,7 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
 
   /**
    * get labels from child component vai Output
+   *
    * @param data - labels/Tags Arrray
    */
   callbackLabel(data: string[]): void {
@@ -323,6 +323,7 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
 
   /**
    * Check scheduledDate
+   *
    * @param scheduledDate - Date
    */
   scheduleTypeOnUpdate(scheduledDate: Date): string {
@@ -337,6 +338,7 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
 
   /**
    * Set the scheduled Date
+   *
    * @param scheduledType - scheduledType
    */
   askDatePickerToOpen(scheduledType: TScheduledString): void {
@@ -355,6 +357,7 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
 
   /**
    * open nested popups for project, tag & date
+   *
    * @param nestedModalId - modelId
    * @param type - model type - PROJECT, TAG, DATE
    */
@@ -380,6 +383,7 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
 
   /**
    * get projectId from child component vai Output
+   *
    * @param data - projectId
    */
   callbackProject(data: string): void {
@@ -393,6 +397,7 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
 
   /**
    * get date from child component vai Output
+   *
    * @param data - Date
    */
   callbackDate(data: string): void {
@@ -409,9 +414,7 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
     if (this.formObj.valid) {
       const postBody = this.formValue;
       const { subTasks } = postBody;
-      let filteredSubTasks = subTasks.filter((item: TodoType) => {
-        return item.title;
-      });
+      let filteredSubTasks = subTasks.filter((item: TodoType) => item.title);
       filteredSubTasks = filteredSubTasks.map((item: TodoType) => {
         const { isCompleted, title } = item;
         return {
@@ -446,6 +449,7 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
 
   /**
    * Insert TemplateRef into View Conatiner
+   *
    * @param ref - TemplateRef
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

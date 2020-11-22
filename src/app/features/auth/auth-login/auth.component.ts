@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { SocialAuthService } from "angularx-social-login";
-import {  GoogleLoginProvider } from "angularx-social-login";
+import { SocialAuthService } from 'angularx-social-login';
+import {  GoogleLoginProvider } from 'angularx-social-login';
 import { LsService, AuthService, AppService } from '../../../service';
 import { IUserProfile } from '../../../models';
 

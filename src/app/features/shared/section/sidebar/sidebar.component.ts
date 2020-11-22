@@ -68,9 +68,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       if (item.link && this.currentUrl.match(new RegExp(item.link, 'g'))) {
         return true;
       } else if (!item.link) {
-        const childrenMatch = item.children.filter(chileItem => {
-          return this.currentUrl.match(new RegExp(chileItem.link, 'g')) || chileItem.link.match(new RegExp('lists', 'g'));
-        });
+        const childrenMatch = item.children.filter(chileItem => this.currentUrl.match(new RegExp(chileItem.link, 'g')) || chileItem.link.match(new RegExp('lists', 'g')));
         if (childrenMatch.length) {
           return true;
         }
@@ -113,9 +111,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         item = { ...item, count: this.count.completed };
         break;
       default:
-        item.children = item.children && item.children.length && item.children.map(child => {
-          return child;
-        });
+        item.children = item.children && item.children.length && item.children.map(child => child);
         break;
       }
       return item;

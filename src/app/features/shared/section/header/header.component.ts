@@ -74,7 +74,7 @@ export class HeaderComponent implements OnInit {
   /**
    * fectch user profile
    */
-  getProfile() : void {
+  getProfile(): void {
     this.userService.profile()
       .subscribe(data => {
         this.session = data;
@@ -88,7 +88,7 @@ export class HeaderComponent implements OnInit {
   /**
    * search content specific to the current routes
    */
-  onSearch() : void {
+  onSearch(): void {
     this.formObj.get('query').valueChanges.pipe(
       debounceTime(500),
       distinctUntilChanged()

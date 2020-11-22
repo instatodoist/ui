@@ -34,13 +34,11 @@ export class GoalService {
         fetchPolicy: 'cache-and-network'
       })
       .valueChanges.pipe(
-        map((response: IGoalResponseType) => {
-          return {
+        map((response: IGoalResponseType) => ({
             data: response?.data?.listThought.data || null,
             totalCount: response?.data?.listThought.totalCount || 0,
             loading: response.loading
-          };
-        })
+          }))
       );
   }
 

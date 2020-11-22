@@ -13,6 +13,7 @@ export class VersionCheckService {
 
   /**
    * Checks in every set frequency the version of frontend application
+   *
    * @param url - version url
    * @param frequency - in milliseconds, defaults to 30 minutes
    */
@@ -24,6 +25,7 @@ export class VersionCheckService {
 
   /**
    * Will do the call and check if the hash has changed or not
+   *
    * @param url - version url
    */
   private checkVersion(url: string) {
@@ -57,6 +59,7 @@ export class VersionCheckService {
    * Checks if hash has changed.
    * This file has the JS hash, if it is a different one than in the version.json
    * we are dealing with version change
+   *
    * @param currentHash - old versionHash
    * @param newHash - old versionHash
    */

@@ -13,7 +13,7 @@ export interface IUserProfile {
   firstname?: string;
   image?: unknown;
   profilePic?: {
-    url: string
+    url: string;
   };
   profile_image?: string;
   gID?: string;

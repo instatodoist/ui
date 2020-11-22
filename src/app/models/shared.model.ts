@@ -80,17 +80,17 @@ type TDialogRefData = {
     modelId?: string;
     todo?: TodoType;
     goal?: IGoalType;
-  }
+  };
 };
 
 export type TDialogTempRef = {
-  type: 'template',
-  value: TemplateRef<any>
+  type: 'template';
+  value: TemplateRef<any>;
 } & TDialogRefData;
 
 export type TDialogCompRef = {
-  type: 'component',
-  value: Type<any>
+  type: 'component';
+  value: Type<any>;
 } & TDialogRefData;
 
 export type IDialogRef = TDialogCompRef | TDialogTempRef;

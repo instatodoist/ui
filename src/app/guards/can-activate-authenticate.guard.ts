@@ -33,8 +33,7 @@ export class CanActivateAuthenticateGuard implements CanActivate {
     } else if (!this.lsService.getValue('isLoggedIn') && !isUnprotectedRoute) {
       this.router.navigate(['/']);
       return false;
-    } else {
-      return true;
     }
+    return true;
   }
 }

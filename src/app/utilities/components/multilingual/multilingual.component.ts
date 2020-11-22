@@ -50,6 +50,7 @@ export class MultilingualComponent implements OnInit {
 
   /**
    * set the current language for the app
+   *
    * @param lang - language
    */
   onChangeLanguage(lang: ILanguage): void {

@@ -47,9 +47,7 @@ export class AuthService {
           input: postData
         }
       })
-      .valueChanges.pipe(map(({ data }) => {
-        return data;
-      }));
+      .valueChanges.pipe(map(({ data }) => data));
   }
 
   register(postData: UserModel.UserType): Observable<UserModel.RegisterResponse> {
@@ -60,9 +58,7 @@ export class AuthService {
           input: postData
         }
       })
-      .pipe(map(({ data }: any) => {
-        return data.register;
-      })
+      .pipe(map(({ data }: any) => data.register)
       );
   }
 
@@ -74,9 +70,7 @@ export class AuthService {
           input: postData
         }
       })
-      .pipe(map(({ data }: any) => {
-        return data.emailVerificationByOtp;
-      })
+      .pipe(map(({ data }: any) => data.emailVerificationByOtp)
       );
   }
 
@@ -87,9 +81,7 @@ export class AuthService {
         input: postBody
       }
     })
-      .pipe(map(({ data }: any) => {
-        return data.userForgotpassword;
-      }));
+      .pipe(map(({ data }: any) => data.userForgotpassword));
   }
 
   resetPassword(postBody: any): Observable<any> {
@@ -99,9 +91,7 @@ export class AuthService {
         input: postBody
       }
     })
-      .pipe(map(({ data }: any) => {
-        return data.userResetPassword;
-      }));
+      .pipe(map(({ data }: any) => data.userResetPassword));
   }
 
   updatePassword(postBody: IUserPassword): Observable<ISuccessType> {
@@ -111,9 +101,7 @@ export class AuthService {
         input: postBody
       }
     })
-      .pipe(map(({ data }: any) => {
-        return data.updatePassword;
-      }));
+      .pipe(map(({ data }: any) => data.updatePassword));
   }
 
   profile(): Observable<UserModel.IUserProfile> {
@@ -122,9 +110,7 @@ export class AuthService {
         query: PROFILE_QUERY,
         fetchPolicy: 'cache-and-network'
       })
-      .valueChanges.pipe(map(({ data }: any) => {
-        return data?.profile || null;
-      }));
+      .valueChanges.pipe(map(({ data }: any) => data?.profile || null));
   }
 
   updateProfile(postBody: IUserProfile): Observable<IUserProfile> {
@@ -139,9 +125,7 @@ export class AuthService {
         useMultipart: true
       }
     })
-      .pipe(map(({ data }: any) => {
-        return data.updateProfile;
-      }));
+      .pipe(map(({ data }: any) => data.updateProfile));
   }
 
   googleLogin(postData: IUserProfile): Observable<ILoginResponse>  {
@@ -152,9 +136,7 @@ export class AuthService {
           input: postData
         }
       })
-      .pipe(map(({ data }: any) => {
-        return data.googleLogin;
-      })
+      .pipe(map(({ data }: any) => data.googleLogin)
       );
   }
 }

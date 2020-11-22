@@ -29,6 +29,7 @@ export class UtilityService {
 
   /**
    * register vc for appcomponets on load
+   *
    * @param vc - view containerref
    */
   set rootVcRef(vc: ViewContainerRef) {
@@ -70,6 +71,7 @@ export class UtilityService {
 
   /**
    * Create a component instance from params [ComponentRef]
+   *
    * @param ref - ComponentRef
    */
   createComponentOutlet(ref: TDialogCompRef): any {
@@ -89,6 +91,7 @@ export class UtilityService {
 
   /**
    * Create a template reference from param [TemplateRef]
+   *
    * @param ref - TemplateRef
    */
   createTemplateRef(ref: TDialogTempRef): void {
@@ -99,6 +102,7 @@ export class UtilityService {
 
   /**
    * Insert ComponentRef & TemplateRef in the APP ViewContanerRef
+   *
    * @param view - TemplateRef | ComponentRef
    */
   insertInAppViewContainer(view: ViewRef): void {
@@ -107,9 +111,10 @@ export class UtilityService {
 
   /**
    * Passing ComponentRef | TemplateRef to open as a dialog
+   *
    * @param ref - TemplateRef | ComponentRef
    */
-  openMdcDialog(ref: IDialogRef): Observable<{dialog: any, instance: any}> {
+  openMdcDialog(ref: IDialogRef): Observable<{dialog: any; instance: any}> {
     let instance: any;
     if (ref.type === 'template') {
       instance = this.createTemplateRef(ref);
@@ -122,7 +127,7 @@ export class UtilityService {
   /**
    * Open ComponentRef | TemplateRef as a dialog
    */
-  triggerMdcDialog(instance: any, modelId: string): Observable<{dialog: any, instance: any}> {
+  triggerMdcDialog(instance: any, modelId: string): Observable<{dialog: any; instance: any}> {
     return new Observable((observer) => {
       setTimeout(()=>{
         const dialog = $(`#${modelId}`);
@@ -138,6 +143,7 @@ export class UtilityService {
 
   /**
    * Close MDC Dialog
+   *
    * @param dialog - MDCDialog
    */
   closeMdcDialog(dialog: any): void {

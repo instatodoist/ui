@@ -17,7 +17,7 @@ export interface ISingletab {
 }
 
 export interface ItabName {
-  [key: string]: ISingletab[]
+  [key: string]: ISingletab[];
 }
 
 export interface ITodoTypeCount {
@@ -98,8 +98,8 @@ export interface ITodoComplete {
 }
 
 export interface TodoCompletedListType {
-  data?: ITodoComplete[];
-  totalCount?: number;
+  data: ITodoComplete[];
+  totalCount: number;
 }
 
 export interface TodoLabelListType {

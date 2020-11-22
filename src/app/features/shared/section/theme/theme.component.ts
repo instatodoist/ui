@@ -35,16 +35,16 @@ export class ThemeComponent implements AfterViewInit {
     /*---------------------------------------------------------------------
     Sidebar Widget
     -----------------------------------------------------------------------*/
-    jQuery('.iq-sidebar-menu .active').each(function () {
+    jQuery('.iq-sidebar-menu .active').each(function() {
       jQuery(this).find('.iq-submenu').addClass('show');
       jQuery(this).addClass('active-menu');
       jQuery(this).next().attr('aria-expanded', 'true');
     });
-    jQuery(document).on('click', '.iq-menu > li > a', function () {
+    jQuery(document).on('click', '.iq-menu > li > a', function() {
       jQuery('.iq-menu > li > a').parent().removeClass('active');
       jQuery(this).parent().addClass('active');
     });
-    jQuery('.wrapper-menu').click(function () {
+    jQuery('.wrapper-menu').click(function() {
       console.log(jQuery(this));
       jQuery(this).toggleClass('open');
       jQuery('body').toggleClass('sidebar-main');
@@ -61,8 +61,8 @@ export class ThemeComponent implements AfterViewInit {
     updateThemFunc(this.defaultTheme);
     const styleSwitcher = jQuery('.iq-colorbox');
     const panelWidth = styleSwitcher.outerWidth(true);
-    // tslint:disable-next-line: only-arrow-functions
-    jQuery('.iq-colorbox .color-full').on('click', function () {
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    jQuery('.iq-colorbox .color-full').on('click', function() {
       if (jQuery('.iq-colorbox.color-fix').length > 0) {
         styleSwitcher.animate({ right: '0px' });
         jQuery('.iq-colorbox.color-fix').removeClass('color-fix');
@@ -75,7 +75,7 @@ export class ThemeComponent implements AfterViewInit {
       return false;
     });
 
-    jQuery('.iq-colorbox .iq-colorselect li').on('click', function () {
+    jQuery('.iq-colorbox .iq-colorselect li').on('click', function() {
       const jQuerythis = jQuery(this);
       const className = jQuerythis.attr('class');
       localStorage.setItem('defaultThemeClass', className);

@@ -42,7 +42,7 @@ export class CustomDateModalComponent implements OnInit, AfterViewInit {
       }
       $('.flatpicker').flatpickr(this.flatPickerConfig);
     }
-    // tslint:disable-next-line: only-arrow-functions
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     // $(`#${this.modelId}`).on('hidden.bs.modal', () => { // listen modal close event
     // });
   }

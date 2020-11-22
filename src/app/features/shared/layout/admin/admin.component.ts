@@ -32,8 +32,8 @@ export class AdminComponent implements OnInit, AfterViewInit {
 
   headerJs(): void {
     const jQuery = this.jQuery;
-    // tslint:disable-next-line: only-arrow-functions
-    jQuery(document).on('click', function (e) {
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    jQuery(document).on('click', function(e) {
       const myTargetElement = e.target;
       let selector;
       let mainElement;
