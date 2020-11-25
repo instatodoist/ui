@@ -1,50 +1,25 @@
-<div class="wrapper">
-  <div class="iq-sidebar" style="height: 0%;">
-    <div class="iq-navbar-logo d-flex justify-content-between">
-      <a routerLink="/" class="header-logo">
-        <span>InstaTodos</span>
-      </a>
-      <div class="iq-menu-bt align-self-center">
-        <div class="wrapper-menu">
+<div class="">
+  <header class="bg-light box-shadow-sm navbar-sticky">
+    <div class="navbar navbar-expand-lg navbar-light">
+      <div class="container">
+        <a class="navbar-brand d-none d-sm-block mr-4 order-lg-1" href="index.html" style="min-width: 7rem;">
+          <img width="142" src="img/logo-dark.png" alt="Cartzilla" />
+        </a>
+        <a class="navbar-brand d-sm-none mr-2 order-lg-1" href="index.html" style="min-width: 4.625rem;"><img width="74"
+            src="img/logo-icon.png" alt="Cartzilla" />
+        </a>
+        <div class="navbar-toolbar d-flex align-items-center order-lg-3">
+          <a class="btn btn-primary btn-shadow" routerLink="/auth/login" rel="noopener"><i
+              class="czi-user mr-1 d-none d-sm-inline-block"></i>Login
+          </a>
+        </div>
+        <div class="collapse navbar-collapse mr-auto order-lg-2" id="navbarCollapse">
+          <hr class="my-3">
         </div>
       </div>
     </div>
-  </div>
-  <div class="iq-top-navbar" style="width: 100%;">
-    <div class="iq-navbar-custom">
-      <nav class="navbar navbar-expand-lg navbar-light p-0">
-        <div class="iq-menu-bt d-flex align-items-center">
-          <div class="wrapper-menu">
-          </div>
-          <div class="iq-navbar-logo d-flex justify-content-between ml-3">
-            <a routerLink="/" class="header-logo">
-              <span>InstaTodos</span>
-            </a>
-          </div>
-        </div>
-        <div class="iq-search-bar">
-        </div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-label="Toggle navigation">
-          <i class="fas fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ml-auto navbar-list">
-            <ng-container>
-              <app-multilingual></app-multilingual>
-            </ng-container>
-            <li class="nav-item">
-              <a class="search-toggle iq-waves-effect language-title" routerLink="/auth/login"><span
-                  style="width: 98px; height: 98px; top: -15px; left: 56.2969px;"></span>
-                {{ 'get_started' | translate }}
-              </a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </div>
-  </div>
-  <div class="mt-5 iq-maintenance">
+  </header>
+  <div class="iq-maintenance">
     <router-outlet></router-outlet>
   </div>
 </div>

@@ -1,30 +1,34 @@
 /* You can add global styles to this file, and also import other style files */
-.cursor {
-  cursor: pointer;
-}
-.display-block {
-  display: block !important;
-}
-button:disabled, button[disabled] {
-  background-color: var(--iq-primary) !important;
-  border-color: var(--iq-primary) !important;
-}
-.mt-15 {
-  margin-top: 150px;
-}
-.mh-40{
-  min-height: 400px !important
-}
+// .cursor {
+//   cursor: pointer;
+// }
+// .display-block {
+//   display: block !important;
+// }
+// button:disabled, button[disabled] {
+//   background-color: var(--iq-primary) !important;
+//   border-color: var(--iq-primary) !important;
+// }
+// .mt-15 {
+//   margin-top: 150px;
+// }
+// .mh-40{
+//   min-height: 400px !important
+// }
 // a:hover {
 //   color: var(--iq-primary) !important;
 // }
-.flota-l {
-  float: left;
-}
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-  select,
-  textarea,
-  input {
-    font-size: 16px;
-  }
-}
+// .flota-l {
+//   float: left;
+// }
+// @media screen and (-webkit-min-device-pixel-ratio:0) {
+//   select,
+//   textarea,
+//   input {
+//     font-size: 16px;
+//   }
+// }
+
+/* Importing Bootstrap SCSS file. */
+// @import '~bootstrap/scss/bootstrap';
+@import './assets/facelift2/css/theme.min.css';
