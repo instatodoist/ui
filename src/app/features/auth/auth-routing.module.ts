@@ -3,16 +3,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthComponent } from './auth-login/auth.component';
 import { FrontComponent } from '../../layouts/front/front.component';
-import { HomeLayoutComponent } from '../../layouts/home-layout/home-layout.component';
 import { CanActivateAuthenticateGuard } from '../../guards/can-activate-authenticate.guard';
 import { AuthRegisterComponent } from './auth-register/auth-register.component';
 import { AuthVerifyComponent } from './auth-verify/auth-verify.component';
 import { AuthForgotComponent } from './auth-forgot/auth-forgot.component';
 import { AuthResetPasswordComponent } from './auth-reset-password/auth-reset-password.component';
-import { HomeComponent } from './home/home.component';
-import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
-import { TermsConditionsComponent } from './terms-conditions/terms-conditions.component';
-import { ContactUsComponent } from './contact-us/contact-us.component';
 
 const authRoutes: Routes = [
   {
@@ -60,47 +55,6 @@ const authRoutes: Routes = [
         component: AuthVerifyComponent,
         data: {
           header_title: 'verification'
-        }
-      }
-    ]
-  },
-  {
-    canActivate: [CanActivateAuthenticateGuard],
-    path: '',
-    component: HomeLayoutComponent,
-    children: [
-      {
-        path: '',
-        component: HomeComponent,
-        data: {
-          header_title: 'enhance_productivity'
-        }
-      }
-    ]
-  },
-  {
-    path: 'pages',
-    component: HomeLayoutComponent,
-    children: [
-      {
-        path: 'privacy-policy',
-        component: PrivacyPolicyComponent,
-        data: {
-          header_title: 'privacy-policy'
-        }
-      },
-      {
-        path: 'terms',
-        component: TermsConditionsComponent,
-        data: {
-          header_title: 'terms'
-        }
-      },
-      {
-        path: 'contact-us',
-        component: ContactUsComponent,
-        data: {
-          header_title: 'contact-us'
         }
       }
     ]

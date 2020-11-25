@@ -7,22 +7,29 @@ import { PageNotFoundComponent } from './features/shared/page-not-found/page-not
 const routes: Routes = [
   {
     path: '',
-    component: AdminComponent,
     canActivate: [CanActivateAuthenticateGuard],
     children: [
       {
+        path: '',
+        loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule)
+      },
+      {
+        component: AdminComponent,
         path: 'smart-analysis',
         loadChildren: () => import('./features/smart-analysis/smart-analysis.module').then(m => m.SmartAnalysisModule)
       },
       {
+        component: AdminComponent,
         path: 'profile',
         loadChildren: () => import('./features/profile/profile.module').then(m => m.ProfileModule)
       },
       {
+        component: AdminComponent,
         path: 'tasks',
         loadChildren: () => import('./features/todo/todo.module').then(m => m.TodoModule)
       },
       {
+        component: AdminComponent,
         path: 'notes',
         loadChildren: () => import('./features/goal/goal.module').then(m => m.GoalModule)
       }
