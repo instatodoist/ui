@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AdminComponent } from './features/shared/layout/admin/admin.component';
+import { AdminComponent } from './layouts/admin/admin.component';
 import { CanActivateAuthenticateGuard } from './guards/can-activate-authenticate.guard';
 import { PageNotFoundComponent } from './features/shared/page-not-found/page-not-found.component';
 

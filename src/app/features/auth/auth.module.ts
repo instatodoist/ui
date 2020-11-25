@@ -7,9 +7,9 @@ import { SharedModule } from '../shared/shared.module';
 import { environment } from '../../../environments/environment';
 // Components
 // import { FooterComponent } from '../shared/section/footer/footer.component';
-import { HomeLayoutComponent } from '../shared/layout/home-layout/home-layout.component';
+import { HomeLayoutComponent } from '../../layouts/home-layout/home-layout.component';
 import { AuthComponent } from './auth-login/auth.component';
-import { FrontComponent } from '../shared/layout/front/front.component';
+import { FrontComponent } from '../../layouts/front/front.component';
 import { AuthRegisterComponent } from './auth-register/auth-register.component';
 import { AuthVerifyComponent } from './auth-verify/auth-verify.component';
 import { AuthForgotComponent } from './auth-forgot/auth-forgot.component';

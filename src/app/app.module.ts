@@ -14,7 +14,7 @@ import { CanActivateAuthenticateGuard } from './guards/can-activate-authenticate
 import { FormValidationDirective } from './directive/form-validation.directive';
 
 import { AppComponent } from './app.component';
-import { AdminComponent } from './features/shared/layout/admin/admin.component';
+import { AdminComponent } from './layouts/admin/admin.component';
 import { HeaderComponent } from './features/shared/section/header/header.component';
 import { ThemeComponent } from './features/shared/section/theme/theme.component';
 import { SidebarComponent } from './features/shared/section/sidebar/sidebar.component';
