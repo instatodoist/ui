@@ -6,7 +6,7 @@ import { SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider } from 
 import { AuthModule } from './features/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './features/shared/shared.module';
-import { GraphqlModule } from './features/graphql/graphql.module';
+import { GraphqlModule } from './graphql/graphql.module';
 import { GoogleAnalyticService } from './service/analytics/google-analytic.service';
 
 import { CanActivateAuthenticateGuard } from './guards/can-activate-authenticate.guard';
