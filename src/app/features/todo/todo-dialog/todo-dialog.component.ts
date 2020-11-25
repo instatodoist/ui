@@ -8,7 +8,6 @@ import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { TodoService, UtilityService } from '../../../service';
 import { TodoType, TodoLabelType, TodoConditions, IOperationEnumType, TodoProjectType } from '../../../models';
-import { } from '../../../gql';
 import {  SharedModule } from '../../shared/shared.module';
 import { DialogTodoTagsComponent } from '../todo-tag-dialog/dialog-todo-tags.component';
 import { TodoProjectListDialogComponent } from '../todo-project-list-dialog/todo-projects-dialog.component';

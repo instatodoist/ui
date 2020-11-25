@@ -16,6 +16,7 @@ export class AuthInterceptor implements HttpInterceptor {
     if (lsService.getValue('isLoggedIn')) {
       request = request.clone({
         setHeaders: {
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           Authorization: `Bearer ${lsService.getValue('__token')}`
         }
       });

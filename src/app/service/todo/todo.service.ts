@@ -17,7 +17,7 @@ import {
   TODO_PROJECT_UPDATE_MUTATION,
   TODO_PROJECT_DELETE_MUTATION,
   TODO_PROJECT_QUERY
-} from '../../gql/todo.gql';
+} from '../../graphql/gql/todo.gql';
 import { Apollo, Query } from 'apollo-angular';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';

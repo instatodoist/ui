@@ -8,7 +8,7 @@ import {
   ADD_GOAL_MUTATION,
   UPDATE_GOAL_MUTATION,
   GOAL_DELETE_MUTATION
-} from '../../gql';
+} from '../../graphql/gql';
 import {
   IGoalConditions,
   IGoalListType,

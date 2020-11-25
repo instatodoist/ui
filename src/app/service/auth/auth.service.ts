@@ -15,7 +15,7 @@ import {
   PROFILE_UPDATE_GQL,
   UPDATE_PASSWORD_GQL,
   GOOGLE_MUTATION
-} from '../../gql/auth.gql';
+} from '../../graphql/gql/auth.gql';
 
 @Injectable({
   providedIn: 'root'
