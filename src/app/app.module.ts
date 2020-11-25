@@ -11,8 +11,6 @@ import { GoogleAnalyticService } from './service/analytics/google-analytic.servi
 
 import { CanActivateAuthenticateGuard } from './guards/can-activate-authenticate.guard';
 
-import { FormValidationDirective } from './directive/form-validation.directive';
-
 import { AppComponent } from './app.component';
 import { AdminComponent } from './layouts/admin/admin.component';
 import { HeaderComponent } from './features/shared/section/header/header.component';
@@ -34,7 +32,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ThemeComponent,
     SidebarComponent,
     PageNotFoundComponent,
-    FormValidationDirective
   ],
   imports: [
     BrowserModule,
