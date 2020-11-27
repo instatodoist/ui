@@ -36,7 +36,19 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "src/assets/facelift/js/jquery.min.js"
+              "src/assets/facelift/js/jquery.min.js",
+              "src/assets/facelift/js/popper.min.js",
+              "src/assets/facelift/js/bootstrap.min.js",
+              "src/assets/facelift/js/jquery.appear.js",
+              "src/assets/facelift/js/waypoints.min.js",
+              "src/assets/facelift/js/wow.min.js",
+              "src/assets/facelift/js/slick.min.js",
+              "src/assets/facelift/js/select2.min.js",
+              "src/assets/facelift/js/owl.carousel.min.js",
+              "src/assets/facelift/js/jquery.magnific-popup.min.js",
+              "src/assets/facelift/js/smooth-scrollbar.js",
+              "src/assets/facelift/js/flatpickr.js",
+              "src/assets/facelift/js/custom.js"
             ]
           },
           "configurations": {
