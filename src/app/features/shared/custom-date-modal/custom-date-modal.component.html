@@ -1,14 +1,9 @@
-<div class="modal fade" id="{{modelId}}" tabindex="-1" role="dialog" aria-labelledby="scheduledAt" aria-hidden="true" style="display: none;">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-body" style="padding: 0;" >
-        <div class="row">
-          <div class="col-sm-12">
-            <input type="text" class="form-control flatpicker iq-bg-primary d-none" style="background-color: white;"
-              (change)="onEvent($event)">
-          </div>
-        </div>
-      </div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-sm-12">
+      <ngb-datepicker #dp [(ngModel)]="model" [displayMonths]="2" (dateSelect)="onEvent(model);"
+        [markDisabled]="isDisabled">
+      </ngb-datepicker>
     </div>
   </div>
 </div>

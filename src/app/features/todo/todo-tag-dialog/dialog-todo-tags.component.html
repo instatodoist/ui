@@ -1,34 +1,26 @@
-<div class="modal fade" id="{{modelId}}" tabindex="-1" role="dialog" aria-labelledby="tagsModalTitle" aria-hidden="true"
-  style="display: none;">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="tagsModalTitle"># Tags</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
+<div class="modal-header">
+  <h5 class="modal-title" id="tagsModalTitle"># Tags</h5>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">×</span>
+  </button>
+</div>
+<div class="modal-body" style="padding: 0;min-height: 300px;">
+  <ul class="list-group">
+    <li class="list-group-item d-flex justify-content-between align-items-center"
+      *ngFor="let tag of labels; let i = index" [style]="{'color': tag?.color}">
+      <div class="badge border" [ngStyle]="{ 'color': tag.color, 'border-color': '#ccc !important' }">
+        {{tag?.name | titlecase}}
       </div>
-      <div class="modal-body" style="padding: 0;min-height: 300px;">
-        <ul class="list-group">
-          <li class="list-group-item d-flex justify-content-between align-items-center"
-            *ngFor="let tag of labels; let i = index" [style]="{'color': tag?.color}">
-            <div class="badge border"
-                  [ngStyle]="{ 'color': tag.color, 'border-color': '#ccc !important' }">
-                  {{tag?.name | titlecase}}
-            </div>
-           <span>
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="customCheck{{i+1}}"
-                  [checked]="isChecked(tag)" (change)="checkLabels(tag)">
-                <label class="custom-control-label" for="customCheck{{i+1}}"></label>
-              </div>
-            </span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            <a (click)="redirectToTagsUi()" class="cursor"><i class="fa fa-pencil-alt" aria-hidden="true"></i></a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
+      <span>
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="customCheck{{i+1}}" [checked]="isChecked(tag)"
+            (change)="checkLabels(tag)">
+          <label class="custom-control-label" for="customCheck{{i+1}}"></label>
+        </div>
+      </span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <a (click)="redirectToTagsUi()" class="cursor"><i class="fa fa-pencil-alt" aria-hidden="true"></i></a>
+    </li>
+  </ul>
 </div>

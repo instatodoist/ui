@@ -6,6 +6,7 @@ import { combineLatest } from 'rxjs';
 import { TodoListType, TodoCompletedListType, TodoType, TodoConditions, ITodoTypeCount, ItabName } from '../../../models';
 import { TodoService, AppService, UtilityService } from '../../../service';
 import { TodoDialogComponent } from '../todo-dialog/todo-dialog.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 // declare let $: any;
 @Component({
@@ -77,7 +78,8 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private appService: AppService,
     private toastr: UtilityService,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal
   ) {
   }
 
@@ -85,7 +87,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.jQuery('[data-toggle="tooltip"]').tooltip();
+    // this.jQuery('[data-toggle="tooltip"]').tooltip();
   }
 
   ngOnInit(): void {
@@ -195,15 +197,20 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param popupType - update/delete
    */
   openPopUp(todo: TodoType): void {
-    this.utilityService.openMdcDialog({
-      type: 'component',
-      value: TodoDialogComponent,
-      data: {
-        modelId: 'todo-dialog-update',
-        todo
-      }
-    })
-      .subscribe((_)=>_);
+    const modelRef  = this.modalService.open(TodoDialogComponent, {
+      size: 'lg'
+    });
+    modelRef.componentInstance.todo = todo;
+
+    // this.utilityService.openMdcDialog({
+    //   type: 'component',
+    //   value: TodoDialogComponent,
+    //   data: {
+    //     modelId: 'todo-dialog-update',
+    //     todo
+    //   }
+    // })
+    //   .subscribe((_)=>_);
   }
 
   /**
@@ -255,6 +262,7 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   @HostListener('scroll', ['$event'])
   refresh(): void {
     const { totalCount, data } = this.todosC;

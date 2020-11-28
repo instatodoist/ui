@@ -1,52 +1,43 @@
-<!-- Modal -->
-<div id="exampleModalScrollable" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Edit Lists</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+<div class="modal-header">
+  <h5 class="modal-title">Edit Lists</h5>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <form class="form-horizontal" role="form" name="form" id="form" [formGroup]="formObj" (ngSubmit)="submit()"
+    novalidate>
+    <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+      <div class="iq-card-header d-flex justify-content-between">
+        <div class="iq-header-title" style="width: 100%;">
+          <input type="text" class="form-control" placeholder="Create new List" required formControlName="name">
+        </div>
+
       </div>
-      <div class="modal-body">
-        <form class="form-horizontal" role="form" name="form" id="form" [formGroup]="formObj" (ngSubmit)="submit()"
-          novalidate>
-          <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-            <div class="iq-card-header d-flex justify-content-between">
-              <div class="iq-header-title" style="width: 100%;">
-                <input type="text" class="form-control" placeholder="Create new List" required formControlName="name">
-              </div>
-              <!-- <div class="iq-card-header-toolbar d-flex align-items-center cursor">
-                <span><i class="fa fa-check" aria-hidden="true"></i></span>
-              </div> -->
+      <div class="iq-card-body">
+        <ul class="suggestions-lists m-0 p-0">
+          <li class="d-flex mb-4 align-items-center" *ngFor="let label of labels; let i = index">
+            <div class="profile-icon iq-bg-primary cursor" (click)="deleteLabel(label)">
+              <span><i class="fa fa-times" aria-hidden="true"></i>
+              </span>
             </div>
-            <div class="iq-card-body">
-              <ul class="suggestions-lists m-0 p-0">
-                <li class="d-flex mb-4 align-items-center" *ngFor="let label of labels; let i = index">
-                  <div class="profile-icon iq-bg-primary cursor" (click)="deleteLabel(label)">
-                    <span><i class="fa fa-times" aria-hidden="true"></i>
-                    </span>
-                  </div>
-                  <div class="media-support-info ml-3">
-                    <h6>{{label?.name | titlecase}}</h6>
-                  </div>
-                  <div class="media-support-amount ml-3 cursor" (click)="editLabel(label)">
-                    <h6>
-                      <span class="text-secondary">
-                        <i class="fa fa-pencil-alt"></i>
-                      </span>
-                    </h6>
-                  </div>
-                </li>
-              </ul>
+            <div class="media-support-info ml-3">
+              <h6>{{label?.name | titlecase}}</h6>
             </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Done</button>
-        <!-- <button type="Submit" class="btn btn-primary">Save changes</button> -->
+            <div class="media-support-amount ml-3 cursor" (click)="editLabel(label)">
+              <h6>
+                <span class="text-secondary">
+                  <i class="fa fa-pencil-alt"></i>
+                </span>
+              </h6>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
-  </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-dismiss="modal">Done</button>
 </div>

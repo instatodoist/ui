@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { TodoLabelType } from '../../../models';
 import { Router } from '@angular/router';
+import { TodoLabelType } from '../../../models';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let $: any;
 
@@ -17,7 +18,8 @@ export class DialogTodoTagsComponent implements OnInit {
   @Output() data: EventEmitter<string[]> = new EventEmitter<string[]>();
 
   constructor(
-    private router: Router
+    private router: Router,
+    public activeModal: NgbActiveModal
   ) { }
 
   ngOnInit(): void { }

@@ -6,6 +6,7 @@ import { AuthService, AppService, UtilityService } from '../../../../service';
 import { Subscription } from 'rxjs';
 import { ILanguage, IUserProfile } from '../../../../models';
 import { TodoDialogComponent } from '../../../todo/todo-dialog/todo-dialog.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-header',
@@ -29,7 +30,8 @@ export class HeaderComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private appService: AppService,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private modalService: NgbModal
   ) {
     this.formObj = this.fb.group({
       query: ['']
@@ -61,14 +63,15 @@ export class HeaderComponent implements OnInit {
    * open popup
    */
   openPopUp(): void {
-    this.utilityService.openMdcDialog({
-      type: 'component',
-      value: TodoDialogComponent,
-      data: {
-        modelId: 'todo-dialog'
-      }
-    })
-      .subscribe((_)=>_);
+    // this.utilityService.openMdcDialog({
+    //   type: 'component',
+    //   value: TodoDialogComponent,
+    //   data: {
+    //     modelId: 'todo-dialog'
+    //   }
+    // })
+    //   .subscribe((_)=>_);
+    this.modalService.open(TodoDialogComponent, {size: 'lg'});
   }
 
   /**
@@ -78,6 +81,7 @@ export class HeaderComponent implements OnInit {
     this.userService.profile()
       .subscribe(data => {
         this.session = data;
+        // eslint-disable-next-line no-underscore-dangle
         this.appService.__updateCoreAppData({
           ...this.appService.APP_DATA,
           session: this.session

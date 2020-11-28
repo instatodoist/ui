@@ -22,8 +22,6 @@ import { environment } from '../environments/environment';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,7 +51,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
       },
       isolate: true
     }),
-    NgbModule
   ],
   providers: [
     CanActivateAuthenticateGuard,

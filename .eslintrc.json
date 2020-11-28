@@ -57,7 +57,9 @@
       "extends": [
         "plugin:@angular-eslint/template/recommended"
       ],
-      "rules": {}
+      "rules": {
+        "no-underscore-dangle": 0
+      }
     }
   ]
 }

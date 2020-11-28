@@ -4,6 +4,7 @@ import {RouterModule} from '@angular/router';
 import { ToastrModule } from 'ngx-toastr';
 import { TranslateModule } from '@ngx-translate/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { QuilljsModule } from 'ngx-quilljs';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { AppService } from '../../service';
@@ -11,7 +12,7 @@ import { FooterComponent } from '../shared/section/footer/footer.component';
 import { FileUploadComponent } from '../shared/file-upload/file-upload.component';
 import { InfiniteScrollComponent } from './infinite-scroll/infinite-scroll.component';
 import { GoalDialogComponent } from '../goal/goal-dialog/goal-dialog.component';
-import { CustomDateModalComponent } from './custom-date-modal/custom-date-modal.component';import {TodoProjectListComponent} from '../todo/todo-project-list/todo-project-list.component';
+import {TodoProjectListComponent} from '../todo/todo-project-list/todo-project-list.component';
 import { MultilingualComponent } from '../../utilities/components/multilingual/multilingual.component';
 @NgModule({
   declarations: [
@@ -19,7 +20,6 @@ import { MultilingualComponent } from '../../utilities/components/multilingual/m
     InfiniteScrollComponent,
     GoalDialogComponent,
     FileUploadComponent,
-    CustomDateModalComponent,
     FooterComponent,
     MultilingualComponent
   ],
@@ -33,7 +33,8 @@ import { MultilingualComponent } from '../../utilities/components/multilingual/m
       preventDuplicates: true
     }),
     QuilljsModule,
-    LazyLoadImageModule
+    LazyLoadImageModule,
+    NgbModule
   ],
   exports: [
     TodoProjectListComponent,
@@ -41,10 +42,10 @@ import { MultilingualComponent } from '../../utilities/components/multilingual/m
     GoalDialogComponent,
     TranslateModule,
     FileUploadComponent,
-    CustomDateModalComponent,
     FooterComponent,
     LazyLoadImageModule,
-    MultilingualComponent
+    MultilingualComponent,
+    NgbModule
   ]
 })
 export class SharedModule {

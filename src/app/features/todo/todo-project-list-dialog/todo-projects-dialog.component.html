@@ -1,25 +1,18 @@
-<div class="modal fade" id="{{modelId}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
-  aria-hidden="true" style="display: none;">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Move to</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body" style="padding: 0; min-height: 300px;">
-        <ul class="list-group">
-          <li class="list-group-item d-flex justify-content-between align-items-center"
-            *ngFor="let project of projects; let i = index" [ngClass]="{'active': ( project?._id === projectId ) }"
-            (click)="checkProject(project)">
-            {{project?.name | titlecase}}
-            <span class="badge badge-pill" *ngIf="project?._id === projectId">
-              <i class="fa fa-check-circle-o" aria-hidden="true" style="color: text-primary;"></i>
-            </span>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
+<div class="modal-header">
+  <h5 class="modal-title" id="exampleModalLongTitle">Move to</h5>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">×</span>
+  </button>
+</div>
+<div class="modal-body" style="padding: 0; min-height: 300px;">
+  <ul class="list-group">
+    <li class="list-group-item d-flex justify-content-between align-items-center"
+      *ngFor="let project of projects; let i = index" [ngClass]="{'active': ( project?._id === projectId ) }"
+      (click)="checkProject(project)">
+      {{project?.name | titlecase}}
+      <span class="badge badge-pill" *ngIf="project?._id === projectId">
+        <i class="fa fa-check-circle-o" aria-hidden="true" style="color: text-primary;"></i>
+      </span>
+    </li>
+  </ul>
 </div>

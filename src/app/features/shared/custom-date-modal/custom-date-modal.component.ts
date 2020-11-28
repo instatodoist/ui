@@ -1,59 +1,32 @@
 import { Component, OnInit, Input, Output, AfterViewInit, EventEmitter } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-declare let flatpickr: any;
-declare let $: any;
+import {NgbDateStruct, NgbActiveModal, NgbDate} from '@ng-bootstrap/ng-bootstrap';
 type Operation = 'ADD' | 'UPDATE';
 @Component({
   selector: 'app-custom-date-modal',
   templateUrl: './custom-date-modal.component.html',
-  styleUrls: ['./custom-date-modal.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: CustomDateModalComponent,
-      multi: true
-    }
-  ]
+  styleUrls: ['./custom-date-modal.component.scss']
 })
 export class CustomDateModalComponent implements OnInit, AfterViewInit {
   @Input() operationType: Operation;
   @Input() scheduledAt = '';
-  @Input() modelId = 'scheduledModal';
   @Output() data: EventEmitter<string> = new EventEmitter<string>();
-  flatPickerConfig: any = {};
+  model: NgbDateStruct;
+  date: {year: number; month: number; day: number};
 
-  constructor() {
-  }
+  constructor(
+    public activeModal: NgbActiveModal
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-  ngAfterViewInit() {
-    // Add code for opening date via flatpicker
-    // Initially it will be online
-    if (typeof flatpickr !== 'undefined' && $.isFunction(flatpickr)) { // Initialise Date Picker
-      this.flatPickerConfig = {
-        inline: true,
-        dateFormat: 'Y-m-d',
-        defaultDate: this.scheduledAt || new Date()
-      };
-      if (this.operationType === 'ADD') {
-        this.flatPickerConfig.minDate = new Date();
-      }
-      $('.flatpicker').flatpickr(this.flatPickerConfig);
-    }
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-    // $(`#${this.modelId}`).on('hidden.bs.modal', () => { // listen modal close event
-    // });
-  }
+  ngAfterViewInit() {}
 
-  // @HostListener('click', ['$event.target'])
-  onEvent($event: any) {
-    const target = $event.target;
-    if (target.value) {
-      this.data.next(target.value);
-      // $(`#${this.modelId}`).modal('hide');
-    }
+  isDisabled = (date: NgbDate, current: {month: number; year: number; day: number}) => date.month < current.month ||
+    (date.month === current.month && date.day < current.day) ||
+    date.year < current.year;
+
+  onEvent(model: NgbDateStruct) {
+    this.data.next(`${model.month}-${model.day}-${model.year}`);
   }
 
 }
