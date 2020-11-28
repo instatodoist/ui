@@ -1,24 +1,21 @@
-<div class="tab-content">
-  <div class="tab-pane fade show active" id="home">
-    <ng-container *ngFor="let todo of todos?.data;">
-      <div class=" d-flex tasks-card" role="alert">
-        <div class="custom-control">
-          <!--  Title -->
-          <label class="">
-            <div class="d-flex align-items-center justify-content-between text-primary">
-              <button type="button" class="btn mb-1 iq-bg-primary">
-                {{todo?._id  | date: 'mediumDate'}}
-                <span class="badge badge-light ml-2">{{todo?.list?.length}}</span>
-              </button>
-            </div>
-          </label>
-        </div>
+<ul class="list-group list-group-flush">
+  <ng-container *ngFor="let todo of todos?.data;">
+    <li class=" d-flex tasks-card" role="alert">
+      <div class="custom-control">
+        <!--  Title -->
+        <label class="">
+          <div class="d-flex align-items-center justify-content-between text-primary">
+            <button type="button" class="btn mb-1 iq-bg-primary">
+              {{todo?._id  | date: 'mediumDate'}}
+              <span class="badge badge-light ml-2">{{todo?.list?.length}}</span>
+            </button>
+          </div>
+        </label>
       </div>
+    </li>
 
-      <!-- Childs-->
-      <div class="d-flex tasks-card" role="alert" *ngFor="let data of todo?.list; let i = index">
-        <app-todo-completed-single [todo]="data" [index]="i"></app-todo-completed-single>
-      </div>
-    </ng-container>
-  </div>
-</div>
+    <!-- Childs-->
+    <app-todo-completed-single *ngFor="let data of todo?.list; let i = index" [todo]="data" [index]="i">
+    </app-todo-completed-single>
+  </ng-container>
+</ul>

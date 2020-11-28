@@ -198,7 +198,8 @@ export class TodoInboxComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   openPopUp(todo: TodoType): void {
     const modelRef  = this.modalService.open(TodoDialogComponent, {
-      size: 'lg'
+      size: 'lg',
+      // backdropClass: 'light-blue-backdrop'
     });
     modelRef.componentInstance.todo = todo;
 

@@ -1,20 +1,19 @@
 <div class="container-fluid todo-inbox">
   <div class="row">
-    <div class="col-lg-12">
-      <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
 
-        <ul class="nav nav-tabs" id="myTab-1" role="tablist">
-          <li class="nav-item" *ngFor="let item of tabs[todoCurrentType]; let i = index">
-            <a class="nav-link" id="home-tab" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true"
-              [routerLink]="item?.link" routerLinkActive="active">
+    <div class="col-sm-12 col-lg-12">
+      <div class="iq-card">
+        <div class="iq-card-header d-flex justify-content-between">
+          <div class="iq-header-title">
+            <h4 class="card-title" *ngFor="let item of tabs[todoCurrentType]; let i = index">
               {{('' + item.name ) | translate | titlecase}}
 
               <!-- For Todos Other than Completed, Today, Pending-->
               <ng-container *ngIf="todoCurrentType !== TODOTYPES.completed && tabs[todoCurrentType].length < 2">
-                <span *ngIf="queryStr">
+                <span class="badge badge-primary badge-pill" *ngIf="queryStr">
                   {{ todos?.totalCount || '' }}
                 </span>
-                <span *ngIf="!queryStr">
+                <span class="badge badge-primary badge-pill" *ngIf="!queryStr">
                   {{(this.count) && this.count[item.name] || todos?.totalCount || ''}}
                 </span>
               </ng-container>
@@ -23,41 +22,41 @@
               <ng-container *ngIf="todoCurrentType !== TODOTYPES.completed && tabs[todoCurrentType].length === 2">
                 <ng-container *ngIf="!queryStr">
                   <span *ngIf="todoCurrentType === item.name; else falsyTemplate">
-                    <span>{{(this.count) && this.count[item.name] || todos?.totalCount || ''}}</span>
+                    <span
+                      class="badge badge-primary badge-pill">{{(this.count) && this.count[item.name] || todos?.totalCount || ''}}</span>
                   </span>
                   <ng-template #falsyTemplate>
-                    <span *ngIf="i === 0">{{ this.count && this.count[TODOTYPES.today] || ''}}</span>
-                    <span *ngIf="i === 1">{{ this.count && this.count[TODOTYPES.pending] || ''}}</span>
+                    <span class="badge badge-primary badge-pill"
+                      *ngIf="i === 0">{{ this.count && this.count[TODOTYPES.today] || ''}}</span>
+                    <span class="badge badge-primary badge-pill"
+                      *ngIf="i === 1">{{ this.count && this.count[TODOTYPES.pending] || ''}}</span>
                   </ng-template>
                 </ng-container>
                 <ng-container *ngIf="queryStr">
                   <span *ngIf="todoCurrentType === item.name; else falsyTemplate">
-                    <span>{{ todos?.totalCount || ''}}</span>
+                    <span class="badge badge-primary badge-pill">{{ todos?.totalCount || ''}}</span>
                   </span>
                   <ng-template #falsyTemplate>
-                    <span *ngIf="i === 0">{{ this.count && this.count[TODOTYPES.today] || ''}}</span>
-                    <span *ngIf="i === 1">{{ this.count && this.count[TODOTYPES.pending] || ''}}</span>
+                    <span class="badge badge-primary badge-pill"
+                      *ngIf="i === 0">{{ this.count && this.count[TODOTYPES.today] || ''}}</span>
+                    <span class="badge badge-primary badge-pill"
+                      *ngIf="i === 1">{{ this.count && this.count[TODOTYPES.pending] || ''}}</span>
                   </ng-template>
                 </ng-container>
               </ng-container>
 
               <!-- For Completed Todos-->
               <ng-container *ngIf="todoCurrentType === TODOTYPES.completed">
-                {{(this.count) && this.count[item.name] || todos?.totalCount || ''}}
+                <span
+                  class="badge badge-primary badge-pill">{{(this.count) && this.count[item.name] || todos?.totalCount || ''}}</span>
               </ng-container>
-            </a>
-          </li>
-        </ul>
-
-        <!-- Loader on fetching data-->
-        <div class="col-sm-12 text-center" *ngIf="todoCurrentType !== TODOTYPES?.completed && extraLoader">
-          <img [src]="loaderImage" alt="loader" style="height: 100px;">
+            </h4>
+          </div>
         </div>
-        <!--END-->
 
-        <!-- Todos -->
+        <!-- Section for Todos-->
         <div class="iq-card-body" *ngIf="!extraLoader && todoCurrentType !== TODOTYPES?.completed">
-          <ul class="perfomer-lists m-0 p-0">
+          <ul class="list-group list-group-flush">
             <ng-container *ngIf="todos?.data.length">
               <ng-container *ngFor="let todo of todos?.data; let i = index">
                 <app-todo-single [todo]="todo" [index]="i" [todoCurrentType]="todoCurrentType" [TODOTYPES]="TODOTYPES"
@@ -65,7 +64,6 @@
                   (deleteTodoCb)="deleteTodo($event)"></app-todo-single>
               </ng-container>
             </ng-container>
-
             <!-- If No Todos -->
             <ng-container *ngIf="!todos?.data.length">
               <div class="text-center">
@@ -89,5 +87,11 @@
         </div>
       </div>
     </div>
+
+    <!-- Loader on fetching data-->
+    <div class="col-sm-12 text-center" *ngIf="todoCurrentType !== TODOTYPES?.completed && extraLoader">
+      <img [src]="loaderImage" alt="loader" style="height: 100px;">
+    </div>
+    <!--END-->
   </div>
 </div>
