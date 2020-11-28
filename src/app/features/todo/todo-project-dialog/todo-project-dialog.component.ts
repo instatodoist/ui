@@ -26,6 +26,7 @@ export class TodoProjectDialogComponent implements OnInit, AfterViewInit {
   labels: TodoProjectType[];
   // dialog: MDCDialog;
   operationType: IOperationEnumType = 'ADD';
+  loader = false;
 
   constructor(
     private fb: FormBuilder,
@@ -74,6 +75,7 @@ export class TodoProjectDialogComponent implements OnInit, AfterViewInit {
 
   submit() {
     if (this.formObj.valid) {
+      this.loader = true;
       const postBody = this.formObj.value;
       this.todoOperationExec(postBody);
     }
@@ -82,7 +84,9 @@ export class TodoProjectDialogComponent implements OnInit, AfterViewInit {
   todoOperationExec(postBody) {
     this.todoService
       .todoProjectOperation(postBody)
-      .subscribe(() => {
+      .subscribe(
+        () => {
+        this.loader = false;
         this.formObj.reset();
         switch (this.operationType) {
         case 'ADD':
@@ -96,6 +100,8 @@ export class TodoProjectDialogComponent implements OnInit, AfterViewInit {
           break;
         }
         this.operationType = 'ADD';
+      }, ()=>{
+        this.loader = false;
       });
   }
 

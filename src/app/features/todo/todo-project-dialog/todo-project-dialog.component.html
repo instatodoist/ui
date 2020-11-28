@@ -11,7 +11,15 @@
     <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
       <div class="iq-card-header d-flex justify-content-between">
         <div class="iq-header-title" style="width: 100%;">
-          <input type="text" class="form-control" placeholder="Create new List" required formControlName="name">
+          <div class="row">
+            <div class="col-10">
+              <input type="text" class="form-control" placeholder="Create new List" required formControlName="name">
+            </div>
+            <div class="col-2" *ngIf="formObj.value.name">
+              <button type="submit" name="next" class="btn btn-primary next action-button float-right"
+                value="Next">{{(!formObj.value._id ? 'Save': 'Update') + (loader? ' ...' : '')}}</button>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -39,5 +47,6 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-secondary" data-dismiss="modal">Done</button>
+  <button type="button" class="btn btn-secondary" data-dismiss="modal"
+    (click)="activeModal.dismiss('Cross click')">Done</button>
 </div>
