@@ -5,6 +5,7 @@ import { NgModule, Component, OnInit, AfterViewInit, Input, Output, EventEmitter
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TodoService, UtilityService } from '../../../service';
 import { TodoType, TodoProjectType, TodoConditions, IOperationEnumType } from '../../../models';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-todo-project',
@@ -29,7 +30,8 @@ export class TodoProjectDialogComponent implements OnInit, AfterViewInit {
   constructor(
     private fb: FormBuilder,
     private todoService: TodoService,
-    private toast: UtilityService
+    private toast: UtilityService,
+    public activeModal: NgbActiveModal,
   ) { }
 
   ngOnInit(): void {

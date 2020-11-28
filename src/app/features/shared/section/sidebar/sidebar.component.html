@@ -28,8 +28,8 @@
             <a class="iq-waves-effect ml-2">
               <span class="ripple rippleEffect"></span>
               <span>{{('' + link?.slug ) | translate}}</span>
-              <i class="fa fa-pencil-alt ml-2 cursor" aria-hidden="true" style="font-size: 14px;" data-toggle="modal"
-                data-target="#exampleModalScrollable"></i>
+              <i class="fa fa-pencil-alt ml-2 cursor" aria-hidden="true" style="font-size: 14px;"
+                (click)="lazyLoadComponent()"></i>
             </a>
             <ul id="{{link?.name}}" class="iq-submenu" [ngClass]="{'iq-menu-custom':  link?.name === 'Lists' }">
               <ng-container *ngIf="link?.name !== 'Lists'">
@@ -53,4 +53,3 @@
     <div class="p-3"></div>
   </div>
 </div>
-<!-- <ng-container #vcprojects></ng-container> -->

@@ -1,12 +1,20 @@
-import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, ComponentRef, AfterViewInit } from '@angular/core';
-import { TodoService, AppService } from '../../../../service';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ViewContainerRef,
+  ComponentFactoryResolver,
+  Injector,
+  ComponentRef,
+  AfterViewInit
+} from '@angular/core';
 import { Router } from '@angular/router';
-import { ITodoTypeCount, INavLink } from '../../../../models';
 import { combineLatest } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { TodoService, AppService } from '../../../../service';
+import { ITodoTypeCount, INavLink } from '../../../../models';
 import { TodoProjectDialogComponent } from '../../../todo/todo-project-dialog/todo-project-dialog.component';
-
-
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -29,7 +37,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     private injector: Injector,
     private todoService: TodoService,
     private appService: AppService,
-    private componentFactoryResolver: ComponentFactoryResolver
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -56,7 +65,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         };
         this.attachActiveClass(currentUrl);
         this.populateCount();
-        this.lazyLoadComponent();
+        // this.lazyLoadComponent();
       });
   }
 
@@ -68,7 +77,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       if (item.link && this.currentUrl.match(new RegExp(item.link, 'g'))) {
         return true;
       } else if (!item.link) {
-        const childrenMatch = item.children.filter(chileItem => this.currentUrl.match(new RegExp(chileItem.link, 'g')) || chileItem.link.match(new RegExp('lists', 'g')));
+        const childrenMatch = item.children.filter(
+          chileItem => this.currentUrl.match(
+            new RegExp(chileItem.link, 'g')) ||
+            chileItem.link.match(new RegExp('lists', 'g'))
+          );
         if (childrenMatch.length) {
           return true;
         }
@@ -177,10 +190,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     ];
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   lazyLoadComponent(): void{
-    const factory = this.componentFactoryResolver.resolveComponentFactory(TodoProjectDialogComponent);
-    const componentRef: ComponentRef<any> = factory.create(this.injector);
-    this.projectVcRef.insert(componentRef.hostView); //lazy load
+    this.modalService.open(TodoProjectDialogComponent, {size: 'lg'});
   }
 
 }
