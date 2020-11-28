@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { GoalService, UtilityService } from '../../../service';
 import { IGoalType, IExternalModal, IGoalConditions } from '../../../models';
-declare let $: any;
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 type IGoalPopupType = 'GOAL_ADD' | 'GOAL_UPDATE';
 
 @Component({
@@ -20,6 +20,7 @@ export class GoalDialogComponent implements OnInit {
   conditions: IGoalConditions;
   defaultConfig: IExternalModal;
   formObj: FormGroup;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   QUILL_OPTIONS: unknown;
   isSubmit = false;
   popUpType: IGoalPopupType = 'GOAL_ADD';
@@ -27,7 +28,8 @@ export class GoalDialogComponent implements OnInit {
   constructor(
     private goalService: GoalService,
     private fb: FormBuilder,
-    private toastr: UtilityService
+    private toastr: UtilityService,
+    public activeModal: NgbActiveModal
   ) { }
 
   ngOnInit(): void {
@@ -60,6 +62,7 @@ export class GoalDialogComponent implements OnInit {
   private populateModal() {
     if (this.goal) {
       this.formObj.patchValue({
+        // eslint-disable-next-line no-underscore-dangle
         _id: this.goal._id,
         title: this.goal.title,
         description: this.goal.description,
@@ -71,6 +74,7 @@ export class GoalDialogComponent implements OnInit {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   submit(): void {
     if (this.formObj.valid) {
       this.isSubmit = true;
@@ -78,8 +82,9 @@ export class GoalDialogComponent implements OnInit {
       this.goalService.goalOperation(this.formObj.value, this.conditions)
         .subscribe(() => {
           this.isSubmit = false;
-          $(`#${this.modelId}`).modal('hide');
+          this.activeModal.dismiss();
           let message = 'Note created';
+          // eslint-disable-next-line no-underscore-dangle
           if (this.formObj.value._id) {
             message = 'Note updated';
           }

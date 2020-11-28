@@ -19,7 +19,7 @@ export class AdminComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.headerJs();
-    this.toolTipJs();
+    // this.toolTipJs();
   }
 
   toolTipJs(): void {

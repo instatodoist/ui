@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { IGoalListType, IGoalConditions, IGoalType, IOperationEnumType, ITemplateOperation } from '../../../models';
-import { GoalService, AppService, UtilityService } from '../../../service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { IGoalListType, IGoalConditions, IGoalType, IOperationEnumType, ITemplateOperation } from '../../../models';
+import { GoalService, AppService, UtilityService } from '../../../service';
 import { GoalDialogComponent } from '../goal-dialog/goal-dialog.component';
 
 @Component({
@@ -26,7 +28,8 @@ export class GoalListComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private goalService: GoalService,
     private appService: AppService,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private modalService: NgbModal
   ) {
     this.conditions = {
       filter: {
@@ -70,30 +73,17 @@ export class GoalListComponent implements OnInit, OnDestroy {
 
   openUpdatePopUp(goal: IGoalType = null, type: ITemplateOperation = 'IS_UPDATE'): void {
     if (type === 'IS_UPDATE') {
-      this.utilityService.openMdcDialog({
-        type: 'component',
-        value: GoalDialogComponent,
-        data: {
-          modelId: 'goal-dialog-update',
-          goal
-        }
-      })
-        .subscribe((_)=>_);
+      const modelRef = this.modalService.open(GoalDialogComponent);
+      modelRef.componentInstance.goal = goal;
     } else {
-      this.utilityService.openMdcDialog({
-        type: 'component',
-        value: GoalDialogComponent,
-        data: {
-          modelId: 'goal-dialog-add'
-        }
-      })
-        .subscribe((_)=>_);
+      this.modalService.open(GoalDialogComponent);
     }
   }
 
   updateGoal(goal: IGoalType = null, type: ITemplateOperation = 'IS_PINNED'): void {
     let operationType: IOperationEnumType = 'ADD';
     const goalObj = {
+      // eslint-disable-next-line no-underscore-dangle
       _id: goal._id,
       title: goal.title,
       description: goal.description
