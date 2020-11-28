@@ -7,49 +7,47 @@
    <h3 class="mt-4 mb-3">Card Colored Styles</h3>
 </div> -->
   <!--END-->
-  <div class="card" *ngFor="let goal of goals?.data;" [style]="{ 'border': '1px solid #ccc' }">
-    <!-- <div class="card iq-mb-3" [ngClass]="{ 'bg-secondary': goal?.isPinned }"> -->
-    <div class="card">
-      <div class="card-body" [style]="{ 'padding-bottom': '0px'  }">
-        <!-- <h4 class="card-title" [ngClass]="{ 'text-white': goal?.isPinned }">{{goal?.title}}</h4> -->
-        <h4 class="card-title">{{goal?.title}}</h4>
-        <blockquote class="blockquote mb-0">
-          <p class="font-size-14" [innerHTML]="goal?.description"></p>
-          <footer class="blockquote-footer text-white font-size-12">
-            <div class="form-group row align-items-center">
-              <div class="d-flex flex-grow-1 align-items-center"></div>
-              <div class="d-flex mr-3 align-items-center">
-                <div class="send-panel float-right">
-                  <!-- <label class="ml-2 mb-0 rounded iq-bg-primary" (click)="updateGoal(goal)">
+  <!-- <div class="card iq-mb-3" [ngClass]="{ 'bg-secondary': goal?.isPinned }"> -->
+  <div class="card shadow-lg" *ngFor="let goal of goals?.data;">
+    <div class="card-body" [style]="{ 'padding-bottom': '0px'  }">
+      <!-- <h4 class="card-title" [ngClass]="{ 'text-white': goal?.isPinned }">{{goal?.title}}</h4> -->
+      <h5 class="card-title">{{goal?.title}}</h5>
+      <!-- <blockquote class="blockquote mb-0"> -->
+      <p class="font-size-14" [innerHTML]="goal?.description"></p>
+      <footer class="blockquote-footer text-white">
+        <div class="form-group row align-items-center">
+          <div class="d-flex flex-grow-1 align-items-center"></div>
+          <div class="d-flex mr-3 align-items-center">
+            <div class="send-panel float-right">
+              <!-- <label class="ml-2 mb-0 rounded iq-bg-primary" (click)="updateGoal(goal)">
                     <a>
                         <i class="fas fa-thumbtack"
                         [ngClass]="{ 'text-success': goal?.isPinned, 'text-primary': !goal?.isPinned }"></i>
                     </a>
                   </label> -->
-                  <label class="ml-2 mb-0 iq-bg-primary rounded cursor" (click)="openUpdatePopUp(goal)">
-                    <a><i class="fa fa-pencil-alt" aria-hidden="true"></i></a>
-                  </label>
-                  <label class="ml-2 mb-0 iq-bg-primary rounded" (click)="updateGoal(goal, 'IS_ARCHIEVED')"
-                    data-toggle="tooltip" data-placement="top" data-original-title="Tooltip on top">
-                    <a>
-                      <i class="fa fa-archive cursor" aria-hidden="true"></i>
-                    </a>
-                  </label>
-                  <label class="ml-2 mb-0 rounded iq-bg-primary" (click)="updateGoal(goal, 'IS_DELETED')">
-                    <a>
-                      <i class="far fa-trash-alt"></i>
-                    </a>
-                  </label>
-                </div>
-              </div>
+              <label class="ml-2 mb-0 iq-bg-primary rounded cursor" (click)="openUpdatePopUp(goal)">
+                <a><i class="fa fa-pencil-alt" aria-hidden="true"></i></a>
+              </label>
+              <label class="ml-2 mb-0 iq-bg-primary rounded" (click)="updateGoal(goal, 'IS_ARCHIEVED')"
+                data-toggle="tooltip" data-placement="top" data-original-title="Tooltip on top">
+                <a>
+                  <i class="fa fa-archive cursor" aria-hidden="true"></i>
+                </a>
+              </label>
+              <label class="ml-2 mb-0 rounded iq-bg-primary" (click)="updateGoal(goal, 'IS_DELETED')">
+                <a>
+                  <i class="far fa-trash-alt"></i>
+                </a>
+              </label>
             </div>
-          </footer>
-        </blockquote>
-        <p class="card-text"><small class="text-muted">Created {{goal?.createdAt | date:'medium' }}</small></p>
-      </div>
+          </div>
+        </div>
+      </footer>
+      <p class="card-text"><small class="text-muted">Created {{goal?.createdAt | date:'medium' }}</small></p>
+      <!-- </blockquote> -->
+
     </div>
+    <button (click)="openUpdatePopUp(null, 'IS_ADD')" type="button"
+      class="bottom-right btn btn-primary active rounded-pill mb-3 mr-3"><i class="fa fa-plus" aria-hidden="true"></i>
+      Note</button>
   </div>
-  <button (click)="openUpdatePopUp(null, 'IS_ADD')" type="button"
-    class="bottom-right btn btn-primary active rounded-pill mb-3 mr-3"><i class="fa fa-plus" aria-hidden="true"></i>
-    Note</button>
-</div>
