@@ -431,7 +431,7 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
         .subscribe(() => {
           this.isSubmit = false;
           // this.isOpen.emit(false);
-          $(`#${this.modelId}`).modal('hide');
+          this.activeModal.dismiss();
           let message = 'Task created';
           if (this.formObj.value._id) {
             message = 'Task updated';

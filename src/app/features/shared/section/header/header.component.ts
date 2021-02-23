@@ -63,14 +63,6 @@ export class HeaderComponent implements OnInit {
    * open popup
    */
   openPopUp(): void {
-    // this.utilityService.openMdcDialog({
-    //   type: 'component',
-    //   value: TodoDialogComponent,
-    //   data: {
-    //     modelId: 'todo-dialog'
-    //   }
-    // })
-    //   .subscribe((_)=>_);
     this.modalService.open(TodoDialogComponent, {size: 'lg'});
   }
 
