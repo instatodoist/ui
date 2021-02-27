@@ -113,8 +113,10 @@
                             'btn-outline-primary': formObj.value.scheduledType !== scheduledObj[key].slug,
                             'btn-primary': formObj.value.scheduledType === scheduledObj[key].slug
                           }" (click)="askDatePickerToOpen(date, scheduledObj[key].slug)">
-                      <span
-                        *ngIf="scheduledObj[key].slug === 'CUSTOM'">{{ formObj.value.scheduledDate? formObj.value.scheduledDate: scheduledObj[key].name}}</span>
+                      <span *ngIf="scheduledObj[key].slug === 'CUSTOM'">
+                        {{ formObj.value.scheduledDate? (formObj.value.scheduledDate | date: 'YYYY-MM-dd'):
+                        scheduledObj[key].name}}
+                      </span>
                       <span *ngIf="scheduledObj[key].slug !== 'CUSTOM'">{{scheduledObj[key].name}}</span>
                     </button>
                   </li>
