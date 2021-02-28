@@ -85,6 +85,17 @@
                     </div>
                   </div>
                 </a>
+                <a routerLink="/tasks/tags" class="iq-sub-card iq-bg-primary-hover">
+                  <div class="media align-items-center">
+                    <div class="rounded iq-card-icon iq-bg-primary">
+                      <i class="far fa-user"></i>
+                    </div>
+                    <div class="media-body ml-3">
+                      <h6 class="mb-0 ">{{'labels' | translate}}</h6>
+                      <p class="mb-0 font-size-12">{{'label_text' | translate}}</p>
+                    </div>
+                  </div>
+                </a>
                 <div class="d-inline-block w-100 text-center p-3">
                   <a class="bg-primary iq-sign-btn" href="javascript:void(0)" role="button" (click)="signOut()">
                     {{'auth.sign_out' | translate}}<i class="ri-login-box-line ml-2"></i></a>

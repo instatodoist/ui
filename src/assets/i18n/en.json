@@ -45,5 +45,7 @@
   "save_changes": "Save changes",
   "save": "Save",
   "hello": "Hello",
-  "available": "Available"
+  "available": "Available",
+  "labels": "Task Labels",
+  "label_text":"Update tasks labels"
 }
