@@ -265,6 +265,13 @@ export class TodoService {
     const refetch = [refetchQuery];
     // initialising input body
     const postTodo: TodoType = {};
+    // check notes
+    if(body.notes){
+      postTodo.notes = body.notes;
+    }
+    if(body._id){
+      postTodo.noteId = body.noteId;
+    }
     // checking title
     if (body.title) {
       postTodo.title = body.title;

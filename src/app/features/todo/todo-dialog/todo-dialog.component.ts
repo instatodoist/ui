@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -103,6 +104,8 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
       operationType: 'ADD',
       isCompleted: false,
       scheduledType: 'TODAY',
+      notes: '',
+      noteId: '',
       subTasks: this.createFormArray()
     });
     this.populateTodoModal(); // Listen to subscription to choose if popup called
@@ -277,7 +280,9 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
         scheduledType: this.scheduleTypeOnUpdate(this.todo.scheduledDate),
         labelIds: this.labelIdVal,
         operationType: this.todo._id ? 'UPDATE' : 'ADD',
-        isCompleted: this.todo && this.todo.isCompleted ? true : false
+        isCompleted: this.todo && this.todo.isCompleted ? true : false,
+        notes: this.todo && this.todo.comments.length ? this.todo.comments[0].description: '',
+        noteId: this.todo && this.todo.comments.length ? this.todo.comments[0]._id: ''
       });
       if (this.todo?.subTasks?.length) {
         const subTasksControl = this.subTasks;
@@ -424,6 +429,9 @@ export class TodoDialogComponent implements OnInit, OnDestroy {
         postBody.subTasks = filteredSubTasks;
       } else {
         delete postBody.subTasks;
+      }
+      if(!postBody.noteId){
+        delete postBody.noteId;
       }
       this.isSubmit = true;
       this.todoService

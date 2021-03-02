@@ -39,6 +39,10 @@ ToDo.fragments = {
       project {
         name
       }
+      comments {
+        description
+        _id
+      }
       subTasks {
         _id
         title

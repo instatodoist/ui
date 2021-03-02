@@ -10,6 +10,11 @@ import { SortEnumType } from './shared.model';
 type TodoEnumType = 'today' | 'backlog' | 'pending' | 'upcoming';
 // export type PriorityEnumType = 'P1' | 'P2' | 'P3' | 'P4';
 
+export interface IComment {
+  description: string;
+  _id: string;
+}
+
 export interface ISingletab {
   name: string;
   isShown: boolean;
@@ -44,6 +49,9 @@ export interface TodoType {
   createdAt?: Date;
   subTasks?: TodoType[];
   parent?: string;
+  notes?: string;
+  comments?: IComment[];
+  noteId?: string;
   list?: TodoType[];
 }
 
